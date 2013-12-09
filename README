@@ -26,17 +26,6 @@ Add this appender to log4j.properties. See log4j-example.properties.
     #log4j.appender.CASS.consistencyLevelWrite = "ONE"
     #log4j.appender.CASS.maxBufferedRows = 1
 
-Installing:
----------------------
-The latest release is available on Maven Central. You can install
-it in your application using the following Maven dependency::
-
-    <dependency>
-      <groupId>com.datastax.logging</groupId>
-      <artifactId>cassandra-log4j-appender</artifactId>
-      <version>1.2.0</version>
-    </dependency>
-
 
 How to build:
 ----------------------
