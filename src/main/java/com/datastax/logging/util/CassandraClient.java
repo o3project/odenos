@@ -240,11 +240,11 @@ public class CassandraClient implements java.lang.reflect.InvocationHandler
                     lastPoolCheck = now;
                     breaker.success();
                 }
+            } catch (InvalidRequestException e) {
+                throw new IOException(e);
             } catch (TException e) {
                 breaker.failure();
                 attemptReconnect();
-            } catch (InvalidRequestException e) {
-                throw new IOException(e);
             }
         }
     }

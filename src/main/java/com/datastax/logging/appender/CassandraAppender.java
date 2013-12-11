@@ -17,7 +17,6 @@ import org.apache.cassandra.thrift.ConsistencyLevel;
 import org.apache.cassandra.thrift.KsDef;
 import org.apache.cassandra.thrift.Mutation;
 import org.apache.cassandra.thrift.NotFoundException;
-import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.AppenderSkeleton;
 import org.apache.log4j.Level;
 import org.apache.log4j.LogManager;
@@ -408,9 +407,20 @@ public class CassandraAppender extends AppenderSkeleton
         }
         catch (IllegalArgumentException e)
         {
+            StringBuilder availableCLs = new StringBuilder();
+            boolean first = true;
+            for (ConsistencyLevel cl : ConsistencyLevel.values())
+            {
+                if (first)
+                    first = false;
+                else
+                    availableCLs.append(", ");
+
+                availableCLs.append(cl);
+            }
             throw new IllegalArgumentException("Consistency level " + consistencyLevelWrite
                                                + " wasn't found. Available levels: "
-                                               + StringUtils.join(ConsistencyLevel.values(), ", ") + ".");
+                                               + availableCLs.toString() + ".");
         }
     }
 
