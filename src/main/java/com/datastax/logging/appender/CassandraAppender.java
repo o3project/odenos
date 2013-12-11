@@ -14,9 +14,11 @@ import org.apache.cassandra.thrift.Column;
 import org.apache.cassandra.thrift.CfDef;
 import org.apache.cassandra.thrift.ColumnOrSuperColumn;
 import org.apache.cassandra.thrift.ConsistencyLevel;
+import org.apache.cassandra.thrift.ITransportFactory;
 import org.apache.cassandra.thrift.KsDef;
 import org.apache.cassandra.thrift.Mutation;
 import org.apache.cassandra.thrift.NotFoundException;
+import org.apache.cassandra.thrift.TFramedTransportFactory;
 import org.apache.log4j.AppenderSkeleton;
 import org.apache.log4j.Level;
 import org.apache.log4j.LogManager;
@@ -52,6 +54,22 @@ public class CassandraAppender extends AppenderSkeleton
     public static final String THROWABLE_STR = "throwable_str_rep";
     public static final String TIMESTAMP = "log_timestamp";
 
+
+    /**
+     * Thrift transport options. The map of transport options may be specified
+     * via the transportOptions appender configuration, using JSON notation.
+     * TRANSPORT_FACTORY_CLASS_KEY is a special property which, if present
+     * in that JSON map specifies the classname of ITransportFactory
+     * implementation to use. Any other entries in transportOptions will be
+     * passed onto the implementation as options if it declares that it
+     * supports them. If no transportOptions value is present in log4j config,
+     * or if the JSON map does not contain the TRANSPORT_FACTORY_CLASS_KEY
+     * entry, a standard framed transport factory is used.
+     */
+    public static final String TRANSPORT_FACTORY_CLASS_KEY = "thrift.transport.factory";
+    private static Map<String, String> transportOptions = new HashMap<String, String>();
+    private static ITransportFactory transportFactory;
+
     /**
      * Keyspace name. Default: "Logging".
      */
@@ -75,7 +93,7 @@ public class CassandraAppender extends AppenderSkeleton
     
     private static final String ip = getIP();
     private static final String hostname = getHostName();
-    
+
     /**
      * Cassandra comma separated hosts.
      */
@@ -135,7 +153,17 @@ public class CassandraAppender extends AppenderSkeleton
         {
             try
             {
-                client = CassandraClient.openConnection(hosts, port);
+                initTransportFactory();
+            }
+            catch (Exception e)
+            {
+                LogLog.error("Can't initialize Thrift transport factory", e);
+                errorHandler.error("Can't initialize Thrift transport factory: " + e);
+            }
+
+            try
+            {
+                client = CassandraClient.openConnection(hosts, port, transportFactory);
             }
             catch (Exception e)
             {
@@ -171,7 +199,38 @@ public class CassandraAppender extends AppenderSkeleton
         
         clientInitialized.set(true);
     }
-   
+
+    private void initTransportFactory()
+    throws ClassNotFoundException, IllegalAccessException, InstantiationException
+    {
+        LogLog.debug("Initializing thrift transport factory");
+        if (transportOptions.containsKey(TRANSPORT_FACTORY_CLASS_KEY))
+        {
+            LogLog.debug("Custom transport factory specified");
+            Class clazz = Class.forName(transportOptions.get(TRANSPORT_FACTORY_CLASS_KEY));
+            if (ITransportFactory.class.isAssignableFrom(clazz))
+            {
+                transportFactory = (ITransportFactory)clazz.newInstance();
+                Map<String, String> supportedOptions = new HashMap<String, String>();
+                for (Map.Entry<String, String> option : transportOptions.entrySet())
+                {
+                    LogLog.debug(option.getKey());
+                    if (transportFactory.supportedOptions().contains(option.getKey()))
+                    {
+                        LogLog.debug("is a supported option");
+                        supportedOptions.put(option.getKey(), option.getValue());
+                    }
+                }
+                transportFactory.setOptions(supportedOptions);
+            }
+        }
+        else
+        {
+            LogLog.debug("No custom transport factory specified, defaulting to TFramedTransportFactory");
+            transportFactory = new TFramedTransportFactory();
+        }
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -442,6 +501,26 @@ public class CassandraAppender extends AppenderSkeleton
     public void setAppName(String appName)
     {
         this.appName = appName;
+    }
+
+    public String getTransportOptions()
+    {
+        return transportOptions.toString();
+    }
+
+    public void setTransportOptions(String newOptions)
+    {
+        if (newOptions == null)
+            throw new IllegalArgumentException("transportOptions can't be null.");
+
+        try
+        {
+            transportOptions = jsonMapper.readValue(unescape(newOptions), transportOptions.getClass());
+        }
+        catch (Exception e)
+        {
+            throw new IllegalArgumentException("Invalid JSON map: " + newOptions + ", error: " + e.getMessage());
+        }
     }
         
     /*

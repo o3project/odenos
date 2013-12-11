@@ -55,6 +55,11 @@ public class CassandraClient implements java.lang.reflect.InvocationHandler
     private Cassandra.Client    client;
 
     /**
+     * ITransportFactory used to obtain new thrift connections
+     */
+    private ITransportFactory transportFactory;
+
+    /**
      * Current transport in use, underlying the thrift client.
      */
     private TTransport transport;
@@ -81,20 +86,21 @@ public class CassandraClient implements java.lang.reflect.InvocationHandler
      * @return a Cassandra Client Interface
      * @throws IOException
      */
-    public static Cassandra.Iface openConnection(String host, int port)
+    public static Cassandra.Iface openConnection(String host, int port, ITransportFactory transportFactory)
             throws IOException
     {
         return (Cassandra.Iface) java.lang.reflect.Proxy.newProxyInstance(Cassandra.Client.class.getClassLoader(),
                                                                           Cassandra.Client.class.getInterfaces(), 
-                                                                          new CassandraClient(host, port));
+                                                                          new CassandraClient(host, port, transportFactory));
     }
 
-    private CassandraClient(String host, int port)
+    private CassandraClient(String host, int port, ITransportFactory transportFactory)
     throws IOException
     {
         this.lastUsedHost = host;
         this.port = port;
         this.lastPoolCheck = 0;
+        this.transportFactory = transportFactory;
         initialize();
     }
 
@@ -179,16 +185,7 @@ public class CassandraClient implements java.lang.reflect.InvocationHandler
     {
         try
         {
-            TSocket socket = new TSocket(host, port);
-            transport =  new TFramedTransport(socket);
-            try
-            {
-                transport.open();
-            }
-            catch (TTransportException e)
-            {
-                throw new IOException("unable to connect to server", e);
-            }
+            transport =  transportFactory.openTransport(host, port);
             return new Cassandra.Client(new TBinaryProtocol(transport));
         }
         catch (Exception e)
