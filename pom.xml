@@ -35,6 +35,17 @@
     <url>https://github.com/datastax/cassandra-log4j-appender</url>
   </scm>
 
+  <distributionManagement>
+    <repository>
+      <id>datastax-public-release</id>
+      <url>http://mvn.riptano.com/content/repositories/public-releases</url>
+    </repository>
+    <snapshotRepository>
+      <id>datastax-public-snapshot</id>
+      <url>http://mvn.riptano.com/content/repositories/public-snapshots</url>
+    </snapshotRepository>
+  </distributionManagement>
+
   <dependencies>
     <dependency>
       <groupId>org.apache.cassandra</groupId>
