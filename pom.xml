@@ -18,7 +18,7 @@
   <groupId>com.datastax.logging</groupId>
   <artifactId>cassandra-log4j-appender</artifactId>
   <packaging>jar</packaging>
-  <version>2.0.0-SNAPSHOT</version>
+  <version>3.0.0-SNAPSHOT</version>
   <name>cassandra-log4j-appender</name>
   <url>https://github.com/datastax/cassandra-log4j-appender</url>
 
@@ -46,29 +46,17 @@
     </snapshotRepository>
   </distributionManagement>
 
-  <dependencies>
-    <dependency>
-      <groupId>org.apache.cassandra</groupId>
-      <artifactId>cassandra-thrift</artifactId>
-      <version>2.0.3</version>
-    </dependency>
-
-    <dependency>
-      <groupId>org.codehaus.jackson</groupId>
-      <artifactId>jackson-mapper-asl</artifactId>
-      <version>1.4.0</version>
-    </dependency>
-
-    <dependency>
-      <groupId>log4j</groupId>
-      <artifactId>log4j</artifactId>
-      <version>1.2.16</version>
-    </dependency>
-
+  <dependencies>   
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-log4j12</artifactId>
       <version>1.6.1</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.datastax.cassandra</groupId>
+      <artifactId>cassandra-driver-core</artifactId>
+      <version>2.0.0-rc2</version>
     </dependency>
 
     <dependency>
