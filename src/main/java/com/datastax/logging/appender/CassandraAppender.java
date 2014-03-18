@@ -2,32 +2,23 @@ package com.datastax.logging.appender;
 
 import java.io.IOException;
 import java.net.InetAddress;
-import java.nio.ByteBuffer;
-import java.nio.charset.Charset;
-import java.util.*;
-import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.UUID;
 
-import com.datastax.logging.util.CassandraClient;
-import org.apache.cassandra.thrift.Cassandra;
-import org.apache.cassandra.thrift.ColumnDef;
-import org.apache.cassandra.thrift.Column;
-import org.apache.cassandra.thrift.CfDef;
-import org.apache.cassandra.thrift.ColumnOrSuperColumn;
-import org.apache.cassandra.thrift.ConsistencyLevel;
-import org.apache.cassandra.thrift.ITransportFactory;
-import org.apache.cassandra.thrift.KsDef;
-import org.apache.cassandra.thrift.Mutation;
-import org.apache.cassandra.thrift.NotFoundException;
-import org.apache.cassandra.thrift.TFramedTransportFactory;
 import org.apache.log4j.AppenderSkeleton;
 import org.apache.log4j.Level;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.helpers.LogLog;
-import org.apache.log4j.spi.ErrorCode;
 import org.apache.log4j.spi.LocationInfo;
 import org.apache.log4j.spi.LoggingEvent;
 
-import org.codehaus.jackson.map.ObjectMapper;
+import com.datastax.driver.core.BoundStatement;
+import com.datastax.driver.core.Cluster;
+import com.datastax.driver.core.ConsistencyLevel;
+import com.datastax.driver.core.policies.RoundRobinPolicy;
+import com.datastax.driver.core.PreparedStatement;
+import com.datastax.driver.core.Session;
+
+import com.google.common.base.Joiner;
 
 /**
  * Main class that uses Cassandra to store log entries into.
@@ -35,12 +26,26 @@ import org.codehaus.jackson.map.ObjectMapper;
  */
 public class CassandraAppender extends AppenderSkeleton
 {
-    private static final ObjectMapper jsonMapper = new ObjectMapper();
+    //Cassandra configuration
+    private String hosts = "localhost";
+    private int port = 9042; //for the binary protocol, 9160 is default for thrift
+    private String username = "";
+    private String password = "";
+    private static final String ip = getIP();
+    private static final String hostname = getHostName();
+
+    //Keyspace/ColumnFamily information
+    private String keyspaceName = "Logging";
+	private String columnFamily = "log_entries";
+	private String appName = "default";
+    private String replication = "{ 'class' : 'SimpleStrategy', 'replication_factor' : 1 }";
+    private ConsistencyLevel consistencyLevelWrite = ConsistencyLevel.ONE;
 
     // CF column names
+    public static final String ID = "key";
     public static final String HOST_IP = "host_ip";
     public static final String HOST_NAME = "host_name";
-    public static final String APP_NAME  = "app_name";
+    public static final String APP_NAME = "app_name";
     public static final String LOGGER_NAME = "logger_name";
     public static final String LEVEL = "level";
     public static final String CLASS_NAME = "class_name";
@@ -54,182 +59,17 @@ public class CassandraAppender extends AppenderSkeleton
     public static final String THROWABLE_STR = "throwable_str_rep";
     public static final String TIMESTAMP = "log_timestamp";
 
-
-    /**
-     * Thrift transport options. The map of transport options may be specified
-     * via the transportOptions appender configuration, using JSON notation.
-     * TRANSPORT_FACTORY_CLASS_KEY is a special property which, if present
-     * in that JSON map specifies the classname of ITransportFactory
-     * implementation to use. Any other entries in transportOptions will be
-     * passed onto the implementation as options if it declares that it
-     * supports them. If no transportOptions value is present in log4j config,
-     * or if the JSON map does not contain the TRANSPORT_FACTORY_CLASS_KEY
-     * entry, a standard framed transport factory is used.
-     */
-    public static final String TRANSPORT_FACTORY_CLASS_KEY = "thrift.transport.factory";
-    private static Map<String, String> transportOptions = new HashMap<String, String>();
-    private static ITransportFactory transportFactory;
-
-    /**
-     * Keyspace name. Default: "Logging".
-     */
-    private String keyspaceName = "Logging";
-    private String columnFamily = "log_entries";
-    private String appName = "default";
-    
-    private String placementStrategy = "org.apache.cassandra.locator.SimpleStrategy";
-    private Map<String, String> strategyOptions = new HashMap<String, String>();
-    // required by SimpleStrategy
-    private int replicationFactor = 1;
-
-    private ConsistencyLevel consistencyLevelWrite = ConsistencyLevel.ONE;
-
-    private int maxBufferedRows = 1; // buffering is turned off by default
-
-    private Map<ByteBuffer, Map<String, List<Mutation>>> rowBuffer;
-
-    private AtomicBoolean clientInitialized = new AtomicBoolean(false);
-    private Cassandra.Iface client;
-    
-    private static final String ip = getIP();
-    private static final String hostname = getHostName();
-
-    /**
-     * Cassandra comma separated hosts.
-     */
-    private String hosts = "localhost";
-
-    /**
-     * Cassandra port.
-     */
-    private int port = 9160;
+    //session state
+    private PreparedStatement statement;
+    private volatile boolean initialized = false;
+    private volatile boolean initializationFailed = false;
+    private Cluster cluster;
+    private Session session;
 
     public CassandraAppender()
     {
-        LogLog.debug("Creating CassandraAppender");
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void close()
-    {
-        flush();
-    }
-
-    /**
-     * {@inheritDoc}
-     * 
-     * @see org.apache.log4j.Appender#requiresLayout()
-     */
-    public boolean requiresLayout()
-    {
-        return false;
-    }
-    
-    /**
-     * Called once all the options have been set. Starts listening for clients on the specified socket.
-     */
-    public void activateOptions()
-    {
-        reset();
-    }
-    
-    private synchronized void initClient()
-    {
-        
-        // another thread has already initialized the client, nothing to do
-        if (clientInitialized.get())
-        {
-            return;
-        }
-
-        // Just while we initialise the client, we must temporarily
-        // disable all logging or else we get into an infinite loop 
-        Level globalThreshold = LogManager.getLoggerRepository().getThreshold();
-        LogManager.getLoggerRepository().setThreshold(Level.OFF);
-        
-        try
-        {
-            try
-            {
-                initTransportFactory();
-            }
-            catch (Exception e)
-            {
-                LogLog.error("Can't initialize Thrift transport factory", e);
-                errorHandler.error("Can't initialize Thrift transport factory: " + e);
-            }
-
-            try
-            {
-                client = CassandraClient.openConnection(hosts, port, transportFactory);
-            }
-            catch (Exception e)
-            {
-                LogLog.error("Can't initialize cassandra connections", e);
-                errorHandler.error("Can't initialize cassandra connections: " + e);
-            }
-    
-            try
-            {
-                setupSchema();
-            }
-            catch (Exception e)
-            {
-                LogLog.error("Error setting up cassandra logging schema", e);
-                errorHandler.error("Error setting up cassandra logging schema: " + e);
-            }
-    
-            try
-            {
-                client.set_keyspace(keyspaceName);
-            }
-            catch (Exception e)
-            {
-                LogLog.error("Error setting keyspace", e);
-                errorHandler.error("Error setting keyspace: " + e);
-            }
-        }
-        finally
-        {
-            // make sure we re-enable logging, even if we errored during client setup
-            LogManager.getLoggerRepository().setThreshold(globalThreshold);
-        }        
-        
-        clientInitialized.set(true);
-    }
-
-    private void initTransportFactory()
-    throws ClassNotFoundException, IllegalAccessException, InstantiationException
-    {
-        LogLog.debug("Initializing thrift transport factory");
-        if (transportOptions.containsKey(TRANSPORT_FACTORY_CLASS_KEY))
-        {
-            LogLog.debug("Custom transport factory specified");
-            Class clazz = Class.forName(transportOptions.get(TRANSPORT_FACTORY_CLASS_KEY));
-            if (ITransportFactory.class.isAssignableFrom(clazz))
-            {
-                transportFactory = (ITransportFactory)clazz.newInstance();
-                Map<String, String> supportedOptions = new HashMap<String, String>();
-                for (Map.Entry<String, String> option : transportOptions.entrySet())
-                {
-                    LogLog.debug(option.getKey());
-                    if (transportFactory.supportedOptions().contains(option.getKey()))
-                    {
-                        LogLog.debug("is a supported option");
-                        supportedOptions.put(option.getKey(), option.getValue());
-                    }
-                }
-                transportFactory.setOptions(supportedOptions);
-            }
-        }
-        else
-        {
-            LogLog.debug("No custom transport factory specified, defaulting to TFramedTransportFactory");
-            transportFactory = new TFramedTransportFactory();
-        }
-    }
+		LogLog.debug("Creating CassandraAppender");
+	}
 
     /**
      * {@inheritDoc}
@@ -237,508 +77,307 @@ public class CassandraAppender extends AppenderSkeleton
     @Override
     protected void append(LoggingEvent event)
     {
-        // We have to defer initialization of the client because ITransportFactory
-        // references some Hadoop classes which can't safely be
-        // used until the logging infrastructure is fully set up. If we attempt to
-        // initialize the client earlier, it causes NPE's from the constructor of
-        // org.apache.hadoop.conf.Configuration 
-        // The initClient method is synchronized and includes a double check of 
-        // the client status, so we only do this once.
-        if (! clientInitialized.get())
-        {
+        // We have to defer initialization of the client because TTransportFactory
+        // references some Hadoop classes which can't safely be used until the logging
+        // infrastructure is fully set up. If we attempt to initialize the client
+        // earlier, it causes NPE's from the constructor of org.apache.hadoop.conf.Configuration.
+        if(!initialized)
             initClient();
-        }
-        
-        ByteBuffer rowId = toByteBuffer(UUID.randomUUID());
-        Map<String, List<Mutation>> mutMap = new HashMap<String, List<Mutation>>();
-        mutMap.put(columnFamily, createMutationList(event));
-        rowBuffer.put(rowId, mutMap);
-
-        flushIfNecessary();
+        if(!initializationFailed)
+            createAndExecuteQuery(event);
     }
 
-    private void flushIfNecessary()
+    //Connect to cassandra, then setup the schema and preprocessed statement
+    private synchronized void initClient()
     {
-        if (rowBuffer.size() >= maxBufferedRows)
-            flush();
-    }
+        //We should be able to go without an Atomic variable here.  There are two potential problems:
+        // 1. Multiple threads read intialized=false and call init client.  However, the method is
+        //    synchronized so only one will get the lock first, and the others will drop out here.
+        // 2. One thread reads initialized=true before initClient finishes.  This also should not
+        //    happen as the lock should include a memory barrier.
+        if(initialized || initializationFailed)
+            return;
 
-    private void flush()
-    {
-        if (rowBuffer.size() > 0)
+		// Just while we initialise the client, we must temporarily
+		// disable all logging or else we get into an infinite loop
+		Level globalThreshold = LogManager.getLoggerRepository().getThreshold();
+		LogManager.getLoggerRepository().setThreshold(Level.OFF);
+
+		try
         {
-            try
-            {
-                client.batch_mutate(rowBuffer, consistencyLevelWrite);
-            }
-            catch (Exception e)
-            {
-                errorHandler.error("Failed to persist in Cassandra", e, ErrorCode.FLUSH_FAILURE);
-            }
-            reset();
-        }
-    }
+            String[] contactPoints = hosts.split(",\\s*");
 
-    private void reset()
-    {
-        rowBuffer = new HashMap<ByteBuffer, Map<String, List<Mutation>>>();
-    }
+            cluster = Cluster.builder()
+						  .addContactPoints(contactPoints)
+						  .withPort(port)
+						  .withCredentials(username, password)
+                          .withLoadBalancingPolicy(new RoundRobinPolicy())
+                          .build();
 
-    private List<Mutation> createMutationList(LoggingEvent event)
-    {
-        List<Mutation> mutList = new ArrayList<Mutation>();
-
-        long colTs = System.currentTimeMillis() * 1000; // don't use log entry timestamp for column timestamp to avoid
-                                                        // clock skew issues
-        createMutation(mutList, APP_NAME, appName, colTs);
-        createMutation(mutList, HOST_IP, ip, colTs);
-        createMutation(mutList, HOST_NAME, hostname, colTs);
-        createMutation(mutList, LOGGER_NAME, event.getLoggerName(), colTs);
-        createMutation(mutList, LEVEL, event.getLevel().toString(), colTs);
-        LocationInfo locInfo = event.getLocationInformation();
-        if (locInfo != null)
+		    session = cluster.connect();
+            setupSchema();
+            setupStatement();
+		}
+        catch (Exception e)
         {
-            createMutation(mutList, CLASS_NAME, locInfo.getClassName(), colTs);
-            createMutation(mutList, FILE_NAME, locInfo.getFileName(), colTs);
-            createMutation(mutList, LINE_NUMBER, locInfo.getLineNumber(), colTs);
-            createMutation(mutList, METHOD_NAME, locInfo.getMethodName(), colTs);
-        }
-        createMutation(mutList, MESSAGE, event.getRenderedMessage(), colTs);
-        createMutation(mutList, NDC, event.getNDC(), colTs);
-        createMutation(mutList, APP_START_TIME, LoggingEvent.getStartTime(), colTs);
-        createMutation(mutList, THREAD_NAME, event.getThreadName(), colTs);
-        String[] throwableStrs = event.getThrowableStrRep();
-        if (throwableStrs != null)
+		    LogLog.error("Error ", e);
+			errorHandler.error("Error setting up cassandra logging schema: " + e);
+
+            //If the user misconfigures the port or something, don't keep failing.
+            initializationFailed = true;
+		}
+        finally
         {
-            StringBuilder builder = new StringBuilder();
-            for (String throwableStr : throwableStrs)
-            {
-                builder.append(throwableStr);
-            }
-            createMutation(mutList, THROWABLE_STR, builder.toString(), colTs);
-        }
-        createMutation(mutList, TIMESTAMP, event.getTimeStamp(), colTs);
+            //Always reenable logging
+            LogManager.getLoggerRepository().setThreshold(globalThreshold);
+            initialized = true;
+		}
+	}
 
-        return mutList;
-    }
-
-    private void createMutation(List<Mutation> mutList, String column, long value, long ts)
-    {
-        createMutation(mutList, column, toByteBuffer(value), ts);
-    }
-
-    private void createMutation(List<Mutation> mutList, String column, String value, long ts)
-    {
-        if (value != null)
-        {
-            createMutation(mutList, column, toByteBuffer(value), ts);
-        }
-    }
-
-    private void createMutation(List<Mutation> mutList, String column, ByteBuffer value, long ts)
-    {
-        Mutation mutation = new Mutation();
-        Column col = new Column(toByteBuffer(column));
-        col.setValue(value);
-        col.setTimestamp(ts);
-        ColumnOrSuperColumn cosc = new ColumnOrSuperColumn().setColumn(col);
-        mutation.setColumn_or_supercolumn(cosc);
-        mutList.add(mutation);
-    }
 
     /**
      * Create Keyspace and CF if they do not exist.
      */
     private void setupSchema() throws IOException
     {
+        //Create keyspace if necessary
+        String ksQuery = String.format("CREATE KEYSPACE IF NOT EXISTS \"%s\" WITH REPLICATION = %s;",
+                                       keyspaceName, replication);
+        session.execute(ksQuery);
 
-        KsDef ksDef = verifyKeyspace();
-        if (ksDef == null)
-        {
-            // create both
-            createKeyspaceAndColFam();
-        }
-        else
-        {
-            // keyspace exists, does the cf?
-
-            if (!checkForCF(ksDef))
-            {
-                // create cf
-                createColumnFamily();
-            }
-        }
-    }
-
-    public String getKeyspaceName()
-    {
-        return keyspaceName;
-    }
-
-    public void setKeyspaceName(String keyspaceName)
-    {
-        this.keyspaceName = keyspaceName;
-    }
-
-    public String getHosts()
-    {
-        return hosts;
-    }
-
-    public void setHosts(String hosts)
-    {
-        this.hosts = hosts;
-    }
-
-    public int getPort()
-    {
-        return port;
-    }
-
-    public void setPort(int port)
-    {
-        this.port = port;
-    }
-
-    public String getColumnFamily()
-    {
-        return columnFamily;
-    }
-
-    public void setColumnFamily(String columnFamily)
-    {
-        this.columnFamily = columnFamily;
-    }
-
-    public String getPlacementStrategy()
-    {
-        return placementStrategy;
-    }
-
-    public void setPlacementStrategy(String strategy)
-    {
-        if (strategy == null)
-            throw new IllegalArgumentException("placementStrategy can't be null");
-
-        placementStrategy = unescape(strategy);
-    }
-
-    public String getStrategyOptions()
-    {
-        return strategyOptions.toString();
-    }
-
-    public void setStrategyOptions(String newOptions)
-    {
-        if (newOptions == null)
-            throw new IllegalArgumentException("strategyOptions can't be null.");
-
-        try
-        {
-            strategyOptions = jsonMapper.readValue(unescape(newOptions), strategyOptions.getClass());
-        }
-        catch (Exception e)
-        {
-            throw new IllegalArgumentException("Invalid JSON map: " + newOptions + ", error: " + e.getMessage());
-        }
-    }
-
-    public int getReplicationFactor()
-    {
-        return replicationFactor;
-    }
-
-    public void setReplicationFactor(int replicationFactor)
-    {
-        this.replicationFactor = replicationFactor;
-    }
-
-    public String getConsistencyLevelWrite()
-    {
-        return consistencyLevelWrite.toString();
-    }
-
-    public void setConsistencyLevelWrite(String consistencyLevelWrite)
-    {
-        try
-        {
-            this.consistencyLevelWrite = ConsistencyLevel.valueOf(unescape(consistencyLevelWrite));
-        }
-        catch (IllegalArgumentException e)
-        {
-            StringBuilder availableCLs = new StringBuilder();
-            boolean first = true;
-            for (ConsistencyLevel cl : ConsistencyLevel.values())
-            {
-                if (first)
-                    first = false;
-                else
-                    availableCLs.append(", ");
-
-                availableCLs.append(cl);
-            }
-            throw new IllegalArgumentException("Consistency level " + consistencyLevelWrite
-                                               + " wasn't found. Available levels: "
-                                               + availableCLs.toString() + ".");
-        }
-    }
-
-    public int getMaxBufferedRows()
-    {
-        return maxBufferedRows;
-    }
-
-    public void setMaxBufferedRows(int maxBufferedRows)
-    {
-        this.maxBufferedRows = maxBufferedRows;
-    }
-
-    public String getAppName()
-    {
-        return appName;
-    }
-
-    public void setAppName(String appName)
-    {
-        this.appName = appName;
-    }
-
-    public String getTransportOptions()
-    {
-        return transportOptions.toString();
-    }
-
-    public void setTransportOptions(String newOptions)
-    {
-        if (newOptions == null)
-            throw new IllegalArgumentException("transportOptions can't be null.");
-
-        try
-        {
-            transportOptions = jsonMapper.readValue(unescape(newOptions), transportOptions.getClass());
-        }
-        catch (Exception e)
-        {
-            throw new IllegalArgumentException("Invalid JSON map: " + newOptions + ", error: " + e.getMessage());
-        }
-    }
-        
-    /*
-     * Verify that the keyspace exists. Returns the KsDef if it does, else null.
-     */
-    private KsDef verifyKeyspace()
-            throws IOException
-    {
-
-        KsDef ksDef = null;
-
-        try
-        {
-            ksDef = client.describe_keyspace(keyspaceName);
-            // it exists, fall through to return positive
-        }
-        catch (NotFoundException e)
-        {
-            // doesn't exist
-        }
-        catch (Exception e)
-        {
-            throw new IOException("Exception caught while trying to verify keyspace existance.", e);
-        }
-
-        return ksDef;
-    }
-
-    /*
-     * Check for CF in the given KS definition.
-     */
-    private boolean checkForCF(KsDef ksDef)
-    {
-        boolean exists = false;
-
-        for (CfDef cfDef : ksDef.getCf_defs())
-        {
-            if (cfDef.getName().equals(columnFamily))
-            {
-                exists = true;
-                break;
-            }
-        }
-
-        return exists;
-    }
-
-    private void createKeyspaceAndColFam()
-            throws IOException
-    {
-
-        List<CfDef> cfDefList = new ArrayList<CfDef>();
-        cfDefList.add(createCfDef());
-
-        try
-        {
-            KsDef ksDef = new KsDef(keyspaceName, placementStrategy, cfDefList);
-
-            if (placementStrategy.equals("org.apache.cassandra.locator.SimpleStrategy"))
-            {
-                if (!strategyOptions.containsKey("replication_factor"))
-                    strategyOptions.put("replication_factor", Integer.toString(replicationFactor));
-            }
-
-            ksDef.setStrategy_options(strategyOptions);
-
-            client.system_add_keyspace(ksDef);
-            int magnitude = client.describe_ring(keyspaceName).size();
-            Thread.sleep(1000 * magnitude);
-        }
-        catch (InterruptedException e)
-        {
-            throw new RuntimeException(e);
-        }
-        catch (Exception e)
-        {
-            throw new IOException(e);
-        }
-    }
-
-    private void createColumnFamily()
-            throws IOException
-    {
-
-        CfDef cfDef = createCfDef();
-        try
-        {
-            // keyspace should have already been verified...
-            client.set_keyspace(keyspaceName);
-            client.system_add_column_family(cfDef);
-            int magnitude = client.describe_ring(keyspaceName).size();
-            Thread.sleep(1000 * magnitude);
-        }
-        catch (InterruptedException e)
-        {
-            throw new RuntimeException(e);
-        }
-        catch (Exception e)
-        {
-            throw new IOException(e);
-        }
-    }
-
-    private CfDef createCfDef()
-    {
-        CfDef cfDef = new CfDef(keyspaceName, columnFamily);
-        cfDef.setKey_validation_class("UUIDType");
-        cfDef.setComparator_type("UTF8Type");
-        cfDef.setDefault_validation_class("UTF8Type");
-
-        addColumn(cfDef, APP_NAME, "UTF8Type");
-        addColumn(cfDef, HOST_IP, "UTF8Type");
-        addColumn(cfDef, HOST_NAME, "UTF8Type");
-        addColumn(cfDef, LOGGER_NAME, "UTF8Type");
-        addColumn(cfDef, LEVEL, "UTF8Type");
-        addColumn(cfDef, CLASS_NAME, "UTF8Type");
-        addColumn(cfDef, FILE_NAME, "UTF8Type");
-        addColumn(cfDef, LINE_NUMBER, "UTF8Type");
-        addColumn(cfDef, METHOD_NAME, "UTF8Type");
-        addColumn(cfDef, MESSAGE, "UTF8Type");
-        addColumn(cfDef, NDC, "UTF8Type");
-        addColumn(cfDef, APP_START_TIME, "LongType");
-        addColumn(cfDef, THREAD_NAME, "UTF8Type");
-        addColumn(cfDef, THROWABLE_STR, "UTF8Type");
-        addColumn(cfDef, TIMESTAMP, "LongType");
-
-        return cfDef;
-    }
-
-    private CfDef addColumn(CfDef cfDef, String columnName, String validator)
-    {
-        ColumnDef colDef = new ColumnDef();
-        colDef.setName(toByteBuffer(columnName));
-        colDef.setValidation_class(validator);
-        cfDef.addToColumn_metadata(colDef);
-
-        return cfDef;
-    }
-
-    private static final Charset charset = Charset.forName("UTF-8");
-
-    // Serialize a string
-    public static ByteBuffer toByteBuffer(String s)
-    {
-        if (s == null)
-        {
-            return null;
-        }
-
-        return ByteBuffer.wrap(s.getBytes(charset));
-    }
-
-    // serialize a UUID
-    public ByteBuffer toByteBuffer(UUID uuid)
-    {
-        long msb = uuid.getMostSignificantBits();
-        long lsb = uuid.getLeastSignificantBits();
-        byte[] buffer = new byte[16];
-
-        for (int i = 0; i < 8; i++)
-        {
-            buffer[i] = (byte) (msb >>> 8 * (7 - i));
-        }
-        for (int i = 8; i < 16; i++)
-        {
-            buffer[i] = (byte) (lsb >>> 8 * (7 - i));
-        }
-
-        return ByteBuffer.wrap(buffer);
-    }
-
-    // serialize a long
-    public ByteBuffer toByteBuffer(long longVal)
-    {
-        return ByteBuffer.allocate(8).putLong(0, longVal);
-    }
-    
-    private static String getHostName()
-    {
-        String hostname = "unknown";
-        
-        try
-        {
-            InetAddress addr = InetAddress.getLocalHost();
-            hostname = addr.getHostName();
-        }
-        catch(Throwable t)
-        {
-            
-        }
-        return hostname;
-    }
-    
-    private static String getIP()
-    {
-        String ip = "unknown";
-        
-        try
-        {
-            InetAddress addr = InetAddress.getLocalHost();
-            ip = addr.getHostAddress();
-        }
-        catch(Throwable t)
-        {
-            
-        }
-        return ip;
+        //Create table if necessary
+        String cfQuery =  String.format("CREATE TABLE IF NOT EXISTS \"%s\".\"%s\" (%s UUID PRIMARY KEY, " +
+                                        "%s text, %s bigint, %s text, %s text, %s text, %s text, %s text," +
+                                        "%s text, %s text, %s bigint, %s text, %s text, %s text, %s text," +
+                                        "%s text);",
+                                        keyspaceName, columnFamily, ID, APP_NAME, APP_START_TIME, CLASS_NAME,
+                                        FILE_NAME, HOST_IP, HOST_NAME, LEVEL, LINE_NUMBER, METHOD_NAME,
+                                        TIMESTAMP, LOGGER_NAME, MESSAGE, NDC, THREAD_NAME, THROWABLE_STR);
+        session.execute(cfQuery);
     }
 
     /**
-     * Strips leading and trailing '"' characters
-     * @param b - string to unescape
-     * @return String - unexspaced string
+     * Setup and preprocess our insert query, so that we can just bind values and send them over the binary protocol
      */
-    private static String unescape(String b)
+    private void setupStatement()
     {
-        if (b.charAt(0) == '\"' && b.charAt(b.length() - 1) == '\"')
-            b = b.substring(1, b.length() - 1);
-        return b;
+        //Preprocess our append statement
+        String insertQuery = String.format("INSERT INTO \"%s\".\"%s\" " +
+                                           "(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s) " +
+                                           "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?); ",
+                                           keyspaceName, columnFamily, ID, APP_NAME, HOST_IP, HOST_NAME, LOGGER_NAME,
+                                           LEVEL, CLASS_NAME, FILE_NAME, LINE_NUMBER, METHOD_NAME, MESSAGE, NDC,
+                                           APP_START_TIME, THREAD_NAME, THROWABLE_STR, TIMESTAMP);
+
+        statement = session.prepare(insertQuery);
+        statement.setConsistencyLevel(ConsistencyLevel.valueOf(consistencyLevelWrite.toString()));
     }
+
+    /**
+     * Send one logging event to Cassandra.  We just bind the new values into the preprocessed query
+     * built by setupStatement
+     */
+    private void createAndExecuteQuery(LoggingEvent event)
+    {
+		BoundStatement bound = new BoundStatement(statement);
+
+        // A primary key combination of timestamp/hostname/threadname should be unique as long as the thread names
+        // are set, but would not be backwards compatible.  Do we care?
+        bound.setUUID(0, UUID.randomUUID());
+
+        bound.setString(1, appName);
+        bound.setString(2, ip);
+        bound.setString(3, hostname);
+        bound.setString(4, event.getLoggerName());
+        bound.setString(5, event.getLevel().toString());
+
+        LocationInfo locInfo = event.getLocationInformation();
+        if (locInfo != null) {
+            bound.setString(6, locInfo.getClassName());
+            bound.setString(7, locInfo.getFileName());
+            bound.setString(8, locInfo.getLineNumber());
+            bound.setString(9, locInfo.getMethodName());
+        }
+
+        bound.setString(10, event.getRenderedMessage());
+        bound.setString(11, event.getNDC());
+        bound.setLong(12, new Long(LoggingEvent.getStartTime()));
+        bound.setString(13, event.getThreadName());
+
+        String[] throwableStrs = event.getThrowableStrRep();
+        if (throwableStrs != null)
+            bound.setString(14, Joiner.on(", ").join(throwableStrs));
+
+        bound.setLong(15, new Long(event.getTimeStamp()));
+        session.execute(bound);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void close()
+    {
+        session.shutdown();  //closeAsync for 2.0.0-rc3 driver
+        cluster.shutdown();
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @see org.apache.log4j.Appender#requiresLayout()
+     */
+    public boolean requiresLayout()
+    {
+        return false;
+    }
+
+    /**
+     * Called once all the options have been set. Starts listening for clients
+     * on the specified socket.
+     */
+    public void activateOptions()
+    {
+        // reset();
+    }
+
+    //
+    //Boilerplate from here on out
+    //
+
+    public String getKeyspaceName()
+    {
+		return keyspaceName;
+	}
+
+	public void setKeyspaceName(String keyspaceName)
+    {
+		this.keyspaceName = keyspaceName;
+	}
+
+	public String getHosts()
+    {
+		return hosts;
+	}
+
+	public void setHosts(String hosts)
+    {
+		this.hosts = hosts;
+	}
+
+	public int getPort()
+    {
+		return port;
+	}
+
+	public void setPort(int port)
+    {
+		this.port = port;
+	}
+
+	public String getUsername()
+    {
+		return username;
+	}
+
+	public void setUsername(String username)
+    {
+		this.username = username;
+	}
+
+	public String getPassword()
+    {
+		return password;
+	}
+
+	public void setPassword(String password)
+    {
+		this.password = password;
+	}
+
+	public String getColumnFamily()
+    {
+		return columnFamily;
+	}
+
+	public void setColumnFamily(String columnFamily)
+    {
+		this.columnFamily = columnFamily;
+	}
+
+	public String getReplication()
+    {
+		return replication;
+	}
+
+	public void setReplication(String strategy)
+    {
+		replication = unescape(strategy);
+	}
+
+	public String getConsistencyLevelWrite()
+    {
+		return consistencyLevelWrite.toString();
+	}
+
+	public void setConsistencyLevelWrite(String consistencyLevelWrite)
+    {
+		try {
+			this.consistencyLevelWrite = ConsistencyLevel.valueOf(unescape(consistencyLevelWrite));
+		}
+        catch (IllegalArgumentException e) {
+			throw new IllegalArgumentException("Consistency level " + consistencyLevelWrite
+					+ " wasn't found. Available levels: " + Joiner.on(", ").join(ConsistencyLevel.values()));
+		}
+	}
+
+
+    public String getAppName()
+    {
+		return appName;
+	}
+
+	public void setAppName(String appName)
+    {
+		this.appName = appName;
+	}
+
+	private static String getHostName()
+    {
+		String hostname = "unknown";
+
+		try {
+			InetAddress addr = InetAddress.getLocalHost();
+			hostname = addr.getHostName();
+		} catch (Throwable t) {
+
+		}
+		return hostname;
+	}
+
+	private static String getIP()
+    {
+		String ip = "unknown";
+
+		try {
+			InetAddress addr = InetAddress.getLocalHost();
+			ip = addr.getHostAddress();
+		} catch (Throwable t) {
+
+		}
+		return ip;
+	}
+
+	/**
+	 * Strips leading and trailing '"' characters
+	 * 
+	 * @param b
+	 *            - string to unescape
+	 * @return String - unexspaced string
+	 */
+	private static String unescape(String b)
+    {
+		if (b.charAt(0) == '\"' && b.charAt(b.length() - 1) == '\"')
+			b = b.substring(1, b.length() - 1);
+		return b;
+	}
 }
