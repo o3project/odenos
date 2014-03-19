@@ -217,8 +217,8 @@ public class CassandraAppender extends AppenderSkeleton
      */
     public void close()
     {
-        session.shutdown();  //closeAsync for 2.0.0-rc3 driver
-        cluster.shutdown();
+        session.closeAsync();
+        cluster.closeAsync();
     }
 
     /**
