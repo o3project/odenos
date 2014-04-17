@@ -1,9 +1,15 @@
 package com.datastax.logging.appender;
 
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.InetAddress;
+import java.security.KeyStore;
+import java.security.SecureRandom;
+import java.util.Map;
+import java.util.TreeMap;
 import java.util.UUID;
 
+import com.datastax.driver.core.*;
 import org.apache.log4j.AppenderSkeleton;
 import org.apache.log4j.Level;
 import org.apache.log4j.LogManager;
@@ -11,14 +17,15 @@ import org.apache.log4j.helpers.LogLog;
 import org.apache.log4j.spi.LocationInfo;
 import org.apache.log4j.spi.LoggingEvent;
 
-import com.datastax.driver.core.BoundStatement;
-import com.datastax.driver.core.Cluster;
-import com.datastax.driver.core.ConsistencyLevel;
+import org.codehaus.jackson.map.ObjectMapper;
+
 import com.datastax.driver.core.policies.RoundRobinPolicy;
-import com.datastax.driver.core.PreparedStatement;
-import com.datastax.driver.core.Session;
 
 import com.google.common.base.Joiner;
+
+import javax.net.ssl.KeyManagerFactory;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManagerFactory;
 
 /**
  * Main class that uses Cassandra to store log entries into.
@@ -26,7 +33,7 @@ import com.google.common.base.Joiner;
  */
 public class CassandraAppender extends AppenderSkeleton
 {
-    //Cassandra configuration
+    // Cassandra configuration
     private String hosts = "localhost";
     private int port = 9042; //for the binary protocol, 9160 is default for thrift
     private String username = "";
@@ -34,7 +41,12 @@ public class CassandraAppender extends AppenderSkeleton
     private static final String ip = getIP();
     private static final String hostname = getHostName();
 
-    //Keyspace/ColumnFamily information
+    // Encryption.  sslOptions and authProviderOptions are JSON maps requiring Jackson
+    private static final ObjectMapper jsonMapper = new ObjectMapper();
+    private Map<String, String> sslOptions = null;
+    private Map<String, String> authProviderOptions = null;
+
+    // Keyspace/ColumnFamily information
     private String keyspaceName = "Logging";
 	private String columnFamily = "log_entries";
 	private String appName = "default";
@@ -59,7 +71,7 @@ public class CassandraAppender extends AppenderSkeleton
     public static final String THROWABLE_STR = "throwable_str_rep";
     public static final String TIMESTAMP = "log_timestamp";
 
-    //session state
+    // session state
     private PreparedStatement statement;
     private volatile boolean initialized = false;
     private volatile boolean initializationFailed = false;
@@ -81,21 +93,21 @@ public class CassandraAppender extends AppenderSkeleton
         // references some Hadoop classes which can't safely be used until the logging
         // infrastructure is fully set up. If we attempt to initialize the client
         // earlier, it causes NPE's from the constructor of org.apache.hadoop.conf.Configuration.
-        if(!initialized)
+        if (!initialized)
             initClient();
-        if(!initializationFailed)
+        if (!initializationFailed)
             createAndExecuteQuery(event);
     }
 
     //Connect to cassandra, then setup the schema and preprocessed statement
     private synchronized void initClient()
     {
-        //We should be able to go without an Atomic variable here.  There are two potential problems:
+        // We should be able to go without an Atomic variable here.  There are two potential problems:
         // 1. Multiple threads read intialized=false and call init client.  However, the method is
         //    synchronized so only one will get the lock first, and the others will drop out here.
         // 2. One thread reads initialized=true before initClient finishes.  This also should not
         //    happen as the lock should include a memory barrier.
-        if(initialized || initializationFailed)
+        if (initialized || initializationFailed)
             return;
 
 		// Just while we initialise the client, we must temporarily
@@ -105,15 +117,27 @@ public class CassandraAppender extends AppenderSkeleton
 
 		try
         {
-            String[] contactPoints = hosts.split(",\\s*");
+            Cluster.Builder builder = Cluster.builder()
+                                             .addContactPoints(hosts.split(",\\s*"))
+                                             .withPort(port)
+                                             .withLoadBalancingPolicy(new RoundRobinPolicy());
 
-            cluster = Cluster.builder()
-						  .addContactPoints(contactPoints)
-						  .withPort(port)
-						  .withCredentials(username, password)
-                          .withLoadBalancingPolicy(new RoundRobinPolicy())
-                          .build();
+            // Kerberos provides authentication anyway, so a username and password are superfluous.  SSL
+            // is compatible with either.
+            boolean passwordAuthentication = !password.equals("") || !username.equals("");
+            if (authProviderOptions != null && passwordAuthentication)
+                throw new IllegalArgumentException("Authentication via both Cassandra usernames and Kerberos " +
+                                                   "requested.");
 
+            // Encryption
+            if (authProviderOptions != null)
+                builder = builder.withAuthProvider(getAuthProvider());
+            if (sslOptions != null)
+                builder = builder.withSSL(getSslOptions());
+            if (passwordAuthentication)
+                builder = builder.withCredentials(username, password);
+
+            cluster = builder.build();
 		    session = cluster.connect();
             setupSchema();
             setupStatement();
@@ -281,7 +305,7 @@ public class CassandraAppender extends AppenderSkeleton
 
 	public void setUsername(String username)
     {
-		this.username = username;
+		this.username = unescape(username);
 	}
 
 	public String getPassword()
@@ -291,7 +315,7 @@ public class CassandraAppender extends AppenderSkeleton
 
 	public void setPassword(String password)
     {
-		this.password = password;
+		this.password = unescape(password);
 	}
 
 	public String getColumnFamily()
@@ -313,6 +337,24 @@ public class CassandraAppender extends AppenderSkeleton
     {
 		replication = unescape(strategy);
 	}
+
+    private Map<String, String> parseJsonMap(String options, String type) throws Exception
+    {
+        if (options == null)
+            throw new IllegalArgumentException(type + "Options can't be null.");
+
+        return jsonMapper.readValue(unescape(options), new TreeMap<String, String>().getClass());
+    }
+
+    public void setAuthProviderOptions(String newOptions) throws Exception
+    {
+        authProviderOptions = parseJsonMap(newOptions, "authProvider");
+    }
+
+    public void setSslOptions(String newOptions) throws Exception
+    {
+        sslOptions = parseJsonMap(newOptions, "Ssl");
+    }
 
 	public String getConsistencyLevelWrite()
     {
@@ -380,4 +422,66 @@ public class CassandraAppender extends AppenderSkeleton
 			b = b.substring(1, b.length() - 1);
 		return b;
 	}
+
+    // Create an SSLContext (a container for a keystore and a truststore and their associated options)
+    // Assumes sslOptions map is not null
+    private SSLOptions getSslOptions() throws Exception
+    {
+        // init trust store
+        TrustManagerFactory tmf = null;
+        String truststorePath = sslOptions.get("ssl.truststore");
+        String truststorePassword = sslOptions.get("ssl.truststore.password");
+        if (truststorePath != null && truststorePassword != null)
+        {
+            FileInputStream tsf = new FileInputStream(truststorePath);
+            KeyStore ts = KeyStore.getInstance("JKS");
+            ts.load(tsf, truststorePassword.toCharArray());
+            tmf = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
+            tmf.init(ts);
+        }
+
+        // init key store
+        KeyManagerFactory kmf = null;
+        String keystorePath = sslOptions.get("ssl.keystore");
+        String keystorePassword = sslOptions.get("ssl.keystore.password");
+        if (keystorePath != null && keystorePassword != null)
+        {
+            FileInputStream ksf = new FileInputStream(keystorePath);
+            KeyStore ks = KeyStore.getInstance("JKS");
+            ks.load(ksf, keystorePassword.toCharArray());
+            kmf = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
+            kmf.init(ks, keystorePassword.toCharArray());
+
+        }
+
+        // init cipher suites
+        String[] ciphers = SSLOptions.DEFAULT_SSL_CIPHER_SUITES;
+        if (sslOptions.containsKey("ssl.ciphersuites"))
+            ciphers = sslOptions.get("ssl.ciphersuits").split(",\\s*");
+
+        SSLContext ctx = SSLContext.getInstance("SSL");
+        ctx.init(kmf == null ? null : kmf.getKeyManagers(),
+                 tmf == null ? null : tmf.getTrustManagers(),
+                 new SecureRandom());
+
+        return new SSLOptions(ctx, ciphers);
+    }
+
+    // Load a custom AuthProvider class dynamically.
+    public AuthProvider getAuthProvider() throws Exception
+    {
+        ClassLoader cl = ClassLoader.getSystemClassLoader();
+
+        if(!authProviderOptions.containsKey("auth.class"))
+            throw new IllegalArgumentException("authProvider map does not include auth.class.");
+        Class dap = cl.loadClass(authProviderOptions.get("auth.class"));
+
+        // Perhaps this should be a factory, but it seems easy enough to just have a single string parameter
+        // which can be encoded however, e.g. another JSON map
+        if(authProviderOptions.containsKey("auth.options"))
+            return (AuthProvider)dap.getConstructor(String.class).newInstance(authProviderOptions.get("auth.options"));
+        else
+            return (AuthProvider)dap.newInstance();
+    }
 }
+
