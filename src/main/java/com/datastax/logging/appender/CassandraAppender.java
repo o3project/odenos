@@ -229,8 +229,7 @@ public class CassandraAppender extends AppenderSkeleton
         bound.setString(13, event.getThreadName());
 
         String[] throwableStrs = event.getThrowableStrRep();
-        if (throwableStrs != null)
-            bound.setString(14, Joiner.on(", ").join(throwableStrs));
+        bound.setString(14, throwableStrs == null ? null : Joiner.on(", ").join(throwableStrs));
 
         bound.setLong(15, new Long(event.getTimeStamp()));
         session.execute(bound);
