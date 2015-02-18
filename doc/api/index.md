@@ -11,18 +11,18 @@ You can control these components by REST-API
 ### REST APIs
 
   * ODENOS core Components
-    * [SystemManager](./SystemManager.html)
-    * [EventManager](./EventManager.html)
-    * [ComponentManager](./ComponentManager.html)
-    * [Network](./Network.html)
-    * [data Classes](./DataClass.html)
+    * [SystemManager](./SystemManager.md)
+    * [EventManager](./EventManager.md)
+    * [ComponentManager](./ComponentManager.md)
+    * [Network](./Network.md)
+    * [data Classes](./DataClass.md)
 
   * Basic Logic Components
-    * [Aggregator](./Aggregator.html)
-    * [Slicer](./Slicer.html)
-    * [Federator](./Federator.html)
-    * [LinkLayerizer](./LinkLayerizer.html)
-    * [LearningSwitch](./LearningSwitch.html)
+    * [Aggregator](./Aggregator.md)
+    * [Slicer](./Slicer.md)
+    * [Federator](./Federator.md)
+    * [LinkLayerizer](./LinkLayerizer.md)
+    * [LearningSwitch](./LearningSwitch.md)
 
 ----
 ### Java APIs
@@ -36,8 +36,8 @@ It will be output to the directory (./doc/java/).
 
 API corresponding to REST to easily develop the controller is served.  
 
-  * [SystemManager](./SystemManager.html) equivalent API is SystemManagerIF.  
-  * [Network](./Network.html) equivalent API is NetworkIF.  
+  * [SystemManager](./SystemManager.md) equivalent API is SystemManagerIF.  
+  * [Network](./Network.md) equivalent API is NetworkIF.  
   * Logic equivalent API is LogicIF.  
 
 ---
@@ -51,8 +51,8 @@ It will be output to the directory (./doc/python).
 
 API corresponding to REST to easily develop the controller is served.  
 
-  * [SystemManager](./SystemManager.html) equivalent API is system_manager_interface.  
-  * [Network](./Network.html) equivalent API is network_interface.  
+  * [SystemManager](./SystemManager.md) equivalent API is system_manager_interface.  
+  * [Network](./Network.md) equivalent API is network_interface.  
 
 
 ----
@@ -68,8 +68,8 @@ It will be output to the directory (./doc/ruby/).
 
 API corresponding to REST to easily develop the controller is served.  
 
-  * [SystemManager](./SystemManager.html) equivalent API is system_manager_interface.  
-  * [Network](./Network.html) equivalent API is network_interface.  
+  * [SystemManager](./SystemManager.md) equivalent API is system_manager_interface.  
+  * [Network](./Network.md) equivalent API is network_interface.  
 
 
 ----

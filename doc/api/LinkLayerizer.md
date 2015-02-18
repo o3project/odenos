@@ -35,13 +35,13 @@ Layerized network :Network topology that are available in the upper layer.
 
   Generate an instance of LinkLayerizer by performing a PUT(or POST) to the System Manager.
 
-  [PUT \\<base_uri>/components/\\<comp_id>](./SystemManager.html#PUTcomponents_id)
+  [PUT \<base_uri>/components/\<comp_id>](./SystemManager.md#PUTcomponents_id)
 
 **key** | **value** | **description**                                   
 --------|-----------|--------------
 id      | \<String> |Unique Identifier in ODENOS.
 type    | "LinkLayerizer" |ObjectType
-cm_id   | \<String> |Specify the [componentManager.Property.id](./DataClass.html#ObjectProperty) to generate an instance. (Optional)
+cm_id   | \<String> |Specify the [componentManager.Property.id](./DataClass.md#ObjectProperty) to generate an instance. (Optional)
 
 * **Component Connections**
 
@@ -54,7 +54,7 @@ upper network     | Only one                   | "upper"
 layerized network | Only one                   | "layerized"
 
 
-  [PUT \\<base_uri>/connections/\\<conn_id>](./SystemManager.html#PUTconnections_id)
+  [PUT \<base_uri>/connections/\<conn_id>](./SystemManager.md#PUTconnections_id)
 
 **key**          | **value**              | **description**                                   
 -----------------|------------------------|---------------------------
@@ -69,38 +69,42 @@ network_id       | \<String>              |Network ID
 
 ### REST APIs
 
-  * [GET \\<base_uri>/property](#GETproperty)
-  * [PUT \\<base_uri>/property](#PUTproperty)
-  * [GET \\<base_uri>/settings](#GETsettings)
-  * [GET \\<base_uri>/settings/boundaries](#GETboundaries)
-  * [POST \\<base_uri>/settings/boundaries](#POSTboundaries)
-  * [GET \\<base_uri>/settings/boundaries/\\<boundary_id>](#GETboundaries_id)
-  * [PUT \\<base_uri>/settings/boundaries/\\<boundary_id>](#PUTboundaries_id)
-  * [DELETE \\<base_uri>/settings/boundaries/\\<boundary_id>](#DELETEboundaries_id)
-  * [PUT \\<base_uri>/settings/settings/upper_link_sync](#PUTupper_link_sync)
-  * [GET \\<base_uri>/lower_flows](#GETlower_flows)
-  * [GET \\<base_uri>/lower_flows/\\<link_id>](#GETlink_id)
-  * [GET \\<base_uri>/layerized_links](#GETlayerized_links)
-  * [GET \\<base_uri>/layerized_links/\\<flow_id>](#GETflow_id)
+  * [GET \<base_uri>/property](#GETproperty)
+  * [PUT \<base_uri>/property](#PUTproperty)
+  * [GET \<base_uri>/settings](#GETsettings)
+  * [GET \<base_uri>/settings/boundaries](#GETboundaries)
+  * [POST \<base_uri>/settings/boundaries](#POSTboundaries)
+  * [GET \<base_uri>/settings/boundaries/\<boundary_id>](#GETboundaries_id)
+  * [PUT \<base_uri>/settings/boundaries/\<boundary_id>](#PUTboundaries_id)
+  * [DELETE \<base_uri>/settings/boundaries/\<boundary_id>](#DELETEboundaries_id)
+  * [PUT \<base_uri>/settings/settings/upper_link_sync](#PUTupper_link_sync)
+  * [GET \<base_uri>/lower_flows](#GETlower_flows)
+  * [GET \<base_uri>/lower_flows/\<link_id>](#GETlink_id)
+  * [GET \<base_uri>/layerized_links](#GETlayerized_links)
+  * [GET \<base_uri>/layerized_links/\<flow_id>](#GETflow_id)
 
 
 ----
 #### <a name="GETproperty"> GET \<base_uri>/property</a>  
 get Object property.
+
 ##### [Request]:   
   * **Body** : none 
+
 ##### [Response]:
   * **Status Code** : 200
-  * **Body** :  [ObjectProperty](./DataClass.html#ObjectProperty)
+  * **Body** :  [ObjectProperty](./DataClass.md#ObjectProperty)
  
 ----
 #### <a name="PUTproperty"> PUT \<base_uri>/property</a>  
 update Object property.
+
 ##### [Request]:   
-  * **Body** :  [ObjectProperty](./DataClass.html#ObjectProperty)
+  * **Body** :  [ObjectProperty](./DataClass.md#ObjectProperty)
+
 ##### [Response]:
   * **Status Code** : 200
-  * **Body** :  [ObjectProperty](./DataClass.html#ObjectProperty)
+  * **Body** :  [ObjectProperty](./DataClass.md#ObjectProperty)
 
 ----
 #### <a name="GETsettings"> GET \<base_uri>/settings</a>  
@@ -108,6 +112,7 @@ Get Setting boundaries List, and relationship of the federated flow id and origi
 
 ##### [Request]:   
   * **Body** : none 
+
 ##### [Response]:
   * **Status Code** : 200
   * **Body** :  boundaries, federated_network_flow, original_network_flow
@@ -118,10 +123,11 @@ Get Boundaries. Boundaries are Boundary control table. Boundaries are dict.(key:
 
 ##### [Request]:
   * **Body** : none 
+
 ##### [Response]:
   * **Status Code** : 200
-  * **Body** : dict < [LinkLayerizerBoundary](./DataClass.html#LinkLayerizerBoundary).id,
-[LinkLayerizerBoundary](./DataClass.html#LinkLayerizerBoundary) >
+  * **Body** : dict < [LinkLayerizerBoundary](./DataClass.md#LinkLayerizerBoundary).id,
+[LinkLayerizerBoundary](./DataClass.md#LinkLayerizerBoundary) >
 
 ----
 #### <a name="POSTboundaries">POST \<base_uri>/settings/boundaries</a>  
@@ -129,10 +135,11 @@ Set Boundary.  \<boundary_id> is automatically assigned.
 after the send event to "ObjectSettingsChanged"  
 
 ##### [Request]:
-  * **Body** : [LinkLayerizerBoundary](./DataClass.html#LinkLayerizerBoundary)
+  * **Body** : [LinkLayerizerBoundary](./DataClass.md#LinkLayerizerBoundary)
+
 ##### [Response]:
   * **Status Code** : 200
-  * **Body** : [LinkLayerizerBoundary](./DataClass.html#LinkLayerizerBoundary)
+  * **Body** : [LinkLayerizerBoundary](./DataClass.md#LinkLayerizerBoundary)
 
 ----
 #### <a name="GETboundaries_id">GET \<base_uri>/settings/boundaries/\<boundary_id></a>  
@@ -140,19 +147,21 @@ Get LinkLayerizer Boundary.
 
 ##### [Request]:
   * **Body** : none 
+
 ##### [Response]:
   * **Status Code** : 200
-  * **Body** : [LinkLayerizerBoundary](./DataClass.html#LinkLayerizerBoundary)
+  * **Body** : [LinkLayerizerBoundary](./DataClass.md#LinkLayerizerBoundary)
 
 ----
 #### <a name="PUTboundaries_id">PUT \<base_uri>/settings/boundaries/\<boundary_id></a>  
 Set Boundary. after the send event to "ObjectSettingsChanged"  
 
 ##### [Request]:
-  * **Body** : [LinkLayerizerBoundary](./DataClass.html#LinkLayerizerBoundary)
+  * **Body** : [LinkLayerizerBoundary](./DataClass.md#LinkLayerizerBoundary)
+
 ##### [Response]:
   * **Status Code** : 200
-  * **Body** : [LinkLayerizerBoundary](./DataClass.html#LinkLayerizerBoundary)
+  * **Body** : [LinkLayerizerBoundary](./DataClass.md#LinkLayerizerBoundary)
 
 
 ----
@@ -161,6 +170,7 @@ Delete Boundary. after the send event to "ObjectSettingsChanged"
 
 ##### [Request]:
   * **Body** : none 
+
 ##### [Response]:
   * **Status Code** : 200
   * **Body** : none 
@@ -171,6 +181,7 @@ If "True" To reflect the Link that you created in the layerized network to upper
 
 ##### [Request]:
   * **Body** : sync 
+
 ##### [Response]:
   * **Status Code** : 200
   * **Body** : sync true or false 
@@ -187,9 +198,10 @@ Get relationship of the layerized link id and original flow id. (Key is layerize
 
 ##### [Request]:
   * **Body** : none 
+
 ##### [Response]:
   * **Status Code** : 200
-  * **Body** : dict < [Link](./DataClass.html#Link).link_id, list [ [Flows](./DataClass.html#Flow).flow_id] >
+  * **Body** : dict < [Link](./DataClass.md#Link).link_id, list [ [Flows](./DataClass.md#Flow).flow_id] >
 
 
 ----
@@ -198,9 +210,10 @@ Get original flow_id corresponding to layerized link_id.
 
 ##### [Request]:
   * **Body** : none 
+
 ##### [Response]:
   * **Status Code** : 200
-  * **Body** : list[[Flow](./DataClass.html#Flow).flow_id]
+  * **Body** : list[[Flow](./DataClass.md#Flow).flow_id]
 
 
 ----
@@ -209,9 +222,10 @@ Get relationship of the layerized link_id and original flow_id. (Key is original
 
 ##### [Request]:
   * **Body** : none 
+
 ##### [Response]:
   * **Status Code** : 200
-  * **Body** : dict < [Flow](./DataClass.html#Flow).flow_id, [Link](./DataClass.html#Link).link_id >
+  * **Body** : dict < [Flow](./DataClass.md#Flow).flow_id, [Link](./DataClass.md#Link).link_id >
 
 ----
 #### <a name="GETflow_id">GET \<base_uri>/layerized_links/\<flow_id></a>  
@@ -219,7 +233,8 @@ Get layerized link_id corresponding to original flow_id.
 
 ##### [Request]:
   * **Body** : none 
+
 ##### [Response]:
   * **Status Code** : 200
-  * **Body** : [Link](./DataClass.html#Link).link_id
+  * **Body** : [Link](./DataClass.md#Link).link_id
 

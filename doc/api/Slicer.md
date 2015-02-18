@@ -35,13 +35,13 @@ Slicer provides the ability to create multiple Slice Network by duplicating the 
 * **Create Instance of Slicer.**  
   Generate an instance of Slicer by performing a PUT (or POST) to the System Manager.
 
-  [PUT \\<base_uri>/components/\\<comp_id>](./SystemManager.html#PUTcomponents_id)
+  [PUT \<base_uri>/components/\<comp_id>](./SystemManager.md#PUTcomponents_id)
 
 **key** | **value** | **description**                                   
 --------|-----------|--------------
 id      | \<String> |Unique Identifier in ODENOS.
 type    | "Slicer"  |ObjectType
-cm_id   | \<String> |Specify the [componentManager.Property.id](./DataClass.html#ObjectProperty) to generate an instance. (Optional)
+cm_id   | \<String> |Specify the [componentManager.Property.id](./DataClass.md#ObjectProperty) to generate an instance. (Optional)
 
 * **Component Connections**  
   Connection  of Slicer and Network by performing a PUT (or POST) to the System Manager.
@@ -51,7 +51,7 @@ cm_id   | \<String> |Specify the [componentManager.Property.id](./DataClass.html
 original network | Only one                   | "original"
 Sliver network   | One or more                | "sliver"
 
-  [PUT \\<base_uri>/connections/\\<conn_id>](./SystemManager.html#PUTconnections_id)
+  [PUT \<base_uri>/connections/\<conn_id>](./SystemManager.md#PUTconnections_id)
 
 **key**          | **value**              | **description**                                   
 -----------------|------------------------|---------------------------
@@ -72,18 +72,18 @@ network_id       | \<String>              |Network ID
   * [SliceConditionTable](#SliceConditionTable)
 
 ### REST APIs
-  * [GET \\<base_uri>/property](#GETproperty)
-  * [PUT \\<base_uri>/property](#PUTproperty)
+  * [GET \<base_uri>/property](#GETproperty)
+  * [PUT \<base_uri>/property](#PUTproperty)
   * [GET \<base_uri>/settings](#GETsettings)
-  * [PUT \<base_uri>/settings/slice_condition_table/\\<priority>](#PUTpriority)
-  * [POST \<base_uri>/settings/slice_condition_table/\\<priority>/conditions](#POSTproperty_conditions)
-  * [PUT \<base_uri>/settings/slice_condition_table/\\<priority>/conditions/\\<condition_id>](#PUTproperty_conditions)
+  * [PUT \<base_uri>/settings/slice_condition_table/\<priority>](#PUTpriority)
+  * [POST \<base_uri>/settings/slice_condition_table/\<priority>/conditions](#POSTproperty_conditions)
+  * [PUT \<base_uri>/settings/slice_condition_table/\<priority>/conditions/\<condition_id>](#PUTproperty_conditions)
   * [DELETE \<base_uri>/settings/slice_condition_table](#DELETEslice_condition_table)
-  * [DELETE \<base_uri>/settings/slice_condition_table/conditions/\\<condition_id>](#DELETEslice_condition_table_condition_id)
+  * [DELETE \<base_uri>/settings/slice_condition_table/conditions/\<condition_id>](#DELETEslice_condition_table_condition_id)
   * [GET \<base_uri>/settings/slice_condition_table](#GETslice_condition_table)
-  * [GET \<base_uri>/settings/slice_condition_table/\\<priority>](#GETslice_condition_table_priority)
-  * [GET \<base_uri>/settings/slice_condition_table/conditions/\\<condition_id>](#GETslice_condition_table_condition_id)
-  * [GET \<base_uri>/settings/slice_condition_table/connections/\\<connection_id>](#GETslice_condition_table_connection_id)
+  * [GET \<base_uri>/settings/slice_condition_table/\<priority>](#GETslice_condition_table_priority)
+  * [GET \<base_uri>/settings/slice_condition_table/conditions/\<condition_id>](#GETslice_condition_table_condition_id)
+  * [GET \<base_uri>/settings/slice_condition_table/connections/\<connection_id>](#GETslice_condition_table_connection_id)
   * [GET \<base_uri>/sliver_network_flow](#GETsliver_network_flow)
   * [GET \<base_uri>/original_network_flow](#GEToriginal_network_flow)
 
@@ -113,9 +113,9 @@ type        | \<String> | SliceCondition Type
 ------------|-----------|--------------
 id          | \<String> | ID that is unique in the ODENOS
 type        | \<String> | SliceCondition type is "BasicSliceCondition"
-connection  | \<String> | Sliver's [ComponentConnection](./DataClass.html#ComponentConnection).id 
-in_node     | \<String> | [Node](./DataClass.html#Node).id        
-in_port     | \<String> | [Port](./DataClass.html#port).id           
+connection  | \<String> | Sliver's [ComponentConnection](./DataClass.md#ComponentConnection).id 
+in_node     | \<String> | [Node](./DataClass.md#Node).id        
+in_port     | \<String> | [Port](./DataClass.md#port).id           
 
 ###### example(JSON)
 <pre>
@@ -150,20 +150,24 @@ priority  | list<SliceCondition.id> | priority : 0 ~ 65535 (65535:Max Priority)
 ----
 #### <a name="GETproperty"> GET \<base_uri>/property</a>
   * **get Object property.**
+
 ##### [Request]:   
   * **Body** : none 
+
 ##### [Response]:
   * **Status Code** : 200
-  * **Body** :  [ObjectProperty](./DataClass.html#ObjectProperty)
+  * **Body** :  [ObjectProperty](./DataClass.md#ObjectProperty)
  
 ----
 ### <a name="PUTproperty"> PUT \<base_uri>/property</a>
   * **update Object property.**
+
 ##### [Request]:   
-  * **Body** :  [ObjectProperty](./DataClass.html#ObjectProperty)
+  * **Body** :  [ObjectProperty](./DataClass.md#ObjectProperty)
+
 ##### [Response]:
   * **Status Code** : 200
-  * **Body** :  [ObjectProperty](./DataClass.html#ObjectProperty)
+  * **Body** :  [ObjectProperty](./DataClass.md#ObjectProperty)
 
 ----
 #### <a name="GETsettings"> GET \<base_uri>/settings</a>
@@ -171,6 +175,7 @@ priority  | list<SliceCondition.id> | priority : 0 ~ 65535 (65535:Max Priority)
 
 ##### [Request]:   
  * **Body** : none 
+
 ##### [Response]:
  * **Status Code** : 200
  * **Body** :  dict\<"slice_condition_table": SliceConditionTable>
@@ -180,11 +185,12 @@ priority  | list<SliceCondition.id> | priority : 0 ~ 65535 (65535:Max Priority)
 #### <a name="PUTpriority">PUT \<base_uri>/settings/slice_condition_table/\<priority></a>
 
 Create a slice_condition_table/\<priority> and to set the slice condition list.  
-notification event [ObjectSettingsChanged](./DataClass.html#ObjectSettingsChanged)  
+notification event [ObjectSettingsChanged](./DataClass.md#ObjectSettingsChanged)  
 
 
 ##### [Request]:   
  * **Body** : List[[SliceCondition](#SliceCondition)]   
+
 ##### [Response]:
  * **Status Code** : 200
  * **Body** : List[[SliceCondition](#SliceCondition)]   
@@ -203,10 +209,11 @@ notification event [ObjectSettingsChanged](./DataClass.html#ObjectSettingsChange
 #### <a name="POSTproperty_conditions">POST \<base_uri>/settings/slice_condition_table/\<priority>/conditions</a>  
 create of slice Conditon.id is granted automatically. (specified id is invalid)  
 If slice_condition_table/\<priority> is not, slice_condition_table/\<priority> to create a new one.  
-notification event [ObjectSettingsChanged](./DataClass.html#ObjectSettingsChanged)  
+notification event [ObjectSettingsChanged](./DataClass.md#ObjectSettingsChanged)  
 
 ##### [Request]:   
  * **Body** : [SliceCondition](#SliceCondition)
+
 ##### [Response]:
  * **Status Code** : 200
  * **Body** : [SliceCondition](#SliceCondition)
@@ -228,10 +235,11 @@ notification event [ObjectSettingsChanged](./DataClass.html#ObjectSettingsChange
 
 create of slice Conditon.If you already have a slice Conditon, It will update.  
 If slice_condition_table/\<priority> is not, slice_condition_table/\<priority> to create a new one.  
-notification event [ObjectSettingsChanged](./DataClass.html#ObjectSettingsChanged)  
+notification event [ObjectSettingsChanged](./DataClass.md#ObjectSettingsChanged)  
 
 ##### [Request]:   
  * **Body** : [SliceCondition](#SliceCondition)
+
 ##### [Response]:
  * **Status Code** : 200
  * **Body** : [SliceCondition](#SliceCondition)
@@ -254,6 +262,7 @@ notification event [ObjectSettingsChanged](./DataClass.html#ObjectSettingsChange
 
 ##### [Request]:   
  * **Body** : none 
+
 ##### [Response]:
  * **Status Code** : 200
  * **Body** : none 
@@ -264,6 +273,7 @@ notification event [ObjectSettingsChanged](./DataClass.html#ObjectSettingsChange
 
 ##### [Request]:   
  * **Body** : none 
+
 ##### [Response]:
  * **Status Code** : 200
  * **Body** : none 
@@ -274,6 +284,7 @@ notification event [ObjectSettingsChanged](./DataClass.html#ObjectSettingsChange
 
 ##### [Request]:   
  * **Body** : none 
+
 ##### [Response]:
  * **Status Code** : 200
  * **Body** : [SliceConditionTable](#SliceConditionTable)
@@ -284,9 +295,11 @@ notification event [ObjectSettingsChanged](./DataClass.html#ObjectSettingsChange
 
 ##### [Request]:   
  * **Body** : none 
+
 ##### [Response]:
  * **Status Code** : 200
  * **Body** : List<condition_id>
+
 ##### [Response]\(detail):
  * **Status Code** : 200
  * **Body** : List[[BasicSliceCondition](#BasicSliceCondition)]   
@@ -299,6 +312,7 @@ notification event [ObjectSettingsChanged](./DataClass.html#ObjectSettingsChange
 
 ##### [Request]:   
  * **Body** : none 
+
 ##### [Response]:
  * **Status Code** : 200
  * **Body** : [BasicSliceCondition](#BasicSliceCondition)
@@ -309,9 +323,11 @@ notification event [ObjectSettingsChanged](./DataClass.html#ObjectSettingsChange
 
 ##### [Request]:   
  * **Body** : none 
+
 ##### [Response]:
  * **Status Code** : 200
  * **Body** : List[condition_id]
+
 ##### [Response]\(detail):
  * **Status Code** : 200
  * **Body** : List[[BasicSliceCondition](#BasicSliceCondition)]   
@@ -325,6 +341,7 @@ notification event [ObjectSettingsChanged](./DataClass.html#ObjectSettingsChange
 
 ##### [Request]:   
  * **Body** : none 
+
 ##### [Response]:
  * **Status Code** : 200
  * **Body** : dict\<original_flow_id, sliver_network_id::sliver_flow_id>
@@ -336,6 +353,7 @@ notification event [ObjectSettingsChanged](./DataClass.html#ObjectSettingsChange
 
 ##### [Request]:   
  * **Body** : none 
+
 ##### [Response]:
  * **Status Code** : 200
  * **Body** : dict\<sliver_network_id::sliver_flow_id, original_flow_id>

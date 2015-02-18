@@ -28,13 +28,13 @@ Aggregator provides the ability to create aggregated Network in a single Node th
 * **Create Instance of Aggregator.**  
   Generate an instance of Aggregator by performing a PUT (or POST) to the System Manager.
 
-  [PUT \\<base_uri>/components/\\<comp_id>](./SystemManager.html#PUTcomponents_id)
+  [PUT \<base_uri>/components/\<comp_id>](./SystemManager.md#PUTcomponents_id)
 
 **key** | **value** | **description**                                   
 --------|-----------|--------------
 id      | \<String> |Unique Identifier in ODENOS.
 type    | "Aggregator" |ObjectType
-cm_id   | \<String> |Specify the [componentManager.Property.id](./DataClass.html#ObjectProperty) to generate an instance. (Optional)
+cm_id   | \<String> |Specify the [componentManager.Property.id](./DataClass.md#ObjectProperty) to generate an instance. (Optional)
 
 * **Component Connections**  
   Connection of Aggregator and Network by performing a PUT (or POST) to the System Manager.
@@ -44,7 +44,7 @@ cm_id   | \<String> |Specify the [componentManager.Property.id](./DataClass.html
 original network | Only one                   | "original"
 aggregated network| Only one                   | "aggregated"
 
-  [PUT \\<base_uri>/connections/\\<conn_id>](./SystemManager.html#PUTconnections_id)
+  [PUT \<base_uri>/connections/\<conn_id>](./SystemManager.md#PUTconnections_id)
 
 **key**          | **value**                  | **description**                                   
 -----------------|----------------------------|---------------------------
@@ -59,31 +59,35 @@ network_id       | \<String>                  |Network ID
 ----
 
 ### REST APIs
-  * [GET \\<base_uri>/property](#GETproperty)
-  * [PUT \\<base_uri>/property](#PUTproperty)
-  * [GET \\<base_uri>/aggregated_nw_port](#GETaggregated_nw_port)
-  * [GET \\<base_uri>/original_nw_port](#GEToriginal_nw_port)
-  * [GET \\<base_uri>/aggregated_nw_flow](#GETaggregated_nw_flow)
-  * [GET \\<base_uri>/original_nw_flow](#GEToriginal_nw_flow)
+  * [GET \<base_uri>/property](#GETproperty)
+  * [PUT \<base_uri>/property](#PUTproperty)
+  * [GET \<base_uri>/aggregated_nw_port](#GETaggregated_nw_port)
+  * [GET \<base_uri>/original_nw_port](#GEToriginal_nw_port)
+  * [GET \<base_uri>/aggregated_nw_flow](#GETaggregated_nw_flow)
+  * [GET \<base_uri>/original_nw_flow](#GEToriginal_nw_flow)
 
 
 ----
 #### <a name="GETproperty"> GET \<base_uri>/property</a>
   * **get Object property.**
+
 ##### [Request]:   
   * **Body** : none 
+
 ##### [Response]:
   * **Status Code** : 200
-  * **Body** :  [ObjectProperty](./DataClass.html#ObjectProperty)
+  * **Body** :  [ObjectProperty](./DataClass.md#ObjectProperty)
  
 ----
 #### <a name="PUTproperty"> PUT \<base_uri>/property</a>
   * **update Object property.**
+
 ##### [Request]:   
-  * **Body** :  [ObjectProperty](./DataClass.html#ObjectProperty)
+  * **Body** :  [ObjectProperty](./DataClass.md#ObjectProperty)
+
 ##### [Response]:
   * **Status Code** : 200
-  * **Body** :  [ObjectProperty](./DataClass.html#ObjectProperty)
+  * **Body** :  [ObjectProperty](./DataClass.md#ObjectProperty)
 
 ----
 #### <a name="GETaggregated_nw_port"> GET \<base_uri>/aggregated_nw_port</a>
@@ -91,8 +95,10 @@ network_id       | \<String>                  |Network ID
 (Key is  original)
 
   * **get Object settings info.**
+
 ##### [Request]:   
   * **Body** : none 
+
 ##### [Response]:
   * **Status Code** : 200
   * **Body** : dict<original_node_id::original_port_id, (aggregated_node_id, aggregated_port_id)>
@@ -104,6 +110,7 @@ network_id       | \<String>                  |Network ID
 
 ##### [Request]:   
   * **Body** : none 
+
 ##### [Response]:
   * **Status Code** : 200
   * **Body** : dict<aggregated_node_id::aggregated_port_id, (original_node_id, original_port_id)>
@@ -116,6 +123,7 @@ network_id       | \<String>                  |Network ID
 
 ##### [Request]:   
   * **Body** : none 
+
 ##### [Response]:
   * **Status Code** : 200
   * **Body** : dict<original_flow_id, aggregated_flow_id>
@@ -127,6 +135,7 @@ network_id       | \<String>                  |Network ID
 
 ##### [Request]:   
   * **Body** : none 
+
 ##### [Response]:
   * **Status Code** : 200
   * **Body** : dict<aggregated_flow_id, original_flow_id>

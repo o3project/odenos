@@ -6,35 +6,39 @@
 ----
 
 ### REST APIs
-  * [GET \\<base_uri>/property](#GETproperty)
-  * [PUT \\<base_uri>/property](#PUTproperty)
-  * [GET \\<base_uri>/fdb](#GETfdb)
-  * [DELETE \\<base_uri>/fdb](#DELETEfdb)
-  * [DELETE \\<base_uri>/fdb/\\<mac>](#DELETEfdbmac)
-  * [GET \\<base_uri>/settings/default_idle_timer](#GETdefault_idle_timer)
-  * [PUT \\<base_uri>/settings/default_idle_timer](#PUTdefault_idle_timer)
-  * [GET \\<base_uri>/settings/default_hard_timer](#GETdefault_hard_timer)
-  * [PUT \\<base_uri>/settings/default_hard_timer](#PUTdefault_hard_timer)
+  * [GET \<base_uri>/property](#GETproperty)
+  * [PUT \<base_uri>/property](#PUTproperty)
+  * [GET \<base_uri>/fdb](#GETfdb)
+  * [DELETE \<base_uri>/fdb](#DELETEfdb)
+  * [DELETE \<base_uri>/fdb/\<mac>](#DELETEfdbmac)
+  * [GET \<base_uri>/settings/default_idle_timer](#GETdefault_idle_timer)
+  * [PUT \<base_uri>/settings/default_idle_timer](#PUTdefault_idle_timer)
+  * [GET \<base_uri>/settings/default_hard_timer](#GETdefault_hard_timer)
+  * [PUT \<base_uri>/settings/default_hard_timer](#PUTdefault_hard_timer)
 
 
 ----
 #### <a name="GETproperty"> GET \<base_uri>/property</a>
 get Object property.
+
 ##### [Request]:   
   * **Body** : none 
+
 ##### [Response]:
   * **Status Code** : 200
-  * **Body** :  [ObjectProperty](./DataClass.html#ObjectProperty)
+  * **Body** :  [ObjectProperty](./DataClass.md#ObjectProperty)
 
  
 ----
 #### <a name="PUTproperty"> PUT \<base_uri>/property</a>
 update Object property.
+
 ##### [Request]:   
-  * **Body** :  [ObjectProperty](./DataClass.html#ObjectProperty)
+  * **Body** :  [ObjectProperty](./DataClass.md#ObjectProperty)
+
 ##### [Response]:
   * **Status Code** : 200
-  * **Body** :  [ObjectProperty](./DataClass.html#ObjectProperty)
+  * **Body** :  [ObjectProperty](./DataClass.md#ObjectProperty)
 
 ----
 #### <a name="GETfdb">GET <base_uri>/fdb</a>
@@ -42,6 +46,7 @@ update Object property.
 
 ##### [Request]:   
   * **Body** :  none
+
 ##### [Response]:
   * **Status Code** : 200
   * **Body** :  [FDB](#FDB)   
@@ -73,6 +78,7 @@ delete all FDB (Initialize FDB)
 
 ##### [Request]:   
   * **Body** :  none
+
 ##### [Response]:
   * **Status Code** : 200
   * **Body** :  none
@@ -84,6 +90,7 @@ mac delimiter(Colon) is not used.
 
 ##### [Request]:   
   * **Body** :  none
+
 ##### [Response]:
   * **Status Code** : 200
   * **Body** :  none
@@ -94,6 +101,7 @@ get the flow "idle timeout"
 
 ##### [Request]:   
   * **Body** :  none
+
 ##### [Response]:
   * **Status Code** : 200
   * **Body** :  \<integer>
@@ -106,6 +114,7 @@ set the flow "idle timeout"
 
 ##### [Request]:   
   * **Body** :  \<integer>
+
 ##### [Response]:
   * **Status Code** : 200
   * **Body** :  \<integer>
@@ -116,6 +125,7 @@ get the flow "hard timeout"
 
 ##### [Request]:   
   * **Body** :  none
+
 ##### [Response]:
   * **Status Code** : 200
   * **Body** :  \<integer>
@@ -127,6 +137,7 @@ set the flow "hard timeout"
 
 ##### [Request]:   
   * **Body** :  \<integer>
+
 ##### [Response]:
   * **Status Code** : 200
   * **Body** :  \<integer>

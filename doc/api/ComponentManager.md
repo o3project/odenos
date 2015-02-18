@@ -4,28 +4,32 @@
 ----
 
 ### REST APIs
-  * [GET \\<base_uri>/property](#GETproperty)
-  * [PUT \\<base_uri>/property](#PUTproperty)
-  * [GET \\<base_uri>/component_types](#GETcomponent_types)
-  * [GET \\<base_uri>/components](#GETcomponents)
+  * [GET \<base_uri>/property](#GETproperty)
+  * [PUT \<base_uri>/property](#PUTproperty)
+  * [GET \<base_uri>/component_types](#GETcomponent_types)
+  * [GET \<base_uri>/components](#GETcomponents)
 
 ----
 #### <a name="GETproperty"> GET \<base_uri>/property</a>
   * **get Object property.**
+
 ##### [Request]:   
   * **Body** : none 
+
 ##### [Response]:
   * **Status Code** : 200
-  * **Body** :  [ObjectProperty](./DataClass.html#ObjectProperty)
+  * **Body** :  [ObjectProperty](./DataClass.md#ObjectProperty)
  
 ----
 #### <a name="PUTproperty"> PUT \<base_uri>/property</a>
   * **update Object property.**
+
 ##### [Request]:   
-  * **Body** :  [ObjectProperty](./DataClass.html#ObjectProperty)
+  * **Body** :  [ObjectProperty](./DataClass.md#ObjectProperty)
+
 ##### [Response]:
   * **Status Code** : 200
-  * **Body** :  [ObjectProperty](./DataClass.html#ObjectProperty)
+  * **Body** :  [ObjectProperty](./DataClass.md#ObjectProperty)
 
 ----
 #### <a name="GETcomponent_types"> GET \<base_uri>/component_types</a>
@@ -34,6 +38,7 @@ ComponentType is Registered Component.Property.type
 
 ##### [Request]:   
   * **Body** : none 
+
 ##### [Response]:
   * **Status Code** : 200
   * **Body** : dict {ComponentType:{"type" :\<string>   "super_type":\<string> , "connection_types":{\<string>: \<string>} , "description":\<string> }
@@ -66,7 +71,8 @@ description      | \<String> |
 
 ##### [Request]:   
   * **Body** : none 
+
 ##### [Response]:
   * **Status Code** : 200
-  * **Body** : dict { [Component.Property](./DataClass.html#ObjectProperty).id, [Component.Property](./DataClass.html#ObjectProperty) }
+  * **Body** : dict { [Component.Property](./DataClass.md#ObjectProperty).id, [Component.Property](./DataClass.md#ObjectProperty) }
   * **Note** : Component.Property is Component instance information.
