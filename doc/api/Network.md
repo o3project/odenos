@@ -31,38 +31,38 @@ cm_id   | \<String> |Specify the [componentManager.Property.id](./DataClass.md#O
  * Topology  
 
 
-URI                                                     | GET                 | POST             |  PUT                        | DELETE                             
---------------------------------------------------------|---------------------|------------------|-----------------------------|--------------------  
- \<base_uri>/topology                                   | [Åõ](#GETtopology)  |                  | [Åõ](#PUTproperty)          |               
- \<base_uri>/topology/nodes                             | [Åõ](#GETnodes)     | [Åõ](#POSTnodes) |                             |        
- \<base_uri>/topology/nodes/\<node_id>                  | [Åõ](#GETnodes_id)  |                  | [Åõ](#PUTnodes_id)          | [Åõ](#DELETEnodes_id)
- \<base_uri>/topology/physical_nodes/\<physical_id>     | [Åõ](#GETnode_physical_id) |           | [Åõ](#PUTnode_physical_id)  | [Åõ](#DELETEnode_physical_id)      
- \<base_uri>/topology/nodes/\<node_id>/ports            | [Åõ](#GETports)     | [Åõ](#POSTports) |                             |   
- \<base_uri>/topology/nodes/\<node_id>/ports/\<port_id> | [Åõ](#GETport_id)   |                  | [Åõ](#PUTport_id)           | [Åõ](#DELETEport_id)
- \<base_uri>/topology/physical_ports/\<physical_id>     | [Åõ](#GETport_physical_id) |           | [Åõ](#PUTport_physical_id)  | [Åõ](#DELETEport_physical_id)
- \<base_uri>/topology/links                             | [Åõ](#GETlinks)     | [Åõ](#POSTlinks) |                             |
- \<base_uri>/topology/links/\<link_id>                  | [Åõ](#GETlink_id)   |                  | [Åõ](#PUTlink_id)           |[Åõ](#DELETElink_id)
+URI                                                     | GET                 | POST            |  PUT                       | DELETE                             
+--------------------------------------------------------|---------------------|-----------------|----------------------------|--------------------  
+ \<base_uri>/topology                                   | [x](#GETtopology)   |                 | [x](#PUTproperty)          |               
+ \<base_uri>/topology/nodes                             | [x](#GETnodes)      | [x](#POSTnodes) |                            |        
+ \<base_uri>/topology/nodes/\<node_id>                  | [x](#GETnodes_id)   |                 | [x](#PUTnodes_id)          | [x](#DELETEnodes_id)
+ \<base_uri>/topology/physical_nodes/\<physical_id>     | [x](#GETnode_physical_id) |           | [x](#PUTnode_physical_id)  | [x](#DELETEnode_physical_id)      
+ \<base_uri>/topology/nodes/\<node_id>/ports            | [x](#GETports)      | [x](#POSTports) |                            |   
+ \<base_uri>/topology/nodes/\<node_id>/ports/\<port_id> | [x](#GETport_id)    |                 | [x](#PUTport_id)           | [x](#DELETEport_id)
+ \<base_uri>/topology/physical_ports/\<physical_id>     | [x](#GETport_physical_id) |           | [x](#PUTport_physical_id)  | [x](#DELETEport_physical_id)
+ \<base_uri>/topology/links                             | [x](#GETlinks)      | [x](#POSTlinks) |                            |
+ \<base_uri>/topology/links/\<link_id>                  | [x](#GETlink_id)    |                 | [x](#PUTlink_id)           | [x](#DELETElink_id)
 
 
  * Flows  
 
 URI                             | GET               | POST             |  PUT              | DELETE                             
 --------------------------------|-------------------|------------------|-------------------|-----------------  
-  \<base_uri>/flows             | [Åõ](#GETflows)   | [Åõ](#POSTflows) |                   |
-  \<base_uri>/flows/\<flow_id>  | [Åõ](#GETflow_id) |                  | [Åõ](#PUTflow_id) |[Åõ](#DELETEflow_id)
+  \<base_uri>/flows             | [x](#GETflows)   | [x](#POSTflows) |                   |
+  \<base_uri>/flows/\<flow_id>  | [x](#GETflow_id) |                  | [x](#PUTflow_id) |[x](#DELETEflow_id)
 
 
  * Packets  
 
 URI                                    | GET                        | POST             |  PUT | DELETE                             
 ---------------------------------------|----------------------------|------------------|------|-----------------  
-  \<base_uri>/packets                  | [Åõ](#GETpackets)          |                  |      | 
-  \<base_uri>/packets/in               | [Åõ](#GETpackets_in)       | [Åõ](#POSTpackets_in) | | [Åõ](#DELETEpackets_in)
-  \<base_uri>/packets/in/head          | [Åõ](#GETpackets_in_head)  |                  |      | [Åõ](#DELETEpackets_in_head)
-  \<base_uri>/packets/in/\<packet_id>  | [Åõ](#GETpackets_in_id)    |                  |      | [Åõ](#DELETEpackets_in_id)
-  \<base_uri>/packets/out              | [Åõ](#GETpackets_out)      | [Åõ](#POSTpackets_out) || [Åõ](#DELETEpackets_out)
-  \<base_uri>/packets/out/head         | [Åõ](#GETpackets_out_head) |                  |      | [Åõ](#DELETEpackets_out_head)
-  \<base_uri>/packets/out/\<packet_id> | [Åõ](#GETpackets_out_id)   |                  |      | [Åõ](#DELETEpackets_out_id)
+  \<base_uri>/packets                  | [x](#GETpackets)           |                  |      | 
+  \<base_uri>/packets/in               | [x](#GETpackets_in)        | [x](#POSTpackets_in) |  | [x](#DELETEpackets_in)
+  \<base_uri>/packets/in/head          | [x](#GETpackets_in_head)   |                  |      | [x](#DELETEpackets_in_head)
+  \<base_uri>/packets/in/\<packet_id>  | [x](#GETpackets_in_id)     |                  |      | [x](#DELETEpackets_in_id)
+  \<base_uri>/packets/out              | [x](#GETpackets_out)       | [x](#POSTpackets_out) | | [x](#DELETEpackets_out)
+  \<base_uri>/packets/out/head         | [x](#GETpackets_out_head)  |                  |      | [x](#DELETEpackets_out_head)
+  \<base_uri>/packets/out/\<packet_id> | [x](#GETpackets_out_id)    |                  |      | [x](#DELETEpackets_out_id)
 
 ##### Object property
   * [GET \<base_uri>/property](#GETproperty)
@@ -334,6 +334,7 @@ create a new port if id does not exist.
 ##### [Response]\(Updated):
   * **Status Code** : 200
   * **Body** : [Port](./DataClass.md#Port)
+
 ##### [Response]\(Created):
   * **Status Code** : 201
   * **Body** : [Port](./DataClass.md#Port)

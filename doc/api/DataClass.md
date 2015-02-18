@@ -213,19 +213,19 @@ latency      | \<Number>  | Unit is msec.     | any    | Lower  ->  Upper
          |                            |FlowChanged(Add)
          |                            |----------->|
          |                            | PUT flow(stats:establishing)
-         |                            |<-----------|
+         |                            |&lt;-----------|
          |  [enabled:true, status:establishing]    |        [Physical Switch]
          |        FlowChanged(UPDATE) |            | Flow setting  |
-         |<---------------------------|            |-------------->|
+         |&lt;---------------------------|            |-------------->|
          |                      FlowChanged(UPDATE)|               |
          |                            |----------->|               |
          |                            |            | Flow setting completed
-         |                            |            |<--------------|
+         |                            |            |&lt;--------------|
          |                            | PUT flow(stats:established)
-         |                            |<-----------|
+         |                            |&lt;-----------|
          |  [enabled:true, status:established]     |
          |       FlowChanged(UPDATE)  |            | 
-         |<---------------------------| FlowChanged(UPDATE)
+         |&lt;---------------------------| FlowChanged(UPDATE)
          |                            |----------->|
          |                            |            |
 </pre>
@@ -241,31 +241,31 @@ latency      | \<Number>  | Unit is msec.     | any    | Lower  ->  Upper
          |DELETE flow                 |            |
          |--------------------------->|            |
          |         FlowChanged(DELETE)|            | 
-         |<---------------------------|            |
+         |&lt;---------------------------|            |
          |                            |FlowChanged(DELETE)
          |                            |----------->|
          |                            | PUT flow(stats:teardown)
-         |                            |<-----------|
+         |                            |&lt;-----------|
          |  [enabled:true, status:teardown]        |         [Physical Switch]
          |        x[FlowChanged(UPDATE)](*)        |               |
-         |                        x<--|x[FlowChanged(UPDATE)](*)   |
+         |                        x---|x[FlowChanged(UPDATE)](*)   |
          |                            |-->x        |               |
          |                            |            | Flow delete   |
          |                            |            |-------------->|
          |                            |            | Flow delete completed
-         |                            |            |<--------------|
+         |                            |            |&lt;--------------|
          |                            | PUT flow(stats:none)       |
-         |                            |<-----------|
+         |                            |&lt;-----------|
          |      [enabled:true, status:none]        |
          |        x[FlowChanged(UPDATE)](*)        |
-         |                        x<--|x[FlowChanged(UPDATE)](*)
+         |                        x---|x[FlowChanged(UPDATE)](*)
          |                            |-->x        |
          |                            |            |
          |                     (Flow Deleted)      |
          |                            | x[FlowChanged(DELETE)](*)
          |                            |-->x        |
          |  x[FlowChanged(DELETE)](*) |            | 
-         |                        x<--|            |
+         |                        x---|            |
 
 (*) Event notification None.
 
@@ -285,23 +285,23 @@ latency      | \<Number>  | Unit is msec.     | any    | Lower  ->  Upper
          |                            |FlowChanged(UPDATE)
          |                            |----------->|
          |        FlowChanged(UPDATE) |            | 
-         |<---------------------------|            |
+         |&lt;---------------------------|            |
          |                            |            |
          |                            | PUT flow(stats:teardown)
-         |                            |<-----------|
+         |                            |&lt;-----------|
          |   [enabled:false, status:teardown]      |        [Physical Switch]
          |        FlowChanged(UPDATE) |            | Flow delete   |
-         |<---------------------------|            |-------------->|
+         |&lt;---------------------------|            |-------------->|
          |                            |FlowChanged(UPDATE)         |
          |                            |----------->|               |
          |                            |            | Flow delete completed
-         |                            |            |<--------------|
+         |                            |            |&lt;--------------|
          |                            | PUT flow(stats:none)
-         |                            |<-----------|
+         |                            |&lt;-----------|
          |       [enabled:false, status:none]      |
          |                            |            |
          |        FlowChanged(UPDATE) |            | 
-         |<---------------------------|FlowChanged(UPDATE) 
+         |&lt;---------------------------|FlowChanged(UPDATE) 
          |                            |----------->|
          |                            |            |
 
@@ -317,24 +317,24 @@ latency      | \<Number>  | Unit is msec.     | any    | Lower  ->  Upper
          |--------------------------->|            |
          |       [enabled:true, status:none]       |
          |        FlowChanged(UPDATE) |            | 
-         |<---------------------------|FlowChanged(UPDATE) 
+         |&lt;---------------------------|FlowChanged(UPDATE) 
          |                            |----------->|
          |                            |            |
          |                            | PUT flow(stats:establishing)
-         |                            |<-----------|
+         |                            |&lt;-----------|
          |  [enabled:true, status:establishing]    |        [Physical Switch]
          |        FlowChanged(UPDATE) |            | Flow setting  |
-         |<---------------------------|            |-------------->|
+         |&lt;---------------------------|            |-------------->|
          |                      FlowChanged(UPDATE)|               |
          |                            |----------->|               |
          |                            |            | Flow setting completed
-         |                            |            |<--------------|
+         |                            |            |&lt;--------------|
          |                            | PUT flow(stats:established)
-         |                            |<-----------|
+         |                            |&lt;-----------|
          |  [enabled:true, status:established]     |
          |                            |            |
          |       FlowChanged(UPDATE)  |            | 
-         |<---------------------------| FlowChanged(UPDATE)
+         |&lt;---------------------------| FlowChanged(UPDATE)
          |                            |----------->|
          |                            |            |
 
@@ -348,13 +348,13 @@ latency      | \<Number>  | Unit is msec.     | any    | Lower  ->  Upper
          |  [enabled:true, status:established]     |
          |                            |            |         [Physical Switch]
          |                            |            | Flow Failed   |
-         |                            |            |<--------------|
+         |                            |            |&lt;--------------|
          |                            | PUT flow(stats:failed)     |
-         |                            |<-----------|
+         |                            |&lt;-----------|
          |       [enabled:true, status:failed]     |
          |                            |            |
          |       FlowChanged(UPDATE)  |            | 
-         |<---------------------------| FlowChanged(UPDATE)
+         |&lt;---------------------------| FlowChanged(UPDATE)
          |                            |----------->|
 
     [controller/LogicComponent]    [Network]     [Driver]
@@ -362,15 +362,15 @@ latency      | \<Number>  | Unit is msec.     | any    | Lower  ->  Upper
          |  [enabled:true, status:established]     |
          |                            |            |         [Physical Switch]
          |                            |            | topology Failed   |
-         |                            |            |<------------------|
+         |                            |            |&lt;------------------|
          |                            | (topology(*) oper_sts:DOWN)    |
          |                            |            |                   |
          |                            | PUT flow(stats:failed)
-         |                            |<-----------|
+         |                            |&lt;-----------|
          |       [enabled:true, status:failed]     |
          |                            |            |
          |       FlowChanged(UPDATE)  |            | 
-         |<---------------------------| FlowChanged(UPDATE)
+         |&lt;---------------------------| FlowChanged(UPDATE)
          |                            |----------->|
 
   * topology : Node, Port, or Link.
@@ -1013,7 +1013,7 @@ upper_nw_port  | \<String> | Connection [Port](#Port).id             | Mandatory
 
 **key**        | **value** | **description**
 ---------------|-----------|-----------------
-subscriber_id  | \<String> |	subscriber's ObjectProperty.id イベントの通知先を指定
+subscriber_id  | \<String> |	subscriber's ObjectProperty.id
 event_filters  | dict<ObjectProperty.id, list [EventType.event_type] | 	Subscribe conditions.
 
 
