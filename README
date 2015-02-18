@@ -1,0 +1,33 @@
+What's ODENOS
+==========================
+ODENOS is a framework for developing SDN controller.
+It is not SDN controller itself, but libraries (SDK).
+ODENOS is implemented with Java, Python, and Ruby language.
+
+
+How to use ODENOS
+==========================
+Please read "QUICKSTART.md" file.
+
+
+Supported Hardware
+==========================
+- CPU: Intel x64 servers.(with compatible)
+- Memory: >= 2GB
+
+
+Supported Software
+==========================
+ODENOS can be compiled and run on Ubuntu 14.04 with JDK7.
+
+
+Support
+==========================
+ODENOS Official site is <https://github.com/o3project/odenos>.
+
+
+Development
+==========================
+Your contribution are very welcome, please submit your patch code using
+github "Pull Requests".
+If you find any bug, let us know by github's Issues page.
