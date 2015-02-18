@@ -1,0 +1,115 @@
+﻿<!DOCTYPE HTML PUBLIC '-//W3C//DTD HTML 4.01//EN' 'http://www.w3.org/TR/html4/strict.dtd'>
+<html>
+<head>
+<meta http-equiv='Content-Type' content='text/html; charset=utf-8' />
+<link rel='stylesheet' href='markdown_OdenOS.css' type='text/css' />
+<title>ComponentManager.md</title>
+</head>
+<body>
+<h2>ComponentManager</h2>
+<hr />
+<h3>REST APIs</h3>
+<ul>
+<li><a href="#GETproperty">GET &lt;base_uri&gt;/property</a></li>
+<li><a href="#PUTproperty">PUT &lt;base_uri&gt;/property</a></li>
+<li><a href="#GETcomponent_types">GET &lt;base_uri&gt;/component_types</a></li>
+<li><a href="#GETcomponents">GET &lt;base_uri&gt;/components</a></li>
+</ul>
+<hr />
+<h4><a name="GETproperty"> GET &lt;base_uri&gt;/property</a></h4>
+<ul>
+<li><strong>get Object property.</strong></li>
+</ul>
+<h5>[Request]:</h5>
+<ul>
+<li><strong>Body</strong> : none </li>
+</ul>
+<h5>[Response]:</h5>
+<ul>
+<li><strong>Status Code</strong> : 200</li>
+<li><strong>Body</strong> :  <a href="./DataClass.html#ObjectProperty">ObjectProperty</a></li>
+</ul>
+<hr />
+<h4><a name="PUTproperty"> PUT &lt;base_uri&gt;/property</a></h4>
+<ul>
+<li><strong>update Object property.</strong></li>
+</ul>
+<h5>[Request]:</h5>
+<ul>
+<li><strong>Body</strong> :  <a href="./DataClass.html#ObjectProperty">ObjectProperty</a></li>
+</ul>
+<h5>[Response]:</h5>
+<ul>
+<li><strong>Status Code</strong> : 200</li>
+<li><strong>Body</strong> :  <a href="./DataClass.html#ObjectProperty">ObjectProperty</a></li>
+</ul>
+<hr />
+<h4><a name="GETcomponent_types"> GET &lt;base_uri&gt;/component_types</a></h4>
+<p>get ComponentType list.  <br />
+ComponentType is Registered Component.Property.type</p>
+<h5>[Request]:</h5>
+<ul>
+<li><strong>Body</strong> : none </li>
+</ul>
+<h5>[Response]:</h5>
+<ul>
+<li><strong>Status Code</strong> : 200</li>
+<li><strong>Body</strong> : dict {ComponentType:{&quot;type&quot; :&lt;string&gt;   &quot;super_type&quot;:&lt;string&gt; , &quot;connection_types&quot;:{&lt;string&gt;: &lt;string&gt;} , &quot;description&quot;:&lt;string&gt; }</li>
+</ul>
+<h5>example(JSON)</h5>
+<pre>
+ {
+   "Aggregator"  : { "type": "Aggregator" ,  "super_type":"Aggregator" ,
+                     "connection_types":{"original":"1", "aggregated":"1"}, "description":"Aggregator ...." },
+   "Slicer"  : { "type": "Slicer" ,  "super_type":"Slicer" ,
+                 "connection_types":{"original":"1", "Sliver":"*"}, "description":"Slicer  ...." },
+   "Federator"  : { "type": "Federator" ,  "super_type":"Federator" ,
+                    "connection_types":{"original":"*", "Federeted":"1"}, "description":"Federator  ...." }
+   }
+</pre>
+<table>
+<thead>
+<tr>
+	<th><strong>Key</strong></th>
+	<th><strong>Value</strong></th>
+	<th><strong>Description</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+	<td>type</td>
+	<td>&lt;String&gt;</td>
+	<td>ObjectType (example:ComponentManager,Network,Slicer,,,)</td>
+</tr>
+<tr>
+	<td>super_type</td>
+	<td>&lt;String&gt;</td>
+	<td>super class ObjectType. (example:ComponentManager,NetworkComponent,Slicer,,,)</td>
+</tr>
+<tr>
+	<td>connection_types</td>
+	<td>dict{&lt;String&gt;:&lt;String&gt;}</td>
+	<td><a href="#ComponentConnection">ComponentConnection</a>.connection_type : connection max num</td>
+</tr>
+<tr>
+	<td>description</td>
+	<td>&lt;String&gt;</td>
+	<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h4><a name="GETcomponents"> GET &lt;base_uri&gt;/components</a></h4>
+<p><strong>get Component instance List.</strong></p>
+<h5>[Request]:</h5>
+<ul>
+<li><strong>Body</strong> : none </li>
+</ul>
+<h5>[Response]:</h5>
+<ul>
+<li><strong>Status Code</strong> : 200</li>
+<li><strong>Body</strong> : dict { <a href="./DataClass.html#ObjectProperty">Component.Property</a>.id, <a href="./DataClass.html#ObjectProperty">Component.Property</a> }</li>
+<li><strong>Note</strong> : Component.Property is Component instance information.</li>
+</ul>
+</body>
+</html>

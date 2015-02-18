@@ -1,0 +1,501 @@
+﻿<!DOCTYPE HTML PUBLIC '-//W3C//DTD HTML 4.01//EN' 'http://www.w3.org/TR/html4/strict.dtd'>
+<html>
+<head>
+<meta http-equiv='Content-Type' content='text/html; charset=utf-8' />
+<link rel='stylesheet' href='markdown_ODENOS.css' type='text/css' />
+<title>Slicer.md</title>
+</head>
+<body>
+<h2>Slicer</h2>
+<p>Slicer provides the ability to create multiple Slice Network by duplicating the Original Network.</p>
+<hr />
+<p><img src="./images/Slicer.jpg" width="640"></p>
+<h3>Operating specifications of the Slicer.</h3>
+<ul>
+<li>
+<p><strong>Topology</strong><br />
+ Original network and the sliver network is the same topology.<br />
+ Update topology in the original network is reflected in the sliver network.</p>
+</li>
+<li>
+<p><strong>Flows</strong><br />
+ Flow will be reflected in the original network when it is set at sliver network.<br />
+ Set to Flow, it is necessary to match the information in the <a href="#SliceConditionTable">SliceConditionTable</a>.<br />
+ The status of Flow become a &quot;failed&quot; if the Flow of sliver network does not match the information in the <a href="#SliceConditionTable">SliceConditionTable</a>.</p>
+</li>
+<li>
+<p><strong>Packets</strong><br />
+ InPacket transfer from original network to sliver network.<br />
+ OutPacket transfer from sliver network to original network.<br />
+ packet become a &quot;drop&quot; if the packet header does not match the information in the <a href="#SliceConditionTable">SliceConditionTable</a>.  
+</p>
+</li>
+<li>
+<p>SliceConditionTable&amp;SliceCondition<br />
+ <a href="#SliceCondition">SliceCondition</a> has a match condition and connection information.<br />
+ slicer does the split of Flow and Packet in match conditions.<br />
+ Setting the Match and ConnectionId to sliceCondition. Match set the split of Flow and Packet.<br />
+ The search order is determined by the priority.   
+</p>
+</li>
+</ul>
+<p><img src="./images/SliceCondition.jpg" width="640"></p>
+<ul>
+<li><strong>Create Instance of Slicer.</strong><br />
+  Generate an instance of Slicer by performing a PUT (or POST) to the System Manager.</li>
+</ul>
+<p><a href="./SystemManager.html#PUTcomponents_id">PUT &lt;base_uri&gt;/components/&lt;comp_id&gt;</a></p>
+<table>
+<thead>
+<tr>
+	<th><strong>key</strong></th>
+	<th><strong>value</strong></th>
+	<th><strong>description</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+	<td>id</td>
+	<td>&lt;String&gt;</td>
+	<td>Unique Identifier in ODENOS.</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>&quot;Slicer&quot;</td>
+	<td>ObjectType</td>
+</tr>
+<tr>
+	<td>cm_id</td>
+	<td>&lt;String&gt;</td>
+	<td>Specify the <a href="./DataClass.html#ObjectProperty">componentManager.Property.id</a> to generate an instance. (Optional)</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>Component Connections</strong><br />
+  Connection  of Slicer and Network by performing a PUT (or POST) to the System Manager.</li>
+</ul>
+<table>
+<thead>
+<tr>
+	<th>network</th>
+	<th>Connection possible number</th>
+	<th>connection_type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+	<td>original network</td>
+	<td>Only one</td>
+	<td>&quot;original&quot;</td>
+</tr>
+<tr>
+	<td>Sliver network</td>
+	<td>One or more</td>
+	<td>&quot;sliver&quot;</td>
+</tr>
+</tbody>
+</table>
+<p><a href="./SystemManager.html#PUTconnections_id">PUT &lt;base_uri&gt;/connections/&lt;conn_id&gt;</a></p>
+<table>
+<thead>
+<tr>
+	<th><strong>key</strong></th>
+	<th><strong>value</strong></th>
+	<th><strong>description</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+	<td>id</td>
+	<td>&lt;String&gt;</td>
+	<td>Unique Identifier in ODENOS.</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>&quot;LogicAndNetwork&quot;</td>
+	<td>&nbsp;</td>
+</tr>
+<tr>
+	<td>connection_type</td>
+	<td>&quot;original&quot; or  &quot;sliver&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>state</td>
+	<td>none</td>
+	<td>default &quot;initializing&quot;</td>
+</tr>
+<tr>
+	<td>logic_id</td>
+	<td>&lt;String&gt;</td>
+	<td>Slicer  ID</td>
+</tr>
+<tr>
+	<td>network_id</td>
+	<td>&lt;String&gt;</td>
+	<td>Network ID</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3>Data Class</h3>
+<ul>
+<li><a href="#SliceCondition">SliceCondition</a></li>
+<li><a href="#BasicSliceCondition">BasicSliceCondition</a></li>
+<li><a href="#SliceConditionTable">SliceConditionTable</a></li>
+</ul>
+<h3>REST APIs</h3>
+<ul>
+<li><a href="#GETproperty">GET &lt;base_uri&gt;/property</a></li>
+<li><a href="#PUTproperty">PUT &lt;base_uri&gt;/property</a></li>
+<li><a href="#GETsettings">GET <base_uri>/settings</a></li>
+<li><a href="#PUTpriority">PUT <base_uri>/settings/slice_condition_table/&lt;priority&gt;</a></li>
+<li><a href="#POSTproperty_conditions">POST <base_uri>/settings/slice_condition_table/&lt;priority&gt;/conditions</a></li>
+<li><a href="#PUTproperty_conditions">PUT <base_uri>/settings/slice_condition_table/&lt;priority&gt;/conditions/&lt;condition_id&gt;</a></li>
+<li><a href="#DELETEslice_condition_table">DELETE <base_uri>/settings/slice_condition_table</a></li>
+<li><a href="#DELETEslice_condition_table_condition_id">DELETE <base_uri>/settings/slice_condition_table/conditions/&lt;condition_id&gt;</a></li>
+<li><a href="#GETslice_condition_table">GET <base_uri>/settings/slice_condition_table</a></li>
+<li><a href="#GETslice_condition_table_priority">GET <base_uri>/settings/slice_condition_table/&lt;priority&gt;</a></li>
+<li><a href="#GETslice_condition_table_condition_id">GET <base_uri>/settings/slice_condition_table/conditions/&lt;condition_id&gt;</a></li>
+<li><a href="#GETslice_condition_table_connection_id">GET <base_uri>/settings/slice_condition_table/connections/&lt;connection_id&gt;</a></li>
+<li><a href="#GETsliver_network_flow">GET <base_uri>/sliver_network_flow</a></li>
+<li><a href="#GEToriginal_network_flow">GET <base_uri>/original_network_flow</a></li>
+</ul>
+<hr />
+<h4><a name="SliceCondition"> SliceCondition</a></h4>
+<p><strong>To provide rules for dividing the topology.</strong>
+ <strong>SliceCondition is abstract class.</strong></p>
+<table>
+<thead>
+<tr>
+	<th><strong>key</strong></th>
+	<th><strong>value</strong></th>
+	<th><strong>description</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+	<td>id</td>
+	<td>&lt;String&gt;</td>
+	<td>ID that is unique in the ODENOS</td>
+</tr>
+<tr>
+	<td>connection</td>
+	<td>&lt;String&gt;</td>
+	<td>Sliver's ComponentConnectionProperty.id</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>&lt;String&gt;</td>
+	<td>SliceCondition Type</td>
+</tr>
+</tbody>
+</table>
+<h3>Type</h3>
+<ul>
+<li><a href="#BasicSliceCondition">BasicSliceCondition</a></li>
+</ul>
+<hr />
+<h4><a name="BasicSliceCondition"> BasicSliceCondition</a></h4>
+<p><strong>SliceCondition is setting Slice rules.</strong> <br />
+<strong>BasicSliceCondition support mutch &quot;in_node&quot; and &quot;in_port&quot;.</strong>   
+</p>
+<table>
+<thead>
+<tr>
+	<th><strong>key</strong></th>
+	<th><strong>value</strong></th>
+	<th><strong>description</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+	<td>id</td>
+	<td>&lt;String&gt;</td>
+	<td>ID that is unique in the ODENOS</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>&lt;String&gt;</td>
+	<td>SliceCondition type is &quot;BasicSliceCondition&quot;</td>
+</tr>
+<tr>
+	<td>connection</td>
+	<td>&lt;String&gt;</td>
+	<td>Sliver's <a href="./DataClass.html#ComponentConnection">ComponentConnection</a>.id</td>
+</tr>
+<tr>
+	<td>in_node</td>
+	<td>&lt;String&gt;</td>
+	<td><a href="./DataClass.html#Node">Node</a>.id</td>
+</tr>
+<tr>
+	<td>in_port</td>
+	<td>&lt;String&gt;</td>
+	<td><a href="./DataClass.html#port">Port</a>.id</td>
+</tr>
+</tbody>
+</table>
+<h6>example(JSON)</h6>
+<pre>
+    {    
+    "id": "sliceconditon1",
+    "type": "BasicSliceCondition",
+    "connection":"sliver1_connection"
+    "in_node": "node1",
+    "in_port": "port1"
+    }    
+</pre>
+<hr />
+<h4><a name="SliceConditionTable"> SliceConditionTable</a></h4>
+<p><strong>SliceConditionTable for managing the order of priority SliceCondition.</strong></p>
+<table>
+<thead>
+<tr>
+	<th><strong>key</strong></th>
+	<th><strong>value</strong></th>
+	<th><strong>description</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+	<td>priority</td>
+	<td>list&lt;SliceCondition.id&gt;</td>
+	<td>priority : 0 ~ 65535 (65535:Max Priority)</td>
+</tr>
+</tbody>
+</table>
+<h6>example(JSON)</h6>
+<pre>
+    {    
+     "30": [of_slcond7, of_slcond8, of_slcond9],   
+     "20": [of_slcond4, of_slcond5, of_slcond6],   
+     "10": [of_slcond1, of_slcond2, of_slcond3]    
+    }    
+</pre>
+<hr />
+<h4><a name="GETproperty"> GET &lt;base_uri&gt;/property</a></h4>
+<ul>
+<li><strong>get Object property.</strong></li>
+</ul>
+<h5>[Request]:</h5>
+<ul>
+<li><strong>Body</strong> : none </li>
+</ul>
+<h5>[Response]:</h5>
+<ul>
+<li><strong>Status Code</strong> : 200</li>
+<li><strong>Body</strong> :  <a href="./DataClass.html#ObjectProperty">ObjectProperty</a></li>
+</ul>
+<hr />
+<h3><a name="PUTproperty"> PUT &lt;base_uri&gt;/property</a></h3>
+<ul>
+<li><strong>update Object property.</strong></li>
+</ul>
+<h5>[Request]:</h5>
+<ul>
+<li><strong>Body</strong> :  <a href="./DataClass.html#ObjectProperty">ObjectProperty</a></li>
+</ul>
+<h5>[Response]:</h5>
+<ul>
+<li><strong>Status Code</strong> : 200</li>
+<li><strong>Body</strong> :  <a href="./DataClass.html#ObjectProperty">ObjectProperty</a></li>
+</ul>
+<hr />
+<h4><a name="GETsettings"> GET &lt;base_uri&gt;/settings</a></h4>
+<p><strong>Get Setting Slice List.</strong></p>
+<h5>[Request]:</h5>
+<ul>
+<li><strong>Body</strong> : none </li>
+</ul>
+<h5>[Response]:</h5>
+<ul>
+<li><strong>Status Code</strong> : 200</li>
+<li><strong>Body</strong> :  dict&lt;&quot;slice_condition_table&quot;: SliceConditionTable&gt;</li>
+</ul>
+<hr />
+<h4><a name="PUTpriority">PUT &lt;base_uri&gt;/settings/slice_condition_table/&lt;priority&gt;</a></h4>
+<p>Create a slice_condition_table/&lt;priority&gt; and to set the slice condition list.<br />
+notification event <a href="./DataClass.html#ObjectSettingsChanged">ObjectSettingsChanged</a>  
+</p>
+<h5>[Request]:</h5>
+<ul>
+<li><strong>Body</strong> : List[<a href="#SliceCondition">SliceCondition</a>]   
+</li>
+</ul>
+<h5>[Response]:</h5>
+<ul>
+<li><strong>Status Code</strong> : 200</li>
+<li><strong>Body</strong> : List[<a href="#SliceCondition">SliceCondition</a>]   
+</li>
+</ul>
+<h6>example(JSON)</h6>
+<pre>
+  [
+   {"id":"condition1", "type":"BasicSliceCondition", "connection":"slice1", "in_node":"node1", "in_port":"port1"},  
+   {"id":"condition2", "type":"BasicSliceCondition", "connection":"slice1", "in_node":"node1", "in_port":"port2"}  
+   {"id":"condition3", "type":"BasicSliceCondition", "connection":"slice1", "in_node":"node1", "in_port":"port3"}  
+  ]
+</pre>
+<hr />
+<h4><a name="POSTproperty_conditions">POST &lt;base_uri&gt;/settings/slice_condition_table/&lt;priority&gt;/conditions</a></h4>
+<p>create of slice Conditon.id is granted automatically. (specified id is invalid)<br />
+If slice_condition_table/&lt;priority&gt; is not, slice_condition_table/&lt;priority&gt; to create a new one.<br />
+notification event <a href="./DataClass.html#ObjectSettingsChanged">ObjectSettingsChanged</a>  
+</p>
+<h5>[Request]:</h5>
+<ul>
+<li><strong>Body</strong> : <a href="#SliceCondition">SliceCondition</a></li>
+</ul>
+<h5>[Response]:</h5>
+<ul>
+<li><strong>Status Code</strong> : 200</li>
+<li><strong>Body</strong> : <a href="#SliceCondition">SliceCondition</a></li>
+</ul>
+<h6>example(JSON)</h6>
+<pre>
+   {  
+    "type":"BasicSliceCondition",  
+    "connection":"slicer_nw01",  
+    "in_node":"node001",  
+    "in_port":"port0011"  
+   }  
+</pre>
+<hr />
+<h4><a name="PUTproperty_conditions">PUT &lt;base_uri&gt;/settings/slice_condition_table/&lt;priority&gt;/conditions/&lt;condition_id&gt;</a></h4>
+<p>create of slice Conditon.If you already have a slice Conditon, It will update.<br />
+If slice_condition_table/&lt;priority&gt; is not, slice_condition_table/&lt;priority&gt; to create a new one.<br />
+notification event <a href="./DataClass.html#ObjectSettingsChanged">ObjectSettingsChanged</a>  
+</p>
+<h5>[Request]:</h5>
+<ul>
+<li><strong>Body</strong> : <a href="#SliceCondition">SliceCondition</a></li>
+</ul>
+<h5>[Response]:</h5>
+<ul>
+<li><strong>Status Code</strong> : 200</li>
+<li><strong>Body</strong> : <a href="#SliceCondition">SliceCondition</a></li>
+</ul>
+<h6>example(JSON)</h6>
+<pre>
+   {  
+    "id":"sliceconditon1",  
+    "type":"BasicSliceCondition",  
+    "connection":"slicer_nw01",  
+    "in_node":"node001",  
+    "in_port":"port0011"  
+   }  
+</pre>
+<hr />
+<h4><a name="DELETEslice_condition_table">DELETE &lt;base_uri&gt;/settings/slice_condition_table</a></h4>
+<p><strong>All crear slice_condition_table, and slice_condition.</strong></p>
+<h5>[Request]:</h5>
+<ul>
+<li><strong>Body</strong> : none </li>
+</ul>
+<h5>[Response]:</h5>
+<ul>
+<li><strong>Status Code</strong> : 200</li>
+<li><strong>Body</strong> : none </li>
+</ul>
+<hr />
+<h4><a name="DELETEslice_condition_table_condition_id">DELETE &lt;base_uri&gt;/settings/slice_condition_table/conditions/&lt;condition_id&gt;</a></h4>
+<p><strong>Delete this SliceCondition from the slice_condition_table.</strong></p>
+<h5>[Request]:</h5>
+<ul>
+<li><strong>Body</strong> : none </li>
+</ul>
+<h5>[Response]:</h5>
+<ul>
+<li><strong>Status Code</strong> : 200</li>
+<li><strong>Body</strong> : none </li>
+</ul>
+<hr />
+<h4><a name="GETslice_condition_table">GET &lt;base_uri&gt;/settings/slice_condition_table</a></h4>
+<p><strong>Get SliceConditionTable.</strong></p>
+<h5>[Request]:</h5>
+<ul>
+<li><strong>Body</strong> : none </li>
+</ul>
+<h5>[Response]:</h5>
+<ul>
+<li><strong>Status Code</strong> : 200</li>
+<li><strong>Body</strong> : <a href="#SliceConditionTable">SliceConditionTable</a></li>
+</ul>
+<hr />
+<h4><a name="GETslice_condition_table_priority">GET &lt;base_uri&gt;/settings/slice_condition_table/&lt;priority&gt;</a></h4>
+<p><strong>Get a list of &lt;condition_id&gt; corresponding to &lt;priority&gt;.</strong></p>
+<h5>[Request]:</h5>
+<ul>
+<li><strong>Body</strong> : none </li>
+</ul>
+<h5>[Response]:</h5>
+<ul>
+<li><strong>Status Code</strong> : 200</li>
+<li><strong>Body</strong> : List<condition_id></li>
+</ul>
+<h5>[Response](detail):</h5>
+<ul>
+<li><strong>Status Code</strong> : 200</li>
+<li><strong>Body</strong> : List[<a href="#BasicSliceCondition">BasicSliceCondition</a>]   
+</li>
+</ul>
+<hr />
+<h4><a name="GETslice_condition_table_condition_id">GET &lt;base_uri&gt;/settings/slice_condition_table/conditions/&lt;condition_id&gt;</a></h4>
+<p><strong>Get SliceCondition.</strong></p>
+<h5>[Request]:</h5>
+<ul>
+<li><strong>Body</strong> : none </li>
+</ul>
+<h5>[Response]:</h5>
+<ul>
+<li><strong>Status Code</strong> : 200</li>
+<li><strong>Body</strong> : <a href="#BasicSliceCondition">BasicSliceCondition</a></li>
+</ul>
+<hr />
+<h4><a name="GETslice_condition_table_connection_id">GET &lt;base_uri&gt;/settings/slice_condition_table/connections/&lt;connection_id&gt;</a></h4>
+<p><strong>Get a list of &lt;condition_id&gt; corresponding to &lt;connection_id&gt;.</strong></p>
+<h5>[Request]:</h5>
+<ul>
+<li><strong>Body</strong> : none </li>
+</ul>
+<h5>[Response]:</h5>
+<ul>
+<li><strong>Status Code</strong> : 200</li>
+<li><strong>Body</strong> : List[condition_id]</li>
+</ul>
+<h5>[Response](detail):</h5>
+<ul>
+<li><strong>Status Code</strong> : 200</li>
+<li><strong>Body</strong> : List[<a href="#BasicSliceCondition">BasicSliceCondition</a>]   
+</li>
+</ul>
+<hr />
+<h4><a name="GETsliver_network_flow">GET &lt;base_uri&gt;/sliver_network_flow</a></h4>
+<p><strong>Relationship of the sliver flow id and original flow id.</strong>
+(Key is original)</p>
+<h5>[Request]:</h5>
+<ul>
+<li><strong>Body</strong> : none </li>
+</ul>
+<h5>[Response]:</h5>
+<ul>
+<li><strong>Status Code</strong> : 200</li>
+<li><strong>Body</strong> : dict&lt;original_flow_id, sliver_network_id::sliver_flow_id&gt;</li>
+</ul>
+<hr />
+<h4><a name="GEToriginal_network_flow">GET &lt;base_uri&gt;/original_network_flow</a></h4>
+<p><strong>Get relationship of the sliver flow id and original flow id.</strong>
+(Key is sliver)</p>
+<h5>[Request]:</h5>
+<ul>
+<li><strong>Body</strong> : none </li>
+</ul>
+<h5>[Response]:</h5>
+<ul>
+<li><strong>Status Code</strong> : 200</li>
+<li><strong>Body</strong> : dict&lt;sliver_network_id::sliver_flow_id, original_flow_id&gt;</li>
+</ul>
+</body>
+</html>

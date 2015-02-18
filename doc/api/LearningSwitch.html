@@ -1,0 +1,164 @@
+﻿<!DOCTYPE HTML PUBLIC '-//W3C//DTD HTML 4.01//EN' 'http://www.w3.org/TR/html4/strict.dtd'>
+<html>
+<head>
+<meta http-equiv='Content-Type' content='text/html; charset=utf-8' />
+<link rel='stylesheet' href='markdown_ODENOS.css' type='text/css' />
+<title>LearningSwitch.md</title>
+</head>
+<body>
+<h2>LearningSwitch</h2>
+<p><strong>emulates a layer 2 switch.</strong></p>
+<hr />
+<h3>REST APIs</h3>
+<ul>
+<li><a href="#GETproperty">GET &lt;base_uri&gt;/property</a></li>
+<li><a href="#PUTproperty">PUT &lt;base_uri&gt;/property</a></li>
+<li><a href="#GETfdb">GET &lt;base_uri&gt;/fdb</a></li>
+<li><a href="#DELETEfdb">DELETE &lt;base_uri&gt;/fdb</a></li>
+<li><a href="#DELETEfdbmac">DELETE &lt;base_uri&gt;/fdb/&lt;mac&gt;</a></li>
+<li><a href="#GETdefault_idle_timer">GET &lt;base_uri&gt;/settings/default_idle_timer</a></li>
+<li><a href="#PUTdefault_idle_timer">PUT &lt;base_uri&gt;/settings/default_idle_timer</a></li>
+<li><a href="#GETdefault_hard_timer">GET &lt;base_uri&gt;/settings/default_hard_timer</a></li>
+<li><a href="#PUTdefault_hard_timer">PUT &lt;base_uri&gt;/settings/default_hard_timer</a></li>
+</ul>
+<hr />
+<h4><a name="GETproperty"> GET &lt;base_uri&gt;/property</a></h4>
+<p>get Object property.</p>
+<h5>[Request]:</h5>
+<ul>
+<li><strong>Body</strong> : none </li>
+</ul>
+<h5>[Response]:</h5>
+<ul>
+<li><strong>Status Code</strong> : 200</li>
+<li><strong>Body</strong> :  <a href="./DataClass.html#ObjectProperty">ObjectProperty</a></li>
+</ul>
+<hr />
+<h4><a name="PUTproperty"> PUT &lt;base_uri&gt;/property</a></h4>
+<p>update Object property.</p>
+<h5>[Request]:</h5>
+<ul>
+<li><strong>Body</strong> :  <a href="./DataClass.html#ObjectProperty">ObjectProperty</a></li>
+</ul>
+<h5>[Response]:</h5>
+<ul>
+<li><strong>Status Code</strong> : 200</li>
+<li><strong>Body</strong> :  <a href="./DataClass.html#ObjectProperty">ObjectProperty</a></li>
+</ul>
+<hr />
+<h4><a name="GETfdb">GET <base_uri>/fdb</a></h4>
+<p><strong>get FDB entry.</strong></p>
+<h5>[Request]:</h5>
+<ul>
+<li><strong>Body</strong> :  none</li>
+</ul>
+<h5>[Response]:</h5>
+<ul>
+<li><strong>Status Code</strong> : 200</li>
+<li><strong>Body</strong> :  <a href="#FDB">FDB</a>   
+</li>
+</ul>
+<h4><a name="FDB">[FDB]</a></h4>
+<table>
+<thead>
+<tr>
+	<th>key</th>
+	<th>value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+	<td>mac</td>
+	<td>[&quot;node_id&quot; : &lt;string&gt; , &quot;port_id&quot; : &lt;string&gt; ]</td>
+</tr>
+</tbody>
+</table>
+<h6>example(JSON)</h6>
+<pre><code>{
+    &quot;01:02:03:04:05:06&quot;: [ 
+      &quot;node_id&quot; : &quot;node1&quot;,
+      &quot;port_id&quot; : &quot;port1&quot;
+    ],
+    &quot;0A:0B:0C:0D:0E:0F&quot;: [
+      &quot;node_id&quot; : &quot;node2&quot;,
+      &quot;port_id&quot; : &quot;port1&quot;
+    ],
+        …
+}
+</code></pre>
+
+<hr />
+<h4><a name="DELETEfdb">DELETE &lt;base_uri&gt;/fdb</a></h4>
+<p>delete all FDB (Initialize FDB)</p>
+<h5>[Request]:</h5>
+<ul>
+<li><strong>Body</strong> :  none</li>
+</ul>
+<h5>[Response]:</h5>
+<ul>
+<li><strong>Status Code</strong> : 200</li>
+<li><strong>Body</strong> :  none</li>
+</ul>
+<hr />
+<h4><a name="DELETEfdbmac">DELETE &lt;base_uri&gt;/fdb/&lt;mac&gt;</a></h4>
+<p>delete FDB entry.<br />
+mac delimiter(Colon) is not used.</p>
+<h5>[Request]:</h5>
+<ul>
+<li><strong>Body</strong> :  none</li>
+</ul>
+<h5>[Response]:</h5>
+<ul>
+<li><strong>Status Code</strong> : 200</li>
+<li><strong>Body</strong> :  none</li>
+</ul>
+<hr />
+<h4><a name="GETdefault_idle_timer">GET <base_uri>/settings/default_idle_timer</a></h4>
+<p>get the flow &quot;idle timeout&quot;</p>
+<h5>[Request]:</h5>
+<ul>
+<li><strong>Body</strong> :  none</li>
+</ul>
+<h5>[Response]:</h5>
+<ul>
+<li><strong>Status Code</strong> : 200</li>
+<li><strong>Body</strong> :  &lt;integer&gt;</li>
+</ul>
+<hr />
+<h4><a name="PUTdefault_idle_timer">PUT <base_uri>/settings/default_idle_timer</a></h4>
+<p>set the flow &quot;idle timeout&quot;</p>
+<h5>[Request]:</h5>
+<ul>
+<li><strong>Body</strong> :  &lt;integer&gt;</li>
+</ul>
+<h5>[Response]:</h5>
+<ul>
+<li><strong>Status Code</strong> : 200</li>
+<li><strong>Body</strong> :  &lt;integer&gt;</li>
+</ul>
+<hr />
+<h4><a name="GETdefault_hard_timer">GET <base_uri>/settings/default_hard_timer</a></h4>
+<p>get the flow &quot;hard timeout&quot;</p>
+<h5>[Request]:</h5>
+<ul>
+<li><strong>Body</strong> :  none</li>
+</ul>
+<h5>[Response]:</h5>
+<ul>
+<li><strong>Status Code</strong> : 200</li>
+<li><strong>Body</strong> :  &lt;integer&gt;</li>
+</ul>
+<hr />
+<h4><a name="PUTdefault_hard_timer">PUT <base_uri>/settings/default_hard_timer</a></h4>
+<p>set the flow &quot;hard timeout&quot;</p>
+<h5>[Request]:</h5>
+<ul>
+<li><strong>Body</strong> :  &lt;integer&gt;</li>
+</ul>
+<h5>[Response]:</h5>
+<ul>
+<li><strong>Status Code</strong> : 200</li>
+<li><strong>Body</strong> :  &lt;integer&gt;</li>
+</ul>
+</body>
+</html>

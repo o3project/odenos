@@ -1,0 +1,192 @@
+# "clio" config
+#
+
+# Target REST API server address
+url: http://127.0.0.1:10080
+type: OdenoOS 
+
+# REST API header setting
+headers:
+  Content-type: application/json
+  Accept: "application/json, text/plain"
+
+# Sleep setting for each transform/generator-initiated transaction
+transaction_sleep: 0
+
+# Update schema on startup
+update_schema: true
+
+# Load preset file on startup
+load_preset: preset.yaml
+
+# CLI command - REST API method mapping table
+methods:
+  create: POST
+  post: POST
+  read: GET
+  get: GET
+  update: PUT
+  put: PUT
+  delete: DELETE
+
+# CLI editing mode (emacs or vi)
+editing_mode: emacs
+
+# CLI history file
+history: ~/.clio_history
+history_length: 20  # The number of lines
+
+# Path for bootstrap resources 
+bootstrap: /systemmanager/components
+
+# CLI schema used for command auto completion
+schema:
+  bootstrap:
+    eventmanager:
+      settings:
+        event_subscriptions:
+          _tail: [GET]
+    systemmanager:
+      property:
+        _tail: [GET, PUT]
+      settings:
+        _tail: [GET, PUT]
+      component_managers:
+        _tail: [POST, GET]
+        <compmgr_id>:
+          _tail: [GET, DELETE]
+      event_manager:
+        _tail: [GET]
+      component_types:
+        _tail: [GET] 
+        <type>:
+          _tail: [GET]
+      components:
+        _tail: [GET, POST] 
+        <comp_id>:
+          _tail: [GET, PUT, DELETE] 
+      connections: 
+        _tail: [POST, GET]
+        <conn_id>:
+          _tail: [GET, PUT, DELETE]
+      objects:
+        <object_id>:
+          _tail: [GET]
+  Network:
+    settings:
+      verbose_event:
+        port:
+          _tail: [PUT]
+        link:
+          _tail: [PUT]
+      _tail: [GET]
+    topology:
+      _tail: [GET, PUT]
+      nodes:
+        _tail: [POST, GET] 
+        <node_id>:
+          _tail: [GET, PUT, DELETE]
+          ports:
+            _tail: [POST, GET]
+            <port_id>:
+              _tail: [GET, PUT, DELETE]
+      physical_nodes:
+        <physical_id>:
+          _tail: [GET, PUT, DELETE]
+      physical_ports:
+        <physical_id>:
+          _tail: [GET, PUT, DELETE]
+      links:
+        _tail: [POST, GET]
+        <link_id>:
+          _tail: [GET, PUT, DELETE]
+    flows:
+      _tail: [POST, GET]
+      <flow_id>:
+        _tail: [GET, PUT, DELETE]
+    packets:
+      _tail: [GET]
+      in:
+        _tail: [POST, GET, DELETE]
+        head:
+          _tail: [GET, DELETE]
+        <packet_id>:
+          _tail: [GET, DELETE]
+      out:
+        _tail: [POST, GET, DELETE]
+        head:
+          _tail: [GET, DELETE]
+        <packet_id>:
+          _tail: [GET, DELETE]
+  Aggregator:
+    aggregated_nw_port:
+      _tail: [GET]
+    original_nw_port:
+      _tail: [GET]
+    aggregated_nw_flow:
+      _tail: [GET]
+    original_nw_flow:
+      _tail: [GET]
+  Slicer:
+    settings:
+      slice_condition_table:
+        _tail: [GET]
+        conditions:
+          <condition_id>:
+            _tail: [GET, DELETE]
+        connections:
+          <connection_id>:
+            _tail: [GET]
+        <priority>:
+          _tail: [GET, PUT, DELETE]
+          conditions:
+            <condition_id>:
+              _tail: [PUT]
+    original_network_flow:
+      _tail: [GET]
+    sliver_network_flow:
+      _tail: [GET]
+  Federator:
+    settings:
+      boundaries:
+        _tail: [GET, POST]
+        <boundary_id>:
+          _tail: [DELETE]
+    federated_network_node:
+      _tail: [GET]
+    original_network_node:
+      _tail: [GET]
+    federated_network_port:
+      _tail: [GET]
+    original_network_port:
+      _tail: [GET]
+    federated_network_link:
+      _tail: [GET]
+    original_network_link:
+      _tail: [GET]
+    federated_network_flow:
+      _tail: [GET]
+    original_network_flow:
+      _tail: [GET]
+  LearningSwitch:
+    fdb:
+      _tail: [GET]
+    settings:
+      default_idle_timer:
+        _tail: [GET, PUT]
+      default_hard_timer:
+        _tail: [GET, PUT]
+    fdb:
+      _tail: [GET]
+      <mac>:
+        _tail: [GET]
+  Generator:
+    env:
+      _tail: [GET, PUT]
+    control:
+      _tail: [GET, PUT]
+    stats:
+      _tail: [GET]
+ 
+
+

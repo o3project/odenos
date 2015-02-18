@@ -1,0 +1,53 @@
+#                   host A                         host B
+# systemmanager network1 gen, aggre             lsw      network0
+#     |          romgr1  romgr2                 romgr10  romgr11
+#     |            |       |                       |        |
+#     +------------+-------+---[pubsub server]-----+--------+
+#
+#   gen <--> network1 <--> aggre <--> network0 <--> lsw
+#  romgr2     romgr1       romgr2     romgr11      romgr10
+#
+- macro: create_comp
+  scenario:
+    - put: /systemmanager/components/lsw
+      body:
+        type: LearningSwitch
+        id: lsw
+        cm_id: romgr10 
+    - assert:
+        status: 2\d{2}
+    - put: /systemmanager/components/network0
+      body:
+        type: Network
+        id: network0
+        cm_id: romgr11
+    - assert:
+        status: 2\d{2}
+    - put: /systemmanager/components/network1
+      body:
+        type: Network
+        id: network1
+        cm_id: romgr1
+    - assert:
+        status: 2\d{2}
+    - put: /systemmanager/components/gen
+      body:
+        type: Generator 
+        id: gen
+        cm_id: romgr2
+    - assert:
+        status: 2\d{2}
+    - put: /systemmanager/components/aggre
+      body:
+        type: Aggregator
+        id: aggre
+        cm_id: romgr2
+    - assert:
+        status: 2\d{2}
+
+- macros: 
+  - create_comp
+  - create_conn
+  - create_topo ring  # The 1st arg can be ring, mesh or linear
+- cli
+

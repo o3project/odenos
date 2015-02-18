@@ -1,0 +1,97 @@
+
+/****************************/
+/* body setting             */
+/****************************/
+
+body{
+  margin:0; padding:0;
+  line-height:1.4;
+  color:#333;
+  font-size:14px;
+  padding: 10px;
+  font-family:serif;
+  max-width: 960px;
+}
+
+
+/****************************/
+/* header                   */
+/****************************/
+
+h1 {
+  font-size: 40px;
+}
+h2 {
+  font-size: 32px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 21px;
+}
+h5 {
+  font-size: 18px;
+}
+h6 {
+  font-size: 14px;
+}
+
+
+/****************************/
+/* Table                    */
+/****************************/
+
+
+
+table.style {
+  width: 500px;
+  border-collapse: collapse;
+}
+table.style th {
+  font-weight: normal;
+  background-color: #F0F0F0;
+  border:1px solid #BFBFBF;
+  text-align: center;
+  padding: 12px;
+}
+table.style tr td {
+  width: 385px;
+  background-color: #FFFFFF;
+  border:1px solid #BFBFBF;
+  text-align: left;
+  padding: 12px;
+}
+
+
+table{
+ border-collapse: collapse;
+ //font-size: 14px;
+ //color: #333333;
+ //border-color: #999999;
+}
+
+table th{
+ background-color:#dddddd;
+ border-color: #aaaaaa;
+ border-style: solid;
+ border-width: 1px;
+ padding: 1px;
+ font-weight: bold;
+}
+
+table tr{
+ background-color:#ffffff;
+ border-width: 30px;
+}
+
+table td{
+  border-width: 1px;
+  padding: 3px;
+  border-style: solid;
+  font-weight: bold;
+  font-size:14px;
+  border-color: #aaaaaa;
+}
+
+

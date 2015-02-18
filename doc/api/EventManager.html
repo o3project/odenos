@@ -1,0 +1,85 @@
+﻿<!DOCTYPE HTML PUBLIC '-//W3C//DTD HTML 4.01//EN' 'http://www.w3.org/TR/html4/strict.dtd'>
+<html>
+<head>
+<meta http-equiv='Content-Type' content='text/html; charset=utf-8' />
+<link rel='stylesheet' href='markdown_ODENOS.css' type='text/css' />
+<title>EventManager.md</title>
+</head>
+<body>
+<h2>EvenManager</h2>
+<p><strong>EventManager is a class of implementing pub-sub communication between RemoteObject instances</strong>  <br />
+<strong>Followings are brief description of EventManager's REST API</strong></p>
+<hr />
+<h3>REST APIs</h3>
+<ul>
+<li><a href="#GETproperty">GET &lt;base_uri&gt;/property</a></li>
+<li><a href="#PUTproperty">PUT &lt;base_uri&gt;/property</a></li>
+<li><a href="#GETevent_subscriptions">GET &lt;base_uri&gt;/settings/event_subscriptions</a></li>
+<li><a href="#PUTevent_subscriptions_id">PUT &lt;base_uri&gt;/settings/event_subscriptions/&lt;subscriber_id&gt;</a></li>
+<li><a href="#GETevent_subscriptions_id">GET &lt;base_uri&gt;/settings/event_subscriptions/&lt;subscriber_id&gt;</a></li>
+</ul>
+<hr />
+<h4><a name="GETproperty"> GET &lt;base_uri&gt;/property</a></h4>
+<p>get Object property.  
+</p>
+<h5>[Request]:</h5>
+<ul>
+<li><strong>Body</strong> : none </li>
+</ul>
+<h5>[Response]:</h5>
+<ul>
+<li><strong>Status Code</strong> : 200</li>
+<li><strong>Body</strong> :  <a href="./DataClass.html#ObjectProperty">ObjectProperty</a></li>
+</ul>
+<hr />
+<h4><a name="PUTproperty"> PUT &lt;base_uri&gt;/property</a></h4>
+<p>update Object property.</p>
+<h5>[Request]:</h5>
+<ul>
+<li><strong>Body</strong> :  <a href="./DataClass.html#ObjectProperty">ObjectProperty</a></li>
+</ul>
+<h5>[Response]:</h5>
+<ul>
+<li><strong>Status Code</strong> : 200</li>
+<li><strong>Body</strong> :  <a href="./DataClass.html#ObjectProperty">ObjectProperty</a></li>
+</ul>
+<hr />
+<h4><a name="GETevent_subscriptions">GET &lt;base_uri&gt;/settings/event_subscriptions</a></h4>
+<p>get Event Subscription list.  <br />
+&lt;subscriber_id&gt; is EventSubscription.subscriber_id</p>
+<h5>[Request]:</h5>
+<ul>
+<li><strong>Body</strong> : none </li>
+</ul>
+<h5>[Response]:</h5>
+<ul>
+<li><strong>Status Code</strong> : 200</li>
+<li><strong>Body</strong> : dict{subscriber_id, <a href="./DataClass.html#EventSubscription">EventSubscription</a>} </li>
+</ul>
+<hr />
+<h4><a name="PUTevent_subscriptions_id">PUT &lt;base_uri&gt;/settings/event_subscriptions/&lt;subscriber_id&gt;</a></h4>
+<p>Event Subscription settings make a new registration.</p>
+<h5>[Request]:</h5>
+<ul>
+<li><strong>Body</strong> : <a href="./DataClass.html#EventSubscription">EventSubscription</a></li>
+</ul>
+<h5>[Response]:</h5>
+<ul>
+<li><strong>Status Code</strong> : 200</li>
+<li><strong>Body</strong> : <a href="./DataClass.html#EventSubscription">EventSubscription</a></li>
+</ul>
+<hr />
+<h4><a name="GETevent_subscriptions_id">GET &lt;base_uri&gt;/settings/event_subscriptions/&lt;subscriber_id&gt;</a></h4>
+<p>get Event Subscription. <subscriber_id> is EventSubscription.subscriber_id  
+</p>
+<h5>[Request]:</h5>
+<ul>
+<li><strong>Body</strong> : none </li>
+</ul>
+<h5>[Response]:</h5>
+<ul>
+<li><strong>Status Code</strong> : 200</li>
+<li><strong>Body</strong> : <a href="./DataClass.html#EventSubscription">EventSubscription</a></li>
+</ul>
+</body>
+</html>

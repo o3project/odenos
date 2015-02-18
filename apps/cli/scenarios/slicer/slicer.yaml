@@ -1,0 +1,181 @@
+#
+# SLICER CONFIG 
+# 
+
+# === GENERATOR DECLARATIONS ===
+- producer: topo_ring
+  class: Topology
+  topo_type: ring
+  nodes: 10 
+  eports: 100
+
+- producer: topo_mesh
+  class: Topology
+  topo_type: mesh 
+  nodes: 10 
+  eports: 100 # The number of unconnected ports
+
+- producer: topo_linear
+  class: Topology
+  topo_type: linear 
+  nodes: 10 
+  eports: 100 
+
+# InPacket generator
+- macro: start 
+  description: Starts InPacket generator at Generator
+  usage: start <frequency>
+  scenario:
+    - put: /gen/env
+      body:
+        nodePrefix: node
+        portPrefix: port
+        driverPrefix: gen
+        nodeRange: [1, 10]
+        portRange: [11, 110]  # eports
+        #samplePolicy: RANDOM_NODE
+        samplePolicy: RANDOM_NODE_LINEAR
+        dump: true 
+    - put: /gen/control
+      body:
+        frequency: _int{0}  # in msec 
+        generating: true
+        payload: "Guten Tag OdenOS!"
+        #maxSeqno: 0 
+
+- macro: stats
+  description: Prints out statistics at Generator
+  usage: stats
+  scenario:
+    - get: /gen/stats
+
+- macro: stop
+  description: Stops InPacket generation at Generator
+  usage: stop
+  scenario:
+    - put: /gen/control
+      body:
+        generating: false 
+    - assert:
+        status: 2\d{2}
+
+# === TRANSFORM DECLARATIONS ===
+- transform: create_lsw  # slice: {0}
+  put: /systemmanager/components/lsw{0}
+  body:
+    type: LearningSwitch
+    id: lsw{0}
+    cm_id: romgr1
+- transform: create_nw  # slice: {0}
+  put: /systemmanager/components/network{0}
+  body:
+    type: Network
+    id: network{0}
+    cm_id: romgr1
+- transform: verbose_event_port_off
+  put: /network{0}/settings/verbose_event/port
+  body: "false"
+- transform: verbose_event_link_off
+  put: /network{0}/settings/verbose_event/link
+  body: "false"
+- transform: slicer_conn  # slice: {0}
+  put: /systemmanager/connections/slicer_nw{0}
+  body:
+    id: slicer_nw{0}
+    type: LogicAndNetwork
+    connection_type: sliver
+    logic_id: slicer 
+    network_id: network{0}
+- transform: lsw_conn  # slice: {0}
+  put: /systemmanager/connections/lsw_nw{0}
+  body:
+    id: lsw_nw{0}
+    type: LogicAndNetwork
+    connection_type: sliver
+    logic_id: lsw{0}
+    network_id: network{0}
+- transform: slice_condition 
+  put: /sliver/settings/slice_condition_table/{1}/conditions/slicecondition{4}
+  body:
+    id: slicecondition{4}
+    type: BasicSliceCondition
+    connection: slicer_nw{0}
+    in_node: node{2}
+    in_port: port{3} 
+
+# === MACRO DECLARATIONS ===
+
+# Create components
+- macro: create_comp
+  scenario:
+    - pipeline:
+      - topo_linear: [slice]
+      - broadcast:
+        - [create_lsw, rest_request]
+        - [create_nw, rest_request]
+        - [verbose_event_port_off, rest_request]
+        - [verbose_event_link_off, rest_request]
+    - put: /systemmanager/components/sliver
+      body:
+        type: Slicer 
+        id: slicer
+        cm_id: romgr1
+    - put: /systemmanager/components/network1
+      body:
+        type: Network
+        id: network1
+        cm_id: romgr1
+    - put: /network1/settings/verbose_event/port
+      body: "false"
+    - put: /network1/settings/verbose_event/link
+      body: "false"
+    - put: /systemmanager/components/gen
+      body:
+        type: Generator 
+        id: gen 
+        cm_id: romgr1
+
+# Create connections
+- macro: create_conn
+  scenario:
+    - put: /systemmanager/connections/slicer_nw00
+      body:
+        id: slicer_nw00 
+        type: LogicAndNetwork
+        connection_type: original
+        logic_id: slicer 
+        network_id: network1
+    - pipeline:
+      - topo_linear: [slice]
+      - broadcast:
+        - [slicer_conn, rest_request]
+        - [lsw_conn, rest_request]
+    - put: /systemmanager/connections/gen
+      body:
+        id: gen 
+        type: LogicAndNetwork
+        connection_type: original
+        logic_id: gen 
+        network_id: network1
+
+# Update slice conditions
+- macro: create_slices
+  scenario:
+    - pipeline:
+      - topo_linear: 
+        - slice_condition
+        - fixed
+      - slice_condition
+      - rest_request
+      
+# === Create components, connections and ring topo, then initiate CLI ===
+# NOTE: The following is executed when clio is initiated with this file
+# without -p option.
+
+- macros:
+  - create_comp
+  - create_conn
+  - create_topo linear
+  - create_slices
+
+- cli

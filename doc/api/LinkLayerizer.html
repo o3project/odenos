@@ -1,0 +1,342 @@
+﻿<!DOCTYPE HTML PUBLIC '-//W3C//DTD HTML 4.01//EN' 'http://www.w3.org/TR/html4/strict.dtd'>
+<html>
+<head>
+<meta http-equiv='Content-Type' content='text/html; charset=utf-8' />
+<link rel='stylesheet' href='markdown_ODENOS.css' type='text/css' />
+<title>LinkLayerizer.md</title>
+</head>
+<body>
+<h2>LinkLayerizer</h2>
+<p>LinkLayerizer integrates networks of different layers, to create a multi-layer network.</p>
+<hr />
+<p><img src="./images/LinkLayerizer.jpg" width="640"></p>
+<p>Lower network : Topology of the lower layer in a multi-layer.(e.g. optical transport network)<br />
+Upper network : Topology of the upper layer in a multi-layer.(e.g. Packet Transport network)<br />
+Layerized network :Network topology that are available in the upper layer.  
+</p>
+<h3>Operating specifications of the LinkLayerizer.</h3>
+<ul>
+<li>
+<p><strong>Topology</strong><br />
+  layerized network and the upper network, the same topology.  
+</p>
+</li>
+<li>
+<p><strong>Flows</strong><br />
+  Flow will be reflected in the upper network when it is set at layerized network.<br />
+  flow of lower network that satisfies the condition(*) is converted to link of layerized network.  
+</p>
+</li>
+</ul>
+<p>(*)Flow connecting the boundary port each other in the underlying network has been set.  
+</p>
+<ul>
+<li>
+<p><strong>Packets</strong><br />
+  LinkLayerizer will drop it.</p>
+</li>
+<li>
+<p><strong>boundary</strong><br />
+ Lower network and upper network, are connected through the boundary information.<br />
+ The boundary information is need on &quot;network&quot; and &quot;node&quot; and &quot;port&quot;. </p>
+</li>
+<li>
+<p><strong>Create Instance of LinkLayerizer.</strong></p>
+</li>
+</ul>
+<p>Generate an instance of LinkLayerizer by performing a PUT(or POST) to the System Manager.</p>
+<p><a href="./SystemManager.html#PUTcomponents_id">PUT &lt;base_uri&gt;/components/&lt;comp_id&gt;</a></p>
+<table>
+<thead>
+<tr>
+	<th><strong>key</strong></th>
+	<th><strong>value</strong></th>
+	<th><strong>description</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+	<td>id</td>
+	<td>&lt;String&gt;</td>
+	<td>Unique Identifier in ODENOS.</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>&quot;LinkLayerizer&quot;</td>
+	<td>ObjectType</td>
+</tr>
+<tr>
+	<td>cm_id</td>
+	<td>&lt;String&gt;</td>
+	<td>Specify the <a href="./DataClass.html#ObjectProperty">componentManager.Property.id</a> to generate an instance. (Optional)</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>Component Connections</strong></li>
+</ul>
+<p>Connection of LinkLayerizer and Network by performing a PUT( or POST) to the System Manager.</p>
+<table>
+<thead>
+<tr>
+	<th>network</th>
+	<th>Connection possible number</th>
+	<th>connection_type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+	<td>lower network</td>
+	<td>Only one</td>
+	<td>&quot;lower&quot;</td>
+</tr>
+<tr>
+	<td>upper network</td>
+	<td>Only one</td>
+	<td>&quot;upper&quot;</td>
+</tr>
+<tr>
+	<td>layerized network</td>
+	<td>Only one</td>
+	<td>&quot;layerized&quot;</td>
+</tr>
+</tbody>
+</table>
+<p><a href="./SystemManager.html#PUTconnections_id">PUT &lt;base_uri&gt;/connections/&lt;conn_id&gt;</a></p>
+<table>
+<thead>
+<tr>
+	<th><strong>key</strong></th>
+	<th><strong>value</strong></th>
+	<th><strong>description</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+	<td>id</td>
+	<td>&lt;String&gt;</td>
+	<td>Unique Identifier in ODENOS.</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>&quot;LogicAndNetwork&quot;</td>
+	<td>&nbsp;</td>
+</tr>
+<tr>
+	<td>connection_type</td>
+	<td>&quot;lower&quot; or  &quot;upper&quot; or &quot;layerized&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>state</td>
+	<td>none</td>
+	<td>default &quot;initializing&quot;</td>
+</tr>
+<tr>
+	<td>logic_id</td>
+	<td>&lt;String&gt;</td>
+	<td>LinkLayerizer ID</td>
+</tr>
+<tr>
+	<td>network_id</td>
+	<td>&lt;String&gt;</td>
+	<td>Network ID</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3>REST APIs</h3>
+<ul>
+<li><a href="#GETproperty">GET &lt;base_uri&gt;/property</a></li>
+<li><a href="#PUTproperty">PUT &lt;base_uri&gt;/property</a></li>
+<li><a href="#GETsettings">GET &lt;base_uri&gt;/settings</a></li>
+<li><a href="#GETboundaries">GET &lt;base_uri&gt;/settings/boundaries</a></li>
+<li><a href="#POSTboundaries">POST &lt;base_uri&gt;/settings/boundaries</a></li>
+<li><a href="#GETboundaries_id">GET &lt;base_uri&gt;/settings/boundaries/&lt;boundary_id&gt;</a></li>
+<li><a href="#PUTboundaries_id">PUT &lt;base_uri&gt;/settings/boundaries/&lt;boundary_id&gt;</a></li>
+<li><a href="#DELETEboundaries_id">DELETE &lt;base_uri&gt;/settings/boundaries/&lt;boundary_id&gt;</a></li>
+<li><a href="#PUTupper_link_sync">PUT &lt;base_uri&gt;/settings/settings/upper_link_sync</a></li>
+<li><a href="#GETlower_flows">GET &lt;base_uri&gt;/lower_flows</a></li>
+<li><a href="#GETlink_id">GET &lt;base_uri&gt;/lower_flows/&lt;link_id&gt;</a></li>
+<li><a href="#GETlayerized_links">GET &lt;base_uri&gt;/layerized_links</a></li>
+<li><a href="#GETflow_id">GET &lt;base_uri&gt;/layerized_links/&lt;flow_id&gt;</a></li>
+</ul>
+<hr />
+<h4><a name="GETproperty"> GET &lt;base_uri&gt;/property</a></h4>
+<p>get Object property.</p>
+<h5>[Request]:</h5>
+<ul>
+<li><strong>Body</strong> : none </li>
+</ul>
+<h5>[Response]:</h5>
+<ul>
+<li><strong>Status Code</strong> : 200</li>
+<li><strong>Body</strong> :  <a href="./DataClass.html#ObjectProperty">ObjectProperty</a></li>
+</ul>
+<hr />
+<h4><a name="PUTproperty"> PUT &lt;base_uri&gt;/property</a></h4>
+<p>update Object property.</p>
+<h5>[Request]:</h5>
+<ul>
+<li><strong>Body</strong> :  <a href="./DataClass.html#ObjectProperty">ObjectProperty</a></li>
+</ul>
+<h5>[Response]:</h5>
+<ul>
+<li><strong>Status Code</strong> : 200</li>
+<li><strong>Body</strong> :  <a href="./DataClass.html#ObjectProperty">ObjectProperty</a></li>
+</ul>
+<hr />
+<h4><a name="GETsettings"> GET &lt;base_uri&gt;/settings</a></h4>
+<p>Get Setting boundaries List, and relationship of the federated flow id and original flow id.</p>
+<h5>[Request]:</h5>
+<ul>
+<li><strong>Body</strong> : none </li>
+</ul>
+<h5>[Response]:</h5>
+<ul>
+<li><strong>Status Code</strong> : 200</li>
+<li><strong>Body</strong> :  boundaries, federated_network_flow, original_network_flow</li>
+</ul>
+<hr />
+<h4><a name="GETboundaries">GET &lt;base_uri&gt;/settings/boundaries</a></h4>
+<p>Get Boundaries. Boundaries are Boundary control table. Boundaries are dict.(key:boundary_id, value:boundary object)</p>
+<h5>[Request]:</h5>
+<ul>
+<li><strong>Body</strong> : none </li>
+</ul>
+<h5>[Response]:</h5>
+<ul>
+<li><strong>Status Code</strong> : 200</li>
+<li><strong>Body</strong> : dict &lt; <a href="./DataClass.html#LinkLayerizerBoundary">LinkLayerizerBoundary</a>.id,
+<a href="./DataClass.html#LinkLayerizerBoundary">LinkLayerizerBoundary</a> &gt;</li>
+</ul>
+<hr />
+<h4><a name="POSTboundaries">POST &lt;base_uri&gt;/settings/boundaries</a></h4>
+<p>Set Boundary.  &lt;boundary_id&gt; is automatically assigned.<br />
+after the send event to &quot;ObjectSettingsChanged&quot;  
+</p>
+<h5>[Request]:</h5>
+<ul>
+<li><strong>Body</strong> : <a href="./DataClass.html#LinkLayerizerBoundary">LinkLayerizerBoundary</a></li>
+</ul>
+<h5>[Response]:</h5>
+<ul>
+<li><strong>Status Code</strong> : 200</li>
+<li><strong>Body</strong> : <a href="./DataClass.html#LinkLayerizerBoundary">LinkLayerizerBoundary</a></li>
+</ul>
+<hr />
+<h4><a name="GETboundaries_id">GET &lt;base_uri&gt;/settings/boundaries/&lt;boundary_id&gt;</a></h4>
+<p>Get LinkLayerizer Boundary. </p>
+<h5>[Request]:</h5>
+<ul>
+<li><strong>Body</strong> : none </li>
+</ul>
+<h5>[Response]:</h5>
+<ul>
+<li><strong>Status Code</strong> : 200</li>
+<li><strong>Body</strong> : <a href="./DataClass.html#LinkLayerizerBoundary">LinkLayerizerBoundary</a></li>
+</ul>
+<hr />
+<h4><a name="PUTboundaries_id">PUT &lt;base_uri&gt;/settings/boundaries/&lt;boundary_id&gt;</a></h4>
+<p>Set Boundary. after the send event to &quot;ObjectSettingsChanged&quot;  
+</p>
+<h5>[Request]:</h5>
+<ul>
+<li><strong>Body</strong> : <a href="./DataClass.html#LinkLayerizerBoundary">LinkLayerizerBoundary</a></li>
+</ul>
+<h5>[Response]:</h5>
+<ul>
+<li><strong>Status Code</strong> : 200</li>
+<li><strong>Body</strong> : <a href="./DataClass.html#LinkLayerizerBoundary">LinkLayerizerBoundary</a></li>
+</ul>
+<hr />
+<h4><a name="DELETEboundaries_id">DELETE &lt;base_uri&gt;/settings/boundaries/&lt;boundary_id&gt;</a></h4>
+<p>Delete Boundary. after the send event to &quot;ObjectSettingsChanged&quot;  
+</p>
+<h5>[Request]:</h5>
+<ul>
+<li><strong>Body</strong> : none </li>
+</ul>
+<h5>[Response]:</h5>
+<ul>
+<li><strong>Status Code</strong> : 200</li>
+<li><strong>Body</strong> : none </li>
+</ul>
+<hr />
+<h4><a name="PUTupper_link_sync">PUT &lt;base_uri&gt;/settings/upper_link_sync</a></h4>
+<p>If &quot;True&quot; To reflect the Link that you created in the layerized network to upper network.</p>
+<h5>[Request]:</h5>
+<ul>
+<li><strong>Body</strong> : sync </li>
+</ul>
+<h5>[Response]:</h5>
+<ul>
+<li><strong>Status Code</strong> : 200</li>
+<li><strong>Body</strong> : sync true or false </li>
+</ul>
+<table>
+<thead>
+<tr>
+	<th><strong>key</strong></th>
+	<th><strong>value</strong></th>
+	<th><strong>description</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+	<td>sync</td>
+	<td>&lt;boolean&gt;</td>
+	<td>&quot;True&quot;:Reflect upper network link.(default) <br> &quot;False&quot;:Does not reflect upper network link.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h4><a name="GETlower_flows">GET &lt;base_uri&gt;/lower_flows</a></h4>
+<p>Get relationship of the layerized link id and original flow id. (Key is layerized link id)</p>
+<h5>[Request]:</h5>
+<ul>
+<li><strong>Body</strong> : none </li>
+</ul>
+<h5>[Response]:</h5>
+<ul>
+<li><strong>Status Code</strong> : 200</li>
+<li><strong>Body</strong> : dict &lt; <a href="./DataClass.html#Link">Link</a>.link_id, list [ <a href="./DataClass.html#Flow">Flows</a>.flow_id] &gt;</li>
+</ul>
+<hr />
+<h4><a name="GETlink_id">GET &lt;base_uri&gt;/lower_flows/&lt;link_id&gt;</a></h4>
+<p>Get original flow_id corresponding to layerized link_id.</p>
+<h5>[Request]:</h5>
+<ul>
+<li><strong>Body</strong> : none </li>
+</ul>
+<h5>[Response]:</h5>
+<ul>
+<li><strong>Status Code</strong> : 200</li>
+<li><strong>Body</strong> : list[<a href="./DataClass.html#Flow">Flow</a>.flow_id]</li>
+</ul>
+<hr />
+<h4><a name="GETlayerized_links">GET &lt;base_uri&gt;/layerized_links</a></h4>
+<p>Get relationship of the layerized link_id and original flow_id. (Key is original flow_id)</p>
+<h5>[Request]:</h5>
+<ul>
+<li><strong>Body</strong> : none </li>
+</ul>
+<h5>[Response]:</h5>
+<ul>
+<li><strong>Status Code</strong> : 200</li>
+<li><strong>Body</strong> : dict &lt; <a href="./DataClass.html#Flow">Flow</a>.flow_id, <a href="./DataClass.html#Link">Link</a>.link_id &gt;</li>
+</ul>
+<hr />
+<h4><a name="GETflow_id">GET &lt;base_uri&gt;/layerized_links/&lt;flow_id&gt;</a></h4>
+<p>Get layerized link_id corresponding to original flow_id.</p>
+<h5>[Request]:</h5>
+<ul>
+<li><strong>Body</strong> : none </li>
+</ul>
+<h5>[Response]:</h5>
+<ul>
+<li><strong>Status Code</strong> : 200</li>
+<li><strong>Body</strong> : <a href="./DataClass.html#Link">Link</a>.link_id</li>
+</ul>
+</body>
+</html>

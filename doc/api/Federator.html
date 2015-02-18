@@ -1,0 +1,356 @@
+﻿<!DOCTYPE HTML PUBLIC '-//W3C//DTD HTML 4.01//EN' 'http://www.w3.org/TR/html4/strict.dtd'>
+<html>
+<head>
+<meta http-equiv='Content-Type' content='text/html; charset=utf-8' />
+<link rel='stylesheet' href='markdown_ODENOS.css' type='text/css' />
+<title>Federator.md</title>
+</head>
+<body>
+<h2>Federator</h2>
+<p>Federater provide the ability to create a fedreted network to integrate original Network.</p>
+<hr />
+<p><img src="./images/Federator.jpg" width="640"></p>
+<h3>Operating specifications of the Federator.</h3>
+<ul>
+<li>
+<p><strong>Topology</strong><br />
+ Federated network to create by integrating the original network.<br />
+ Link in Federated network the original network It represent in baundarys.<br />
+ Update topology in the original network is reflected in the sliver network.  
+</p>
+</li>
+<li>
+<p><strong>Flows</strong><br />
+ If you set the Flow to federated network, the Flow is reflected in original networks by Federator.original flow is split in consideration of the baundary.
+ When flow status of the all original network is changed to &quot;established&quot;, flow status of federated network is to change the &quot;established&quot;.  
+</p>
+</li>
+<li>
+<p><strong>Packets</strong><br />
+ InPacket transfer from original network to federated network.<br />
+ OutPacket transfer from federated network to original network.<br />
+ If port_id of the InPacket matches any of the port_id of boundaries, Federator will drop it.  
+</p>
+</li>
+<li>
+<p><strong>boundary</strong><br />
+ Original network each other, are connected through the boundary information.<br />
+ The boundary information is need on &quot;network&quot; and &quot;node&quot; and &quot;port&quot;. </p>
+</li>
+<li>
+<p><strong>Create Instance of Federator.</strong></p>
+</li>
+</ul>
+<p>Generate an instance of Federator by performing a PUT(or POST) to the System Manager.</p>
+<p><a href="./SystemManager.html#PUTcomponents_id">PUT &lt;base_uri&gt;/components/&lt;comp_id&gt;</a></p>
+<table>
+<thead>
+<tr>
+	<th><strong>key</strong></th>
+	<th><strong>value</strong></th>
+	<th><strong>description</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+	<td>id</td>
+	<td>&lt;String&gt;</td>
+	<td>Unique Identifier in ODENOS.</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>&quot;Federator&quot;</td>
+	<td>ObjectType</td>
+</tr>
+<tr>
+	<td>cm_id</td>
+	<td>&lt;String&gt;</td>
+	<td>Specify the <a href="./DataClass.html#ObjectProperty">componentManager.Property.id</a> to generate an instance. (Optional)</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>Component Connections</strong></li>
+</ul>
+<p>Connection of Federator and Network by performing a PUT(or POST) to the System Manager.</p>
+<table>
+<thead>
+<tr>
+	<th>network</th>
+	<th>Connection possible number</th>
+	<th>connection_type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+	<td>original network</td>
+	<td>One or more</td>
+	<td>&quot;original&quot;</td>
+</tr>
+<tr>
+	<td>federated network</td>
+	<td>Only one</td>
+	<td>&quot;federated&quot;</td>
+</tr>
+</tbody>
+</table>
+<p><a href="./SystemManager.html#PUTconnections_id">PUT &lt;base_uri&gt;/connections/&lt;conn_id&gt;</a></p>
+<table>
+<thead>
+<tr>
+	<th><strong>key</strong></th>
+	<th><strong>value</strong></th>
+	<th><strong>description</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+	<td>id</td>
+	<td>&lt;String&gt;</td>
+	<td>Unique Identifier in ODENOS.</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>&quot;LogicAndNetwork&quot;</td>
+	<td>&nbsp;</td>
+</tr>
+<tr>
+	<td>connection_type</td>
+	<td>&quot;original&quot; or  &quot;federated&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>state</td>
+	<td>none</td>
+	<td>default &quot;initializing&quot;</td>
+</tr>
+<tr>
+	<td>logic_id</td>
+	<td>&lt;String&gt;</td>
+	<td>Federator ID</td>
+</tr>
+<tr>
+	<td>network_id</td>
+	<td>&lt;String&gt;</td>
+	<td>Network ID</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3>REST APIs</h3>
+<ul>
+<li><a href="#GETproperty">GET &lt;base_uri&gt;/property</a></li>
+<li><a href="#PUTproperty">PUT &lt;base_uri&gt;/property</a></li>
+<li><a href="#GETsettings">GET &lt;base_uri&gt;/settings</a></li>
+<li><a href="#GETboundaries">GET &lt;base_uri&gt;/settings/boundaries</a></li>
+<li><a href="#POSTboundaries">POST &lt;base_uri&gt;/settings/boundaries</a></li>
+<li><a href="#PUTboundaries">PUT &lt;base_uri&gt;/settings/boundaries/&lt;boundary_id&gt;</a></li>
+<li><a href="#DELETEboundaries">DELETE &lt;base_uri&gt;/settings/boundaries/&lt;boundary_id&gt;</a></li>
+<li><a href="#GETfederated_network_node">GET &lt;base_uri&gt;/federated_network_node</a></li>
+<li><a href="#GEToriginal_network_node">GET &lt;base_uri&gt;/original_network_node</a></li>
+<li><a href="#GETfederated_network_port">GET &lt;base_uri&gt;/federated_network_port</a></li>
+<li><a href="#GEToriginal_network_port">GET &lt;base_uri&gt;/original_network_port</a></li>
+<li><a href="#GETfederated_network_link">GET &lt;base_uri&gt;/federated_network_link</a></li>
+<li><a href="#GEToriginal_network_link">GET &lt;base_uri&gt;/original_network_link</a></li>
+<li><a href="#GETfederated_network_flow">GET &lt;base_uri&gt;/federated_network_flow</a></li>
+<li><a href="#GEToriginal_network_flow">GET &lt;base_uri&gt;/original_network_flow</a></li>
+</ul>
+<hr />
+<h4><a name="GETproperty"> GET &lt;base_uri&gt;/property</a></h4>
+<p>get Object property.  
+</p>
+<h5>[Request]:</h5>
+<ul>
+<li><strong>Body</strong> : none </li>
+</ul>
+<h5>[Response]:</h5>
+<ul>
+<li><strong>Status Code</strong> : 200</li>
+<li><strong>Body</strong> :  <a href="./DataClass.html#ObjectProperty">ObjectProperty</a></li>
+</ul>
+<hr />
+<h4><a name="PUTproperty"> PUT &lt;base_uri&gt;/property</a></h4>
+<p>update Object property.  
+</p>
+<h5>[Request]:</h5>
+<ul>
+<li><strong>Body</strong> :  <a href="./DataClass.html#ObjectProperty">ObjectProperty</a></li>
+</ul>
+<h5>[Response]:</h5>
+<ul>
+<li><strong>Status Code</strong> : 200</li>
+<li><strong>Body</strong> :  <a href="./DataClass.html#ObjectProperty">ObjectProperty</a></li>
+</ul>
+<hr />
+<h4><a name="GETsettings"> GET &lt;base_uri&gt;/settings</a></h4>
+<p>Get Setting boundaries List, and relationship of the federated flow id and original flow id.  
+</p>
+<h5>[Request]:</h5>
+<ul>
+<li><strong>Body</strong> : none </li>
+</ul>
+<h5>[Response]:</h5>
+<ul>
+<li><strong>Status Code</strong> : 200</li>
+<li><strong>Body</strong> :  boundaries, federated_network_flow, original_network_flow</li>
+</ul>
+<hr />
+<h4><a name="GETboundaries">GET &lt;base_uri&gt;/settings/boundaries</a></h4>
+<p>Get Boundaries.<br />
+Boundaries are Boundary control table.<br />
+Boundaries are dict.(key:boundary_id, value:boundary object)  
+</p>
+<h5>[Request]:</h5>
+<ul>
+<li><strong>Body</strong> : none </li>
+</ul>
+<h5>[Response]:</h5>
+<ul>
+<li><strong>Status Code</strong> : 200</li>
+<li><strong>Body</strong> : dict&lt;<a href="./DataClass.html#FederatorBoundary">FederatorBoundary</a>.id,  <a href="./DataClass.html#FederatorBoundary">FederatorBoundary</a> &gt;</li>
+</ul>
+<hr />
+<h4><a name="POSTboundaries">POST &lt;base_uri&gt;/settings/boundaries</a></h4>
+<p>Set Boundary.  &lt;boundary_id&gt; is automatically assigned.<br />
+after the send event to &quot;ObjectSettingsChanged&quot;  
+</p>
+<h5>[Request]:</h5>
+<ul>
+<li><strong>Body</strong> : <a href="./DataClass.html#FederatorBoundary">FederatorBoundary</a></li>
+</ul>
+<h5>[Response]:</h5>
+<ul>
+<li><strong>Status Code</strong> : 200</li>
+<li><strong>Body</strong> : <a href="./DataClass.html#FederatorBoundary">FederatorBoundary</a></li>
+</ul>
+<hr />
+<h4><a name="PUTboundaries">PUT &lt;base_uri&gt;/settings/boundaries/&lt;boundary_id&gt;</a></h4>
+<p>Set Boundary. after the send event to &quot;ObjectSettingsChanged&quot;  
+</p>
+<h5>[Request]:</h5>
+<ul>
+<li><strong>Body</strong> : <a href="./DataClass.html#FederatorBoundary">FederatorBoundary</a></li>
+</ul>
+<h5>[Response]:</h5>
+<ul>
+<li><strong>Status Code</strong> : 200</li>
+<li><strong>Body</strong> : <a href="./DataClass.html#FederatorBoundary">FederatorBoundary</a></li>
+</ul>
+<hr />
+<h4><a name="DELETEboundaries">DELETE &lt;base_uri&gt;/settings/boundaries/&lt;boundary_id&gt;</a></h4>
+<p><strong>Delete Boundary. after the send event to &quot;ObjectSettingsChanged&quot;</strong></p>
+<h5>[Request]:</h5>
+<ul>
+<li><strong>Body</strong> : none </li>
+</ul>
+<h5>[Response]:</h5>
+<ul>
+<li><strong>Status Code</strong> : 200</li>
+<li><strong>Body</strong> : none </li>
+</ul>
+<hr />
+<h4><a name="GETfederated_network_node">GET &lt;base_uri&gt;/federated_network_node</a></h4>
+<p><strong>Get relationship of the federated node id and original node id.</strong>
+(Key is original)</p>
+<h5>[Request]:</h5>
+<ul>
+<li><strong>Body</strong> : none </li>
+</ul>
+<h5>[Response]:</h5>
+<ul>
+<li><strong>Status Code</strong> : 200</li>
+<li><strong>Body</strong> : dict&lt;original_network_id::original_node_id, federated_node_id&gt;</li>
+</ul>
+<hr />
+<h4><a name="GEToriginal_network_node">GET &lt;base_uri&gt;/original_network_node</a></h4>
+<p><strong>Get relationship of the federated node id and original node id.</strong>
+(Key is federated)</p>
+<h5>[Request]:</h5>
+<ul>
+<li><strong>Body</strong> : none </li>
+</ul>
+<h5>[Response]:</h5>
+<ul>
+<li><strong>Status Code</strong> : 200</li>
+<li><strong>Body</strong> : dict&lt;federated_node_id, (original_network_id, original_node_id)&gt;</li>
+</ul>
+<hr />
+<h4><a name="GETfederated_network_port">GET &lt;base_uri&gt;/federated_network_port</a></h4>
+<p><strong>Get relationship of the federated port id and original port id.</strong>
+(Key is original)</p>
+<h5>[Request]:</h5>
+<ul>
+<li><strong>Body</strong> : none </li>
+</ul>
+<h5>[Response]:</h5>
+<ul>
+<li><strong>Status Code</strong> : 200</li>
+<li><strong>Body</strong> : dict&lt;original_network_id::original_node_id::original_port_id, (federated_node_id, federated_port_id)&gt;</li>
+</ul>
+<hr />
+<h4><a name="GEToriginal_network_port">GET &lt;base_uri&gt;/original_network_port</a></h4>
+<p><strong>Get relationship of the federated port id and original port id.</strong>
+(Key is federated)</p>
+<h5>[Request]:</h5>
+<ul>
+<li><strong>Body</strong> : none </li>
+</ul>
+<h5>[Response]:</h5>
+<ul>
+<li><strong>Status Code</strong> : 200</li>
+<li><strong>Body</strong> : dict&lt;federated_node_id::federated_port_id, (original_network_id, original_node_id, original_port_id)&gt; </li>
+</ul>
+<hr />
+<h4><a name="GETfederated_network_link">GET &lt;base_uri&gt;/federated_network_link</a></h4>
+<p><strong>Get relationship of the federated link id and original link id.</strong>
+(Key is original)</p>
+<h5>[Request]:</h5>
+<ul>
+<li><strong>Body</strong> : none </li>
+</ul>
+<h5>[Response]:</h5>
+<ul>
+<li><strong>Status Code</strong> : 200</li>
+<li><strong>Body</strong> : dict&lt;original_network_id::original_link_id, federated_link_id&gt; </li>
+</ul>
+<hr />
+<h4><a name="GEToriginal_network_link">GET &lt;base_uri&gt;/original_network_link</a></h4>
+<p><strong>Get relationship of the federated link id and original link id.</strong>
+(Key is federated)</p>
+<h5>[Request]:</h5>
+<ul>
+<li><strong>Body</strong> : none </li>
+</ul>
+<h5>[Response]:</h5>
+<ul>
+<li><strong>Status Code</strong> : 200</li>
+<li><strong>Body</strong> : dict&lt;federated_link_id, (original_network_id, original_link_id)&gt;</li>
+</ul>
+<hr />
+<h4><a name="GETfederated_network_flow">GET &lt;base_uri&gt;/federated_network_flow</a></h4>
+<p><strong>Get relationship of the federated flow id and original flow id.</strong>
+(Key is original)</p>
+<h5>[Request]:</h5>
+<ul>
+<li><strong>Body</strong> : none </li>
+</ul>
+<h5>[Response]:</h5>
+<ul>
+<li><strong>Status Code</strong> : 200</li>
+<li><strong>Body</strong> : dict&lt;original_network_id::original_flow_id, federated_flow_id&gt;</li>
+</ul>
+<hr />
+<h4><a name="GEToriginal_network_flow">GET &lt;base_uri&gt;/original_network_flow</a></h4>
+<p><strong>Get relationship of the federated flow id and original flow id.</strong>
+(Key is federated)</p>
+<h5>[Request]:</h5>
+<ul>
+<li><strong>Body</strong> : none </li>
+</ul>
+<h5>[Response]:</h5>
+<ul>
+<li><strong>Status Code</strong> : 200</li>
+<li><strong>Body</strong> : dict&lt;federated_flow_id, list[(original_network_id, original_flow_id)]&gt;</li>
+</ul>
+</body>
+</html>

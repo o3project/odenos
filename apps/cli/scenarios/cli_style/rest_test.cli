@@ -1,0 +1,56 @@
+#!cli
+
+echo Reads system properties 
+get /systemmanager/property
+get /systemmanager/component_types
+sleep 1
+
+echo Creates component instances
+put /systemmanager/components/network1:
+  type: Network
+  id: network1
+  cm_id: romgr1
+put /systemmanager/components/driver1:
+  type: DummyDriver 
+  id: driver1
+  cm_id: romgr1
+put /systemmanager/components/switch1:
+  type: LearningSwitch 
+  id: switch1 
+  cm_id: romgr1
+get /systemmanager/components
+
+echo CLI
+cli
+
+echo Makes connections among the components
+put /systemmanager/connections/conn1_driver:
+  id: conn1_driver
+  connection_type: original
+  type: LogicAndNetwork
+  logic_id: driver1
+  network_id: network1 
+put /systemmanager/connections/conn1_switch:
+  id: conn1_switch
+  connection_type: original
+  type: LogicAndNetwork
+  logic_id: switch1
+  network_id: network1 
+get /systemmanager/connections
+get /systemmanager/components/network1/topology
+get /systemmanager/components/switch1/property
+get /systemmanager/components/switch1/fdb
+
+cli
+
+echo Deletes all the instances
+delete /systemmanager/connections/conn1_switch
+delete /systemmanager/connections/conn1_driver
+delete /systemmanager/components/switch1
+delete /systemmanager/components/driver1
+delete /systemmanager/components/network1
+
+echo Make sure that all the instances have been deleted
+get /systemmanager/components/
+get /systemmanager/connections/
+

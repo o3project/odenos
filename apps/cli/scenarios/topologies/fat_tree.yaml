@@ -1,0 +1,165 @@
+#
+# FAT TREE CONFIG FOR ODENOS 
+# 
+
+# === GENERATOR DECLARATIONS ===
+#- generator: topo_fat_tree
+- producer: topo_fat_tree
+  class: Topology
+  topo_type: fat_tree 
+  networks: 1
+
+# === MACRO DECLARATIONS ===
+# InPacket generator
+- macro: start 
+  description: Starts InPacket generator at Generator
+  usage: start
+  scenario:
+    - put: /gen/env
+      body:
+        nodePrefix: node
+        portPrefix: port
+        samplePolicy: RANDOM_NODE_PORT_FAT_TREE 
+        dump: false 
+    - assert:
+        status: 2\d{2}
+    - put: /gen/control
+      body:
+        frequency: 50  # in msec 
+        generating: true
+        payload: "Guten Tag OdenOS!"
+        maxSeqno: 65535 
+    - assert:
+        status: 2\d{2}
+
+- macro: stats
+  description: Prints out statistics at Generator
+  usage: stats
+  scenario:
+    - get: /gen/stats
+
+- macro: stop
+  description: Stops InPacket generation at Generator
+  usage: stop
+  scenario:
+    - put: /gen/control
+      body:
+        generating: false 
+    - assert:
+        status: 2\d{2}
+
+# === TRANSFORM DECLARATIONS ===
+- transform: create_lsw  # slice: {0}
+  post: /systemmanager/components
+  body:
+    type: LearningSwitch
+    id: lsw{0}
+    cm_id: romgr1
+- transform: create_nw  # slice: {0}
+  post: /systemmanager/components
+  body:
+    type: Network
+    id: network{0}
+    cm_id: romgr1
+- transform: create_slicer_conn  # slice: {0}
+  post: /systemmanager/connections
+  body:
+    id: slicer_nw{0}
+    type: LogicAndNetwork
+    connection_type: sliver
+    logic_id: slicer 
+    network_id: network{0}
+- transform: create_lsw_conn  # slice: {0}
+  post: /systemmanager/connections
+  body:
+    id: lsw_nw{0}
+    type: LogicAndNetwork
+    connection_type: sliver
+    logic_id: lsw{0}
+    network_id: network{0}
+- transform: create_slice_condition 
+  put: /slicer/settings/slice_condition_table/{1}/conditions/slicecondition{4}
+  body:
+    id: slicecondition{4}
+    type: BasicSliceCondition
+    connection: slicer_nw{0}
+    in_node: node{2}
+    in_port: port{3} 
+
+# === MACRO DECLARATIONS ===
+
+# Create components
+- macro: create_comp
+  scenario:
+    - put: /systemmanager/components/lsw
+      body:
+        type: LearningSwitch 
+        id: lsw 
+        cm_id: romgr1
+    - put: /systemmanager/components/network1
+      body:
+        type: Network
+        id: network1
+        cm_id: romgr1
+    - put: /systemmanager/components/gen
+      body:
+        type: Generator 
+        id: gen 
+        cm_id: romgr1
+    - sleep: 1
+
+# Create connections
+- macro: create_conn
+  scenario:
+    - put: /systemmanager/connections/lsw
+      body:
+        id: lsw 
+        type: LogicAndNetwork
+        connection_type: original
+        logic_id: lsw 
+        network_id: network1
+    - put: /systemmanager/connections/gen
+      body:
+        id: gen 
+        type: LogicAndNetwork
+        connection_type: original
+        logic_id: gen 
+        network_id: network1
+
+# Create 
+- macro: create_fat_tree
+  scenario:
+    - pipeline:
+      - topo_fat_tree: [node]
+      - create_node
+      - rest_request
+    - pipeline:
+      - topo_fat_tree: [port]
+      - create_port
+      - rest_request
+    - pipeline:
+      - topo_fat_tree: [eport]
+      - create_port
+      - rest_request
+    - pipeline:
+      - topo_fat_tree: [link]
+      - create_link
+      - rest_request
+- macro: verbose_off
+  scenario:
+    - put: /network1/settings/verbose_event/port
+      body: "false"
+    - put: /network1/settings/verbose_event/link
+      body: "false"
+
+# === Create components, connections and ring topo, then initiate CLI ===
+# NOTE: The following is executed when clio is initiated with this file
+# without -p option.
+
+- macros:
+  - create_comp
+  - create_conn
+  - verbose_off
+  - create_fat_tree
+
+- cli

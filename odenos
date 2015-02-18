@@ -1,0 +1,248 @@
+#!/bin/bash
+
+# Copyright 2015 NEC Corporation.                                          #
+#                                                                          #
+# Licensed under the Apache License, Version 2.0 (the "License");          #
+# you may not use this file except in compliance with the License.         #
+# You may obtain a copy of the License at                                  #
+#                                                                          #
+#   http://www.apache.org/licenses/LICENSE-2.0                             #
+#                                                                          #
+# Unless required by applicable law or agreed to in writing, software      #
+# distributed under the License is distributed on an "AS IS" BASIS,        #
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. #
+# See the License for the specific language governing permissions and      #
+# limitations under the License.                                           #
+
+
+if [ -z "${JAVA_HOME}" ]; then
+    echo "set JAVA_HOME."
+    exit 1
+fi
+
+JAVAC=$JAVA_HOME/bin/javac
+JAVA=$JAVA_HOME/bin/java
+PYTHON=python
+MVN=mvn
+TREMA=~/trema-edge/trema
+
+ODENOS_ROOT=`pwd`
+
+ODENOS_CONF=$ODENOS_ROOT/etc
+ODENOS_CONF_FILE=$ODENOS_CONF/odenos.conf
+ODENOS_CONF_FILE_TMP=$ODENOS_CONF/odenos.conf.tmp
+ODENOS_LIB=$ODENOS_ROOT/lib
+ODENOS_LOG=var/log
+ODENOS_TMP=/tmp
+
+ODENOS_OPT="-Xms512m -Xmx512m -server"
+ODENOS_MAIN=org.o3project.odenos.core.Odenos
+FILE_ODENOS_SYSTEM_PID=$ODENOS_TMP/odenos_system.pid
+
+##########################################################################
+# common functions                                                       #
+##########################################################################
+check_pid_file() {
+    pid_file=$1
+    if [ -f $pid_file ]; then
+	pid=`cat $pid_file`
+	kill -0 $pid > /dev/null 2>&1
+    else
+	return 1
+    fi
+}
+
+read_config_file() {
+    [ -f $ODENOS_CONF_FILE_TMP ] || return 1
+
+    count=0
+    while read line; do
+	KEY=`echo $line | cut -d " " -f 1 | tr -d " "`
+	if [ "$KEY" = "PROCESS" ]; then
+	    VAL=`echo $line | cut -d " " -f 2 | tr -d " "`
+	    odenos_process=(${odenos_process[@]} $VAL)
+	    count=`expr $count + 1`
+	fi
+    done < $ODENOS_CONF_FILE_TMP
+    
+    for proc in ${odenos_process[@]}
+    do
+	PROC_NAME=`echo $proc | cut -d "," -f 1 | tr -d " "`
+	PROC_TYPE=`echo $proc | cut -d "," -f 2 | tr -d " "`
+	PROC_DIR=`echo $proc | cut -d "," -f 3 | tr -d " "`
+	echo $PROC_NAME, $PROC_TYPE, $PROC_DIR
+    done
+}
+
+set_classpath() {
+    CLASSPATH=.:`echo \`ls lib/java/*\` | tr " " :`:$CLASSPATH
+}
+
+##########################################################################
+# main functions                                                         #
+##########################################################################
+start_system() {
+    if check_pid_file $FILE_ODENOS_SYSTEM_PID; then
+        echo "odenos core system is already running"
+        return 1
+    fi
+    set_classpath
+    $JAVA -classpath $CLASSPATH:. ${ODENOS_OPT} \
+	-Dlog4j.configuration=file:${ODENOS_CONF}/log_java.conf \
+	-Dapp.log=${ODENOS_LOG}/odenos_system.log \
+	$ODENOS_MAIN -s &
+    echo $! > $FILE_ODENOS_SYSTEM_PID
+}
+
+stop_system() {
+    if check_pid_file $FILE_ODENOS_SYSTEM_PID; then
+	kill `cat $FILE_ODENOS_SYSTEM_PID`  > /dev/null 2>&1
+	unlink $FILE_ODENOS_SYSTEM_PID      > /dev/null 2>&1
+    else
+	echo "odenos core system is not running"
+    fi
+}
+
+start_process() {
+    for proc in ${odenos_process[@]}
+    do
+	PROC_NAME=`echo $proc | cut -d "," -f 1 | tr -d " "`
+	PROC_TYPE=`echo $proc | cut -d "," -f 2 | tr -d " "`
+	PROC_DIR=`echo $proc | cut -d "," -f 3 | tr -d " "`
+
+	file=$ODENOS_TMP/odenos_${PROC_NAME}.pid
+
+	if check_pid_file $file; then
+            echo "odenos $PROC_NAME is already running"
+            return 1
+	fi
+
+	if [ $PROC_TYPE = "java" ]; then
+	    # start java RemoteObjectManager
+	    set_classpath
+
+	    $JAVA -classpath $CLASSPATH:. ${ODENOS_OPT} \
+		-Dlog4j.configuration=file:${ODENOS_CONF}/log_java.conf \
+		-Dapp.log=${ODENOS_LOG}/odenos_${PROC_NAME}.log \
+		$ODENOS_MAIN -r ${PROC_NAME} -d ${PROC_DIR} &
+
+	    echo $! > $ODENOS_TMP/odenos_${PROC_NAME}.pid
+
+	elif [ $PROC_TYPE = "python" ]; then
+	    # start python RemoteObjectManager
+	    PYTHONPATH=${ODENOS_LIB}/python:$PYTHONPATH \
+		LOGGING_CONF=${ODENOS_CONF}/log_python.conf \
+		APP_LOG=${ODENOS_LOG}/odenos_${PROC_NAME}.log \
+		$PYTHON ${ODENOS_LIB}/python/org/o3project/odenos/core/odenos.py \
+		-r ${PROC_NAME} -d ${PROC_DIR} &
+
+	    echo $! > $ODENOS_TMP/odenos_${PROC_NAME}.pid
+
+	elif [ $PROC_TYPE = "ruby" ]; then
+	    # start ruby RemoteObjectManager
+	    echo $PROC_NAME, $PROC_TYPE, $PROC_DIR
+            $TREMA run -d "./src/main/ruby/org/o3project/odenos/core/odenos.rb --cmpmgr=$PROC_NAME"
+	fi
+	
+    done
+}
+
+stop_process() {
+    for proc in ${odenos_process[@]}
+    do
+	PROC_NAME=`echo $proc | cut -d "," -f 1 | tr -d " "`
+	PROC_TYPE=`echo $proc | cut -d "," -f 2 | tr -d " "`
+	PROC_DIR=`echo $proc | cut -d "," -f 3 | tr -d " "`
+
+	file=$ODENOS_TMP/odenos_${PROC_NAME}.pid
+	if check_pid_file ${file}; then
+	    kill `cat ${file}`  > /dev/null 2>&1
+	    unlink ${file}      > /dev/null 2>&1
+	else
+	    echo "odenos $PROC_NAME is not running"
+	fi
+	if [ $PROC_TYPE = "ruby" ]; then
+            $TREMA killall
+	fi
+    done
+}
+
+start() {
+    echo "starting ODENOS"
+    cp $ODENOS_CONF_FILE $ODENOS_CONF_FILE_TMP
+    read_config_file
+
+    start_system
+    sleep 3
+    start_process
+}
+
+stop() {
+    echo "stop ODENOS"
+    read_config_file
+    rm $ODENOS_CONF_FILE_TMP > /dev/null 2>&1
+    stop_process
+    sleep 1
+    stop_system
+}
+
+status() {
+    read_config_file
+    if check_pid_file $FILE_ODENOS_SYSTEM_PID; then
+	echo "odenos core system is running"
+    else
+	echo "odenos core system is not running"
+    fi
+
+    for proc in ${odenos_process[@]}
+    do
+	PROC_NAME=`echo $proc | cut -d "," -f 1 | tr -d " "`
+	PROC_TYPE=`echo $proc | cut -d "," -f 2 | tr -d " "`
+	PROC_DIR=`echo $proc | cut -d "," -f 3 | tr -d " "`
+
+	file=$ODENOS_TMP/odenos_${PROC_NAME}.pid
+	if check_pid_file ${file}; then
+	    echo "odenos $PROC_NAME is running running"
+	else
+	    echo "odenos $PROC_NAME is not running"
+	fi
+    done
+}
+
+set_conf() {
+  if [ $# = 3 ]; then
+    case "$2" in
+    -c)
+      echo Read confing files :: $3
+      ODENOS_CONF_FILE=$3
+    esac
+  fi
+}
+
+show_help() {
+    echo >&2 "usage : $0 [start|stop|restart|status]"
+    echo >&2 ">$0 start     (./etc/odenos.conf is loaded by default.)"
+    echo >&2 ">$0 start -c [FILE]     (loaded original confing flie.)"
+}
+
+case "$1" in
+    start)
+        set_conf $@
+	start
+	;;
+    stop)
+	stop
+	;;
+    status)
+        set_conf $@
+	status
+	;;
+    restart)
+	stop
+        echo `pwd`
+        set_conf $@
+	start
+	;;
+    *)
+	show_help
+esac

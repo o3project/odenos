@@ -1,0 +1,3269 @@
+﻿<!DOCTYPE HTML PUBLIC '-//W3C//DTD HTML 4.01//EN' 'http://www.w3.org/TR/html4/strict.dtd'>
+<html>
+<head>
+<meta http-equiv='Content-Type' content='text/html; charset=utf-8' />
+<link rel='stylesheet' href='markdown_ODENOS.css' type='text/css' />
+<title>DataClass.md</title>
+</head>
+<body>
+<h2>ODENOS data class Objects</h2>
+<ul>
+<li>
+<a href="#Topology">Topology</a>
+<ul>
+<li><a href="#Node">Node</a></li>
+<li><a href="#Port">Port</a></li>
+<li><a href="#Link">Link</a></li>
+</ul>
+</li>
+<li>
+<a href="#Flow">Flow</a>
+<ul>
+<li><a href="#BasicFlow">BasicFlow</a></li>
+<li><a href="#OFPFlow">OFPFlow</a></li>
+</ul>
+</li>
+<li>
+<a href="#Packet">Packet</a>
+<ul>
+<li>
+<a href="#InPacket">InPacket(BasicInPacket)</a>
+<ul>
+<li><a href="#OFPInPacket">OFPInPacket</a></li>
+</ul>
+</li>
+<li>
+<a href="#OutPacket">OutPacket(BasicOutPacket)</a>
+<ul>
+<li><a href="#OFPOutPacket">OFPOutPacket</a></li>
+</ul>
+</li>
+<li><a href="#BasicFlowMatch">BasicFlowMatch</a></li>
+<li><a href="#OFPFlowMatch">OFPFlowMatch</a></li>
+<li><a href="#FlowAction">FlowAction</a></li>
+<li><a href="#OFPFlowAction">OFPFlowAction</a></li>
+<li><a href="#PacketStatus">PacketStatus</a></li>
+</ul>
+</li>
+<li><a href="#ObjectProperty">ObjectProperty</a></li>
+<li><a href="#ObjectSettings">ObjectSettings</a></li>
+<li>
+<a href="#ComponentConnection">ComponentConnection</a>
+<ul>
+<li><a href="#ConnectLogicAndNetwork">ConnectLogicAndNetwork</a></li>
+</ul>
+</li>
+<li>
+<a href="#Boundary">Boundary</a>
+<ul>
+<li><a href="#FederatorBoundary">FederatorBoundary</a></li>
+<li><a href="#LinkLayerizerBoundary">LinkLayerizerBoundary</a></li>
+</ul>
+</li>
+<li><a href="#EventSubscription">EventSubscription</a></li>
+<li>
+<a href="#Event">Event</a>
+<ul>
+<li><a href="#ObjectPropertyChanged">ObjectPropertyChanged</a></li>
+<li><a href="#ObjectSettingsChanged">ObjectSettingsChanged</a></li>
+<li><a href="#ComponentConnectionChanged">ComponentConnectionChanged</a></li>
+<li><a href="#ComponentManagerChanged">ComponentManagerChanged</a></li>
+<li><a href="#ComponentChanged">ComponentChanged</a></li>
+<li><a href="#TopologyChanged">TopologyChanged</a></li>
+<li><a href="#NodeChanged">NodeChanged</a></li>
+<li><a href="#PortChanged">PortChanged</a></li>
+<li><a href="#LinkChanged">LinkChanged</a></li>
+<li><a href="#FlowChanged">FlowChanged</a></li>
+<li><a href="#InPacketAdded">InPacketAdded</a></li>
+<li><a href="#OutPacketAdded">OutPacketAdded</a></li>
+</ul>
+</li>
+</ul>
+<hr />
+<h4><a name="Topology"> Topology</a></h4>
+<p><strong>This represent the overall topology of Network.</strong></p>
+<table>
+<thead>
+<tr>
+	<th><strong>Key</strong></th>
+	<th><strong>Value</strong></th>
+	<th><strong>Description</strong></th>
+	<th>POST</th>
+	<th>PUT</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+	<td>type</td>
+	<td>&lt;String&gt;</td>
+	<td>type is &quot;Topology&quot;</td>
+	<td>-</td>
+	<td>Mandatory</td>
+</tr>
+<tr>
+	<td>version</td>
+	<td>&lt;String&gt;</td>
+	<td>NetworkCompnent will assign valid version in response message when the request is success.</td>
+	<td>-</td>
+	<td>Mandatory (*1)</td>
+</tr>
+<tr>
+	<td>nodes</td>
+	<td>dict&lt;<a href="#Node">Node</a>.id, <a href="#Node">Node</a>&gt;</td>
+	<td><a href="#Node">Node</a> set.</td>
+	<td>-</td>
+	<td>Optional</td>
+</tr>
+<tr>
+	<td>links</td>
+	<td>dict&lt;<a href="#Link">Link</a>.id, <a href="#Link">Link</a>&gt;</td>
+	<td><a href="#Link">Link</a> set.</td>
+	<td>-</td>
+	<td>Optional</td>
+</tr>
+</tbody>
+</table>
+<p>(*1) version is assigned automatically when creating a new object.  
+</p>
+<hr />
+<h4><a name="Node"> Node</a></h4>
+<p><strong>Switch Node data class.</strong></p>
+<table>
+<thead>
+<tr>
+	<th><strong>Key</strong></th>
+	<th><strong>Value</strong></th>
+	<th><strong>Description</strong></th>
+	<th>POST</th>
+	<th>PUT</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+	<td>type</td>
+	<td>&lt;String&gt;</td>
+	<td>type is &quot;Node&quot;</td>
+	<td>Mandatory</td>
+	<td>Mandatory</td>
+</tr>
+<tr>
+	<td>version</td>
+	<td>&lt;String&gt;</td>
+	<td>NetworkCompnent will assign valid version in response message when the request is success.</td>
+	<td>- (*1)</td>
+	<td>Mandatory (*1)</td>
+</tr>
+<tr>
+	<td>node_id</td>
+	<td>&lt;String&gt;</td>
+	<td>Unique node's Identifier in this topology</td>
+	<td>- (*2)</td>
+	<td>Mandatory</td>
+</tr>
+<tr>
+	<td>ports</td>
+	<td>dict&lt;<a href="#Port">Port</a>.port_id, <a href="#Port">Port</a>&gt;</td>
+	<td>Set of ports in this Node.</td>
+	<td>Optional</td>
+	<td>Optional</td>
+</tr>
+<tr>
+	<td>attributes</td>
+	<td>dict{&lt;String&gt;, &lt;String&gt;}</td>
+	<td>See the table attributes.</td>
+	<td>Optional</td>
+	<td>Optional</td>
+</tr>
+</tbody>
+</table>
+<p>(*1) version is assigned automatically when creating a new object.<br />
+  (*2) node_id is assigned automatically.</p>
+<h5>Attributes</h5>
+<table>
+<thead>
+<tr>
+	<th><strong>Key</strong></th>
+	<th><strong>Value</strong></th>
+	<th><strong>Description</strong></th>
+	<th>init</th>
+	<th>Direction of the reflected(*)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+	<td>admin_status</td>
+	<td>&lt;String&gt;</td>
+	<td>&quot;UP&quot; : normal operation. <br> &quot;DOWN&quot; : failure operation.</td>
+	<td>&quot;UP&quot;</td>
+	<td>Upper -&gt; Lower</td>
+</tr>
+<tr>
+	<td>oper_status</td>
+	<td>&lt;String&gt;</td>
+	<td>&quot;UP&quot; : Physical device normal. <br> &quot;DOWN&quot; : Physical device failure.</td>
+	<td>any</td>
+	<td>Lower -&gt; Upper</td>
+</tr>
+<tr>
+	<td>physical_id</td>
+	<td>&lt;String&gt;</td>
+	<td>ID of the physical device. Numbering in the driver.<br> For example, openflow driver to set the &quot;dpid&quot;</td>
+	<td>any</td>
+	<td>Lower  -&gt;  Upper</td>
+</tr>
+<tr>
+	<td>vendor</td>
+	<td>&lt;String&gt;</td>
+	<td>Vendor name is set.<br> For example, It is used for the GUI system.</td>
+	<td>any</td>
+	<td>Lower -&gt; Upper</td>
+</tr>
+</tbody>
+</table>
+<p>(*) <strong>Lower</strong> : Driver side. <strong>Upper</strong> : Controller side.</p>
+<hr />
+<h4><a name="Port"> Port</a></h4>
+<p><strong>Switch Port data class.</strong></p>
+<table>
+<thead>
+<tr>
+	<th><strong>Key</strong></th>
+	<th><strong>Value</strong></th>
+	<th><strong>Description</strong></th>
+	<th>POST</th>
+	<th>PUT</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+	<td>type</td>
+	<td>&lt;String&gt;</td>
+	<td>type is &quot;Port&quot;</td>
+	<td>Mandatory</td>
+	<td>Mandatory</td>
+</tr>
+<tr>
+	<td>version</td>
+	<td>&lt;String&gt;</td>
+	<td>NetworkCompnent will assign valid version in response message when the request is success.</td>
+	<td>-(*1)</td>
+	<td>Mandatory(*1)</td>
+</tr>
+<tr>
+	<td>port_id</td>
+	<td>&lt;String&gt;</td>
+	<td>Unique port's Identifier in this node</td>
+	<td>-(*2)</td>
+	<td>Mandatory</td>
+</tr>
+<tr>
+	<td>node_id</td>
+	<td>&lt;String&gt;</td>
+	<td>Owner of this port</td>
+	<td>Mandatory</td>
+	<td>Mandatory</td>
+</tr>
+<tr>
+	<td>out_link</td>
+	<td>&lt;String&gt;</td>
+	<td>source  <a href="#Link">Link</a>.id</td>
+	<td>-(*3)</td>
+	<td>-(*3)</td>
+</tr>
+<tr>
+	<td>in_link</td>
+	<td>&lt;String&gt;</td>
+	<td>destination <a href="#Link">Link</a>.id</td>
+	<td>-(*3)</td>
+	<td>-(*3)</td>
+</tr>
+<tr>
+	<td>attributes</td>
+	<td>dict{&lt;String&gt;, &lt;String&gt;}</td>
+	<td>See the table attributes.</td>
+	<td>Optional</td>
+	<td>Optional</td>
+</tr>
+</tbody>
+</table>
+<p>(*1) version is assigned automatically when creating a new object.<br />
+  (*2) port_id is assigned automatically.<br />
+  (*3) Setting not required because it is set automatically by the Link Configuration</p>
+<h5>Attributes</h5>
+<table>
+<thead>
+<tr>
+	<th><strong>Key</strong></th>
+	<th><strong>Value</strong></th>
+	<th><strong>Description</strong></th>
+	<th>init</th>
+	<th>Direction of the reflected(*)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+	<td>admin_status</td>
+	<td>&lt;String&gt;</td>
+	<td>&quot;UP&quot; : normal operation. <br> &quot;DOWN&quot; : failure operation.</td>
+	<td>&quot;UP&quot;</td>
+	<td>Upper -&gt; Lower</td>
+</tr>
+<tr>
+	<td>oper_status</td>
+	<td>&lt;String&gt;</td>
+	<td>&quot;UP&quot; : Physical device normal. <br> &quot;DOWN&quot; : Physical device failure.</td>
+	<td>any</td>
+	<td>Lower -&gt; Upper</td>
+</tr>
+<tr>
+	<td>max_bandwidth</td>
+	<td>&lt;Number&gt;</td>
+	<td>Unit is Mbps. maximum bandwidth of the port.<br> Driver to set the value.</td>
+	<td>any</td>
+	<td>Lower -&gt; Upper</td>
+</tr>
+<tr>
+	<td>unreserved_bandwidth</td>
+	<td>&lt;Number&gt;</td>
+	<td>Unit is Mbps. Current bandwidth of the port.<br > Driver to set the initial value.</td>
+	<td>max_bandwidth</td>
+	<td>Upper -&gt; Lower</td>
+</tr>
+<tr>
+	<td>physical_id</td>
+	<td>&lt;String&gt;</td>
+	<td>ID of the physical device. Driver may assign this ID.<br> For example, openflow driver will assign like &quot;port_no@dpid&quot;</td>
+	<td>any</td>
+	<td>Lower  -&gt;  Upper</td>
+</tr>
+<tr>
+	<td>vendor</td>
+	<td>&lt;String&gt;</td>
+	<td>Vendor name is set.<br> For example, It is used for the GUI system.</td>
+	<td>any</td>
+	<td>Lower -&gt; Upper</td>
+</tr>
+<tr>
+	<td>is_boundary</td>
+	<td>&quot;true&quot; or &quot;false&quot;</td>
+	<td><a href="#Boundary">Boundary</a> setting is the &quot;true&quot; when enabled. <br> For example, It is used for the GUI system.</td>
+	<td>&quot;false&quot;</td>
+	<td>Upper -&gt; Lower</td>
+</tr>
+</tbody>
+</table>
+<p>(*) <strong>Lower</strong> : Driver side. <strong>Upper</strong> : Controller side.</p>
+<hr />
+<h4><a name="Link"> Link</a></h4>
+<table>
+<thead>
+<tr>
+	<th><strong>Key</strong></th>
+	<th><strong>Value</strong></th>
+	<th><strong>Description</strong></th>
+	<th>POST</th>
+	<th>PUT</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+	<td>type</td>
+	<td>&lt;String&gt;</td>
+	<td>type is &quot;Link&quot;</td>
+	<td>Mandatory</td>
+	<td>Mandatory</td>
+</tr>
+<tr>
+	<td>version</td>
+	<td>&lt;String&gt;</td>
+	<td>NetworkCompnent will assign valid version in response message when the request is success.</td>
+	<td>-(*1)</td>
+	<td>Mandatory (*1)</td>
+</tr>
+<tr>
+	<td>link_id</td>
+	<td>&lt;String&gt;</td>
+	<td>Unique Link's Identifier in this topology.</td>
+	<td>-(*2)</td>
+	<td>Mandatory</td>
+</tr>
+<tr>
+	<td>src_node</td>
+	<td>&lt;String&gt;</td>
+	<td>source <a href="#Node">Node</a>.id</td>
+	<td>Mandatory</td>
+	<td>Mandatory</td>
+</tr>
+<tr>
+	<td>src_port</td>
+	<td>&lt;String&gt;</td>
+	<td>source <a href="#Port">Port</a>.id</td>
+	<td>Mandatory</td>
+	<td>Mandatory</td>
+</tr>
+<tr>
+	<td>dst_node</td>
+	<td>&lt;String&gt;</td>
+	<td>destination <a href="#Node">Node</a>.id</td>
+	<td>Mandatory</td>
+	<td>Mandatory</td>
+</tr>
+<tr>
+	<td>dst_port</td>
+	<td>&lt;String&gt;</td>
+	<td>destination <a href="#Port">Port</a>.id</td>
+	<td>Mandatory</td>
+	<td>Mandatory</td>
+</tr>
+<tr>
+	<td>attributes</td>
+	<td>dict{&lt;String&gt;, &lt;String&gt;}</td>
+	<td>See the table attributes.</td>
+	<td>Optional</td>
+	<td>Optional</td>
+</tr>
+</tbody>
+</table>
+<p>(*1) version is assigned automatically when creating a new object.<br />
+  (*2) link_id is assigned automatically.  
+</p>
+<h5>Attributes</h5>
+<table>
+<thead>
+<tr>
+	<th><strong>Key</strong></th>
+	<th><strong>Value</strong></th>
+	<th><strong>Description</strong></th>
+	<th>init</th>
+	<th>Direction of the reflected(*)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+	<td>oper_status</td>
+	<td>&lt;String&gt;</td>
+	<td>&quot;UP&quot; : Physical device normal. <br> &quot;DOWN&quot; : Physical device failure.</td>
+	<td>any</td>
+	<td>Lower -&gt; Upper</td>
+</tr>
+<tr>
+	<td>cost</td>
+	<td>&lt;Number&gt;</td>
+	<td>link cost.</td>
+	<td>1</td>
+	<td>Upper -&gt; Lower</td>
+</tr>
+<tr>
+	<td>req_latency</td>
+	<td>&lt;Number&gt;</td>
+	<td>Unit is msec. Request latency. (There may be different from the actual latency.）</td>
+	<td>any</td>
+	<td>Upper -&gt; Lower</td>
+</tr>
+<tr>
+	<td>latency</td>
+	<td>&lt;Number&gt;</td>
+	<td>Unit is  msec.</td>
+	<td>any</td>
+	<td>Lower -&gt; Upper</td>
+</tr>
+<tr>
+	<td>req_bandwidth</td>
+	<td>&lt;Number&gt;</td>
+	<td>Unit is Mbps. Request bandwidth.(There may be different from the actual bandwidth.)</td>
+	<td>any</td>
+	<td>Upper -&gt; Lower</td>
+</tr>
+<tr>
+	<td>max_bandwidth</td>
+	<td>&lt;Number&gt;</td>
+	<td>Unit is Mbps. maximum bandwidth of the port.<br> Driver to set the value.</td>
+	<td>any</td>
+	<td>Lower -&gt; Upper</td>
+</tr>
+<tr>
+	<td>unreserved_bandwidth</td>
+	<td>&lt;Number&gt;</td>
+	<td>Unit is Mbps. Current bandwidth of the port.<br > Driver to set the initial value.</td>
+	<td>max_bandwidth</td>
+	<td>Upper -&gt; Lower</td>
+</tr>
+<tr>
+	<td>establishment_status</td>
+	<td>&lt;string&gt;</td>
+	<td>Use LinkLayerizer Only. Flowから生成されたlink. <br> &quot;establishing&quot; :  <br>   &quot;established&quot; :  <br> &quot;establishing&quot; である場合、その Link の oper_status は &quot;DOWN&quot; のみとする。</td>
+	<td>any</td>
+	<td>-</td>
+</tr>
+</tbody>
+</table>
+<p>(*) <strong>Lower</strong> : Driver side. <strong>Upper</strong> : Controller side.</p>
+<hr />
+<h4><a name="Flow"> Flow</a></h4>
+<p>Flow is abstract class.  
+</p>
+<table>
+<thead>
+<tr>
+	<th><strong>Key</strong></th>
+	<th><strong>Value</strong></th>
+	<th><strong>Description</strong></th>
+	<th>POST</th>
+	<th>PUT</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+	<td>type</td>
+	<td>&lt;string&gt;</td>
+	<td>FlowType (see below)</td>
+	<td>Mandatory</td>
+	<td>Mandatory</td>
+</tr>
+<tr>
+	<td>version</td>
+	<td>&lt;String&gt;</td>
+	<td>NetworkCompnent will assign valid version in response message when the request is success.</td>
+	<td>-(*1)</td>
+	<td>Mandatory (*1)</td>
+</tr>
+<tr>
+	<td>flow_id</td>
+	<td>&lt;string&gt;</td>
+	<td>Unique flow's Identifier in this network.</td>
+	<td>-(*1)</td>
+	<td>Mandatory</td>
+</tr>
+<tr>
+	<td>owner</td>
+	<td>&lt;string&gt;</td>
+	<td>Author of flow.</td>
+	<td>Mandatory</td>
+	<td>Mandatory</td>
+</tr>
+<tr>
+	<td>enabled</td>
+	<td>&lt;boolean&gt;</td>
+	<td>The value the owner is usually set.  &quot;True&quot;:flow is activation.  &quot;False&quot;:flow is invalidation.</td>
+	<td>Mandatory</td>
+	<td>Mandatory</td>
+</tr>
+<tr>
+	<td>priority</td>
+	<td>&lt;number&gt;</td>
+	<td>value:0-65535. It is to be 65535 (max priority) if not set.</td>
+	<td>Mandatory</td>
+	<td>Mandatory</td>
+</tr>
+<tr>
+	<td>status</td>
+	<td>&lt;string&gt;</td>
+	<td>see <State Transition Table> Flow status, Lower Layer Component(usually, Driver Component) makes a state transition.</td>
+	<td>Optional(*3)</td>
+	<td>Mandatory</td>
+</tr>
+<tr>
+	<td>attributes</td>
+	<td>dict{&lt;String&gt;, &lt;String&gt;}</td>
+	<td>See the table attributes.</td>
+	<td>Optional</td>
+	<td>Optional</td>
+</tr>
+</tbody>
+</table>
+<p>(*1)version is assigned automatically when creating a new object.<br />
+  (*2)flow_id is assigned automatically.<br />
+  (*3)If you do not set the state,state set  &quot;none&quot;</p>
+<h5>type</h5>
+<table>
+<thead>
+<tr>
+	<th><strong>type</strong></th>
+	<th><strong>description</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+	<td><a href="#BasicFlow">BasicFlow</a></td>
+	<td>Class that represents a basic flow.</td>
+</tr>
+<tr>
+	<td><a href="#OFPFlow">OFPFlow</a></td>
+	<td>Class that represents a openflow's flow</td>
+</tr>
+</tbody>
+</table>
+<h5>Attributes</h5>
+<table>
+<thead>
+<tr>
+	<th><strong>Key</strong></th>
+	<th><strong>Value</strong></th>
+	<th><strong>Description</strong></th>
+	<th>init</th>
+	<th>Direction of the reflected(*)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+	<td>req_bandwidth</td>
+	<td>&lt;Number&gt;</td>
+	<td>Unit is Mbps. Request bandwidth.(There may be different from the actual bandwidth.)</td>
+	<td>any</td>
+	<td>Upper -&gt; Lower</td>
+</tr>
+<tr>
+	<td>req_latency</td>
+	<td>&lt;Number&gt;</td>
+	<td>Unit is msec. Request latency. (There may be different from the actual latency.）</td>
+	<td>any</td>
+	<td>Upper -&gt; Lower</td>
+</tr>
+<tr>
+	<td>bandwidth</td>
+	<td>&lt;Number&gt;</td>
+	<td>Unit is Mbps.</td>
+	<td>any</td>
+	<td>Lower  -&gt;  Upper</td>
+</tr>
+<tr>
+	<td>latency</td>
+	<td>&lt;Number&gt;</td>
+	<td>Unit is msec.</td>
+	<td>any</td>
+	<td>Lower  -&gt;  Upper</td>
+</tr>
+</tbody>
+</table>
+<h4>State Transition Table</h4>
+<ul>
+<li><strong>none</strong>: Definition of Flow is, the state is not enabled.</li>
+<li><strong>establishing</strong>:Set during the flow of the physical layer by the driver.</li>
+<li><strong>established</strong>: Flow enabled.</li>
+<li><strong>teardown</strong>: The removal process during the flow of the physical layer by the driver.</li>
+<li><strong>failed</strong>: failure to flow.</li>
+</ul>
+<table>
+<thead>
+<tr>
+	<th><strong>State Current ↓ Next→</strong></th>
+	<th><strong>none</strong></th>
+	<th><strong>establishing</strong></th>
+	<th><strong>established</strong></th>
+	<th><strong>teardown</strong></th>
+	<th><strong>failed</strong></th>
+	<th><strong>(none Flow)</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+	<td><strong>none</strong></td>
+	<td>-</td>
+	<td>Creating Flow</td>
+	<td>-</td>
+	<td>-</td>
+	<td>-</td>
+	<td>-</td>
+</tr>
+<tr>
+	<td><strong>establishing</strong></td>
+	<td>-</td>
+	<td></td>
+	<td>Created/Updated Flow</td>
+	<td>-</td>
+	<td>failure</td>
+	<td>-</td>
+</tr>
+<tr>
+	<td><strong>established</strong></td>
+	<td>-</td>
+	<td>Updating Flow</td>
+	<td>-</td>
+	<td>Deleting Flow</td>
+	<td>failure</td>
+	<td>-</td>
+</tr>
+<tr>
+	<td><strong>teardown</strong></td>
+	<td>Invalid Flow</td>
+	<td>-</td>
+	<td>-</td>
+	<td>-</td>
+	<td>failure</td>
+	<td>Deleted Flow</td>
+</tr>
+<tr>
+	<td><strong>failed</strong></td>
+	<td>-</td>
+	<td>-</td>
+	<td>Updating Flow</td>
+	<td>Deleting Flow</td>
+	<td>-</td>
+	<td>-</td>
+</tr>
+</tbody>
+</table>
+<h3>Sequence</h3>
+<hr />
+<h4>create</h4>
+<pre>
+    [controller/LogicComponent]    [Network]     [Driver]
+         |                            |            |
+         |POST/PUT flow               |            |
+         |--------------------------->|            |
+         |         [enabled:true, status:none]     |
+         |                            |            |
+         |                            |FlowChanged(Add)
+         |                            |----------->|
+         |                            | PUT flow(stats:establishing)
+         |                            |<-----------|
+         |  [enabled:true, status:establishing]    |        [Physical Switch]
+         |        FlowChanged(UPDATE) |            | Flow setting  |
+         |<---------------------------|            |-------------->|
+         |                      FlowChanged(UPDATE)|               |
+         |                            |----------->|               |
+         |                            |            | Flow setting completed
+         |                            |            |<--------------|
+         |                            | PUT flow(stats:established)
+         |                            |<-----------|
+         |  [enabled:true, status:established]     |
+         |       FlowChanged(UPDATE)  |            | 
+         |<---------------------------| FlowChanged(UPDATE)
+         |                            |----------->|
+         |                            |            |
+</pre>
+<hr />
+<h4>delete</h4>
+<pre>
+
+    [controller/LogicComponent]    [Network]     [Driver]
+         |                            |            |
+         |  [enabled:true, status:established]     |
+         |                            |            |
+         |DELETE flow                 |            |
+         |--------------------------->|            |
+         |         FlowChanged(DELETE)|            | 
+         |<---------------------------|            |
+         |                            |FlowChanged(DELETE)
+         |                            |----------->|
+         |                            | PUT flow(stats:teardown)
+         |                            |<-----------|
+         |  [enabled:true, status:teardown]        |         [Physical Switch]
+         |        x[FlowChanged(UPDATE)](*)        |               |
+         |                        x<--|x[FlowChanged(UPDATE)](*)   |
+         |                            |-->x        |               |
+         |                            |            | Flow delete   |
+         |                            |            |-------------->|
+         |                            |            | Flow delete completed
+         |                            |            |<--------------|
+         |                            | PUT flow(stats:none)       |
+         |                            |<-----------|
+         |      [enabled:true, status:none]        |
+         |        x[FlowChanged(UPDATE)](*)        |
+         |                        x<--|x[FlowChanged(UPDATE)](*)
+         |                            |-->x        |
+         |                            |            |
+         |                     (Flow Deleted)      |
+         |                            | x[FlowChanged(DELETE)](*)
+         |                            |-->x        |
+         |  x[FlowChanged(DELETE)](*) |            | 
+         |                        x<--|            |
+
+(*) Event notification None.
+
+</pre>
+<hr />
+<h4>Invalid</h4>
+<pre>
+
+    [controller/LogicComponent]    [Network]     [Driver]
+         |                            |            |
+         |  [enabled:true, status:established]     |
+         |                            |            |
+         |PUT flow(enabled change)    |            |
+         |--------------------------->|            |
+         |  [enabled:false, status:established]    |
+         |                            |            |
+         |                            |FlowChanged(UPDATE)
+         |                            |----------->|
+         |        FlowChanged(UPDATE) |            | 
+         |<---------------------------|            |
+         |                            |            |
+         |                            | PUT flow(stats:teardown)
+         |                            |<-----------|
+         |   [enabled:false, status:teardown]      |        [Physical Switch]
+         |        FlowChanged(UPDATE) |            | Flow delete   |
+         |<---------------------------|            |-------------->|
+         |                            |FlowChanged(UPDATE)         |
+         |                            |----------->|               |
+         |                            |            | Flow delete completed
+         |                            |            |<--------------|
+         |                            | PUT flow(stats:none)
+         |                            |<-----------|
+         |       [enabled:false, status:none]      |
+         |                            |            |
+         |        FlowChanged(UPDATE) |            | 
+         |<---------------------------|FlowChanged(UPDATE) 
+         |                            |----------->|
+         |                            |            |
+
+</pre>
+<hr />
+<h4>Valid</h4>
+<pre>
+    [controller/LogicComponent]    [Network]     [Driver]
+         |                            |            |
+         |       [enabled:false, status:none]      |
+         |                            |            |
+         |PUT flow(enabled:true)      |            |
+         |--------------------------->|            |
+         |       [enabled:true, status:none]       |
+         |        FlowChanged(UPDATE) |            | 
+         |<---------------------------|FlowChanged(UPDATE) 
+         |                            |----------->|
+         |                            |            |
+         |                            | PUT flow(stats:establishing)
+         |                            |<-----------|
+         |  [enabled:true, status:establishing]    |        [Physical Switch]
+         |        FlowChanged(UPDATE) |            | Flow setting  |
+         |<---------------------------|            |-------------->|
+         |                      FlowChanged(UPDATE)|               |
+         |                            |----------->|               |
+         |                            |            | Flow setting completed
+         |                            |            |<--------------|
+         |                            | PUT flow(stats:established)
+         |                            |<-----------|
+         |  [enabled:true, status:established]     |
+         |                            |            |
+         |       FlowChanged(UPDATE)  |            | 
+         |<---------------------------| FlowChanged(UPDATE)
+         |                            |----------->|
+         |                            |            |
+
+</pre>
+<hr />
+<h4>Failure</h4>
+<pre>
+
+    [controller/LogicComponent]    [Network]     [Driver]
+         |                            |            |
+         |  [enabled:true, status:established]     |
+         |                            |            |         [Physical Switch]
+         |                            |            | Flow Failed   |
+         |                            |            |<--------------|
+         |                            | PUT flow(stats:failed)     |
+         |                            |<-----------|
+         |       [enabled:true, status:failed]     |
+         |                            |            |
+         |       FlowChanged(UPDATE)  |            | 
+         |<---------------------------| FlowChanged(UPDATE)
+         |                            |----------->|
+
+    [controller/LogicComponent]    [Network]     [Driver]
+         |                            |            |
+         |  [enabled:true, status:established]     |
+         |                            |            |         [Physical Switch]
+         |                            |            | topology Failed   |
+         |                            |            |<------------------|
+         |                            | (topology(*) oper_sts:DOWN)    |
+         |                            |            |                   |
+         |                            | PUT flow(stats:failed)
+         |                            |<-----------|
+         |       [enabled:true, status:failed]     |
+         |                            |            |
+         |       FlowChanged(UPDATE)  |            | 
+         |<---------------------------| FlowChanged(UPDATE)
+         |                            |----------->|
+
+  * topology : Node, Port, or Link.
+
+</pre>
+<hr />
+<h4><a name="BasicFlow"> BasicFlow</a></h4>
+<table>
+<thead>
+<tr>
+	<th><strong>Key</strong></th>
+	<th><strong>Value</strong></th>
+	<th><strong>Description</strong></th>
+	<th>POST</th>
+	<th>PUT</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+	<td>type</td>
+	<td>&lt;String&gt;</td>
+	<td>type is &quot;BasicFlow&quot;</td>
+	<td>Mandatory</td>
+	<td>Mandatory</td>
+</tr>
+<tr>
+	<td>matches</td>
+	<td>list[<a href="#BasicFlowMatch">BasicFlowMatch</a>]</td>
+	<td>One or more of the match conditions</td>
+	<td>Mandatory</td>
+	<td>Mandatory</td>
+</tr>
+<tr>
+	<td>path</td>
+	<td>list[<a href="#Link">Link</a>.link_id ]</td>
+	<td>list of <a href="#Link">Link</a> that <a href="#Flow">Flow</a> goes through. there is a need for a connected acyclic graph.</td>
+	<td>Mandatory</td>
+	<td>Mandatory</td>
+</tr>
+<tr>
+	<td>edge_actions</td>
+	<td>dict&lt;<a href="#Node">Node</a>.node_id, list[<a href="#BasicFlowAction">BasicFlowAction</a>]&gt;</td>
+	<td>Action of edge node.</td>
+	<td>Mandatory</td>
+	<td>Mandatory</td>
+</tr>
+</tbody>
+</table>
+<h5>example(JSON)</h5>
+<pre><code>{
+&quot;type&quot;: &quot;BasicFlow&quot;,
+&quot;version&quot;: &quot;XXXXXXXXXXXX&quot;,
+&quot;flow_id&quot;: &quot;XXXXXXXXXXXX&quot;,
+&quot;owner&quot;: &quot;XXXXXXXXXXXX&quot;,
+&quot;enabled&quot;: true,
+&quot;status&quot;: &quot;none&quot;,
+&quot;matches&quot;: [ {...(BasicFlowMatch)...} ]
+&quot;path&quot;: [&quot;LINK_ID1&quot;, &quot;LINK_ID2&quot;]
+    &quot;edge_actions&quot;: {
+        &quot;NODE_ID_1&quot;: [
+            {...(BasicFlowAction)...},
+            {...(BasicFlowAction)...},]    
+    }    
+}
+</code></pre>
+
+<hr />
+<h4><a name="OFPFlow"> OFPFlow</a></h4>
+<table>
+<thead>
+<tr>
+	<th><strong>Key</strong></th>
+	<th><strong>Value</strong></th>
+	<th><strong>Description</strong></th>
+	<th>POST</th>
+	<th>PUT</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+	<td>type</td>
+	<td>&lt;String&gt;</td>
+	<td>type is &quot;OFPFlow&quot;</td>
+	<td>Mandatory</td>
+	<td>Mandatory</td>
+</tr>
+<tr>
+	<td>matches</td>
+	<td>list[<a href="#OFPFlowMatch">OFPFlowMatch</a>]</td>
+	<td>One or more of the match conditions</td>
+	<td>Mandatory</td>
+	<td>Mandatory</td>
+</tr>
+<tr>
+	<td>idle_timeout</td>
+	<td>&lt;number&gt;</td>
+	<td>Units sec. Is regarded as 0 specified if it is omitted.</td>
+	<td>Optional</td>
+	<td>Optional</td>
+</tr>
+<tr>
+	<td>hard_timeout</td>
+	<td>&lt;number&gt;</td>
+	<td>Units sec. Is regarded as 0 specified if it is omitted.</td>
+	<td>Optional</td>
+	<td>Optional</td>
+</tr>
+<tr>
+	<td>path</td>
+	<td>list[<a href="#Link">Link</a>.link_id ]</td>
+	<td>list of <a href="#Link">Link</a> that <a href="#Flow">Flow</a> goes through. there is a need for a connected acyclic graph.</td>
+	<td>Mandatory</td>
+	<td>Mandatory</td>
+</tr>
+<tr>
+	<td>edge_actions</td>
+	<td>dict&lt;<a href="#Node">Node</a>.node_id, list[<a href="#BasicFlowAction">BasicFlowAction</a>]&gt;</td>
+	<td>Action of edge node.</td>
+	<td>Mandatory</td>
+	<td>Mandatory</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h4><a name="Packet"> Packet</a></h4>
+<p>Packet of abstract class.</p>
+<table>
+<thead>
+<tr>
+	<th><strong>Key</strong></th>
+	<th><strong>Value</strong></th>
+	<th><strong>Description</strong></th>
+	<th>POST</th>
+	<th>PUT</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+	<td>packet_id</td>
+	<td>&lt;String&gt;</td>
+	<td>Unique packet's Identifier in this network.</td>
+	<td>-</td>
+	<td>-</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>&lt;String&gt;</td>
+	<td>Packet Type. see blow.</td>
+	<td>Mandatory</td>
+	<td>-</td>
+</tr>
+<tr>
+	<td>attributes</td>
+	<td>dict{&lt;String&gt;, &lt;String&gt;}</td>
+	<td></td>
+	<td>Optional</td>
+	<td>-</td>
+</tr>
+</tbody>
+</table>
+<h5>type</h5>
+<table>
+<thead>
+<tr>
+	<th><strong>type</strong></th>
+	<th><strong>description</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+	<td><a href="#InPacket">InPacket</a></td>
+	<td>Packet_in of BasicFlow.</td>
+</tr>
+<tr>
+	<td><a href="#OutPacket">OutPacket</a></td>
+	<td>Packet_out of BasicFlow.</td>
+</tr>
+<tr>
+	<td><a href="#OFPInPacket">OFPInPacket</a></td>
+	<td>Packet_in of OFPFlow.</td>
+</tr>
+<tr>
+	<td><a href="#OFPOutPacket">OFPOutPacket</a></td>
+	<td>Packet_out of OFPFlow.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h4><a name="InPacket"> InPacket</a></h4>
+<p>represents Packet_in of BasicFlow.  
+</p>
+<table>
+<thead>
+<tr>
+	<th><strong>Key</strong></th>
+	<th><strong>Value</strong></th>
+	<th><strong>Description</strong></th>
+	<th>POST</th>
+	<th>PUT</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+	<td>packet_id</td>
+	<td>&lt;String&gt;</td>
+	<td>Unique packet's Identifier in this network.</td>
+	<td>-</td>
+	<td>-</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>&lt;String&gt;</td>
+	<td>Type is &quot;InPacket&quot;</td>
+	<td>Mandatory</td>
+	<td>-</td>
+</tr>
+<tr>
+	<td>node</td>
+	<td><a href="#Port">Port</a>.node_id</td>
+	<td>node_id to input the packet</td>
+	<td>Mandatory</td>
+	<td>-</td>
+</tr>
+<tr>
+	<td>port</td>
+	<td><a href="#Port">Port</a>.port_id</td>
+	<td>port_id to input the packet</td>
+	<td>Mandatory</td>
+	<td>-</td>
+</tr>
+<tr>
+	<td>header</td>
+	<td><a href="#BasicFlowMatch">BasicFlowMatch</a></td>
+	<td>header info.</td>
+	<td>Mandatory</td>
+	<td>-</td>
+</tr>
+<tr>
+	<td>data</td>
+	<td>&lt;Binary&gt;</td>
+	<td>payload</td>
+	<td>Mandatory</td>
+	<td>-</td>
+</tr>
+<tr>
+	<td>attributes</td>
+	<td>dict{&lt;String&gt;, &lt;String&gt;}</td>
+	<td></td>
+	<td>Optional</td>
+	<td>-</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h4><a name="OFPInPacket"> OFPInPacket</a></h4>
+<p>represents Packet_in of OFPFlow.  
+</p>
+<table>
+<thead>
+<tr>
+	<th><strong>Key</strong></th>
+	<th><strong>Value</strong></th>
+	<th><strong>Description</strong></th>
+	<th>POST</th>
+	<th>PUT</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+	<td>packet_id</td>
+	<td>&lt;String&gt;</td>
+	<td>Unique packet's Identifier in this network.</td>
+	<td>- (*1)</td>
+	<td>-</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>&lt;String&gt;</td>
+	<td>&quot;OFPInPacket&quot;</td>
+	<td>Mandatory</td>
+	<td>-</td>
+</tr>
+<tr>
+	<td>node</td>
+	<td><a href="#Port">Port</a>.node_id</td>
+	<td>node_id to input the packet</td>
+	<td>Mandatory</td>
+	<td>-</td>
+</tr>
+<tr>
+	<td>port</td>
+	<td><a href="#Port">Port</a>.nort_id</td>
+	<td>port_id to input the packet</td>
+	<td>Mandatory</td>
+	<td>-</td>
+</tr>
+<tr>
+	<td>header</td>
+	<td><a href="#OFPFlowMatch">OFPFlowMatch</a></td>
+	<td>header info.</td>
+	<td>Mandatory</td>
+	<td>-</td>
+</tr>
+<tr>
+	<td>data</td>
+	<td>&lt;Binary&gt;</td>
+	<td>payload</td>
+	<td>Mandatory</td>
+	<td>-</td>
+</tr>
+<tr>
+	<td>attributes</td>
+	<td>dict{&lt;String&gt;, &lt;String&gt;}</td>
+	<td></td>
+	<td>Optional</td>
+	<td>-</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h4><a name="OutPacket"> OutPacket</a></h4>
+<p>represents Packet_out of BasicFlow.  
+</p>
+<table>
+<thead>
+<tr>
+	<th><strong>Key</strong></th>
+	<th><strong>Value</strong></th>
+	<th><strong>Description</strong></th>
+	<th>POST</th>
+	<th>PUT</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+	<td>packet_id</td>
+	<td>&lt;String&gt;</td>
+	<td>Unique packet's Identifier in this network.</td>
+	<td>-</td>
+	<td>-</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>&lt;String&gt;</td>
+	<td>Type is &quot;OutPacket&quot;</td>
+	<td>Mandatory</td>
+	<td>-</td>
+</tr>
+<tr>
+	<td>node</td>
+	<td><a href="Port">Port</a>.node_id</td>
+	<td>node_id to output the packet.</td>
+	<td>Mandatory</td>
+	<td>-</td>
+</tr>
+<tr>
+	<td>ports</td>
+	<td>list[<a href="#port">Port</a>.port_id]</td>
+	<td>List of port for OutPacket. &quot;ports&quot; and &quot;ports-except&quot; can be specified only either.</td>
+	<td>Optional</td>
+	<td>-</td>
+</tr>
+<tr>
+	<td>ports-except</td>
+	<td>list[<a href="#Port">Port</a>.port_id]</td>
+	<td>List of  except port for OutPacket. &quot;ports&quot; and &quot;ports-except&quot; can be specified only either.</td>
+	<td>Optional</td>
+	<td>-</td>
+</tr>
+<tr>
+	<td>header</td>
+	<td><a href="#BasicFlowMatch">BasicFlowMatch</a></td>
+	<td>header info.</td>
+	<td>Mandatory</td>
+	<td>-</td>
+</tr>
+<tr>
+	<td>data</td>
+	<td>&lt;Binary&gt;</td>
+	<td>payload</td>
+	<td>Mandatory</td>
+	<td>-</td>
+</tr>
+<tr>
+	<td>attributes</td>
+	<td>dict{&lt;String&gt;, &lt;String&gt;}</td>
+	<td></td>
+	<td>Optional</td>
+	<td>-</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h4><a name="OFPOutPacket"> OFPOutPacket</a></h4>
+<p>represents Packet_out of OFPFlow.  
+</p>
+<table>
+<thead>
+<tr>
+	<th><strong>Key</strong></th>
+	<th><strong>Value</strong></th>
+	<th><strong>Description</strong></th>
+	<th>POST</th>
+	<th>PUT</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+	<td>packet_id</td>
+	<td>&lt;String&gt;</td>
+	<td>Unique packet's Identifier in this network.</td>
+	<td>-</td>
+	<td>-</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>&lt;String&gt;</td>
+	<td>Type is &quot;OutPacket&quot;</td>
+	<td>Mandatory</td>
+	<td>-</td>
+</tr>
+<tr>
+	<td>node</td>
+	<td><a href="Port">Port</a>.node_id</td>
+	<td>node_id to output the packet.</td>
+	<td>Mandatory</td>
+	<td>-</td>
+</tr>
+<tr>
+	<td>ports</td>
+	<td>list[<a href="#port">Port</a>.port_id]</td>
+	<td>List of port for ignore OutPacket. &quot;ports&quot; and &quot;ports-except&quot; can be specified only either.</td>
+	<td>Optional</td>
+	<td>-</td>
+</tr>
+<tr>
+	<td>ports-except</td>
+	<td>list[<a href="#Port">Port</a>.port_id]</td>
+	<td>List of  except port for OutPacket. &quot;ports&quot; and &quot;ports-except&quot; can be specified only either.</td>
+	<td>Optional</td>
+	<td>-</td>
+</tr>
+<tr>
+	<td>header</td>
+	<td><a href="#BasicFlowMatch">BasicFlowMatch</a></td>
+	<td>header info.</td>
+	<td>Mandatory</td>
+	<td>-</td>
+</tr>
+<tr>
+	<td>data</td>
+	<td>&lt;Binary&gt;</td>
+	<td>payload</td>
+	<td>Mandatory</td>
+	<td>-</td>
+</tr>
+<tr>
+	<td>attributes</td>
+	<td>dict{&lt;String&gt;, &lt;String&gt;}</td>
+	<td></td>
+	<td>Optional</td>
+	<td>-</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h4><a name="BasicFlowMatch"> BasicFlowMatch</a></h4>
+<p>represent the flow match of BasicFlow  
+</p>
+<table>
+<thead>
+<tr>
+	<th><strong>Key</strong></th>
+	<th><strong>Value</strong></th>
+	<th><strong>Description</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+	<td>type</td>
+	<td>&lt;string&gt;</td>
+	<td>&quot;BasicFlowMatch&quot;</td>
+</tr>
+<tr>
+	<td>in_node</td>
+	<td>&lt;string&gt;</td>
+	<td><a href="#Node">Node</a>.node_id.  <strong>Required</strong></td>
+</tr>
+<tr>
+	<td>in_port</td>
+	<td>&lt;string&gt;</td>
+	<td><a href="#Port">Port</a>.port_id.  optional (if key is not, Treat as ANY.)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h4><a name="OFPFlowMatch"> OFPFlowMatch</a></h4>
+<p>represent the flow match of OpenFlow 1.3<br />
+if key is not, Treat as ANY.  
+</p>
+<table>
+<thead>
+<tr>
+	<th><strong>Key</strong></th>
+	<th><strong>Value</strong></th>
+	<th><strong>Description</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+	<td>type</td>
+	<td>&lt;string&gt;</td>
+	<td>&quot;OFPFlowMatch&quot;</td>
+</tr>
+<tr>
+	<td>in_node</td>
+	<td>&lt;string&gt;</td>
+	<td><a href="#Node">Node</a>.node_id.  <strong>Required</strong></td>
+</tr>
+<tr>
+	<td>in_port</td>
+	<td>&lt;string&gt;</td>
+	<td><a href="#Port">Port</a>.port_id.  Ingress port. This may be a physical or switch-defined logical port.(required support in the OpenFlow 1.3)</td>
+</tr>
+<tr>
+	<td>in_phy_port</td>
+	<td>&lt;integer&gt;</td>
+	<td>&nbsp;</td>
+</tr>
+<tr>
+	<td>metadata</td>
+	<td>&lt;string&gt;</td>
+	<td>Metadata passed between tables.</td>
+</tr>
+<tr>
+	<td>metadata_mask</td>
+	<td>&lt;string&gt;</td>
+	<td>Metadata mask</td>
+</tr>
+<tr>
+	<td>eth_src</td>
+	<td>&lt;string&gt;</td>
+	<td>Ethernet source address. format:&quot;XX:XX:XX:XX:XX:XX&quot; (required support in the OpenFlow 1.3)</td>
+</tr>
+<tr>
+	<td>eth_src_mask</td>
+	<td>&lt;string&gt;</td>
+	<td>Ethernet source address mask.</td>
+</tr>
+<tr>
+	<td>eth_dst</td>
+	<td>&lt;string&gt;</td>
+	<td>Ethernet destination address. format:&quot;XX:XX:XX:XX:XX:XX&quot; (required support in the OpenFlow 1.3)</td>
+</tr>
+<tr>
+	<td>eth_dst_mask</td>
+	<td>&lt;string&gt;</td>
+	<td>Ethernet destination address mask.</td>
+</tr>
+<tr>
+	<td>eth_type</td>
+	<td>&lt;integer&gt;</td>
+	<td>Ethernet frame type.  (required support in the OpenFlow 1.3)</td>
+</tr>
+<tr>
+	<td>vlan_vid</td>
+	<td>&lt;integer&gt;</td>
+	<td>VLAN id</td>
+</tr>
+<tr>
+	<td>vlan_vid_mask</td>
+	<td>&lt;integer&gt;</td>
+	<td>VLAN id mask.</td>
+</tr>
+<tr>
+	<td>vlan_pcp</td>
+	<td>&lt;integer&gt;</td>
+	<td>VLAN priority.</td>
+</tr>
+<tr>
+	<td>ip_dscp</td>
+	<td>&lt;integer&gt;</td>
+	<td>IP DSCP (6 bits in ToS field).</td>
+</tr>
+<tr>
+	<td>ip_ecn</td>
+	<td>&lt;integer&gt;</td>
+	<td>IP ECN (2 bits in ToS field).</td>
+</tr>
+<tr>
+	<td>ip_proto</td>
+	<td>&lt;integer&gt;</td>
+	<td>IP protocol.  (required support in the OpenFlow 1.3)</td>
+</tr>
+<tr>
+	<td>ipv4_src</td>
+	<td>&lt;string&gt;</td>
+	<td>IPv4 source address. format : &quot;D.D.D.D&quot;   (required support in the OpenFlow 1.3)</td>
+</tr>
+<tr>
+	<td>ipv4_src_mask</td>
+	<td>&lt;string&gt;</td>
+	<td>IPv4 source address mask.</td>
+</tr>
+<tr>
+	<td>ipv4_dst</td>
+	<td>&lt;string&gt;</td>
+	<td>IPv4 destination address. format : &quot;D.D.D.D&quot;    (required support in the OpenFlow 1.3)</td>
+</tr>
+<tr>
+	<td>ipv4_dst_mask</td>
+	<td>&lt;string&gt;</td>
+	<td>IPv4 destination address mask.</td>
+</tr>
+<tr>
+	<td>tcp_src</td>
+	<td>&lt;integer&gt;</td>
+	<td>TCP source port.   (required support in the OpenFlow 1.3)</td>
+</tr>
+<tr>
+	<td>tcp_dst</td>
+	<td>&lt;integer&gt;</td>
+	<td>TCP destination port.    (required support in the OpenFlow 1.3)</td>
+</tr>
+<tr>
+	<td>udp_src</td>
+	<td>&lt;integer&gt;</td>
+	<td>UDP source port.   (required support in the OpenFlow 1.3)</td>
+</tr>
+<tr>
+	<td>udp_dst</td>
+	<td>&lt;integer&gt;</td>
+	<td>UDP destination port.  (required support in the OpenFlow 1.3)</td>
+</tr>
+<tr>
+	<td>sctp_src</td>
+	<td>&lt;integer&gt;</td>
+	<td>SCTP source port.</td>
+</tr>
+<tr>
+	<td>sctp_dst</td>
+	<td>&lt;integer&gt;</td>
+	<td>SCTP destination port.</td>
+</tr>
+<tr>
+	<td>icmpv4_type</td>
+	<td>&lt;integer&gt;</td>
+	<td>ICMP type.</td>
+</tr>
+<tr>
+	<td>icmpv4_code</td>
+	<td>&lt;integer&gt;</td>
+	<td>ICMP code.</td>
+</tr>
+<tr>
+	<td>arp_op</td>
+	<td>&lt;integer&gt;</td>
+	<td>ARP opcode.</td>
+</tr>
+<tr>
+	<td>arp_spa</td>
+	<td>&lt;string&gt;</td>
+	<td>ARP source IPv4 address.</td>
+</tr>
+<tr>
+	<td>arp_spa_mask</td>
+	<td>&lt;string&gt;</td>
+	<td>ARP source IPv4 address mask.</td>
+</tr>
+<tr>
+	<td>arp_tpa</td>
+	<td>&lt;string&gt;</td>
+	<td>ARP target IPv4 address.</td>
+</tr>
+<tr>
+	<td>arp_tpa_mask</td>
+	<td>&lt;string&gt;</td>
+	<td>ARP target IPv4 address mask.</td>
+</tr>
+<tr>
+	<td>arp_sha</td>
+	<td>&lt;string&gt;</td>
+	<td>ARP source hardware address.</td>
+</tr>
+<tr>
+	<td>arp_sha_mask</td>
+	<td>&lt;string&gt;</td>
+	<td>ARP source hardware address mask.</td>
+</tr>
+<tr>
+	<td>arp_tha</td>
+	<td>&lt;string&gt;</td>
+	<td>ARP target hardware address.</td>
+</tr>
+<tr>
+	<td>arp_tha_mask</td>
+	<td>&lt;string&gt;</td>
+	<td>ARP target hardware address mask.</td>
+</tr>
+<tr>
+	<td>ipv6_src</td>
+	<td>&lt;string&gt;</td>
+	<td>IPv6 source address.  (required support in the OpenFlow 1.3)</td>
+</tr>
+<tr>
+	<td>ipv6_src_mask</td>
+	<td>&lt;string&gt;</td>
+	<td>IPv6 source address mask.</td>
+</tr>
+<tr>
+	<td>ipv6_dst</td>
+	<td>&lt;string&gt;</td>
+	<td>IPv6 destination address.  (required support in the OpenFlow 1.3)</td>
+</tr>
+<tr>
+	<td>ipv6_dst_mask</td>
+	<td>&lt;string&gt;</td>
+	<td>IPv6 destination address mask.</td>
+</tr>
+<tr>
+	<td>ipv6_flabel</td>
+	<td>&lt;integer&gt;</td>
+	<td>IPv6 Flow Label.</td>
+</tr>
+<tr>
+	<td>ipv6_flabel_mask</td>
+	<td>&lt;integer&gt;</td>
+	<td>IPv6 Flow Label mask.</td>
+</tr>
+<tr>
+	<td>icmpv6_type</td>
+	<td>&lt;integer&gt;</td>
+	<td>ICMPv6 type.</td>
+</tr>
+<tr>
+	<td>icmpv6_code</td>
+	<td>&lt;integer&gt;</td>
+	<td>ICMPv6 code.</td>
+</tr>
+<tr>
+	<td>ipv6_nd_target</td>
+	<td>&lt;string&gt;</td>
+	<td>Target address for ND.</td>
+</tr>
+<tr>
+	<td>ipv6_nd_sll</td>
+	<td>&lt;string&gt;</td>
+	<td>Source link-layer for ND.</td>
+</tr>
+<tr>
+	<td>ipv6_nd_tll</td>
+	<td>&lt;string&gt;</td>
+	<td>Target link-layer for ND.</td>
+</tr>
+<tr>
+	<td>mpls_label</td>
+	<td>&lt;integer&gt;</td>
+	<td>MPLS label.</td>
+</tr>
+<tr>
+	<td>mpls_tc</td>
+	<td>&lt;integer&gt;</td>
+	<td>MPLS TC.</td>
+</tr>
+<tr>
+	<td>mpls_bos</td>
+	<td>&lt;integer&gt;</td>
+	<td>MPLS BoS bit.</td>
+</tr>
+<tr>
+	<td>pbb_isid</td>
+	<td>&lt;integer&gt;</td>
+	<td>PBB I-SID.</td>
+</tr>
+<tr>
+	<td>pbb_isid_mask</td>
+	<td>&lt;integer&gt;</td>
+	<td>PBB I-SID mask.</td>
+</tr>
+<tr>
+	<td>tunnel_id</td>
+	<td>&lt;string&gt;</td>
+	<td>Logical Port Metadata.</td>
+</tr>
+<tr>
+	<td>tunnel_id_mask</td>
+	<td>&lt;string&gt;</td>
+	<td>Logical Port Metadata mask.</td>
+</tr>
+<tr>
+	<td>ipv6_exthdr</td>
+	<td>&lt;integer&gt;</td>
+	<td>IPv6 Extension Header pseudo-field</td>
+</tr>
+<tr>
+	<td>ipv6_exthdr_mask</td>
+	<td>&lt;integer&gt;</td>
+	<td>IPv6 Extension Header pseudo-field mask</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h4><a name="FlowAction"> FlowAction</a></h4>
+<p>Action of edge node.(BasicFlow)  
+</p>
+<ul>
+<li>[FlowActionOutput]</li>
+</ul>
+<table>
+<thead>
+<tr>
+	<th><strong>Key</strong></th>
+	<th><strong>Value</strong></th>
+	<th><strong>Description</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+	<td>type</td>
+	<td>&quot;FlowActionOutput&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>output</td>
+	<td>Port.port_id</td>
+	<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h4><a name="OFPFlowAction"> OFPFlowAction</a></h4>
+<p>Action of edge node.(OpenFlow 1.3)  
+</p>
+<ul>
+<li>[OFPFlowActionCopyTtlOut]</li>
+</ul>
+<table>
+<thead>
+<tr>
+	<th><strong>Key</strong></th>
+	<th><strong>Value</strong></th>
+	<th><strong>Description</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+	<td>type</td>
+	<td>&quot;OFPFlowActionCopyTtlOut&quot;</td>
+	<td>Copy TTL &quot;outwards&quot; -- from next-to-outermost</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>[OFPFlowActionCopyTtlIn]</li>
+</ul>
+<table>
+<thead>
+<tr>
+	<th><strong>Key</strong></th>
+	<th><strong>Value</strong></th>
+	<th><strong>Description</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+	<td>type</td>
+	<td>&quot;OFPFlowActionCopyTtlIn&quot;</td>
+	<td>Copy TTL &quot;inwards&quot; -- from outermost to</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>[OFPFlowActionSetMPLSTTL]</li>
+</ul>
+<table>
+<thead>
+<tr>
+	<th><strong>Key</strong></th>
+	<th><strong>Value</strong></th>
+	<th><strong>Description</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+	<td>type</td>
+	<td>&quot;OFPFlowActionSetMPLSTTL&quot;</td>
+	<td>MPLS TTL</td>
+</tr>
+<tr>
+	<td>mpls_ttl</td>
+	<td>&lt;Integer&gt;</td>
+	<td>The mpls_ttl field is the MPLS TTL to set.</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>[OFPFlowActionDecMPLSTTL]</li>
+</ul>
+<table>
+<thead>
+<tr>
+	<th><strong>Key</strong></th>
+	<th><strong>Value</strong></th>
+	<th><strong>Description</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+	<td>type</td>
+	<td>&quot;OFPFlowActionDecMPLSTTL&quot;</td>
+	<td>Decrement MPLS TTL</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>[OFPFlowActionPushVLAN]</li>
+</ul>
+<table>
+<thead>
+<tr>
+	<th><strong>Key</strong></th>
+	<th><strong>Value</strong></th>
+	<th><strong>Description</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+	<td>type</td>
+	<td>&quot;OFPFlowActionPushVLAN&quot;</td>
+	<td>Push a new VLAN tag</td>
+</tr>
+<tr>
+	<td>ethertype</td>
+	<td>&lt;Integer&gt;</td>
+	<td>VLAN ID</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>[OFPFlowActionPopVLAN]</li>
+</ul>
+<table>
+<thead>
+<tr>
+	<th><strong>Key</strong></th>
+	<th><strong>Value</strong></th>
+	<th><strong>Description</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+	<td>type</td>
+	<td>&quot;OFPFlowActionPopVLAN&quot;</td>
+	<td>Pop the outer VLAN tag</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>[OFPFlowActionPushMPLS]</li>
+</ul>
+<table>
+<thead>
+<tr>
+	<th><strong>Key</strong></th>
+	<th><strong>Value</strong></th>
+	<th><strong>Description</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+	<td>type</td>
+	<td>&quot;OFPFlowActionPushMPLS&quot;</td>
+	<td>Push a new MPLS tag</td>
+</tr>
+<tr>
+	<td>ethertype</td>
+	<td>&lt;Integer&gt;</td>
+	<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>[OFPFlowActionPopMPLS]</li>
+</ul>
+<table>
+<thead>
+<tr>
+	<th><strong>Key</strong></th>
+	<th><strong>Value</strong></th>
+	<th><strong>Description</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+	<td>type</td>
+	<td>&quot;OFPFlowActionPopMPLS&quot;</td>
+	<td>Pop the outer MPLS tag</td>
+</tr>
+<tr>
+	<td>ethertype</td>
+	<td>&lt;Integer&gt;</td>
+	<td>Ethertype</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>[OFPFlowActionSetQueue]</li>
+</ul>
+<table>
+<thead>
+<tr>
+	<th><strong>Key</strong></th>
+	<th><strong>Value</strong></th>
+	<th><strong>Description</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+	<td>type</td>
+	<td>&quot;OFPFlowActionSetQueue&quot;</td>
+	<td>Set queue id when outputting to a port</td>
+</tr>
+<tr>
+	<td>queue_id</td>
+	<td>&lt;Integer&gt;</td>
+	<td>Queue ID</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>[OFPFlowActionGroup]</li>
+</ul>
+<table>
+<thead>
+<tr>
+	<th><strong>Key</strong></th>
+	<th><strong>Value</strong></th>
+	<th><strong>Description</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+	<td>type</td>
+	<td>&quot;OFPFlowActionGroup&quot;</td>
+	<td>Apply group.</td>
+</tr>
+<tr>
+	<td>group_id</td>
+	<td>&lt;Integer&gt;</td>
+	<td>The group_id indicates the group used to process this packet.</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>[OFPFlowActionSetNwTTL]</li>
+</ul>
+<table>
+<thead>
+<tr>
+	<th><strong>Key</strong></th>
+	<th><strong>Value</strong></th>
+	<th><strong>Description</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+	<td>type</td>
+	<td>&quot;OFPFlowActionSetNwTTL&quot;</td>
+	<td>IP TTL.</td>
+</tr>
+<tr>
+	<td>ip_ttl</td>
+	<td>&lt;Integer&gt;</td>
+	<td>The nw_ttl field is the TTL address to set in the IP header.</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>[OFPFlowActionDecNwTTL]</li>
+</ul>
+<table>
+<thead>
+<tr>
+	<th><strong>Key</strong></th>
+	<th><strong>Value</strong></th>
+	<th><strong>Description</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+	<td>type</td>
+	<td>&quot;OFPFlowActionDecNwTTL&quot;</td>
+	<td>Decrement IP TTL.</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>[OFPFlowActionSetField]</li>
+</ul>
+<table>
+<thead>
+<tr>
+	<th><strong>Key</strong></th>
+	<th><strong>Value</strong></th>
+	<th><strong>Description</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+	<td>type</td>
+	<td>&quot;OFPFlowActionSetField&quot;</td>
+	<td>Set a header field using OXM TLV format.</td>
+</tr>
+<tr>
+	<td>field</td>
+	<td>&lt;String&gt;</td>
+	<td>T.B.D.</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>[OFPFlowActionPushPBB]</li>
+</ul>
+<table>
+<thead>
+<tr>
+	<th><strong>Key</strong></th>
+	<th><strong>Value</strong></th>
+	<th><strong>Description</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+	<td>type</td>
+	<td>&quot;OFPFlowActionPushPBB&quot;</td>
+	<td>Push a new PBB service tag (I-TAG)</td>
+</tr>
+<tr>
+	<td>ethertype</td>
+	<td>&lt;Integer&gt;</td>
+	<td></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>[OFPFlowActionPopPBB]</li>
+</ul>
+<table>
+<thead>
+<tr>
+	<th><strong>Key</strong></th>
+	<th><strong>Value</strong></th>
+	<th><strong>Description</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+	<td>type</td>
+	<td>&quot;OFPFlowActionPopPBB&quot;</td>
+	<td>Pop the outer PBB service tag (I-TAG)</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>[OFPFlowActionExperimenter]</li>
+</ul>
+<table>
+<thead>
+<tr>
+	<th><strong>Key</strong></th>
+	<th><strong>Value</strong></th>
+	<th><strong>Description</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+	<td>type</td>
+	<td>&quot;OFPFlowActionExperimenter&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>experimenter</td>
+	<td>&lt;Integer&gt;</td>
+	<td>Experimenter ID which takes the same form as in struct ofp_experimenter_header</td>
+</tr>
+<tr>
+	<td>body</td>
+	<td>&lt;Integer&gt;</td>
+	<td>Experimenter defined Experimenter-defined arbitrary additional data.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h4><a name="PacketStatus"> PacketStatus</a></h4>
+<p>Stats of network's packet information.  
+</p>
+<table>
+<thead>
+<tr>
+	<th><strong>Key</strong></th>
+	<th><strong>Value</strong></th>
+	<th><strong>Description</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+	<td>type</td>
+	<td>&lt;String&gt;</td>
+	<td>type is &quot;PacketStatus&quot;</td>
+</tr>
+<tr>
+	<td>in_packet_count</td>
+	<td>&lt;number&gt;</td>
+	<td>InPacket total count.</td>
+</tr>
+<tr>
+	<td>in_packet_bytes</td>
+	<td>&lt;number&gt;</td>
+	<td>InPacket total data size(Bytes)</td>
+</tr>
+<tr>
+	<td>in_packet_queue_count</td>
+	<td>&lt;number&gt;</td>
+	<td>count of current InPacket.</td>
+</tr>
+<tr>
+	<td>in_packets</td>
+	<td>list[&lt;string&gt;]</td>
+	<td>InPacket list  of  <a href="#InPacket">InPacket</a>.packet_id</td>
+</tr>
+<tr>
+	<td>out_packet_count</td>
+	<td>&lt;number&gt;</td>
+	<td>OutPacket total count.</td>
+</tr>
+<tr>
+	<td>out_packet_bytes</td>
+	<td>&lt;number&gt;</td>
+	<td>OutPacket total data size(Bytes)</td>
+</tr>
+<tr>
+	<td>out_packet_queue_count</td>
+	<td>&lt;number&gt;</td>
+	<td>count of current OutPacket.</td>
+</tr>
+<tr>
+	<td>out_packets</td>
+	<td>list[&lt;string&gt;]</td>
+	<td>OutPacket list  of  <a href="#OutPacket">OutPacket</a>.packet_id</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h4><a name="ObjectProperty"> ObjectProperty</a></h4>
+<p>RemoteObject class and RemoteObject subclass property.  
+</p>
+<table>
+<thead>
+<tr>
+	<th><strong>Key</strong></th>
+	<th><strong>Value</strong></th>
+	<th><strong>Description</strong></th>
+	<th>POST</th>
+	<th>PUT</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+	<td>id</td>
+	<td>&lt;String&gt;</td>
+	<td>Unique Identifier in ODENOS.</td>
+	<td>-(*1)</td>
+	<td>Mandatory</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>&lt;String&gt;</td>
+	<td>ObjectType (example:ComponentManager,Network,Slicer,,,)</td>
+	<td>Mandatory</td>
+	<td>Mandatory</td>
+</tr>
+<tr>
+	<td>state</td>
+	<td>&lt;String&gt;</td>
+	<td>see  &quot;State Transition Table&quot;</td>
+	<td>-</td>
+	<td>-</td>
+</tr>
+<tr>
+	<td>description</td>
+	<td>&lt;String&gt;</td>
+	<td>Object Description simple.</td>
+	<td>-</td>
+	<td>-</td>
+</tr>
+<tr>
+	<td>super_type</td>
+	<td>&lt;String&gt;</td>
+	<td>Component Only. super class ObjectType. (example:ComponentManager,NetworkComponent,Slicer,,,)</td>
+	<td>-</td>
+	<td>-</td>
+</tr>
+<tr>
+	<td>component_types</td>
+	<td>&lt;String&gt;</td>
+	<td>ComponentManager Only. List of instances that can be generated conponet.</td>
+	<td>-</td>
+	<td>-</td>
+</tr>
+<tr>
+	<td>connection_types</td>
+	<td>list[&lt;String&gt;]</td>
+	<td>Component Only. List of <a href="#ComponentConnection">ComponentConnection</a>.connection_type</td>
+	<td>-</td>
+	<td>-</td>
+</tr>
+</tbody>
+</table>
+<p>(*1)id is automatically assigned.  
+</p>
+<h5>example(JSON)</h5>
+<pre><code>{    
+&quot;id&quot;: &quot;network1&quot;,   
+&quot;super_type&quot; : &quot;Network&quot;,   
+&quot;type&quot;: &quot;Network&quot;,   
+&quot;state&quot;: &quot;running&quot;,   
+&quot;description&quot; : &quot;NetworkComponent is network topology abstract class&quot;   
+}    
+</code></pre>
+
+<h4>State Transition Table</h4>
+<table>
+<thead>
+<tr>
+	<th><strong>State Current ↓</strong>  <strong>Next→</strong></th>
+	<th><strong>initializing</strong></th>
+	<th><strong>running</strong></th>
+	<th><strong>finalizing</strong></th>
+	<th><strong>error</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+	<td><strong>initializing</strong></td>
+	<td>-</td>
+	<td>init completion</td>
+	<td>-</td>
+	<td>failure initial</td>
+</tr>
+<tr>
+	<td><strong>running</strong></td>
+	<td>-</td>
+	<td>-</td>
+	<td>request Delete</td>
+	<td>connection error</td>
+</tr>
+<tr>
+	<td><strong>finalizing</strong></td>
+	<td>-</td>
+	<td>-</td>
+	<td>-</td>
+	<td>-</td>
+</tr>
+<tr>
+	<td><strong>error</strong></td>
+	<td>PUT state</td>
+	<td>PUT state</td>
+	<td>PUT state</td>
+	<td>-</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h4><a name="ObjectSettings"> ObjectSettings</a></h4>
+<table>
+<thead>
+<tr>
+	<th><strong>Key</strong></th>
+	<th><strong>Value</strong></th>
+	<th><strong>Description</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+	<td>(any)</td>
+	<td>&lt;String&gt;</td>
+	<td>any key &amp; value</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h4><a name="ComponentConnection"> ComponentConnection</a></h4>
+<p>Connection information between OperatorComponent and NetworkComponent</p>
+<table>
+<thead>
+<tr>
+	<th><strong>key</strong></th>
+	<th><strong>value</strong></th>
+	<th><strong>description</strong></th>
+	<th>POST</th>
+	<th>PUT</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+	<td>id</td>
+	<td>&lt;String&gt;</td>
+	<td>Unique Identifier in ODENOS.</td>
+	<td>-(*1)</td>
+	<td>Mandatory</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>&lt;String&gt;</td>
+	<td>ObjectType</td>
+	<td>Mandatory</td>
+	<td>Mandatory</td>
+</tr>
+<tr>
+	<td>connection_type</td>
+	<td>&lt;String&gt;</td>
+	<td>Component can be set at any(original, aggregate, sliver, ... )</td>
+	<td>Optional</td>
+	<td>Optional</td>
+</tr>
+<tr>
+	<td>state</td>
+	<td>&lt;String&gt;</td>
+	<td>see  &quot;State Transition Table&quot;</td>
+	<td>Optional(*2)</td>
+	<td>Mandatory</td>
+</tr>
+</tbody>
+</table>
+<p>(*1)id is automatically assigned.<br />
+  (*2)If you do not set the state,state set  &quot;initializing&quot;</p>
+<h5>type</h5>
+<table>
+<thead>
+<tr>
+	<th><strong>type</strong></th>
+	<th><strong>description</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+	<td><a href="#ConnectLogicAndNetwork">ComponentConnectionLogicAndNetwork</a></td>
+	<td>Connection between Logic Conponent and Network Component.</td>
+</tr>
+</tbody>
+</table>
+<h4>State Transition Table</h4>
+<table>
+<thead>
+<tr>
+	<th><strong>State Current ↓</strong>  <strong>Next→</strong></th>
+	<th><strong>initializing</strong></th>
+	<th><strong>running</strong></th>
+	<th><strong>finalizing</strong></th>
+	<th><strong>error</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+	<td><strong>initializing</strong></td>
+	<td>-</td>
+	<td>init completion</td>
+	<td>-</td>
+	<td>failure initial</td>
+</tr>
+<tr>
+	<td><strong>running</strong></td>
+	<td>-</td>
+	<td>-</td>
+	<td>request Delete</td>
+	<td>connection error</td>
+</tr>
+<tr>
+	<td><strong>finalizing</strong></td>
+	<td>-</td>
+	<td>-</td>
+	<td>-</td>
+	<td>-</td>
+</tr>
+<tr>
+	<td><strong>error</strong></td>
+	<td>PUT state</td>
+	<td>PUT state</td>
+	<td>PUT state</td>
+	<td>-</td>
+</tr>
+</tbody>
+</table>
+<h3>Sequence</h3>
+<hr />
+<h4>connection</h4>
+<pre>
+ [controller/LogicComponent]  [systemMgr]    [Logic]            [Component]
+     |                            |             |                    |
+     |                            |             |                    |
+     |POST connections            |             |                    |
+     |--------------------------->|             |                    |
+     |              [status:initializing]       |                    |
+     |                            |             |                    |
+     |                            |ConnectionChanged(Add)            |
+     |                            |------------>|                    |
+     |                            |             |                    |
+     |                            |             |onConnectionChangedAddedPre()
+     |                            |             |------------------->|
+     |                            |             |                    |
+     |                            |             |               checks param
+     |                            |             |                    |
+     |                            |             |onConnectionChangedAdded()
+     |                            |             |------------------->|
+     |                            |             |                    |
+     |                            |             |                subscribe
+     |                            |             |                    |
+     |                            |             |              Reflect topology
+     |                            |             |                    |                 [Network]
+     |                            |             |                    | PUT topology      |
+     |                            |             |                    |------------------>|
+     |                            |             | changestatus(running)                  |
+     |                            |             |<-------------------|
+     |                            |             |                    |
+     |                            |PUT connections(status:running)   |
+     |                            |<------------|                    |
+     |                      [status:running]    |                    |
+     |                            |             |                    |
+     |                            |             |
+</pre>
+<hr />
+<h4>disconnect</h4>
+<pre>
+ [controller/LogicComponent]  [systemMgr]    [Logic]            [Component]
+     |                            |             |                    |
+     |                      [status:running]    |                    |
+     |DEL connections             |             |                    |
+     |--------------------------->|             |                    |
+     |                            |ConnectionChanged(Del)            |
+     |                            |------------>|                    |
+     |                            |             |                    |
+     |                            |             |onConnectionChangedDelPre()
+     |                            |             |------------------->|
+     |                            |             |                    |
+     |                            |             |                checks param
+     |                            |             |                    |
+     |                            |             |onConnectionChangedDel()
+     |                            |             |------------------->|
+     |                            |             |                    |
+     |                            |             | changestatus(finalizing)
+     |                            |             |<-------------------|
+     |                            |             |                    |
+     |                            |PUT connections(status:finalizing)|
+     |                            |<------------|                    |
+     |        x[ConnectionChanged(UPDATE)](*)   |                    |
+     |                    x<------|x[ConnectionChanged(UPDATE)](*)   |
+     |                            |-->x         |                    |
+     |                      [status:finalizing] |                    |
+     |                            |             |                    |
+     |                            |             |                 unsubscribe
+     |                            |             |                    |
+     |                            |             |               Reflect topology
+     |                            |             |                    |                 [Network]
+     |                            |             |                    | DEL topology      |
+     |                            |             |                    |------------------>|
+     |                            |             |                    |                   |
+     |                            |             | changestatus(none) |                   |
+     |                            |             |<-------------------|                   |
+     |                            |PUT connections(status:none)      |
+     |                            |<------------|                    |
+     |                     [delete connection]  |
+     |                            | x[ConnectionChanged(DELETE)](*)
+     |                            |--->x        |
+     |  x[ConnectionChanged(DELETE)](*)         |
+     |                     x<-----|             |
+
+(*) Event notification None.
+
+</pre>
+<hr />
+<h4><a name="ConnectLogicAndNetwork"> ConnectLogicAndNetwork</a></h4>
+<p>Connection information between Logic Component and Network Component.    
+</p>
+<table>
+<thead>
+<tr>
+	<th><strong>key</strong></th>
+	<th><strong>value</strong></th>
+	<th><strong>description</strong></th>
+	<th>POST</th>
+	<th>PUT</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+	<td>id</td>
+	<td>&lt;String&gt;</td>
+	<td>see <a href="#ComponentConnection">ComponentConnection</a></td>
+	<td>-(*1)</td>
+	<td>Mandatory</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>&lt;String&gt;</td>
+	<td>type is &quot;LogicAndNetwork&quot;</td>
+	<td>Mandatory</td>
+	<td>Mandatory</td>
+</tr>
+<tr>
+	<td>connection_type</td>
+	<td>&lt;String&gt;</td>
+	<td>see <a href="#ComponentConnection">ComponentConnection</a></td>
+	<td>Optional</td>
+	<td>Optional</td>
+</tr>
+<tr>
+	<td>state</td>
+	<td>&lt;String&gt;</td>
+	<td>see <a href="#ComponentConnection">ComponentConnection</a></td>
+	<td>Optional(*2)</td>
+	<td>Mandatory</td>
+</tr>
+<tr>
+	<td>logic_id</td>
+	<td>&lt;String&gt;</td>
+	<td>LogicComponent ID</td>
+	<td>Mandatory</td>
+	<td>Mandatory</td>
+</tr>
+<tr>
+	<td>network_id</td>
+	<td>&lt;String&gt;</td>
+	<td>NetworkComponent ID</td>
+	<td>Mandatory</td>
+	<td>Mandatory</td>
+</tr>
+</tbody>
+</table>
+<p>(*1)id is automatically assigned.<br />
+  (*2)If you do not set the state,state set  &quot;initializing&quot;  
+</p>
+<h5>example(JSON)</h5>
+<pre><code>{    
+&quot;id&quot;: &quot;slicer1_network1&quot;
+&quot;type&quot;: &quot;LogicAndNetwork&quot;
+&quot;connection_type&quot;: &quot;original&quot;
+&quot;state&quot;: &quot;running&quot;
+&quot;logic_id&quot;: &quot;slicer1&quot;,
+&quot;network_id&quot;: &quot;network1&quot;,                       
+}    
+</code></pre>
+
+<hr />
+<h4><a name="Boundary"> Boundary</a></h4>
+<p>Boundary abstract class.<br />
+Connection rule between heterogeneous networks.</p>
+<table>
+<thead>
+<tr>
+	<th><strong>key</strong></th>
+	<th><strong>value</strong></th>
+	<th><strong>description</strong></th>
+	<th>POST</th>
+	<th>PUT</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+	<td>id</td>
+	<td>&lt;String&gt;</td>
+	<td>Unique Identifier in ODENOS.</td>
+	<td>-(*1)</td>
+	<td>Mandatory</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>&lt;String&gt;</td>
+	<td>Boundary Type</td>
+	<td>Mandatory</td>
+	<td>Mandatory</td>
+</tr>
+</tbody>
+</table>
+<p>(*1)id is automatically assigned.</p>
+<h5>Type</h5>
+<ul>
+<li><a href="#FederatorBoundary">FederatorBoundary</a></li>
+<li><a href="#LinkLayerizerBoundary">LinkLayerizerBoundary</a></li>
+</ul>
+<hr />
+<h4><a name="FederatorBoundary"> FederatorBoundary</a></h4>
+<p>Federator Boundary class.<br />
+Connection rule between heterogeneous networks.  
+</p>
+<table>
+<thead>
+<tr>
+	<th><strong>key</strong></th>
+	<th><strong>value</strong></th>
+	<th><strong>description</strong></th>
+	<th>POST</th>
+	<th>PUT</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+	<td>id</td>
+	<td>&lt;String&gt;</td>
+	<td>Unique Identifier in ODENOS.</td>
+	<td>-(*1)</td>
+	<td>Mandatory</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>&lt;String&gt;</td>
+	<td>Boundary Type is &quot;Federator&quot;</td>
+	<td>Mandatory</td>
+	<td>Mandatory</td>
+</tr>
+<tr>
+	<td>network1</td>
+	<td>&lt;String&gt;</td>
+	<td>networkComponent ID (ObjectProperty.id)</td>
+	<td>Mandatory</td>
+	<td>Mandatory</td>
+</tr>
+<tr>
+	<td>node1</td>
+	<td>&lt;String&gt;</td>
+	<td>Connection <a href="#Node">Node</a>.id</td>
+	<td>Mandatory</td>
+	<td>Mandatory</td>
+</tr>
+<tr>
+	<td>port1</td>
+	<td>&lt;String&gt;</td>
+	<td>Connection <a href="#Port">Port</a>.id</td>
+	<td>Mandatory</td>
+	<td>Mandatory</td>
+</tr>
+<tr>
+	<td>network2</td>
+	<td>&lt;String&gt;</td>
+	<td>networkComponent ID (ObjectProperty.id)</td>
+	<td>Mandatory</td>
+	<td>Mandatory</td>
+</tr>
+<tr>
+	<td>node2</td>
+	<td>&lt;String&gt;</td>
+	<td>Connection <a href="#Node">Node</a>.id</td>
+	<td>Mandatory</td>
+	<td>Mandatory</td>
+</tr>
+<tr>
+	<td>port2</td>
+	<td>&lt;String&gt;</td>
+	<td>Connection <a href="#Port">Port</a>.id</td>
+	<td>Mandatory</td>
+	<td>Mandatory</td>
+</tr>
+</tbody>
+</table>
+<p>(*1)id is automatically assigned.</p>
+<h5>example(JSON)</h5>
+<pre>
+  {    
+    "id"      : "federator1_boundary1",
+    "type"    : "Federator",
+    "network1": "original_network1",
+    "network2": "original_network2",
+    "node1"   : "original_network1_node1",
+    "node2"   : "original_network2_node1",
+    "port1"   : "original_network1_port1",
+    "port2"   : "original_network2_port1",
+  }    
+</pre>
+<hr />
+<h4><a name="LinkLayerizerBoundary"> LinkLayerizerBoundary</a></h4>
+<p>LinkLayerizer Boundary class.<br />
+Connection rule between heterogeneous networks.  
+</p>
+<table>
+<thead>
+<tr>
+	<th><strong>key</strong></th>
+	<th><strong>value</strong></th>
+	<th><strong>description</strong></th>
+	<th>POST</th>
+	<th>PUT</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+	<td>id</td>
+	<td>&lt;String&gt;</td>
+	<td>Unique Identifier in ODENOS.</td>
+	<td>-(*1)</td>
+	<td>Mandatory</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>&lt;String&gt;</td>
+	<td>Boundary Type is &quot;LinkLayerizer&quot;</td>
+	<td>Mandatory</td>
+	<td>Mandatory</td>
+</tr>
+<tr>
+	<td>lower_nw</td>
+	<td>&lt;String&gt;</td>
+	<td>networkComponent ID (ObjectProperty.id)</td>
+	<td>Mandatory</td>
+	<td>Mandatory</td>
+</tr>
+<tr>
+	<td>lower_nw_node</td>
+	<td>&lt;String&gt;</td>
+	<td>Connection <a href="#Node">Node</a>.id</td>
+	<td>Mandatory</td>
+	<td>Mandatory</td>
+</tr>
+<tr>
+	<td>lower_nw_port</td>
+	<td>&lt;String&gt;</td>
+	<td>Connection <a href="#Port">Port</a>.id</td>
+	<td>Mandatory</td>
+	<td>Mandatory</td>
+</tr>
+<tr>
+	<td>upper_nw</td>
+	<td>&lt;String&gt;</td>
+	<td>networkComponent ID (ObjectProperty.id)</td>
+	<td>Mandatory</td>
+	<td>Mandatory</td>
+</tr>
+<tr>
+	<td>upper_nw_node</td>
+	<td>&lt;String&gt;</td>
+	<td>Connection <a href="#Node">Node</a>.id</td>
+	<td>Mandatory</td>
+	<td>Mandatory</td>
+</tr>
+<tr>
+	<td>upper_nw_port</td>
+	<td>&lt;String&gt;</td>
+	<td>Connection <a href="#Port">Port</a>.id</td>
+	<td>Mandatory</td>
+	<td>Mandatory</td>
+</tr>
+</tbody>
+</table>
+<p>(*1)id is automatically assigned.</p>
+<h5>example(JSON)</h5>
+<pre>
+  {    
+    "id"           : "linklayerizer1_boundary1",
+    "type"         : "LinkLayerizer",
+    "lower_nw"     : "lower_nw1",
+    "upper_nw"     : "upper_nw2",
+    "lower_nw_node": "lower_nw_node1",
+    "upper_nw_node": "upper_nw_node1",
+    "lower_nw_port": "lower_nw_port1",
+    "upper_nw_port": "upper_nw_port1",
+  }    
+</pre>
+<hr />
+<h4><a name="EventSubscription"> EventSubscription</a></h4>
+<table>
+<thead>
+<tr>
+	<th><strong>key</strong></th>
+	<th><strong>value</strong></th>
+	<th><strong>description</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+	<td>subscriber_id</td>
+	<td>&lt;String&gt;</td>
+	<td>subscriber's ObjectProperty.id イベントの通知先を指定</td>
+</tr>
+<tr>
+	<td>event_filters</td>
+	<td>dict&lt;ObjectProperty.id, list [EventType.event_type]</td>
+	<td>Subscribe conditions.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h4><a name="Event"> Event</a></h4>
+<table>
+<thead>
+<tr>
+	<th><strong>key</strong></th>
+	<th><strong>value</strong></th>
+	<th><strong>description</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+	<td>publisher_id</td>
+	<td>&lt;String&gt;</td>
+	<td>event publishing Object's Id.</td>
+</tr>
+<tr>
+	<td>event_type</td>
+	<td>&lt;String&gt;</td>
+	<td>event type</td>
+</tr>
+<tr>
+	<td>body</td>
+	<td>-</td>
+	<td>Different value for each event.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h4><a name="ObjectPropertyChanged"> ObjectPropertyChanged</a></h4>
+<table>
+<thead>
+<tr>
+	<th><strong>key</strong></th>
+	<th><strong>value</strong></th>
+	<th><strong>description</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+	<td>publisher_id</td>
+	<td>&lt;String&gt;</td>
+	<td>event publishing RemoteObject.</td>
+</tr>
+<tr>
+	<td>event_type</td>
+	<td>&lt;String&gt;</td>
+	<td>&quot;ObjectPropertyChanged&quot;</td>
+</tr>
+<tr>
+	<td>action</td>
+	<td>&lt;String&gt;</td>
+	<td>&quot;update&quot;</td>
+</tr>
+<tr>
+	<td>prev</td>
+	<td><a href="#ObjectProperty">ObjectProperty</a></td>
+	<td>Before the update ObjectProperty.</td>
+</tr>
+<tr>
+	<td>curr</td>
+	<td><a href="#ObjectProperty">ObjectProperty</a></td>
+	<td>update ObjectProperty.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h4><a name="ObjectSettingsChanged"> ObjectSettingsChanged</a></h4>
+<table>
+<thead>
+<tr>
+	<th><strong>key</strong></th>
+	<th><strong>value</strong></th>
+	<th><strong>description</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+	<td>publisher_id</td>
+	<td>&lt;String&gt;</td>
+	<td>event publishing RemoteObject.</td>
+</tr>
+<tr>
+	<td>event_type</td>
+	<td>&lt;String&gt;</td>
+	<td>&quot;ObjectSettingsChanged&quot;</td>
+</tr>
+<tr>
+	<td>action</td>
+	<td>&lt;String&gt;</td>
+	<td>&quot;update&quot;</td>
+</tr>
+<tr>
+	<td>prev</td>
+	<td><a href="#ObjectSettings">ObjectSettings</a></td>
+	<td>Before the update ObjectSettings.</td>
+</tr>
+<tr>
+	<td>curr</td>
+	<td><a href="#ObjectSettings">ObjectSettings</a></td>
+	<td>update ObjectSettings.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h4><a name="ComponentConnectionChanged"> ComponentConnectionChanged</a></h4>
+<table>
+<thead>
+<tr>
+	<th><strong>key</strong></th>
+	<th><strong>value</strong></th>
+	<th><strong>description</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+	<td>publisher_id</td>
+	<td>&lt;String&gt;</td>
+	<td>event publishing SystemManager.</td>
+</tr>
+<tr>
+	<td>event_type</td>
+	<td>&lt;String&gt;</td>
+	<td>&quot;ComponentConnectionChanged&quot;</td>
+</tr>
+<tr>
+	<td>action</td>
+	<td>&lt;String&gt;</td>
+	<td>&quot;add&quot;, &quot;delete&quot;, or &quot;update&quot; (string)</td>
+</tr>
+<tr>
+	<td>prev</td>
+	<td><a href="#ComponentConnection">ComponentConnection</a></td>
+	<td>Before the update ComponentConnection. none If action is &quot;add&quot;.</td>
+</tr>
+<tr>
+	<td>curr</td>
+	<td><a href="#ComponentConnection">ComponentConnection</a></td>
+	<td>update ComponentConnection. none If action is &quot;delete&quot;.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h4><a name="ComponentManagerChanged"> ComponentManagerChanged</a></h4>
+<table>
+<thead>
+<tr>
+	<th><strong>key</strong></th>
+	<th><strong>value</strong></th>
+	<th><strong>description</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+	<td>publisher_id</td>
+	<td>&lt;String&gt;</td>
+	<td>event publishing SystemManager.</td>
+</tr>
+<tr>
+	<td>event_type</td>
+	<td>&lt;String&gt;</td>
+	<td>&quot;ComponentManagerChanged&quot;</td>
+</tr>
+<tr>
+	<td>action</td>
+	<td>&lt;String&gt;</td>
+	<td>&quot;update&quot;</td>
+</tr>
+<tr>
+	<td>prev</td>
+	<td><a href="#ObjectSettings">ObjectSettings</a></td>
+	<td>Before the update ObjectSettings.</td>
+</tr>
+<tr>
+	<td>curr</td>
+	<td><a href="#ObjectSettings">ObjectSettings</a></td>
+	<td>update ObjectSettings.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h4><a name="ComponentChanged"> ComponentChanged</a></h4>
+<table>
+<thead>
+<tr>
+	<th><strong>key</strong></th>
+	<th><strong>value</strong></th>
+	<th><strong>description</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+	<td>publisher_id</td>
+	<td>&lt;String&gt;</td>
+	<td>event publishing ComponentManager.</td>
+</tr>
+<tr>
+	<td>event_type</td>
+	<td>&lt;String&gt;</td>
+	<td>&quot;ComponentChanged&quot;</td>
+</tr>
+<tr>
+	<td>action</td>
+	<td>&lt;String&gt;</td>
+	<td>&quot;add&quot;, &quot;delete&quot;, or &quot;update&quot;</td>
+</tr>
+<tr>
+	<td>prev</td>
+	<td><a href="#ObjectProperty">ObjectProperty</a></td>
+	<td>Before the update ObjectProperty. none If action is &quot;add&quot;.</td>
+</tr>
+<tr>
+	<td>curr</td>
+	<td><a href="#ObjectProperty">ObjectProperty</a></td>
+	<td>update ObjectProperty. none If action is &quot;delete&quot;.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h4><a name="TopologyChanged"> TopologyChanged</a></h4>
+<table>
+<thead>
+<tr>
+	<th><strong>key</strong></th>
+	<th><strong>value</strong></th>
+	<th><strong>description</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+	<td>publisher_id</td>
+	<td>&lt;String&gt;</td>
+	<td>event publishing network.</td>
+</tr>
+<tr>
+	<td>event_type</td>
+	<td>&lt;String&gt;</td>
+	<td>&quot;TopologyChanged&quot;</td>
+</tr>
+<tr>
+	<td>version</td>
+	<td>&lt;String&gt;</td>
+	<td><a href="#Topology">Topology</a>.version</td>
+</tr>
+<tr>
+	<td>prev</td>
+	<td><a href="#Topology">Topology</a></td>
+	<td>none</td>
+</tr>
+<tr>
+	<td>curr</td>
+	<td><a href="#Topology">Topology</a></td>
+	<td>none</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h4><a name="NodeChanged"> NodeChanged</a></h4>
+<table>
+<thead>
+<tr>
+	<th><strong>key</strong></th>
+	<th><strong>value</strong></th>
+	<th><strong>description</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+	<td>publisher_id</td>
+	<td>&lt;String&gt;</td>
+	<td>event publishing network.</td>
+</tr>
+<tr>
+	<td>event_type</td>
+	<td>&lt;String&gt;</td>
+	<td>&quot;NodeChanged&quot;</td>
+</tr>
+<tr>
+	<td>id</td>
+	<td>&lt;String&gt;</td>
+	<td><a href="#Node">Node</a>.node_id</td>
+</tr>
+<tr>
+	<td>action</td>
+	<td>&lt;String&gt;</td>
+	<td>&quot;add&quot;, &quot;delete&quot;, or &quot;update&quot;</td>
+</tr>
+<tr>
+	<td>version</td>
+	<td>&lt;String&gt;</td>
+	<td>curr <a href="#Node">Node</a>.version</td>
+</tr>
+<tr>
+	<td>prev</td>
+	<td><a href="#Node">Node</a></td>
+	<td>Before the update Node. none If action is &quot;add&quot;.</td>
+</tr>
+<tr>
+	<td>curr</td>
+	<td><a href="#Node">Node</a></td>
+	<td>update Node. none If action is &quot;delete&quot;.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h4><a name="PortChanged"> PortChanged</a></h4>
+<table>
+<thead>
+<tr>
+	<th><strong>key</strong></th>
+	<th><strong>value</strong></th>
+	<th><strong>description</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+	<td>publisher_id</td>
+	<td>&lt;String&gt;</td>
+	<td>event publishing network.</td>
+</tr>
+<tr>
+	<td>event_type</td>
+	<td>&lt;String&gt;</td>
+	<td>&quot;PortChanged&quot;</td>
+</tr>
+<tr>
+	<td>id</td>
+	<td>&lt;String&gt;</td>
+	<td><a href="#Port">Port</a>.port_id</td>
+</tr>
+<tr>
+	<td>action</td>
+	<td>&lt;String&gt;</td>
+	<td>&quot;add&quot;, &quot;delete&quot;, or &quot;update&quot;</td>
+</tr>
+<tr>
+	<td>version</td>
+	<td>&lt;String&gt;</td>
+	<td>curr <a href="#Port">Port</a>.version</td>
+</tr>
+<tr>
+	<td>prev</td>
+	<td><a href="#Port">Port</a></td>
+	<td>Before the update Port. none If action is &quot;add&quot;.</td>
+</tr>
+<tr>
+	<td>curr</td>
+	<td><a href="#Port">Port</a></td>
+	<td>update Port. none If action is &quot;delete&quot;.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h4><a name="LinkChanged"> LinkChanged</a></h4>
+<table>
+<thead>
+<tr>
+	<th><strong>key</strong></th>
+	<th><strong>value</strong></th>
+	<th><strong>description</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+	<td>publisher_id</td>
+	<td>&lt;String&gt;</td>
+	<td>event publishing network.</td>
+</tr>
+<tr>
+	<td>event_type</td>
+	<td>&lt;String&gt;</td>
+	<td>&quot;LinkChanged&quot;</td>
+</tr>
+<tr>
+	<td>id</td>
+	<td>&lt;String&gt;</td>
+	<td><a href="#Link">Link</a>.link_id</td>
+</tr>
+<tr>
+	<td>action</td>
+	<td>&lt;String&gt;</td>
+	<td>&quot;add&quot;, &quot;delete&quot;, or &quot;update&quot;</td>
+</tr>
+<tr>
+	<td>version</td>
+	<td>&lt;String&gt;</td>
+	<td>curr <a href="#Link">Link</a>.version</td>
+</tr>
+<tr>
+	<td>prev</td>
+	<td><a href="#Link">Link</a></td>
+	<td>Before the update Link. none If action is &quot;add&quot;.</td>
+</tr>
+<tr>
+	<td>curr</td>
+	<td><a href="#Link">Link</a></td>
+	<td>update Link. none If action is &quot;delete&quot;.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h4><a name="FlowChanged"> FlowChanged</a></h4>
+<table>
+<thead>
+<tr>
+	<th><strong>key</strong></th>
+	<th><strong>value</strong></th>
+	<th><strong>description</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+	<td>publisher_id</td>
+	<td>&lt;String&gt;</td>
+	<td>event publishing network.</td>
+</tr>
+<tr>
+	<td>event_type</td>
+	<td>&lt;String&gt;</td>
+	<td>&quot;FlowChanged&quot;</td>
+</tr>
+<tr>
+	<td>id</td>
+	<td>&lt;String&gt;</td>
+	<td><a href="#Flow">Flow</a>.flow_id</td>
+</tr>
+<tr>
+	<td>action</td>
+	<td>&lt;String&gt;</td>
+	<td>&quot;add&quot;, &quot;delete&quot;, or &quot;update&quot;</td>
+</tr>
+<tr>
+	<td>version</td>
+	<td>&lt;String&gt;</td>
+	<td>curr <a href="#Flow">Flow</a>.version</td>
+</tr>
+<tr>
+	<td>prev</td>
+	<td><a href="#Flow">Flow</a></td>
+	<td>Before the update Flow. none If action is &quot;add&quot;.</td>
+</tr>
+<tr>
+	<td>curr</td>
+	<td><a href="#Flow">Flow</a></td>
+	<td>update Flow. none If action is &quot;delete&quot;.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h4><a name="InPacketAdded"> InPacketAdded</a></h4>
+<table>
+<thead>
+<tr>
+	<th><strong>key</strong></th>
+	<th><strong>value</strong></th>
+	<th><strong>description</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+	<td>publisher_id</td>
+	<td>&lt;String&gt;</td>
+	<td>event publishing network.</td>
+</tr>
+<tr>
+	<td>event_type</td>
+	<td>&lt;String&gt;</td>
+	<td>&quot;InPacketAdded&quot;</td>
+</tr>
+<tr>
+	<td>id</td>
+	<td>&lt;String&gt;</td>
+	<td><a href="#InPacket">InPacket</a>.packet_id</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h4><a name="OutPacketAdded"> OutPacketAdded</a></h4>
+<table>
+<thead>
+<tr>
+	<th><strong>key</strong></th>
+	<th><strong>value</strong></th>
+	<th><strong>description</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+	<td>publisher_id</td>
+	<td>&lt;String&gt;</td>
+	<td>event publishing network.</td>
+</tr>
+<tr>
+	<td>event_type</td>
+	<td>&lt;String&gt;</td>
+	<td>&quot;OutPacketAdded&quot;</td>
+</tr>
+<tr>
+	<td>id</td>
+	<td>&lt;String&gt;</td>
+	<td><a href="#OutPacket">OutPacket</a>.packet_id</td>
+</tr>
+</tbody>
+</table>
+</body>
+</html>
