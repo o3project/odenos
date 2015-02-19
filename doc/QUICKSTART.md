@@ -1,118 +1,172 @@
-Quick Start
-==========================
+# Quick Start
 
-ODENOS uses redis-server, Java, Python and Ruby. Please setup
-mandatory environments, Redis and Java environment. If you want to use
-Python or Ruby environment, especially OpenFlowDriver which is written
-in Ruby, please setup the environments.
+## 1. Setup
 
-1. Setup
---------------------------
-[Redis Environment]
-    Redis server version 2.8.4 higher.
-    $ sudo apt-get install redis-server
+Basically, ODENOS runs with redis-server and Java. If you want to add
+Python or Ruby environment, please see "Appendix A".
 
-    Please edit redis.conf:
-    $ sudo vi /etc/redis/redis.conf
-      >"bind 0.0.0.0"
-      >"timeout 0"
-      >"client-output-buffer-limit pubsub 256mb 256mb 60"
+### 1-1. redis-server
 
-    Restart redis-server:
-    $ sudo service redis-server restart
+1. Install redis-server(version >= 2.8.4)
 
-[Java Environment]
-    $ sudo apt-get install maven openjdk-7-jdk
-    $ export JAVA_HOME=/usr/lib/jvm/default-java
+```
+$ sudo apt-get install redis-server
+```
 
-[Python Environment]
-    $ sudo apt-get install python-setuptools
-    $ sudo -E easy_install msgpack-python redis futures mock coverage
+2. Edit the following parameters in /etc/redis/redis.conf
+* bind 0.0.0.0
+* timeout 0
+* client-output-buffer-limit pubsub 256mb 256mb 60
 
-    Please edit odenos.conf:
-    $ sudo vi etc/odenos.conf
-      >PROCESS romgr2,python,apps/python/sample_components
+3. Restart redis-server
 
-[Ruby Environment]
- --> See [Appendix A: Setup Ruby & OpenFlowDriver]
+```
+$ sudo service redis-server restart
+```
+
+### 1-2. Java Environment
+
+1. Install jdk and maven
+
+```
+$ sudo apt-get install maven openjdk-7-jdk
+$ export JAVA_HOME=/usr/lib/jvm/default-java
+```
 
 
-2. Build ODENOS
---------------------------
-   $ mvn package
+### 1-3. Build ODENOS
 
-   
-3. Start ODENOS
---------------------------
-   $ ./odenos start
+1. compile
 
-   
-4. Run Tests
---------------------------
-[Unit Tests]
-   $ ./run-unittests.sh
+```
+$ mvn package
+```
 
-[Integration test]
-   $ cd apps/example
-   $ ./run-example.sh all
 
-			
-Appendix A: Setup Ruby & OpenFlowDriver
-----------------------------------------
-  [Install rvm, ruby2.0.0, gem package.]
-  ----------------------------------------
-    $ sudo apt-get --purge remove ruby rubygems
-    $ curl -L https://get.rvm.io | bash -s stable --ruby
-    $ source ~/.rvm/scripts/rvm
-    $ rvm install ruby-2.0.0-p576
-    $ rvm use --default ruby-2.0.0-p576
-    $ gem install bundler
-    $ bundle install
-    $ bundle update 
+## 2. Run
 
-  [install openvswitch, trema-edge.]
-  ----------------------------------------
-    $ sudo apt-get install libsqlite3-dev sqlite3 libpcap-dev libssl-dev openvswitch-common openvswitch-switch
-    $ git clone http://github.com/trema/trema-edge.git
-    $ mv trema-edge ~/
-    $ pushd ~/trema-edge
-    $ git checkout 148acb9cd7f654020098a5e769bfedad273a687b
-    $ gem install bundler
-    $ bundle install
-    $ bundle update
-    $ rake
-    $ popd
+1. start odenos
 
-  [Run OpenFlowDriver]
-  ---------------------------------------------
-    $ ./odenos start
-    $ ~/trema-edge/trema run -d "./src/main/ruby/org/o3project/odenos/core/odenos.rb --cmpmgr=of_comp_mgr"
+```
+$ ./odenos start
+```
 
-  [Stop OpenFlowDriver]
-  ----------------------------------------
-    $ ~/trema-edge/trema killall
+2. stot odenos
 
-    
-  [FAQ]
-    * Command Options for OpenFlowDriver
-      '--cmpmgr=id'			: "Trema ComponentManager's object ID"
-      '--rip=redis_server_id'		: "Redis Server's ip address(default 127.0.0.1)"
-      '--rport=redis_server_port'	: "Redis Server's port(default: 6379)"
-      '--vendor'			: "set VendorID (default 'OpenFlow')"
-    
-    * if "While executing gem" occurs, change the protocol of the source site into "http".
-        (1) show souce site.
-          $ gem source -l 
-            > *** URRENT SOURCES ***
-            > 
-            > https://rubygems.org/
-        (2) set souce site. (https --> http)
-          $ gem source -a http://rubygems.org/
-          $ gem source -r https://rubygems.org/
-        (3) check souce site.
-          $ gem source -l 
-            > *** URRENT SOURCES ***
-            > 
-            > http://rubygems.org/
-        (4) retry gem install
-          $ gem install bundler
+```
+$ ./odenos stop
+```
+
+3. run unit tests (if you want)
+
+```
+$ ./run-unittests.sh
+```
+
+4. run integration test (if you want)
+
+```
+$ cd apps/example
+$ ./run-example.sh all
+```
+
+
+## Appendix A: Setup Additional Environments
+
+### A-1. Python Environment
+
+1. Install python packages
+
+```
+$ sudo apt-get install python-setuptools
+$ sudo -E easy_install msgpack-python redis futures mock coverage
+```
+
+2. Add the following line to ./etc/odenos.conf
+
+```
+PROCESS romgr2,python,apps/python/sample_components
+```
+
+### A-2. Setup Ruby Environment & OpenFlowDriver
+
+1. Install rvm, ruby2.0.0, gem package
+
+```
+$ sudo apt-get --purge remove ruby rubygems
+$ curl -L https://get.rvm.io | bash -s stable --ruby
+$ source ~/.rvm/scripts/rvm
+$ rvm install ruby-2.0.0-p576
+$ rvm use --default ruby-2.0.0-p576
+$ gem install bundler
+$ bundle install
+$ bundle update
+```
+
+2. Install openvswitch, trema-edge
+
+```
+$ sudo apt-get install libsqlite3-dev sqlite3 libpcap-dev libssl-dev openvswitch-common openvswitch-switch
+$ git clone http://github.com/trema/trema-edge.git
+$ mv trema-edge ~/
+$ pushd ~/trema-edge
+$ git checkout 148acb9cd7f654020098a5e769bfedad273a687b
+$ gem install bundler
+$ bundle install
+$ bundle update
+$ rake
+$ popd
+```
+
+3. Run OpenFlowDriver
+
+```
+$ ./odenos start
+$ ~/trema-edge/trema run -d "./src/main/ruby/org/o3project/odenos/core/odenos.rb --cmpmgr=of_comp_mgr"
+```
+
+4. Stop OpenFlowDriver
+
+```
+$ ~/trema-edge/trema killall
+```
+
+
+## FAQ
+
+### Q. What kind options are there for OpenFlowDriver?
+
+You can specify the following options:
+
+```
+'--cmpmgr=id'                 : "Trema ComponentManager's object ID"
+'--rip=redis_server_id'       : "Redis Server's ip address (default 127.0.0.1)"
+'--rport=redis_server_port'   : "Redis Server's port       (default: 6379)"
+'--vendor'                    : "set VendorID              (default 'OpenFlow')"
+```
+
+### Q. I saw "While executing gem" error. What should I do?
+
+Try the following instruction:
+
+1. Change source site (https --> http)
+
+```
+$ gem source -a http://rubygems.org/
+$ gem source -r https://rubygems.org/
+```
+
+2. Check souce site
+
+```
+$ gem source -l
+*** URRENT SOURCES ***
+
+http://rubygems.org/
+```
+
+3. Retry gem install
+
+```
+$ gem install bundler
+```
