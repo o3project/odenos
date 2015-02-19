@@ -33,35 +33,33 @@ Python or Ruby environment, please see "Appendix A".
    $ export JAVA_HOME=/usr/lib/jvm/default-java
    ```
 
-### 1-3. Build
+## 2. Build, Run, Test
 
-1. compile
+1. Build
 
    ```
    $ mvn package
    ```
 
-## 2. Run
-
-1. start odenos
+2. Start odenos
 
    ```
    $ ./odenos start
    ```
 
-2. stot odenos
+3. Stop odenos
 
    ```
    $ ./odenos stop
   ```
 
-3. run unit tests (if you want)
+4. run unit tests (if you want)
 
    ```
    $ ./run-unittests.sh
    ```
 
-4. run integration test (if you want)
+5. run examples (if you want)
 
    ```
    $ cd apps/example
@@ -86,9 +84,12 @@ Python or Ruby environment, please see "Appendix A".
    PROCESS romgr2,python,apps/python/sample_components
    ```
 
+3. Start ODENOS
+
+
 ### A-2. Ruby Environment & OpenFlowDriver
 
-1. Install rvm, ruby2.0.0, gem package
+1. Install rvm, ruby2.0.0 and gem package
 
    ```
    $ sudo apt-get --purge remove ruby rubygems
@@ -101,7 +102,7 @@ Python or Ruby environment, please see "Appendix A".
    $ bundle update
    ```
 
-2. Install openvswitch, trema-edge
+2. Install openvswitch and trema-edge
 
    ```
    $ sudo apt-get install libsqlite3-dev sqlite3 libpcap-dev libssl-dev openvswitch-common openvswitch-switch
@@ -116,7 +117,7 @@ Python or Ruby environment, please see "Appendix A".
    $ cd -
    ```
 
-3. Run OpenFlowDriver
+3. Start OpenFlowDriver
 
    ```
    $ ./odenos start
@@ -136,12 +137,12 @@ Python or Ruby environment, please see "Appendix A".
 
 You can specify the following options:
 
-   ```
-   '--cmpmgr=id'                 : "Trema ComponentManager's object ID"
-   '--rip=redis_server_id'       : "Redis Server's ip address (default 127.0.0.1)"
-   '--rport=redis_server_port'   : "Redis Server's port       (default: 6379)"
-   '--vendor'                    : "set VendorID              (default 'OpenFlow')"
-   ```
+```
+'--cmpmgr=id'                 : "Trema ComponentManager's object ID"
+'--rip=redis_server_id'       : "Redis Server's ip address (default 127.0.0.1)"
+'--rport=redis_server_port'   : "Redis Server's port       (default: 6379)"
+'--vendor='VENDOR1'           : "set VendorID              (default 'OpenFlow')"
+```
 
 ### Q. I saw "While executing gem" error. What should I do?
 
