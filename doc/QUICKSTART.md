@@ -2,7 +2,7 @@
 
 ## 1. Setup
 
-Basically, ODENOS runs with redis-server and Java. If you want to add
+Basically, ODENOS runs with redis-server and Java. If you want to use
 Python or Ruby environment, please see "Appendix A".
 
 ### 1-1. redis-server
@@ -13,7 +13,7 @@ Python or Ruby environment, please see "Appendix A".
    $ sudo apt-get install redis-server
    ```
 
-2. Edit the following parameters in /etc/redis/redis.conf
+2. Edit the following parameters in */etc/redis/redis.conf*
    * bind 0.0.0.0
    * timeout 0
    * client-output-buffer-limit pubsub 256mb 256mb 60
@@ -80,13 +80,13 @@ Python or Ruby environment, please see "Appendix A".
    $ sudo -E easy_install msgpack-python redis futures mock coverage
    ```
 
-2. Add the following line to ./etc/odenos.conf
+2. Add the following line to *./etc/odenos.conf*
 
    ```
    PROCESS romgr2,python,apps/python/sample_components
    ```
 
-### A-2. Setup Ruby Environment & OpenFlowDriver
+### A-2. Ruby Environment & OpenFlowDriver
 
 1. Install rvm, ruby2.0.0, gem package
 
@@ -132,7 +132,7 @@ Python or Ruby environment, please see "Appendix A".
 
 ## FAQ
 
-### Q. What kind options are there for OpenFlowDriver?
+### Q. What kind of options are there for OpenFlowDriver?
 
 You can specify the following options:
 
