@@ -487,6 +487,19 @@ public class FederatorOnFlow {
         isBoundaryLink = true;
       }
 
+      // if src and dst networks of a flow are different, the flow should be divided.
+      if (!orgSrcNw.equals(orgDstNw)) {
+        nwSrcBoundaryPorts.put(orgSrcNw, new BoundaryPort(orgSrcNw, orgSrcNode, orgSrcPort));
+        if (!nwPaths.containsKey(orgSrcNw)) {
+          nwPaths.put(orgSrcNw, new ArrayList<String>());
+        }
+        nwDstBoundaryPorts.put(orgDstNw, new BoundaryPort(orgDstNw, orgDstNode, orgDstPort));
+        if (!nwPaths.containsKey(orgDstNw)) {
+          nwPaths.put(orgDstNw, new ArrayList<String>());
+        }
+        isBoundaryLink = true;
+      }
+
       if (!isBoundaryLink) {
         logger.debug("no boundary link.");
         String orgLinks = getConvLinkId(networkId, fedLinkId);
