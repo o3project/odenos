@@ -41,23 +41,22 @@ import org.o3project.odenos.remoteobject.rest.RESTTranslator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.FileReader;
-import java.io.Reader;
 import java.util.HashSet;
-import java.util.Properties;
 import java.util.Set;
 
 public final class Odenos {
 
   private static final Logger log = LoggerFactory.getLogger(Odenos.class);
 
+  public static final String MSGSV_IP = "127.0.0.1";
+  public static final int MSGSV_PORT = 6379;
+  public static final int REST_PORT = 10080;
   public static final String SYSTEM_MGR_ID = "systemmanager";
   public static final String EVENT_MGR_ID = "eventmanager";
   public static final String REST_TRANSLATOR_ID = "resttranslator";
   public static final String DEFAULT_REST_CONF = "etc/odenos_rest.conf";
   
 
-  private Properties properties;
   private MessageDispatcher disp;
   private String systemMgrId;
   private String msgsvIp;
@@ -68,6 +67,8 @@ public final class Odenos {
   private String romgrId;
   private String directory;
   private CommandParser parser = new CommandParser();
+  private int restport;
+  private String restroot;
 
   private final class CommandParser {
     CommandLine line;
@@ -83,6 +84,8 @@ public final class Odenos {
       options.addOption("r", "romgr", true, "start ComponentManager with specified id");
       options.addOption("s", "system", false, "start core system");
       options.addOption("S", "system_with_name", true, "start core system with specified id");
+      options.addOption("o", "restport", true, "port number of RestPort");
+      options.addOption("h", "restroot", true, "Directory of Rest root");
     }
 
     public final void parse(String[] args) throws ParseException {
@@ -136,6 +139,14 @@ public final class Odenos {
     public final String getDirectory() {
       return line.hasOption("directory") ? line.getOptionValue("directory") : null;
     }
+
+    public final int getRestPort() {
+      return line.hasOption("restport") ? Integer.parseInt(line.getOptionValue("restport")) : REST_PORT;
+    }
+
+    public final String getRestRoot() {
+      return line.hasOption("restroot") ? line.getOptionValue("restroot") : null;
+    }
   }
 
   /**
@@ -159,28 +170,8 @@ public final class Odenos {
         throw new ParseException("please specify '-d' when you want to specify '-r'");
       }
     }
-  }
-
-  /**
-   * Setup properties.
-   * @param pathOfConf path of configure file.
-   * @throws Exception if failed to load file.
-   */
-  public void setupProperties(String pathOfConf) throws Exception {
-    this.properties = new Properties();
-    Reader reader = null;
-    try {
-      reader = new FileReader(pathOfConf);
-      properties.load(reader);
-    } finally {
-      if (reader != null) {
-        try {
-          reader.close();
-        } catch (Exception e) {
-          e.printStackTrace();
-        }
-      }
-    }
+    restport = parser.getRestPort();
+    restroot = parser.getRestRoot();
   }
 
   /**
@@ -223,9 +214,8 @@ public final class Odenos {
   private final void runCoreSystem(String systemMgrId) {
     EventManager evtmgr = new EventManager(EVENT_MGR_ID, disp);
     SystemManager sysmgr = new SystemManager(systemMgrId, disp, evtmgr.getProperty());
-    RESTTranslator restTranslator = new RESTTranslator(
-        REST_TRANSLATOR_ID, disp, properties.getProperty("rest.root"),
-        Integer.parseInt(properties.getProperty("rest.port")));
+    RESTTranslator restTranslator
+      = new RESTTranslator(REST_TRANSLATOR_ID, disp, restroot, restport);
   }
 
   private final void runComponentManager(final String id, final String dir) throws Exception {
@@ -267,7 +257,6 @@ public final class Odenos {
 
     try {
       odenos.parseParameters(args);
-      odenos.setupProperties(DEFAULT_REST_CONF);
       odenos.run();
     } catch (ParseException e) {
       System.err.println("Invalid command line parameters: " + e.getMessage());

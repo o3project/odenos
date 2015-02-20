@@ -34,6 +34,8 @@ ODENOS_CONF_FILE_TMP=$ODENOS_CONF/odenos.conf.tmp
 ODENOS_LIB=$ODENOS_ROOT/lib
 ODENOS_LOG=var/log
 ODENOS_TMP=/tmp
+REST_PORT=10080
+REST_ROOT=.
 
 ODENOS_OPT="-Xms512m -Xmx512m -server"
 ODENOS_MAIN=org.o3project.odenos.core.Odenos
@@ -91,6 +93,12 @@ read_config_file() {
             "pubsub_server_port_backup")
                 PORT_B=`echo $line | awk '{print $2}'`
                 ;;
+            "rest.port")
+                REST_PORT=`echo $line | awk '{print $2}'`
+                ;;
+            "rest.root")
+                REST_ROOT=`echo $line | awk '{print $2}'`
+                ;;
             *)
                 ;;
         esac
@@ -121,7 +129,8 @@ start_system() {
     $JAVA -classpath $CLASSPATH:. ${ODENOS_OPT} \
 	-Dlog4j.configuration=file:${ODENOS_CONF}/log_java.conf \
 	-Dapp.log=${ODENOS_LOG}/odenos_system.log \
-	$ODENOS_MAIN -s -S $MANAGER -i $HOST -p $PORT -I $HOST_B -P $PORT_B &
+	$ODENOS_MAIN -s -S $MANAGER -o ${REST_PORT} -h ${REST_ROOT} \
+	-i $HOST -p $PORT -I $HOST_B -P $PORT_B &
     echo $! > $FILE_ODENOS_SYSTEM_PID
 }
 
