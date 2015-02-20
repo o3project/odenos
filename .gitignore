@@ -1,0 +1,25 @@
+*.class
+*.jar
+*.log
+*.pom
+*.pyc
+*~
+.classpath
+.project
+.pydevproject
+.settings
+Gemfile.lock
+
+GPATH
+GRTAGS
+GSYMS
+GTAGS
+TAGS
+callgrind.out.*
+
+# ODENOS Project
+lib
+src/test/.coverage
+src/test/ruby/coverage
+target
+var/log
