@@ -7,7 +7,7 @@ ODENOS enables programmers to easily design a SDN orchestrator
 as an arbitral combination of four types of objects, Network, 
 Driver, Operator and Application.
 
-Currently, Some examples which use OpenFlowDriver and Mininet
+Currently, some examples which use OpenFlowDriver and Mininet
 are avaiable.
 
 
