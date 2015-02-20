@@ -34,6 +34,8 @@ ODENOS_CONF_FILE_TMP=$ODENOS_CONF/odenos.conf.tmp
 ODENOS_LIB=$ODENOS_ROOT/lib
 ODENOS_LOG=var/log
 ODENOS_TMP=/tmp
+REST_PORT=10080
+REST_ROOT=.
 
 ODENOS_OPT="-Xms512m -Xmx512m -server"
 ODENOS_MAIN=org.o3project.odenos.core.Odenos
@@ -63,6 +65,12 @@ read_config_file() {
 	    odenos_process=(${odenos_process[@]} $VAL)
 	    count=`expr $count + 1`
 	fi
+	if [ "$KEY" = "rest.port" ]; then
+	    REST_PORT=`echo $line | cut -d " " -d "=" -f 2 | tr -d " "`
+	fi
+	if [ "$KEY" = "rest.root" ]; then
+	    REST_ROOT=`echo $line | cut -d " " -d "=" -f 2 | tr -d " "`
+	fi
     done < $ODENOS_CONF_FILE_TMP
     
     for proc in ${odenos_process[@]}
@@ -90,7 +98,7 @@ start_system() {
     $JAVA -classpath $CLASSPATH:. ${ODENOS_OPT} \
 	-Dlog4j.configuration=file:${ODENOS_CONF}/log_java.conf \
 	-Dapp.log=${ODENOS_LOG}/odenos_system.log \
-	$ODENOS_MAIN -s &
+	$ODENOS_MAIN -s -o ${REST_PORT} -h ${REST_ROOT}  &
     echo $! > $FILE_ODENOS_SYSTEM_PID
 }
 
