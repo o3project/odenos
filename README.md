@@ -1,13 +1,14 @@
 What's ODENOS
 ==========================
-ODENOS is a SDN controller framework for orchestrating multi-layer,
-multi-domain or multi-vendor networks.
+ODENOS is a network orchestration framework for controlling
+multi-layer, multi-domain or multi-vendor networks.
 
-ODENOS provides four types of objects, Network, Driver, Operator and
-Application, and enables programmers to easily design a SDN controller
-as an arbitral combination of them.
+ODENOS enables programmers to easily design a SDN orchestrator
+as an arbitral combination of four types of objects, Network, 
+Driver, Operator and Application.
 
-Currently, ODENOS is written in Java, Python, and Ruby.
+Currently, Some examples which use OpenFlowDriver and Mininet
+are avaiable.
 
 
 How to use ODENOS
