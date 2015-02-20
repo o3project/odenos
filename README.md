@@ -12,7 +12,7 @@ Currently, ODENOS is written in Java, Python, and Ruby.
 
 How to use ODENOS
 ==========================
-Please read "QUICKSTART.md" file.
+Please read [Getting Started with ODENOS](https://github.com/o3project/odenos/blob/master/doc/QUICKSTART.md).
 
 
 Supported environments
