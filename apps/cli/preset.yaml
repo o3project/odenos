@@ -88,7 +88,7 @@
 # === TRANSFORM DECLARATIONS ===
 
 - transform: create_node 
-  update: "/network{0}/topology/nodes/node{1}" 
+  put: "/network{0}/topology/nodes/node{1}" 
   body:
     node_id: "node{1}"
     type: Node
@@ -97,13 +97,13 @@
     attributes: {"admin_status":"UP", "oper_status":"UP", "physical_id":"{1}", "vendor":"VENDOR_A"}
 
 - transform: show_node 
-  read: "/network1/topology/nodes/node{0}" 
+  get: "/network1/topology/nodes/node{0}" 
 
 - transform: delete_node
   delete: "/network1/topology/nodes/node{0}" 
 
 - transform: create_port
-  update: "/network{0}/topology/nodes/node{1}/ports/port{2}"
+  put: "/network{0}/topology/nodes/node{1}/ports/port{2}"
   body:
     type: Port
     version: "0"
@@ -119,7 +119,7 @@
   delete: "/network1/topology/nodes/node{0}/ports/port{1}" 
 
 - transform: create_link
-  update: "/network{0}/topology/links/link{1}.{2}"
+  put: "/network{0}/topology/links/link{1}.{2}"
   body:
     type: Link
     version: "0"
@@ -238,7 +238,7 @@
 - macro: delete_comp
   scenario:
     - pipeline:
-      - read: /systemmanager/components
+      - get: /systemmanager/components
       - comps
       - delete_component
       - rest_request
@@ -246,20 +246,20 @@
 - macro: delete_conn
   scenario:
     - pipeline:
-      - read: /systemmanager/connections
+      - get: /systemmanager/connections
       - conns
       - delete_connection
       - rest_request
 
 - macro: verbose_off
   scenario:
-    - update: /network0/settings/verbose_event/port
+    - put: /network0/settings/verbose_event/port
       body: "false"
-    - update: /network0/settings/verbose_event/link
+    - put: /network0/settings/verbose_event/link
       body: "false"
-    - update: /network1/settings/verbose_event/port
+    - put: /network1/settings/verbose_event/port
       body: "false"
-    - update: /network1/settings/verbose_event/link
+    - put: /network1/settings/verbose_event/link
       body: "false"
 
 - macro: create_topo
@@ -286,12 +286,12 @@
 - macro: delete_topo 
   scenario:
     - pipeline:
-      - read: /network1/topology/links
+      - get: /network1/topology/links
       - links
       - delete_link
       - rest_request
     - pipeline: 
-      - read: /network1/topology/nodes
+      - get: /network1/topology/nodes
       - nodes
       - delete_node 
       - rest_request
@@ -299,28 +299,28 @@
 - macro: show_nodes 
   scenario:
     - pipeline:
-      - read: /network1/topology/nodes
+      - get: /network1/topology/nodes
       - nodes
       - filter_print
 
 - macro: show_ports 
   scenario:
     - pipeline:
-      - read: /network1/topology/nodes
+      - get: /network1/topology/nodes
       - ports
       - filter_print
 
 - macro: show_links 
   scenario:
     - pipeline:
-      - read: /network1/topology/links
+      - get: /network1/topology/links
       - links
       - filter_print
 
 - macro: show_comps
   scenario:
     - pipeline:
-      - read: /systemmanager/components
+      - get: /systemmanager/components
       - comps
       - fancy_comp
       - print
@@ -328,7 +328,7 @@
 - macro: show_conns
   scenario:
     - pipeline:
-      - read: /systemmanager/connections
+      - get: /systemmanager/connections
       - conns
       - fancy_conn
       - print 
@@ -336,18 +336,18 @@
 - macro: show_flows
   scenario:
     - pipeline:
-      - read: /network1/flows
+      - get: /network1/flows
       - flows
       - filter_print
 
 - macro: show_flow
   scenario:
-    - read: /network1/flows/{0}
+    - get: /network1/flows/{0}
 
 - macro: delete_flows
   scenario:
     - pipeline:
-      - read: /network1/flows
+      - get: /network1/flows
       - flows
       -  delete_flow
 
@@ -363,7 +363,7 @@
 # NOTE: You need to make an instance of Generator before using this macro.
 - macro: start
   scenario:
-    - update: /gen/env
+    - put: /gen/env
       body:
         nodePrefix: node
         portPrefix: port
@@ -374,7 +374,7 @@
         dump: false 
     - assert:
         status: 2\d{{2}}
-    - update: /gen/control
+    - put: /gen/control
       body:
         frequency: _int{0}  # in msec 
         generating: true
@@ -387,13 +387,13 @@
   description: Prints out statistics at Generator
   usage: stats
   scenario:
-    - read: /gen/stats
+    - get: /gen/stats
 
 - macro: stop
   description: Stops InPacket generation at Generator
   usage: stop
   scenario:
-    - update: /gen/control
+    - put: /gen/control
       body:
         generating: false 
     - assert:
