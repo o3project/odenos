@@ -1,4 +1,4 @@
-# Single Node Control
+# Control of Multiple Networks
 
 This example shows multi-domain and multi-layer network integration.
 The following scripts configure ODENOS as below:
