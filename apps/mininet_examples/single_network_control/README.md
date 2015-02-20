@@ -1,4 +1,4 @@
-# Single Node Control
+# Single Network Control
 
 This example changes single openflow **network** into **one big layer2 switch**,
 so the following scripts configure ODENOS as below:
