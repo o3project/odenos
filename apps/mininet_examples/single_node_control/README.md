@@ -1,7 +1,7 @@
 # Single Node Control
 
 This example changes single openflow node into an layer2 switch,
-so the following scripts configure ODENOS like below:
+so the following scripts configure ODENOS as below:
 
 ```
  [LearningSwitch l2sw1]
@@ -11,11 +11,11 @@ so the following scripts configure ODENOS like below:
 [OpenFlowDriver driver1]
           |
           |
-          | OpenFlow Secure Channel
+          | (OpenFlow Secure Channel)
           |
           |	  
       (mininet)
-     h1 - s1 - h2
+    h1 -- s1 -- h2
 ```
 
 
@@ -23,8 +23,7 @@ so the following scripts configure ODENOS like below:
 
 1. mininet
 
-Install ODENOS with python and ruby environments.
-* [Getting Started with ODENOS](https://github.com/o3project/odenos/blob/master/doc/QUICKSTART.md).
+   Install ODENOS with python and ruby environments. see [Getting Started with ODENOS](https://github.com/o3project/odenos/blob/master/doc/QUICKSTART.md).
 
 2. mininet
 
@@ -58,45 +57,45 @@ $ sudo PYTHONPATH=lib/python/ ./apps/mininet_examples/single_node_control/config
 
 1. check components
 
-```
-$ curl http://localhost:10080/systemmanager/components
-```
+   ```
+   $ curl http://localhost:10080/systemmanager/components
+   ```
 
 2. check connections
 
-```
-$ curl http://localhost:10080/systemmanager/connections
-```
+   ```
+   $ curl http://localhost:10080/systemmanager/connections
+   ```
 
 3. check network1's topology
 
-```
-$ curl http://localhost:10080/network1/topology
-```
+   ```
+   $ curl http://localhost:10080/network1/topology
+   ```
 
 4. start ping from h1 to h2
 
-```
-mininet> h1 ping h2
-```
+   ```
+   mininet> h1 ping h2
+   ```
 
 5. check network1's flows
 
-```
-$ curl http://localhost:10080/network1/flows
-```
+   ```
+   $ curl http://localhost:10080/network1/flows
+   ```
 
 6. check network1's packets
 
-```
-$ curl http://localhost:10080/network1/packets/
-```
+   ```
+   $ curl http://localhost:10080/network1/packets/
+   ```
 
 7. check l2sw1's fdb
 
-```
-$ curl http://localhost:10080/l2sw1/fdb
-```
+   ```
+   $ curl http://localhost:10080/l2sw1/fdb
+   ```
 
 
 ### 5. stop odenos
