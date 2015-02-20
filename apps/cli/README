@@ -16,11 +16,8 @@ $ mvn compile
 
 Note that a maven artifact "odenos" must be installed into your local maven repo (i.e., ~/.m2, just run "mvn install") before building the generator.
 
-4. modify etc/odenos.conf
-#PROCESS romgr1,java,apps/java/sample_components/target/classes
-PROCESS romgr1,java,apps/cli/target/classes
-
-5. Start OdenOS
+4. Start OdenOS
+$ odenos start -c apps/cli/odenos.conf
 
 Optionally, you may set a clio init file name to 'CLIO_INIT' like this:
 export CLIO_INIT=$HOME/somedir/init.yaml

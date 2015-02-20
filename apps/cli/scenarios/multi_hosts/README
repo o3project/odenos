@@ -13,60 +13,17 @@ To test it, you have to prepare the following:
 
 [host A]
 
-- etc/odenos.conf
+- odenos.conf
+MANAGER systemmanager
 PROCESS romgr1,java,apps/cli/target/classes
 PROCESS romgr2,java,apps/cli/target/classes
-
+pubsub_server_host <redis-server-ip-address>
+pubsub_server_port <redis-server-port-number>
 
 [host B]
-- etc/odenos.conf
+- odenos.conf
 PROCESS romgr10,java,apps/cli/target/classes
 PROCESS romgr11,java,apps/cli/target/classes
-
-- odenos
-
-     :
-start_process() {
-    for proc in ${odenos_process[@]}
-    do
-        PROC_NAME=`echo $proc | cut -d "," -f 1 | tr -d " "`
-        PROC_TYPE=`echo $proc | cut -d "," -f 2 | tr -d " "`
-        PROC_DIR=`echo $proc | cut -d "," -f 3 | tr -d " "`
-
-        file=$ODENOS_TMP/odenos_${PROC_NAME}.pid
-
-        if check_pid_file $file; then
-            echo "odenos $PROC_NAME is already running"
-            return 1
-        fi
-
-        if [ $PROC_TYPE = "java" ]; then
-            # start java RemoteObjectManager
-            set_classpath
-
-            $JAVA -classpath $CLASSPATH:. ${ODENOS_OPT} \
-                -Dlog4j.configuration=file:${ODENOS_CONF}/log_java.conf \
-                -Dapp.log=${ODENOS_LOG}/odenos_${PROC_NAME}.log \
-                $ODENOS_MAIN -r ${PROC_NAME} -d ${PROC_DIR} -i <<<redis server host address here>>> &
-      :
-start() {
-    echo "starting ODENOS"
-    cp $ODENOS_CONF_FILE $ODENOS_CONF_FILE_TMP
-    read_config_file
-
-    #start_system  <== disables systemmanager at Host B.
-    #sleep 3
-    start_process
-}
-
-stop() {
-    echo "stop ODENOS"
-    read_config_file
-    rm $ODENOS_CONF_FILE_TMP > /dev/null 2>&1
-    stop_process
-    #sleep 1
-    #stop_system
-}
-      : 
-
+pubsub_server_host <redis-server-ip-address>
+pubsub_server_port <redis-server-port-number>
 
