@@ -159,7 +159,7 @@ Try the following instruction:
    $ gem source -r https://rubygems.org/
    ```
 
-2. Check souce site
+2. Check source site
 
    ```
    $ gem source -l
