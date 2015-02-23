@@ -35,12 +35,14 @@ import org.o3project.odenos.remoteobject.ObjectProperty;
 import org.o3project.odenos.remoteobject.RemoteObject;
 import org.o3project.odenos.remoteobject.manager.EventManager;
 import org.o3project.odenos.remoteobject.messagingclient.Config;
+import org.o3project.odenos.remoteobject.messagingclient.Config.MODE;
 import org.o3project.odenos.remoteobject.messagingclient.ConfigBuilder;
 import org.o3project.odenos.remoteobject.messagingclient.MessageDispatcher;
 import org.o3project.odenos.remoteobject.rest.RESTTranslator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -187,7 +189,9 @@ public final class Odenos {
           .setPort(msgsvPort)
           .setHostB(msgsvIpBackup)
           .setPortB(msgsvPortBackup)
-          //.setMode(EnumSet.of(MODE.RESEND_SUBSCRIBE_ON_RECONNECTED))
+          .setMode(EnumSet.of(MODE.RESEND_SUBSCRIBE_ON_RECONNECTED,
+                              MODE.INCLUDE_SOURCE_OBJECT_ID,
+                              MODE.LOCAL_REQUESTS_TO_PUBSUB))
           //.setRemoteTransactionsMax(20)
           //.setRemoteTransactionsInitialTimeout(3)
           //.setRemoteTransactionsFinalTimeout(30)

@@ -233,7 +233,7 @@ public abstract class Logic extends Component {
           return;
         }
         NetworkInterface networkInterface = new NetworkInterface(
-            this.messageDispatcher, nwcId);
+            this.messageDispatcher, nwcId, getObjectId());
         this.networkInterfaces.put(nwcId, networkInterface);
         this.onConnectionChangedAdded(message);
         return;
