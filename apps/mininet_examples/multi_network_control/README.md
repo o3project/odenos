@@ -1,6 +1,12 @@
 # Control of Multiple Networks
 
-This example makes one big layer2 switch on multi-domain and multi-layer networks. In this example, the entire network consists of three domains(*network1*, *network2*, *network3*) as an overlay network, and one domain(*network4*) as an underlay network. First, three networks, *network1*, *network2*, and *network3*, are merged into a *network5* by *federator1*. Second, two different layers(*network5* and *network4*) are merged into *network6* by *linklayerizer1*. And finally, *network6* is aggregated into *network7*. So from *l2sw1*'s point of view, the network has only one node.
+This example makes one big layer2 switch on multi-domain and multi-layer networks. 
+In this example, the entire network consists of three domains(*network1*, *network2*, 
+*network3*) as an overlay network, and one domain(*network4*) as an underlay network. 
+First, three networks, *network1*, *network2*, and *network3*, are merged into *network5* 
+by *federator1*. Second, two different layers(*network5* and *network4*) are merged into 
+*network6* by *linklayerizer1*. And finally, *network6* is aggregated(*network7*). So 
+from *l2sw1*'s point of view, the network has only one node.
 
 The following scripts configure ODENOS as below:
 
