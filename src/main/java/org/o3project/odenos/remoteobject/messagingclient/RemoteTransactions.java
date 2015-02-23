@@ -91,9 +91,19 @@ class RemoteTransactions {
    * 
    * @param sno sequential number.
    * @param response a response.
+   * @throws TimeoutException 
+   * @throws IOException 
+   * @throws InterruptedException 
+   * @throws IllegalArgumentException 
    * @throws Exception if an exception occurs.
    */
-  Response sendRequest(Request request)
+  Response sendRequest(Request request) 
+      throws IllegalArgumentException, InterruptedException,
+      IOException, TimeoutException {
+    return sendRequest(request, null);
+  }
+
+  Response sendRequest(Request request, String sourceObjectId)
       throws InterruptedException, IOException,
       TimeoutException, IllegalArgumentException {
 
@@ -114,7 +124,7 @@ class RemoteTransactions {
 
     try {
       // Sends the request to RemoteObject
-      dispatcher.publishRequestAsync(sno, request);
+      dispatcher.publishRequestAsync(sno, request, sourceObjectId);
     } catch (IOException e) {
       responseMap.remove(sno);
       rendezvousPool.put(rendezvous);

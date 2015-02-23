@@ -126,6 +126,7 @@ public class MessageDispatcher implements Closeable, IMessageListener {
   protected final Actor actor;
   protected int serial = 0;
   protected boolean localRequestsToPubSubServer = false;
+  protected boolean includeSourceObjectId = false;
 
   protected static final String channelString(final String publisherId, final String eventId) {
     return publisherId + ":" + eventId;
@@ -177,8 +178,9 @@ public class MessageDispatcher implements Closeable, IMessageListener {
     eventManagerId = config.getEventManagerId();
     sourceDispatcherId = config.getSourceDispatcherId();
     mode = config.getMode();
-    localRequestsToPubSubServer =
-        config.getMode().contains(MODE.LOCAL_REQUESTS_TO_PUBSUB);
+    
+    localRequestsToPubSubServer = mode.contains(MODE.LOCAL_REQUESTS_TO_PUBSUB);
+    includeSourceObjectId = mode.contains(MODE.INCLUDE_SOURCE_OBJECT_ID);
 
     // Actor system instantiation. 
     // The number of woker threads: the max number of remote transactions.
@@ -603,7 +605,11 @@ public class MessageDispatcher implements Closeable, IMessageListener {
    * @return Response response to the request 
    * @throws Exception exception
    */
-  public Response requestSync(Request request)
+  public Response requestSync(Request request) throws Exception {
+    return requestSync(request, null);
+  }
+
+  public Response requestSync(Request request, String sourceObjectId)
       throws Exception {
     String objectId = request.objectId;
     Response response;
@@ -617,11 +623,11 @@ public class MessageDispatcher implements Closeable, IMessageListener {
       }
       // TODO: remoteObjectsMap is not unused.
     } else if (remoteObjectsMap.containsKey(objectId)) {
-      response = remoteTransactions.sendRequest(request);
+      response = remoteTransactions.sendRequest(request, sourceObjectId);
     } else {
       // request to an unregistered remote object
       remoteObjectsMap.put(objectId, Boolean.valueOf(false));
-      response = remoteTransactions.sendRequest(request);
+      response = remoteTransactions.sendRequest(request, sourceObjectId);
     }
     return response;
   }
@@ -685,13 +691,17 @@ public class MessageDispatcher implements Closeable, IMessageListener {
    * Although this method is asynchronous, {@link RemoteTransactions} provides 
    * a synchronous method to wait for a response from another remote object.
    */
-  protected void publishRequestAsync(final int sno, final Request request)
+  protected void publishRequestAsync(final int sno, final Request request, final String sourceObjectId)
       throws IOException {
     BufferPacker pk = msgpack.createBufferPacker();
     // write delivery header.
     pk.write(TYPE_REQUEST);
     pk.write(sno);
-    pk.write(getSourceDispatcherId());
+    if (sourceObjectId != null && includeSourceObjectId) {
+      pk.write(sourceObjectId);
+    } else {
+      pk.write(getSourceDispatcherId());
+    }
     // write delivery body.
     pk.write(request);
     byte[] message = pk.toByteArray();

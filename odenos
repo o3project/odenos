@@ -43,6 +43,7 @@ FILE_ODENOS_SYSTEM_PID=$ODENOS_TMP/odenos_system.pid
 
 SYSTEM_MANAGER_ID=systemmanager
 MANAGER=$SYSTEM_MANAGER_ID
+MANAGER_ENABLED=true
 HOST=localhost
 PORT=6379
 HOST_B=null
@@ -79,18 +80,20 @@ read_config_file() {
                 if [ -z "${MANAGER}" ]; then
                     MANAGER=$SYSTEM_MANAGER_ID
                 fi
-                MANAGER_ENABLED=true
                 ;;
-            "pubsub_server_host")
+            "manager.disabled")
+                unset MANAGER_ENABLED
+                ;;
+            "pubsub.server.host")
                 HOST=`echo $line | awk '{print $2}'`
                 ;;
-            "pubsub_server_port")
+            "pubsub.server.port")
                 PORT=`echo $line | awk '{print $2}'`
                 ;;
-            "pubsub_server_host_backup")
+            "pubsub.server.host.backup")
                 HOST_B=`echo $line | awk '{print $2}'`
                 ;;
-            "pubsub_server_port_backup")
+            "pubsub.server.port.backup")
                 PORT_B=`echo $line | awk '{print $2}'`
                 ;;
             "rest.port")
