@@ -140,7 +140,7 @@ latency              | \<Number> | Unit is  msec.                               
 req_bandwidth        | \<Number> | Unit is Mbps. Request bandwidth.(There may be different from the actual bandwidth.) | any   | Upper -> Lower
 max_bandwidth        | \<Number> | Unit is Mbps. maximum bandwidth of the port.<br> Driver to set the value.           | any   | Lower -> Upper
 unreserved_bandwidth | \<Number> | Unit is Mbps. Current bandwidth of the port.<br > Driver to set the initial value.  |max_bandwidth   | Upper -> Lower 
-establishment_status | \<string> |Use LinkLayerizer Only. Flowから生成されたlink. <br> "establishing" :  <br>   "established" :  <br> "establishing" である場合、その Link の oper_status は "DOWN" のみとする。| any    | -
+establishment_status | \<string> |Use LinkLayerizer Only. Link that was generated from Flow. <br> "establishing" :  <br>   "established" :  <br> If it is a "establishing", oper_status is "DOWN" | any    | -
 
 (*) **Lower** : Driver side. **Upper** : Controller side.
 
