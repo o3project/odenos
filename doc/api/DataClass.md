@@ -837,10 +837,10 @@ state            | \<String> |see  "State Transition Table"                     
      |                            |             |                    | PUT topology      |
      |                            |             |                    |------------------>|
      |                            |             | changestatus(running)                  |
-     |                            |             |<-------------------|
+     |                            |             |&lt;-------------------|
      |                            |             |                    |
      |                            |PUT connections(status:running)   |
-     |                            |<------------|                    |
+     |                            |&lt;------------|                    |
      |                      [status:running]    |                    |
      |                            |             |                    |
      |                            |             |
@@ -867,12 +867,12 @@ state            | \<String> |see  "State Transition Table"                     
      |                            |             |------------------->|
      |                            |             |                    |
      |                            |             | changestatus(finalizing)
-     |                            |             |<-------------------|
+     |                            |             |&lt;-------------------|
      |                            |             |                    |
      |                            |PUT connections(status:finalizing)|
-     |                            |<------------|                    |
+     |                            |&lt;------------|                    |
      |        x[ConnectionChanged(UPDATE)](*)   |                    |
-     |                    x<------|x[ConnectionChanged(UPDATE)](*)   |
+     |                    x&lt;------|x[ConnectionChanged(UPDATE)](*)   |
      |                            |-->x         |                    |
      |                      [status:finalizing] |                    |
      |                            |             |                    |
@@ -884,14 +884,14 @@ state            | \<String> |see  "State Transition Table"                     
      |                            |             |                    |------------------>|
      |                            |             |                    |                   |
      |                            |             | changestatus(none) |                   |
-     |                            |             |<-------------------|                   |
+     |                            |             |&lt;-------------------|                   |
      |                            |PUT connections(status:none)      |
-     |                            |<------------|                    |
+     |                            |&lt;------------|                    |
      |                     [delete connection]  |
      |                            | x[ConnectionChanged(DELETE)](*)
      |                            |--->x        |
      |  x[ConnectionChanged(DELETE)](*)         |
-     |                     x<-----|             |
+     |                     x&lt;-----|             |
 
 (*) Event notification None.
 
