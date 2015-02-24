@@ -50,12 +50,12 @@ import org.slf4j.LoggerFactory;
 
 /**
  * <h1>Redis client base class.</h1>
- * 
+ *
  * <p>
  * This class supports non-blocking (asynchronous) Redis messaging:
  * <ul>
  * <li>PUBLISH
- * <li>SUBSCRIBE 
+ * <li>SUBSCRIBE
  * <li>PSUBSCRIBE
  * <li>PUBSUB channels
  * <li>PUBSUB numsub channel
@@ -75,7 +75,7 @@ public class RedisClient implements Closeable {
   private static final byte[] LOAD = "load".getBytes();
   private static final byte[] EXISTS = "exists".getBytes();
 
-  private Socket socket; // Java socket 
+  private Socket socket; // Java socket
   private RedisOutputStream outputStream;
   private RedisInputStream inputStream;
 
@@ -84,7 +84,7 @@ public class RedisClient implements Closeable {
 
   /**
    * Constructor.
-   * 
+   *
    * <p>
    * Set keepAlive false if you want to disable TCP keep alive.
    */
@@ -94,10 +94,10 @@ public class RedisClient implements Closeable {
 
   /**
    * Constructor.
-   * 
+   *
    * <p>
    * Set keepAlive false if you want to disable TCP keep alive.
-   * 
+   *
    * @param keepAlive TCP keep alive
    */
   public RedisClient(final boolean keepAlive) {
@@ -106,15 +106,15 @@ public class RedisClient implements Closeable {
 
   /**
    * Connects to Redis server
-   * 
+   *
    * <p>
    * Since this connection is used for pubsub only, this method
    * sets the socket timeout to infinite.
-   * 
+   *
    * <p>
    * TCP keep alive may be disabled by setting keepAlive false
    * when instantiating this class using the constructor method.
-   * 
+   *
    * @param host Redis server host name or IP address
    * @param port Redis server port number
    */
@@ -138,16 +138,16 @@ public class RedisClient implements Closeable {
       }
     }
   }
-  
+
   /**
    * Sends a Redis command
-   * 
+   *
    * <p>
    * This method first establishes a TCP connection to Redis server.
    * The TCP connection can be kept alive by setting keepAlive true
    * when instantiating this class (its default is true).
    * @param command Redis command
-   * @param args command arguments 
+   * @param args command arguments
    */
   public void sendCommand(final Command command, final byte[]... args) {
     Protocol.sendCommand(outputStream, command, args);
@@ -160,7 +160,7 @@ public class RedisClient implements Closeable {
 
   /**
    * Sends a Redis command.
-   * 
+   *
    * <p>
    * @param cmd Redis command
    */
@@ -172,6 +172,7 @@ public class RedisClient implements Closeable {
   /**
    * Closes the TCP connection and the pair of Redis streams.
    */
+  @Override
   public void close() {
     if (isConnected()) {
       try {
@@ -200,10 +201,10 @@ public class RedisClient implements Closeable {
 
   /**
    * Subscribes channels.
-   * 
+   *
    * <p>
    * Note: An application thread calls this method directly,
-   * 
+   *
    * @param channels channels to be subscribed
    */
   public synchronized void subscribe(final byte[]... channels) {
@@ -212,11 +213,11 @@ public class RedisClient implements Closeable {
 
   /**
    * Subscribes channels.
-   * 
+   *
    * <p>
    * Note: An application thread calls this method directly,
-   * 
-   * @param channels channels to be subscribed
+   *
+   * @param patterns pattern to match channels to be subscribed to
    */
   public synchronized void psubscribe(final byte[]... patterns) {
     sendCommand(PSUBSCRIBE, patterns);
@@ -224,7 +225,7 @@ public class RedisClient implements Closeable {
 
   /**
    * "Unsubscribes all the channels.
-   * 
+   *
    * <p>
    * Note: An application thread calls this method directly,
    */
@@ -234,7 +235,7 @@ public class RedisClient implements Closeable {
 
   /**
    * "Unsubscribes all the channels.
-   * 
+   *
    * <p>
    * Note: An application thread calls this method directly,
    */
@@ -244,10 +245,10 @@ public class RedisClient implements Closeable {
 
   /**
    * Unsubscribe specific channels.
-   * 
+   *
    * <p>
    * Note: An application thread calls this method directly,
-   * 
+   *
    * @param channels channels
    */
   public synchronized void unsubscribe(final byte[]... channels) {
@@ -256,11 +257,11 @@ public class RedisClient implements Closeable {
 
   /**
    * Unsubscribe specific channels.
-   * 
+   *
    * <p>
    * Note: An application thread calls this method directly,
-   * 
-   * @param channels channels
+   *
+   * @param patterns pattern to match channels to be unsubscribe from
    */
   public synchronized void punsubscribe(final byte[]... patterns) {
     sendCommand(PUNSUBSCRIBE, patterns);
@@ -268,7 +269,7 @@ public class RedisClient implements Closeable {
 
   /**
    * Publishes a message to a channel.
-   * 
+   *
    * @param channel target channel
    * @param message message to be published
    */
@@ -285,7 +286,7 @@ public class RedisClient implements Closeable {
 
   /**
    * Issues "PUBSUB numsub channel" command to Redis server.
-   * 
+   *
    * @param channel channel to be checked
    */
   public void pubsubNumsub(final byte[] channel) {
@@ -294,7 +295,7 @@ public class RedisClient implements Closeable {
 
   /**
    * Issues "SET key value" command to Redis server.
-   * 
+   *
    * @param key key
    * @param value value
    */
@@ -304,7 +305,7 @@ public class RedisClient implements Closeable {
 
   /**
    * Issues "SET key value EX timeout" command to Redis server.
-   * 
+   *
    * @param key key
    * @param value value
    * @param time timeout
@@ -315,7 +316,7 @@ public class RedisClient implements Closeable {
 
   /**
    * Issues "CLIENT setname name" command to Redis server.
-   * 
+   *
    * @param name client name
    */
   public void setClientName(final byte[] name) {
@@ -328,7 +329,7 @@ public class RedisClient implements Closeable {
   public void getClientList() {
     sendCommand(CLIENT, LIST);
   }
- 
+
   /**
    * Issues "SCRIPT exists" command to Redis server.
    */
@@ -344,7 +345,7 @@ public class RedisClient implements Closeable {
   }
 
   /**
-   * Issues "EVALSHA" command to Redis server. 
+   * Issues "EVALSHA" command to Redis server.
    */
   public void evalsha(final byte[]... argv) {
     sendCommand(EVALSHA, argv);
@@ -352,7 +353,7 @@ public class RedisClient implements Closeable {
 
   /**
   * Reads a reply as status code from input stream .
-  * 
+  *
   * @return status code
   */
   public String getStatusCodeReply() {
@@ -366,12 +367,12 @@ public class RedisClient implements Closeable {
 
   /**
    * Reads a reply as integer from input stream.
-   * 
+   *
    * <p>
    * Redis server returns this value as ACK for PUBLISH.
    * The value means the number of subscribers receiving
    * the published data.
-   * 
+   *
    * @return integer value
    */
   public Long readIntegerFromInputStream() {
@@ -380,7 +381,7 @@ public class RedisClient implements Closeable {
 
   /**
    * Low-level read command.
-   *  
+   *
    * @return Object
    */
   public Object read() {
@@ -389,11 +390,11 @@ public class RedisClient implements Closeable {
 
   /**
    * Reads a reply as raw object list from input stream.
-   * 
+   *
    * <p>
    * Redis server returns this list as Redis messages
-   * 
-   * @return raw object list 
+   *
+   * @return raw object list
    * @throws JedisConnectionException read failure
    */
   @SuppressWarnings("unchecked")
@@ -404,8 +405,8 @@ public class RedisClient implements Closeable {
 
   /**
    * Reads a reply as a response to "PUBSUB numsub channel".
-   * 
-   * @return raw object list 
+   *
+   * @return raw object list
    */
   public long readPubsubNumsubReply(String channel)
       throws ProtocolException {
@@ -423,7 +424,7 @@ public class RedisClient implements Closeable {
 
   /**
    * Reads a reply as a response to "CLIENT list".
-   * 
+   *
    * @return a list of Redis clients
    */
   public List<String> readGetClientListReply() {
