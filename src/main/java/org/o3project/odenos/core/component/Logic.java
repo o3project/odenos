@@ -233,7 +233,7 @@ public abstract class Logic extends Component {
           return;
         }
         NetworkInterface networkInterface = new NetworkInterface(
-            this.messageDispatcher, nwcId, getObjectId());
+            this.messageDispatcher, nwcId);
         this.networkInterfaces.put(nwcId, networkInterface);
         this.onConnectionChangedAdded(message);
         return;
@@ -1315,7 +1315,7 @@ public abstract class Logic extends Component {
       boolean updated = false;
       Map<String, String> currAttributes = curr.getAttributes();
       for (String key : currAttributes.keySet()) {
-        String oldAttr = body.getAttribute(key);
+        String oldAttr = prev.getAttribute(key);
         if (nodeMessageIgnoreAttributes.contains(key)
             || (oldAttr != null && oldAttr.equals(currAttributes
                 .get(key)))) {
@@ -1372,7 +1372,7 @@ public abstract class Logic extends Component {
       boolean updated = false;
       Map<String, String> currAttributes = curr.getAttributes();
       for (String key : currAttributes.keySet()) {
-        String oldAttr = body.getAttribute(key);
+        String oldAttr = prev.getAttribute(key);
         if (portMessageIgnoreAttributes.contains(key)
             || (oldAttr != null && oldAttr.equals(currAttributes
                 .get(key)))) {
@@ -1428,7 +1428,7 @@ public abstract class Logic extends Component {
       boolean updated = false;
       Map<String, String> currAttributes = curr.getAttributes();
       for (String key : currAttributes.keySet()) {
-        String oldAttr = body.getAttribute(key);
+        String oldAttr = prev.getAttribute(key);
         if (messageIgnoreAttributes.contains(key)
             || (oldAttr != null && oldAttr.equals(currAttributes
                 .get(key)))) {
@@ -1506,7 +1506,7 @@ public abstract class Logic extends Component {
       // attributes copy (curr -> body)
       Map<String, String> currAttributes = curr.getAttributes();
       for (String key : currAttributes.keySet()) {
-        String oldAttr = body.getAttribute(key);
+        String oldAttr = prev.getAttribute(key);
         if (messageIgnoreAttributes.contains(key)
             || (oldAttr != null && oldAttr.equals(currAttributes
                 .get(key)))) {
