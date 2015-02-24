@@ -41,6 +41,10 @@ public class SystemManagerIF extends RemoteObjectIF {
     super(dispatcher, dispatcher.getSystemManagerId());
   }
 
+  public SystemManagerIF(final String sourceDispatcherId, final MessageDispatcher dispatcher) {
+    super(sourceDispatcherId, dispatcher);
+  }
+
   public final NetworkIF createNetwork(final String id) {
     this.createComponent(T_NETWORK, id);
     return new NetworkIF(this.dispatcher(), id);

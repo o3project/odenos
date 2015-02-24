@@ -12,16 +12,18 @@ from copy import copy
 TYPE_REQUEST = 0
 TYPE_RESPONSE = 1
 TYPE_EVENT = 2
+TYPE_REFLECTED_EVENT = 99
 
 REQUEST = 'REQUEST' 
 RESPONSE = 'RESPONSE'
 EVENT = 'EVENT' 
 
+REFLECTED_EVENT_PATTERN = 'reflected_event'
+REFLECTED_EVENT_PATTERN_BYTE = b'reflected_event'
+
 r = redis.StrictRedis(host='localhost', port=6379, db=0)
 p = r.pubsub(ignore_subscribe_messages=True)
-p.psubscribe('*', 'event_monitor')
-
-message_type = None;
+p.psubscribe('*', REFLECTED_EVENT_PATTERN) 
 
 serial = 0;
 
@@ -46,6 +48,7 @@ REQUEST_LEFT = {'GET': GET_LEFT,  'POST': POST_LEFT, 'PUT': PUT_LEFT, 'DELETE': 
 REQUEST_RIGHT = {'GET': GET_RIGHT, 'POST': POST_RIGHT, 'PUT': PUT_RIGHT, 'DELETE': DELETE_RIGHT}
 
 BODY_SUMMARY = '{0} {1} [body detail]'
+BODY_SUMMARY_EVENT = '{0} [body detail]'
 
 OBJECT_IDS = None 
 
@@ -53,6 +56,7 @@ def monitor():
     global serial
     while True:  # inifinite loop
         for msg in p.listen(): # blocks untile new message is received.
+            pattern = msg['pattern']
             type_ = msg['type'] # Redis message type
             dstid = msg['channel'].decode(encoding='utf-8') # Redis pubsub channel
             if type_ != 'message' and type_ != 'pmessage':
@@ -70,20 +74,32 @@ def monitor():
                     method = None
                     path = None
                     status = None
+                    subscriber_id = None
+                    publisher_id = None
+                    event_type = None
+                    message_type = '*'
                     if tp == TYPE_REQUEST:
                         message_type = REQUEST
                         method = body[1].decode('ascii')
                         path = '/{}/{}'.format(body[0].decode('ascii'), body[2].decode('ascii'))
+                        write_sequence(serial, message_type, dstid, srcid, sno, path, method, status, event_type, body)
+                        serial += 1
                     elif tp == TYPE_RESPONSE:
                         message_type = RESPONSE
                         status = body[0]
                         path = '' 
-                    elif tp == TYPE_EVENT:
+                        write_sequence(serial, message_type, dstid, srcid, sno, path, method, status, event_type, body)
+                        serial += 1
+                    elif pattern == REFLECTED_EVENT_PATTERN_BYTE and tp == TYPE_REFLECTED_EVENT:
                         message_type = EVENT
+                        dstid = srcid
+                        srcid = body[0].decode('ascii')
+                        event_type = body[1].decode('ascii')
+                        write_sequence(serial, message_type, dstid, srcid, sno, path, method, status, event_type, body)
+                        serial += 1
+                    #print('serial: {}, type: {}, dstid: {}, srcid: {}: sno: {}'.format(serial, message_type, dstid, srcid, sno))
                     #print('serial: {}, type: {}, dstid: {}, srcid: {}: sno: {}, data: {}'.format(serial, message_type, dstid, srcid, sno, body))
                     #print('')
-                    write_sequence(serial, message_type, dstid, srcid, sno, path, method, status, body)
-                    serial += 1
                 except:
                     traceback.print_exc()
                     pass
@@ -146,7 +162,7 @@ def setup(*args, **kwargs):
     #print(VERTICAL_LINES_FORMAT.format('|', BAR, '|', BAR, '|'))
 
 
-def write_sequence(serial, message_type, dstid, srcid, sno, path, method, status, body):
+def write_sequence(serial, message_type, dstid, srcid, sno, path, method, status, event_type, body):
     '''
     Writes sequence
     '''
@@ -178,8 +194,8 @@ def write_sequence(serial, message_type, dstid, srcid, sno, path, method, status
             LEFT = RESPONSE_LEFT.format(status)
             RIGHT = RESPONSE_RIGHT.format(status)
         elif message_type == EVENT:
-            LEFT = RESPONSE_LEFT
-            RIGHT = RESPONSE_RIGHT
+            LEFT = EVENT_LEFT
+            RIGHT = EVENT_RIGHT
 
         if (dstid_idx > srcid_idx):  # Drows an arrow to the right
             c = srcid_idx
@@ -213,7 +229,10 @@ def write_sequence(serial, message_type, dstid, srcid, sno, path, method, status
                 c += 1 
 
         print(VERTICAL_LINES_FORMAT.format(*arrow), end='')
-        print('  ' + BODY_SUMMARY.format(sno, path))
+        if (message_type == EVENT):
+            print('  ' + BODY_SUMMARY_EVENT.format(event_type))
+        else:
+            print('  ' + BODY_SUMMARY.format(sno, path))
 
 if __name__ == '__main__':
     

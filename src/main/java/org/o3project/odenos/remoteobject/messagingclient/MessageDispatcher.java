@@ -93,6 +93,7 @@ public class MessageDispatcher implements Closeable, IMessageListener {
   protected static final byte TYPE_REQUEST = 0;
   protected static final byte TYPE_RESPONSE = 1;
   protected static final byte TYPE_EVENT = 2;
+  protected static final byte TYPE_REFLECTED_EVENT = 99;
 
   protected BlockingQueue<Runnable> subscriberQueue;
 
@@ -125,8 +126,10 @@ public class MessageDispatcher implements Closeable, IMessageListener {
 
   protected final Actor actor;
   protected int serial = 0;
+
   protected boolean localRequestsToPubSubServer = false;
   protected boolean includeSourceObjectId = false;
+  protected boolean reflectEventToMonitor = false;
 
   protected static final String channelString(final String publisherId, final String eventId) {
     return publisherId + ":" + eventId;
@@ -178,9 +181,10 @@ public class MessageDispatcher implements Closeable, IMessageListener {
     eventManagerId = config.getEventManagerId();
     sourceDispatcherId = config.getSourceDispatcherId();
     mode = config.getMode();
-    
+
     localRequestsToPubSubServer = mode.contains(MODE.LOCAL_REQUEST_TO_PUBSUB);
     includeSourceObjectId = mode.contains(MODE.INCLUDE_SOURCE_OBJECT_ID);
+    reflectEventToMonitor = mode.contains(MODE.REFLECT_EVENT_TO_MONITOR);
 
     // Actor system instantiation. 
     // The number of woker threads: the max number of remote transactions.
@@ -215,14 +219,14 @@ public class MessageDispatcher implements Closeable, IMessageListener {
   @Override
   public void onMessage(final String channel, byte[] message) {
 
-    serial++;  // Serial number for incoming messages.
+    serial++; // Serial number for incoming messages.
 
     try {
       BufferUnpacker upk = msgpack.createBufferUnpacker(message);
       // read delivery header.
       byte type = upk.readByte();
-      final int sno = upk.readInt();  // Sequence number for outgoing request messages.
-      final String sourceObjectId = upk.readString(); // i.e., channel
+      final int sno = upk.readInt(); // Sequence number for outgoing request messages.
+      final String sourceObjectId = upk.readString();
 
       RemoteObject localObject = null;
       Queue<Mail> mailbox = null;
@@ -329,6 +333,9 @@ public class MessageDispatcher implements Closeable, IMessageListener {
                   localObject.setRunning(true);
                   // Assigns a thread to read a mail in the mailbox.
                   actor.read(localObject);
+                }
+                if (reflectEventToMonitor) {
+                  publishEventAsync("reflected_event", event, subscriber);
                 }
               }
             }
@@ -657,15 +664,33 @@ public class MessageDispatcher implements Closeable, IMessageListener {
    * asynchronously.
    */
   public void publishEventAsync(final Event event) throws IOException {
+    final String channel = channelString(event.publisherId, event.eventType);
+    publishEventAsync(channel, event, null);
+  }
+  
+  private void publishEventAsync(final String channel, final Event event, final String subscriberId) 
+      throws IOException {
     BufferPacker pk = msgpack.createBufferPacker();
     // write delivery header.
-    pk.write(TYPE_EVENT);
-    pk.write(0);
-    pk.write("event");
+    byte[] message = null;
+    if (reflectEventToMonitor) {
+      if (subscriberId == null) {
+        pk.write(TYPE_EVENT);
+        pk.write(0);
+        pk.write(event.publisherId);
+      } else {
+        pk.write(TYPE_REFLECTED_EVENT);
+        pk.write(0);
+        pk.write(subscriberId);
+      }
+    } else {
+      pk.write(TYPE_EVENT);
+      pk.write(0);
+      pk.write("event");
+    }
     // write delivery body.
     pk.write(event);
-    byte[] message = pk.toByteArray();
-    String channel = channelString(event.publisherId, event.eventType);
+    message = pk.toByteArray();
     // PUBLISH
     driverImpl.publish(channel, message);
     if (log.isDebugEnabled()) {
@@ -691,7 +716,8 @@ public class MessageDispatcher implements Closeable, IMessageListener {
    * Although this method is asynchronous, {@link RemoteTransactions} provides 
    * a synchronous method to wait for a response from another remote object.
    */
-  protected void publishRequestAsync(final int sno, final Request request, final String sourceObjectId)
+  protected void publishRequestAsync(final int sno, final Request request,
+      final String sourceObjectId)
       throws IOException {
     BufferPacker pk = msgpack.createBufferPacker();
     // write delivery header.

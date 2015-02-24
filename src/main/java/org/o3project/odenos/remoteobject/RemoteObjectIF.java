@@ -30,10 +30,18 @@ public class RemoteObjectIF {
 
   private final MessageDispatcher dispatcher;
   private final String id;
+  private final String sourceObjectId;
 
   public RemoteObjectIF(final MessageDispatcher dispatcher, final String id) {
     this.dispatcher = dispatcher;
     this.id = id;
+    this.sourceObjectId = null;
+  }
+
+  public RemoteObjectIF(final String sourceObjectId, final MessageDispatcher dispatcher) {
+    this.dispatcher = dispatcher;
+    this.id = dispatcher.getSystemManagerId();
+    this.sourceObjectId = sourceObjectId;
   }
 
   public MessageDispatcher dispatcher() {
@@ -122,7 +130,7 @@ public class RemoteObjectIF {
   private Response sendRequest(final Request.Method method, final String path, final Object body) {
     Request req = new Request(this.id(), method, path, body);
     try {
-      return this.dispatcher().requestSync(req);
+      return this.dispatcher().requestSync(req, sourceObjectId);
     } catch (Exception e) {
       //e.printStackTrace();
       return new Response(Response.INTERNAL_SERVER_ERROR, null);

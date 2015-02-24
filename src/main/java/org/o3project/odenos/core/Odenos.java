@@ -223,9 +223,9 @@ public final class Odenos {
       = new RESTTranslator(REST_TRANSLATOR_ID, disp, restroot, restport);
   }
 
-  private final void runComponentManager(final String id, final String dir) throws Exception {
-    SystemManagerIF sysmgr = new SystemManagerIF(disp);
-    ComponentManager2 romgr = new ComponentManager2(id, disp);
+  private final void runComponentManager(final String romgrId, final String dir) throws Exception {
+    SystemManagerIF sysmgr = new SystemManagerIF(romgrId, disp);
+    ComponentManager2 romgr = new ComponentManager2(romgrId, disp);
     romgr.registerComponents(this.findComponents(dir));
     sysmgr.addComponentManager(romgr.getProperty());
     romgr.setState(ObjectProperty.State.RUNNING);
