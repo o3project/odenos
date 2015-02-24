@@ -1557,7 +1557,7 @@ public class Federator extends Logic {
 
   /**
    *
-   * @param Link boundary Link.
+   * @param link boundary Link.
    * @param srcPort boundary src Port
    */
   protected void addBoundaryLinkAttribute(Link link, Port srcPort) {
