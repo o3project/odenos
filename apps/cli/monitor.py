@@ -23,7 +23,8 @@ REFLECTED_EVENT_PATTERN_BYTE = b'reflected_event'
 
 r = redis.StrictRedis(host='localhost', port=6379, db=0)
 p = r.pubsub(ignore_subscribe_messages=True)
-p.psubscribe('*', REFLECTED_EVENT_PATTERN) 
+#p.psubscribe('*', REFLECTED_EVENT_PATTERN) 
+p.psubscribe('*') 
 
 serial = 0;
 
@@ -56,9 +57,9 @@ def monitor():
     global serial
     while True:  # inifinite loop
         for msg in p.listen(): # blocks untile new message is received.
-            pattern = msg['pattern']
+            #pattern = msg['pattern']
             type_ = msg['type'] # Redis message type
-            dstid = msg['channel'].decode(encoding='utf-8') # Redis pubsub channel
+            dstid = msg['channel'].decode(encoding='utf-8') # Redis pubsub channel  # Destination
             if type_ != 'message' and type_ != 'pmessage':
                     continue
             else: # subscribed events
@@ -67,9 +68,9 @@ def monitor():
                     bio.write(msg['data'])
                     bio.seek(0)
                     upk = msgpack.Unpacker(bio)
-                    tp = upk.unpack()
-                    sno = upk.unpack()
-                    srcid = upk.unpack().decode('ascii')
+                    tp = upk.unpack()  # Message type
+                    sno = upk.unpack()  # Serial number assigned by MessageDispatcher
+                    srcid = upk.unpack().decode('ascii')  # Source
                     body = upk.unpack()
                     method = None
                     path = None
@@ -90,7 +91,8 @@ def monitor():
                         path = '' 
                         write_sequence(serial, message_type, dstid, srcid, sno, path, method, status, event_type, body)
                         serial += 1
-                    elif pattern == REFLECTED_EVENT_PATTERN_BYTE and tp == TYPE_REFLECTED_EVENT:
+                    #elif pattern == REFLECTED_EVENT_PATTERN_BYTE and tp == TYPE_REFLECTED_EVENT:
+                    elif tp == TYPE_REFLECTED_EVENT:
                         message_type = EVENT
                         dstid = srcid
                         srcid = body[0].decode('ascii')
