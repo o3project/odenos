@@ -19,7 +19,7 @@ EVENT = 'EVENT'
 
 r = redis.StrictRedis(host='localhost', port=6379, db=0)
 p = r.pubsub(ignore_subscribe_messages=True)
-p.psubscribe('*')
+p.psubscribe('*', 'event_monitor')
 
 message_type = None;
 
@@ -28,16 +28,25 @@ serial = 0;
 HEADER_FORMAT = ' '
 VERTICAL_LINES_FORMAT = '    ' 
 ARROW_DEFAULT = []
-REQUEST_RIGHT =     '--- REQUEST -->'
-REQUEST_LEFT =      '<-- REQUEST ---'
-RESPONSE_RIGHT =    '-- RESPONSE -->'
-RESPONSE_LEFT =     '<- RESPONSE ---'
+GET_RIGHT =     '----- GET ---->'
+GET_LEFT =      '<---- GET -----'
+POST_RIGHT =    '----- POST --->'
+POST_LEFT =     '<--- POST -----'
+PUT_RIGHT =     '----- PUT ---->'
+PUT_LEFT =      '<---- PUT -----'
+DELETE_RIGHT =  '---- DELETE -->'
+DELETE_LEFT =   '<-- DELETE ----'
+RESPONSE_RIGHT =    '----- {} ---->'
+RESPONSE_LEFT =     '<---- {} -----'
 EVENT_RIGHT =       '---- EVENT --->'
 EVENT_LEFT =        '<--- EVENT ----'
-ARROW_LEFT =  '<'
-ARROW_RIGHT = '>'
 BAR =         '---------------'  
 EMPTY =       '               '  
+REQUEST_LEFT = {'GET': GET_LEFT,  'POST': POST_LEFT, 'PUT': PUT_LEFT, 'DELETE': DELETE_LEFT}
+REQUEST_RIGHT = {'GET': GET_RIGHT, 'POST': POST_RIGHT, 'PUT': PUT_RIGHT, 'DELETE': DELETE_RIGHT}
+
+BODY_SUMMARY = '{0} {1} [body detail]'
+
 OBJECT_IDS = None 
 
 def monitor():
@@ -53,20 +62,27 @@ def monitor():
                     bio = BytesIO()
                     bio.write(msg['data'])
                     bio.seek(0)
-                    upk = msgpack.Unpacker(bio, encoding='utf-8')
+                    upk = msgpack.Unpacker(bio)
                     tp = upk.unpack()
                     sno = upk.unpack()
-                    srcid = upk.unpack()
+                    srcid = upk.unpack().decode('ascii')
+                    body = upk.unpack()
+                    method = None
+                    path = None
+                    status = None
                     if tp == TYPE_REQUEST:
                         message_type = REQUEST
+                        method = body[1].decode('ascii')
+                        path = '/{}/{}'.format(body[0].decode('ascii'), body[2].decode('ascii'))
                     elif tp == TYPE_RESPONSE:
                         message_type = RESPONSE
+                        status = body[0]
+                        path = '' 
                     elif tp == TYPE_EVENT:
                         message_type = EVENT
-                    body = upk.unpack()
                     #print('serial: {}, type: {}, dstid: {}, srcid: {}: sno: {}, data: {}'.format(serial, message_type, dstid, srcid, sno, body))
                     #print('')
-                    write_sequence(serial, message_type, dstid, srcid, sno, body)
+                    write_sequence(serial, message_type, dstid, srcid, sno, path, method, status, body)
                     serial += 1
                 except:
                     traceback.print_exc()
@@ -130,7 +146,7 @@ def setup(*args, **kwargs):
     #print(VERTICAL_LINES_FORMAT.format('|', BAR, '|', BAR, '|'))
 
 
-def write_sequence(serial, message_type, dstid, srcid, sno, body):
+def write_sequence(serial, message_type, dstid, srcid, sno, path, method, status, body):
     '''
     Writes sequence
     '''
@@ -155,43 +171,49 @@ def write_sequence(serial, message_type, dstid, srcid, sno, body):
 
         LEFT = None
         RIGHT = None
-        if (message_type == REQUEST):
-            LEFT = REQUEST_LEFT
-            RIGHT = REQUEST_RIGHT
-        elif (message_type == RESPONSE):
-            LEFT = RESPONSE_LEFT
-            RIGHT = RESPONSE_RIGHT
-        elif (message_type == EVENT):
+        if message_type == REQUEST:
+            LEFT = REQUEST_LEFT[method]
+            RIGHT = REQUEST_RIGHT[method]
+        elif message_type == RESPONSE:
+            LEFT = RESPONSE_LEFT.format(status)
+            RIGHT = RESPONSE_RIGHT.format(status)
+        elif message_type == EVENT:
             LEFT = RESPONSE_LEFT
             RIGHT = RESPONSE_RIGHT
 
         if (dstid_idx > srcid_idx):  # Drows an arrow to the right
             c = srcid_idx
             for count in range(srcid_idx, dstid_idx):
-                if (c == srcid_idx and dstid_idx - srcid_idx > 1):
-                    arrow[c*2+1] = BAR
-                elif (c == srcid_idx and dstid_idx - srcid_idx == 1):
-                    arrow[c*2+1] = RIGHT
-                elif (c == dstid_idx - 1):
-                    arrow[c*2] = '-'
-                    arrow[c*2+1] = RIGHT 
+                C = c * 2
+                if c == srcid_idx and dstid_idx - srcid_idx > 1:
+                    arrow[C+1] = BAR
+                elif c == srcid_idx and dstid_idx - srcid_idx == 1:
+                    arrow[C+1] = RIGHT
+                elif c == dstid_idx - 1:
+                    arrow[C] = '-'
+                    arrow[C+1] = RIGHT 
                     break
                 else:
-                    arrow[c*2] = '-' 
-                    arrow[c*2+1] = BAR 
+                    arrow[C] = '-' 
+                    arrow[C+1] = BAR 
                 c += 1 
         else:  # Draws an arrow to the left
             c = dstid_idx
             for count in range(dstid_idx, srcid_idx):
-                if (c == dstid_idx):
-                    arrow[c*2+1] = LEFT
-                else:
-                    arrow[c*2] = '-'
-                    arrow[c*2+1] = BAR 
+                C = c * 2
+                if c == dstid_idx:
+                    arrow[C+1] = LEFT
+                elif c == srcid_idx:
+                    arrow[C] = '-'
+                    arrow[C+1] = BAR 
                     break
+                else:
+                    arrow[C] = '-'
+                    arrow[C+1] = BAR 
                 c += 1 
 
-        print(VERTICAL_LINES_FORMAT.format(*arrow))
+        print(VERTICAL_LINES_FORMAT.format(*arrow), end='')
+        print('  ' + BODY_SUMMARY.format(sno, path))
 
 if __name__ == '__main__':
     

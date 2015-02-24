@@ -191,7 +191,8 @@ public final class Odenos {
           .setPortB(msgsvPortBackup)
           .setMode(EnumSet.of(MODE.RESEND_SUBSCRIBE_ON_RECONNECTED,
                               MODE.INCLUDE_SOURCE_OBJECT_ID,
-                              MODE.LOCAL_REQUESTS_TO_PUBSUB))
+                              MODE.LOCAL_REQUEST_TO_PUBSUB,
+                              MODE.REFLECT_EVENT_TO_MONITOR))
           //.setRemoteTransactionsMax(20)
           //.setRemoteTransactionsInitialTimeout(3)
           //.setRemoteTransactionsFinalTimeout(30)

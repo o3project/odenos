@@ -179,7 +179,7 @@ public class MessageDispatcher implements Closeable, IMessageListener {
     sourceDispatcherId = config.getSourceDispatcherId();
     mode = config.getMode();
     
-    localRequestsToPubSubServer = mode.contains(MODE.LOCAL_REQUESTS_TO_PUBSUB);
+    localRequestsToPubSubServer = mode.contains(MODE.LOCAL_REQUEST_TO_PUBSUB);
     includeSourceObjectId = mode.contains(MODE.INCLUDE_SOURCE_OBJECT_ID);
 
     // Actor system instantiation. 
