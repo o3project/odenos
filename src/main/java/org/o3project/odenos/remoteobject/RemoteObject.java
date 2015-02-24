@@ -189,7 +189,7 @@ public class RemoteObject {
   protected Response requestSync(String objectId, Request.Method method,
       String path, Object body) throws Exception {
     return messageDispatcher.requestSync(new Request(objectId, method,
-        path, body), this.getObjectId());
+        path, body));
   }
 
   /**
