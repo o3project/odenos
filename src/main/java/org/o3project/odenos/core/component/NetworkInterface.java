@@ -71,7 +71,6 @@ public class NetworkInterface {
 
   private String networkId;
   private MessageDispatcher dispatcher;
-  private String sourceObjectId = null;
 
   /**
    * Constructor.
@@ -85,19 +84,6 @@ public class NetworkInterface {
     this.dispatcher = dispatcher;
     log.debug("Create NetworkInterface : networkId = '" + this.networkId
         + "'.");
-  }
-
-  /**
-   * Constructor.
-   * @param dispatcher Message Dispatcher object.
-   * @param nwcId network ID.
-   * @param sourceObjectId source objectID
-   */
-  public NetworkInterface(
-      final MessageDispatcher dispatcher,
-      final String nwcId, final String sourceObjectId) {
-    this(dispatcher, nwcId);
-    this.sourceObjectId = sourceObjectId;
   }
 
   /**
@@ -1317,7 +1303,7 @@ public class NetworkInterface {
     Response rsp = null;
     Request req = new Request(objId, method, path, body);
     try {
-      rsp = this.dispatcher.requestSync(req, sourceObjectId);
+      rsp = this.dispatcher.requestSync(req);
     } catch (Exception e) {
       log.error("Recieved Message Exception.", e);
       return new Response(Response.INTERNAL_SERVER_ERROR, null);

@@ -32,9 +32,6 @@ public interface Config {
     // Sends also "local" requests to pubsub server.
     // This is mainly for a debugging purpose to monitor all messages.
     LOCAL_REQUESTS_TO_PUBSUB,
-    // This is mainly for a debugging purpose to include
-    // source ObjectId for Request/Response and Event
-    INCLUDE_SOURCE_OBJECT_ID,
     // Re-SUBSCRIBEs onReconnected()
     RESEND_SUBSCRIBE_ON_RECONNECTED,
     // Bridged pubsub client 
