@@ -114,7 +114,7 @@ public class ConfigBuilder {
   /**
    * Master pubsub server port number.
    * 
-   * @param host master pubsub server port number 
+   * @param port master pubsub server port number
    * @return
    */
   public ConfigBuilder setPort(final int port) {
@@ -132,7 +132,7 @@ public class ConfigBuilder {
    * <p>
    * This parameter is optional.
    * 
-   * @param host slave pubsub server host name or IP address
+   * @param hostB slave pubsub server host name or IP address
    * @return
    */
   public ConfigBuilder setHostB(final String hostB) {
@@ -150,7 +150,7 @@ public class ConfigBuilder {
    * <p>
    * This parameter is optional.
    * 
-   * @param host slave pubsub server port number
+   * @param portB slave pubsub server port number
    * @return
    */
   public ConfigBuilder setPortB(final int portB) {

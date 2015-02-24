@@ -1,0 +1,17 @@
+language: java
+jdk:
+  - oraclejdk7
+  - openjdk7
+
+branches:
+  only:
+    - develop
+
+before_install:
+  - sudo apt-get update -qq
+  - sudo apt-get install redis-server
+  - sudo service redis-server restart
+  - mvn install -DskipTests=true
+
+script:
+  - mvn test

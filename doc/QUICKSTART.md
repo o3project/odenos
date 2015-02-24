@@ -66,9 +66,10 @@ Python or Ruby environment, please see "Appendix A".
    $ ./run-example.sh all
    ```
 
-## 3. Let's try other examples
-* [Single Node Control with Mininet](../apps/mininet_examples/single_node_control/README.md)
-* [Single Network Control with Mininet](../apps/mininet_examples/single_network_control/README.md)
+## 3. Let's try ODENOS examples with Mininet
+* [Single Node](../apps/mininet_examples/single_node_control/README.md)
+* [Single Network](../apps/mininet_examples/single_network_control/README.md)
+* [Multiple Networks](../apps/mininet_examples/multi_network_control/README.md)
 
 
 ## Appendix A: Setup Additional Environments
