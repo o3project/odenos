@@ -325,6 +325,9 @@ public class MessageDispatcher implements Closeable, IMessageListener {
           for (String subscriber : subscribers) {
             localObject = localObjectsMap.get(subscriber);
             if (localObject != null) {
+              if (reflectEventToMonitor) {
+                publishEventAsync("reflected_event", event, subscriber);
+              }
               mail = new Mail(serial, sno, subscriber, channel, this, null, event);
               mailbox = localObject.getMailbox();
               synchronized (mailbox) {
@@ -333,9 +336,6 @@ public class MessageDispatcher implements Closeable, IMessageListener {
                   localObject.setRunning(true);
                   // Assigns a thread to read a mail in the mailbox.
                   actor.read(localObject);
-                }
-                if (reflectEventToMonitor) {
-                  publishEventAsync("reflected_event", event, subscriber);
                 }
               }
             }
