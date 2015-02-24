@@ -15,7 +15,7 @@ The following scripts configure ODENOS as below:
 [LinkLayerizerr linklayerizer1]
           |
           +-------------------------+
-          |	                    |
+          |                         |
 [Network network4]         [Network network5]
           |                         |
           |                [Federator federator1]
