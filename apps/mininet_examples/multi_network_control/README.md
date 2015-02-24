@@ -20,7 +20,7 @@ The following scripts configure ODENOS as below:
           |                         |
           |                [Federator federator1]
           |                         |
-          |                         +-+------------------+---------------------+
+          |                         +--------------------+---------------------+
           |                         |                    |                     |
           |                [Network network1]    [Network network2]    [Network network3]
           |                         |                    |                     |
