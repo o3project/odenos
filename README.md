@@ -1,5 +1,7 @@
 ![Build Status](https://travis-ci.org/haizawa/odenos.svg?branch=develop)
 
+![Build Status](https://travis-ci.org/o3project/odenos.svg?branch=develop)
+
 What's ODENOS
 ==========================
 ODENOS is a network orchestration framework for controlling
