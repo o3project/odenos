@@ -114,7 +114,7 @@ public abstract class Logic extends Component {
   }
 
   /**
-   * flow's keys. 
+   * flow's keys.
    */
   public static final ArrayList<String> keysFlow =
       new ArrayList<String>(Arrays.asList(
@@ -123,14 +123,14 @@ public abstract class Logic extends Component {
           NetworkElements.ENABLED, NetworkElements.PRIORITY,
           NetworkElements.STATUS));
   /**
-   * node's default attribute keys. 
+   * node's default attribute keys.
    */
   public static final ArrayList<String> attributesNode = new ArrayList<String>(
       Arrays.asList(
           AttrElements.ADMIN_STATUS, AttrElements.OPER_STATUS,
           AttrElements.PHYSICAL_ID, AttrElements.VENDOR));
   /**
-   * port's default attribute keys. 
+   * port's default attribute keys.
    */
   public static ArrayList<String> attributesPort = new ArrayList<String>(
       Arrays.asList(
@@ -140,7 +140,7 @@ public abstract class Logic extends Component {
           AttrElements.UNRESERVED_BANDWIDTH,
           AttrElements.IS_BOUNDARY));
   /**
-   * link's default attribute keys. 
+   * link's default attribute keys.
    */
   public static final ArrayList<String> attributesLink = new ArrayList<String>(
       Arrays.asList(
@@ -150,7 +150,7 @@ public abstract class Logic extends Component {
           AttrElements.UNRESERVED_BANDWIDTH,
           AttrElements.REQ_BANDWIDTH));
   /**
-   * flow's default attribute keys. 
+   * flow's default attribute keys.
    */
   public static final ArrayList<String> attributesFlow = new ArrayList<String>(
       Arrays.asList(
@@ -183,7 +183,7 @@ public abstract class Logic extends Component {
    * @param baseUri Base URI.
    * @param dispatcher Message dispatcher.
    * @throws Exception if parameter is wrong.
-   * @deprecated @see org.o3project.odenos.component.Logic#Logic(java.lang.String, org.o3project.odenos.remoteobject.messagingclient.MessageDispatcher)
+   * @deprecated @see #Logic(String, MessageDispatcher)
    */
   @Deprecated
   public Logic(
@@ -1756,7 +1756,7 @@ public abstract class Logic extends Component {
 
     try {
       /**
-       * convert matches. 
+       * convert matches.
        */
       List<BasicFlowMatch> matches = convFlow.getMatches();
       List<BasicFlowMatch> convMatches = new ArrayList<>();
