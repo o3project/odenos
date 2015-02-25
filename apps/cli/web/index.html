@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<!-- 
+    Message sequence diagram
+-->
+<head>
+<meta charset="UTF-8">
+<title>OdenOS message sequence diagram</title>
+<script type="text/javascript">
+    function init() {
+        var div = document.getElementById('diagram');
+        var socket = new WebSocket("ws://localhost:8888/server",["protocolOne", "protocolTwo"]); 
+        socket.onmessage = function (event) {
+            var newElement = document.createElement('div');
+            newElement.innerHTML = "<pre>" + event.data + "</pre>"
+            div.appendChild(newElement);
+            div.scrollIntoView(false);
+        };
+    }
+</script>
+<style type="text/css">
+#side {
+    float: right;
+    width: 29.8%;
+    height: 100%;
+    overflow: auto;
+}
+#main {
+    float: left;
+    width: 69.8%;
+    height: 100%;
+    overflow: auto;
+}
+pre {
+    display: inline;
+}
+</style>
+
+<body onload="init()"> 
+<div id="container">
+                <div id="main">
+                    <div id="diagram"></div>
+                </div>
+                <div id="side">
+                </div>
+</body>
+</html>
