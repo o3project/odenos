@@ -4,10 +4,6 @@ jdk:
   - openjdk7
   - oraclejdk8
 
-branches:
-  only:
-    - develop
-
 before_install:
   - sudo service redis-server restart
 
