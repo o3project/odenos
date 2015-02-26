@@ -613,7 +613,7 @@ public class MessageDispatcher implements Closeable, IMessageListener {
    * @throws Exception exception
    */
   public Response requestSync(Request request) throws Exception {
-    return requestSync(request, null);
+    return requestSync(request, getSourceDispatcherId());
   }
 
   public Response requestSync(Request request, String sourceObjectId)

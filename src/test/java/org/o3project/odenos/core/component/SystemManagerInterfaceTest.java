@@ -2598,7 +2598,7 @@ public class SystemManagerInterfaceTest {
      */
     doReturn("SystemManagerId").when(dispatcher).getSystemManagerId();
     doReturn(new Response(Response.OK, new Object())).when(dispatcher).requestSync(
-        (Request) anyObject());
+        (Request) anyObject(), anyString());
 
     /*
      * test
@@ -2609,7 +2609,7 @@ public class SystemManagerInterfaceTest {
     /*
      * check
      */
-    verify(dispatcher).requestSync((Request) anyObject());
+    verify(dispatcher).requestSync((Request) anyObject(), anyString());
 
     assertThat(result.statusCode, is(Response.OK));
 
