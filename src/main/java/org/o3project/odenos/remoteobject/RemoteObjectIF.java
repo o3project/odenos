@@ -51,6 +51,10 @@ public class RemoteObjectIF {
   public final String id() {
     return this.id;
   }
+  
+  public final String getSourceObjectId() {
+    return this.sourceObjectId;
+  }
 
   public final ObjectProperty getProperty() {
     return this.get(PATH_PROPETY).getBody2(ObjectProperty.class);

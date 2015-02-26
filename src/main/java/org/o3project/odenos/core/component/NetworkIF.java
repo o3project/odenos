@@ -39,6 +39,10 @@ public class NetworkIF extends RemoteObjectIF {
     super(dispatcher, id);
   }
 
+  public NetworkIF(final String sourceObjectId, final MessageDispatcher dispatcher) {
+    super(sourceObjectId, dispatcher);
+  }
+
   public final Topology getTopology() {
     return this.get(PATH_TOPOLOGY).getBody2(Topology.class);
   }

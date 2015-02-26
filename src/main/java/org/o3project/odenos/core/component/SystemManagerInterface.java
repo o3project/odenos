@@ -557,7 +557,7 @@ public class SystemManagerInterface {
         this.dispatcher.getSystemManagerId(), method, path, body);
     log.debug("   " + req.getBodyValue());
     try {
-      rsp = this.dispatcher.requestSync(req);
+      rsp = this.dispatcher.requestSync(req, getSystemManagerId());
 
     } catch (Exception e) {
       log.error("Recieved Message Exception.", e);

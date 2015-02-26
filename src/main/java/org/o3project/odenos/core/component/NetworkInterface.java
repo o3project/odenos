@@ -96,8 +96,11 @@ public class NetworkInterface {
   public NetworkInterface(
       final MessageDispatcher dispatcher,
       final String nwcId, final String sourceObjectId) {
-    this(dispatcher, nwcId);
+    this.networkId = nwcId;
+    this.dispatcher = dispatcher;
     this.sourceObjectId = sourceObjectId;
+    log.debug("Create NetworkInterface : networkId = '" + this.networkId
+        + "'.");
   }
 
   /**

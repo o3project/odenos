@@ -20,7 +20,13 @@ import org.o3project.odenos.remoteobject.RemoteObjectIF;
 import org.o3project.odenos.remoteobject.messagingclient.MessageDispatcher;
 
 public class LogicIF extends RemoteObjectIF {
+
   public LogicIF(final MessageDispatcher dispatcher, final String id) {
     super(dispatcher, id);
   }
+
+  public LogicIF(final String sourceObjectId, final MessageDispatcher dispatcher) {
+    super(sourceObjectId, dispatcher);
+  }
+
 }

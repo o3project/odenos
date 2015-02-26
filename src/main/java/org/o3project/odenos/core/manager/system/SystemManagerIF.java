@@ -47,12 +47,14 @@ public class SystemManagerIF extends RemoteObjectIF {
 
   public final NetworkIF createNetwork(final String id) {
     this.createComponent(T_NETWORK, id);
-    return new NetworkIF(this.dispatcher(), id);
+    //return new NetworkIF(this.dispatcher(), id);
+    return new NetworkIF(getSourceObjectId(), this.dispatcher());
   }
 
   public final LogicIF createLogic(final String type, final String id) {
     this.createComponent(type, id);
-    return new LogicIF(this.dispatcher(), id);
+    //return new LogicIF(this.dispatcher(), id);
+    return new LogicIF(getSourceObjectId(), this.dispatcher());
   }
 
   /**

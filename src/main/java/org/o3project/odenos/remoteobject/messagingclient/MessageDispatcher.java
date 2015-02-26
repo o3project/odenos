@@ -387,7 +387,7 @@ public class MessageDispatcher implements Closeable, IMessageListener {
           Request request = null;
           try {
             request = eventManagerQueue.take();
-            Response response = requestSync(request);
+            Response response = requestSync(request, getSourceDispatcherId());
             if (response == null || !response.statusCode.equals(Response.OK)) {
               log.warn("Unsuccessful transaction to EventManager: " + response.statusCode);
             }
