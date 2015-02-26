@@ -15,7 +15,7 @@
             if (message[1] == "") { 
                 newElement.innerHTML = "<pre>" + message[0] + "</pre>";
             } else {
-                newElement.innerHTML = "<pre>" + message[0] + "</pre> [<a href=http://localhost:8888/detail?serial=" + message[1] + ">*</a>]";
+                newElement.innerHTML = "<pre>" + message[0] + "</pre> [<a href=http://localhost:8888/detail?serial=" + message[1] + ' target="detail">*</a>]';
             }
             div.appendChild(newElement);
             div.scrollIntoView(false);
@@ -23,16 +23,14 @@
     }
 </script>
 <style type="text/css">
-#side {
-    float: right;
-    width: 29.8%;
-    height: 100%;
-    overflow: auto;
+#header {
+    width: 100%;
+    background: #fee;
 }
 #main {
     float: left;
-    width: 69.8%;
-    height: 100%;
+    width: 99.5%;
+    height: 99.5%;
     overflow: auto;
 }
 pre {
@@ -41,11 +39,11 @@ pre {
 </style>
 
 <body onload="init()"> 
-<div id="container">
-                <div id="main">
-                    <div id="diagram"></div>
-                </div>
-                <div id="side">
-                </div>
+<div id="header">
+    <h2>OdenOS message sequence diagram</h2>
+</div>
+<div id="main">
+    <div id="diagram"></div>
+</div>
 </body>
 </html>

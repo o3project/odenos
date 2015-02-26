@@ -14,17 +14,15 @@
 # See the License for the specific language governing permissions and      #
 # limitations under the License.                                           #
 
-# $ sudo pip3 install redis
-# $ sudo pip3 install msgpack-python
-# $ sudo pip3 install tornado
-# $ sudo pip3 install tornado-redis
-
+import sys
 import redis
 import msgpack
 from io import BytesIO
 import traceback
 from copy import copy
 import json
+import yaml
+import argparse
 
 import tornado.httpserver
 import tornado.websocket
@@ -89,46 +87,14 @@ class Monitor:
     BODY_SUMMARY_EVENT = '{} {}'
 
     def __init__(self, object_ids=[], output=print, hyperlink=False, message_buffer=[]):
-        '''
-        Writes sequence diagram header    
-       
-        0         1         2         3         4
-        01234567890123456789012345678901234567890
-         4-3             4+16-3          4+16*2-3
-         object1         object2         object3
-            |               |<- REQUEST ----|   0 REQUEST GET sno path [body]
-            |<--------------|               |   1 REQUEST GET sno path [body]
-            |-------------->|               |   2 200 OK path sno [body]
-            |               |-- RESPONSE -->|   3 200 OK path sno [body]
-            |-- EVENT --------------------->|   4 EVENT [body]
-             
-        <html>
-        <header></header>
-        <body>
-        <a name="0">
-        <pre>
-        serial: 0
-        REQUEST GET (10) [path]
-        
-        body in JSON
-        </pre>
-        <a name="1">
-        <pre>
-        serial: 1
-        200 OK (10) [path]
-        
-        body in JSON
-        </pre>
-        </body>
-                   
-        '''
 
         self.object_ids = object_ids
-        self.output = output 
+        self.output = output
         self.hyperlink = hyperlink
         self.message_buffer = message_buffer
 
         self.serial = 0
+        self.output_count = 0
         object_number = len(self.object_ids)
         c = 0
         cc = 0
@@ -148,10 +114,10 @@ class Monitor:
                 self.arrow_default.append('|')
             cc += 2
 
-    def start(self):
-        self.output(self.header_format.format(*self.object_ids))
-
     def on_message(self, msg):
+        if self.output_count <= 0:
+            self.output(self.header_format.format(*self.object_ids))
+            self.output_count = 30 
         dstid = msg.channel.decode('utf-8') # Redis pubsub channel  # Destination
         try:
             bio = BytesIO()
@@ -196,7 +162,6 @@ class Monitor:
             #print('')
         except:
             traceback.print_exc()
-
 
     def _write_sequence(self, serial, message_type, dstid, srcid, sno, path, method, status, event_type, body):
         '''
@@ -273,30 +238,22 @@ class Monitor:
             else:
                 arrow.append('')
             self.output(final_format.format(*arrow))
-
-'''
-if __name__ == '__main__':
-    
-    kwargs = {}
-    kwargs['object_ids'] = ['resttranslator', 'systemmanager', 'romgr1', 'gen', 'network1', 'aggre', 'network0', 'lsw'] 
-    kwargs['output'] = print 
-    monitor = Monitor(**kwargs)
-    monitor.start()
-'''
+            self.output_count -= 1
 
 
 class MessageHandler(tornado.websocket.WebSocketHandler):
 
-    def initialize(self, object_ids, message_buffer):
+    def initialize(self, host, port, object_ids, message_buffer):
+        self.host = host
+        self.port = port
         self.monitor = Monitor(object_ids=object_ids, output=self.write_message, hyperlink=True, message_buffer=message_buffer)
 
     def open(self):
         self.listen()
-        self.monitor.start()
 
     @tornado.gen.engine
     def listen(self):
-        self.client = tornadoredis.Client()
+        self.client = tornadoredis.Client(host=self.host, port=self.port)
         self.client.connect()
         yield tornado.gen.Task(self.client.psubscribe, '*')
         self.client.listen(self.on_redis_message)
@@ -323,17 +280,34 @@ class DetailHandler(tornado.web.RequestHandler):
 
     def get(self):
         serial = int(self.get_argument('serial'))
+        # TODO: messagepack deserialization
         #self.render(json.dumps(self.message_buffer[serial]))
         self.write(str(self.message_buffer[serial]))
 
+class PageHandler(tornado.web.RequestHandler):
+
+    def get(self):
+        self.render('web/index.html')
+
 
 if __name__ == "__main__":
-    object_ids = ['resttranslator', 'systemmanager', 'romgr1', 'gen', 'network1', 'aggre', 'network0', 'lsw']  
-    message_buffer = []
+    parser = argparse.ArgumentParser()
+    parser.add_argument("object_ids", help="a list of object IDs", nargs='*', type=str)
+    parser.add_argument("-i", "--ip", help="Redis server host name or IP address", type=str, default='localhost')
+    parser.add_argument("-p", "--port", help="Redis server port number", type=int, default=6379)
+    parser.add_argument("-w", "--webport", help="HTTP server port number", type=int, default=8888)
+    parser.add_argument("-P", "--path", help="HTTP server root path", type=str, default='./web')
+    args = parser.parse_args()
+    if not args.object_ids:
+        default = yaml.load(open('default.yaml'))
+        args.object_ids = default['object_ids']
+        print('object IDs: {}'.format(args.object_ids))
+    message_buffer = []  # A common buffer shared by Tornado handlers
     application = tornado.web.Application([
-        (r'/message', MessageHandler, dict(object_ids=object_ids, message_buffer=message_buffer)),
+        (r'/index.html', PageHandler),
+        (r'/message', MessageHandler, dict(host=args.ip, port=args.port, object_ids=args.object_ids, message_buffer=message_buffer)),
         (r'/detail', DetailHandler, dict(message_buffer=message_buffer))
     ])
     http_server = tornado.httpserver.HTTPServer(application)
-    http_server.listen(8888)
+    http_server.listen(args.webport)
     tornado.ioloop.IOLoop.instance().start()
