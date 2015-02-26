@@ -16,12 +16,40 @@
 
 # $ sudo pip3 install redis
 # $ sudo pip3 install msgpack-python
+# $ sudo pip3 install tornado
+# $ sudo pip3 install tornado-redis
 
 import redis
 import msgpack
 from io import BytesIO
 import traceback
 from copy import copy
+import json
+
+import tornado.httpserver
+import tornado.websocket
+import tornado.ioloop
+import tornado.web
+import tornado.gen
+import tornadoredis
+
+### Monkey patch ###
+# This patch is necessary not to decode a redis response, since the data
+# is encoded in the messagepack format.
+gen = tornado.gen
+@tornado.gen.engine
+def _consume_bulk(self, tail, callback=None):
+    response = yield gen.Task(self.connection.read, int(tail) + 2)
+    if isinstance(response, Exception):
+        raise response
+    if not response:
+        raise ResponseError('EmptyResponse')
+    else:
+        #response = to_unicode(response)
+        response = response[:-2]
+        callback(response)
+tornadoredis.client.Client._consume_bulk = _consume_bulk
+
 
 class Monitor:
     """
@@ -60,7 +88,7 @@ class Monitor:
     BODY_SUMMARY = '{} {} {}'
     BODY_SUMMARY_EVENT = '{} {}'
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, object_ids=[], output=print, hyperlink=False, message_buffer=[]):
         '''
         Writes sequence diagram header    
        
@@ -94,12 +122,12 @@ class Monitor:
         </body>
                    
         '''
-        self.object_ids = kwargs['object_ids']
-        self.output = kwargs['output']
-        if 'hyperlink' in kwargs:
-            self.hyperlink = kwargs['hyperlink']
-        else:
-            self.hyperlink = False
+
+        self.object_ids = object_ids
+        self.output = output 
+        self.hyperlink = hyperlink
+        self.message_buffer = message_buffer
+
         self.serial = 0
         object_number = len(self.object_ids)
         c = 0
@@ -107,75 +135,67 @@ class Monitor:
         self.header_format = ' '
         self.arrow_default = [] 
         self.vertical_lines_format = '    ' 
+
         for count in range(object_number):
-            #self.header_format += '{'+str(c)+':<16}'  
             self.header_format += '{:<16}'  
             c += 1
             if count < object_number - 1:
-                #self.vertical_lines_format += '{'+str(cc)+'}{'+str(cc+1)+':<15}'
                 self.vertical_lines_format += '{}{:<15}'
                 self.arrow_default.append('|')
                 self.arrow_default.append(Monitor.EMPTY)
             else:
-                #self.vertical_lines_format += '{'+str(cc)+'}'
                 self.vertical_lines_format += '{}'
                 self.arrow_default.append('|')
             cc += 2
-        self.output(self.header_format.format(*self.object_ids))
 
     def start(self):
-        r = redis.StrictRedis(host='localhost', port=6379, db=0)
-        p = r.pubsub(ignore_subscribe_messages=True)
-        p.psubscribe('*') 
-        while True:  # inifinite loop
-            for msg in p.listen(): # blocks untile new message is received.
-                #pattern = msg['pattern']
-                type_ = msg['type'] # Redis message type
-                dstid = msg['channel'].decode(encoding='utf-8') # Redis pubsub channel  # Destination
-                if type_ != 'message' and type_ != 'pmessage':
-                        continue
-                else: # subscribed events
-                    try:
-                        bio = BytesIO()
-                        bio.write(msg['data'])
-                        bio.seek(0)
-                        upk = msgpack.Unpacker(bio)
-                        tp = upk.unpack()  # Message type
-                        sno = upk.unpack()  # Serial number assigned by MessageDispatcher
-                        srcid = upk.unpack().decode('ascii')  # Source
-                        body = upk.unpack()
-                        method = None
-                        path = None
-                        status = None
-                        subscriber_id = None
-                        publisher_id = None
-                        event_type = None
-                        message_type = '*'
-                        if tp == Monitor.TYPE_REQUEST:
-                            message_type = Monitor.REQUEST
-                            method = body[1].decode('ascii')
-                            path = '/{}/{}'.format(body[0].decode('ascii'), body[2].decode('ascii'))
-                            self._write_sequence(self.serial, message_type, dstid, srcid, sno, path, method, status, event_type, body)
-                            self.serial += 1
-                        elif tp == Monitor.TYPE_RESPONSE:
-                            message_type = Monitor.RESPONSE
-                            status = body[0]
-                            path = '' 
-                            self._write_sequence(self.serial, message_type, dstid, srcid, sno, path, method, status, event_type, body)
-                            self.serial += 1
-                        elif tp == Monitor.TYPE_REFLECTED_EVENT:
-                            message_type = Monitor.EVENT
-                            dstid = srcid
-                            srcid = body[0].decode('ascii')
-                            event_type = body[1].decode('ascii')
-                            self._write_sequence(self.serial, message_type, dstid, srcid, sno, path, method, status, event_type, body)
-                            self.serial += 1
-                        #print('serial: {}, type: {}, dstid: {}, srcid: {}: sno: {}'.format(self.serial, message_type, dstid, srcid, sno))
-                        #print('serial: {}, type: {}, dstid: {}, srcid: {}: sno: {}, data: {}'.format(self.serial, message_type, dstid, srcid, sno, body))
-                        #print('')
-                    except:
-                        traceback.print_exc()
-                        pass
+        self.output(self.header_format.format(*self.object_ids))
+
+    def on_message(self, msg):
+        dstid = msg.channel.decode('utf-8') # Redis pubsub channel  # Destination
+        try:
+            bio = BytesIO()
+            bio.write(msg.body)
+            bio.seek(0)
+            upk = msgpack.Unpacker(bio)
+            tp = upk.unpack()  # Message type
+            sno = upk.unpack()  # Serial number assigned by MessageDispatcher
+            srcid = upk.unpack().decode('utf-8')  # Source
+            body = upk.unpack()
+            method = None
+            path = None
+            status = None
+            subscriber_id = None
+            publisher_id = None
+            event_type = None
+            message_type = '*'
+            if tp == Monitor.TYPE_REQUEST:
+                message_type = Monitor.REQUEST
+                method = body[1].decode('utf-8')
+                path = '/{}/{}'.format(body[0].decode('utf-8'), body[2].decode('utf-8'))
+                self.message_buffer.append(body)
+                self._write_sequence(self.serial, message_type, dstid, srcid, sno, path, method, status, event_type, body)
+                self.serial += 1
+            elif tp == Monitor.TYPE_RESPONSE:
+                message_type = Monitor.RESPONSE
+                status = body[0]
+                path = '' 
+                self.message_buffer.append(body)
+                self._write_sequence(self.serial, message_type, dstid, srcid, sno, path, method, status, event_type, body)
+                self.serial += 1
+            elif tp == Monitor.TYPE_REFLECTED_EVENT:
+                message_type = Monitor.EVENT
+                dstid = srcid
+                srcid = body[0].decode('utf-8')
+                event_type = body[1].decode('utf-8')
+                self.message_buffer.append(body)
+                self._write_sequence(self.serial, message_type, dstid, srcid, sno, path, method, status, event_type, body)
+                self.serial += 1
+            #print('serial: {}, type: {}, dstid: {}, srcid: {}: sno: {}'.format(self.serial, message_type, dstid, srcid, sno))
+            #print('serial: {}, type: {}, dstid: {}, srcid: {}: sno: {}, data: {}'.format(self.serial, message_type, dstid, srcid, sno, body))
+            #print('')
+        except:
+            traceback.print_exc()
 
 
     def _write_sequence(self, serial, message_type, dstid, srcid, sno, path, method, status, event_type, body):
@@ -191,9 +211,7 @@ class Monitor:
             dstid_idx = self.object_ids.index(dstid)
         if srcid in self.object_ids:
             srcid_idx = self.object_ids.index(srcid)
-        #print(dstid)
-        #print(srcid)
-        #print('--')
+
         if (dstid_idx < 0) or (srcid_idx < 0):
             pass
         else:
@@ -251,12 +269,12 @@ class Monitor:
                 arrow.append(path)
                 final_format = self.vertical_lines_format+'  '+Monitor.BODY_SUMMARY
             if self.hyperlink:
-                # TODO: hyperlink generation to obtain body detail
-                arrow.append(',http://localhost:10082/?serial=1234')
+                arrow.append(',{}'.format(self.serial))
             else:
                 arrow.append('')
             self.output(final_format.format(*arrow))
 
+'''
 if __name__ == '__main__':
     
     kwargs = {}
@@ -264,5 +282,58 @@ if __name__ == '__main__':
     kwargs['output'] = print 
     monitor = Monitor(**kwargs)
     monitor.start()
+'''
 
 
+class MessageHandler(tornado.websocket.WebSocketHandler):
+
+    def initialize(self, object_ids, message_buffer):
+        self.monitor = Monitor(object_ids=object_ids, output=self.write_message, hyperlink=True, message_buffer=message_buffer)
+
+    def open(self):
+        self.listen()
+        self.monitor.start()
+
+    @tornado.gen.engine
+    def listen(self):
+        self.client = tornadoredis.Client()
+        self.client.connect()
+        yield tornado.gen.Task(self.client.psubscribe, '*')
+        self.client.listen(self.on_redis_message)
+
+    # TODO: security check
+    def check_origin(self, origin):
+        return True
+
+    def on_redis_message(self, msg):
+        if msg.kind == b'pmessage':
+            self.monitor.on_message(msg)
+        elif msg.kind == b'disconnect':
+            self.close()
+
+    def on_close(self):
+        if self.client.subscribed:
+            self.client.punsubscribe('*')
+            self.client.disconnect()
+
+class DetailHandler(tornado.web.RequestHandler):
+
+    def initialize(self, message_buffer):
+        self.message_buffer = message_buffer
+
+    def get(self):
+        serial = int(self.get_argument('serial'))
+        #self.render(json.dumps(self.message_buffer[serial]))
+        self.write(str(self.message_buffer[serial]))
+
+
+if __name__ == "__main__":
+    object_ids = ['resttranslator', 'systemmanager', 'romgr1', 'gen', 'network1', 'aggre', 'network0', 'lsw']  
+    message_buffer = []
+    application = tornado.web.Application([
+        (r'/message', MessageHandler, dict(object_ids=object_ids, message_buffer=message_buffer)),
+        (r'/detail', DetailHandler, dict(message_buffer=message_buffer))
+    ])
+    http_server = tornado.httpserver.HTTPServer(application)
+    http_server.listen(8888)
+    tornado.ioloop.IOLoop.instance().start()

@@ -8,10 +8,15 @@
 <script type="text/javascript">
     function init() {
         var div = document.getElementById('diagram');
-        var socket = new WebSocket("ws://localhost:8888/server",["protocolOne", "protocolTwo"]); 
+        var socket = new WebSocket("ws://localhost:8888/message",["protocolOne", "protocolTwo"]); 
         socket.onmessage = function (event) {
             var newElement = document.createElement('div');
-            newElement.innerHTML = "<pre>" + event.data + "</pre>"
+            var message = event.data.split(",");
+            if (message[1] == "") { 
+                newElement.innerHTML = "<pre>" + message[0] + "</pre>";
+            } else {
+                newElement.innerHTML = "<pre>" + message[0] + "</pre> [<a href=http://localhost:8888/detail?serial=" + message[1] + ">*</a>]";
+            }
             div.appendChild(newElement);
             div.scrollIntoView(false);
         };
