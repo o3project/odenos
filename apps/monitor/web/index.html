@@ -6,26 +6,45 @@
 <meta charset="UTF-8">
 <title>OdenOS message sequence diagram</title>
 <script type="text/javascript">
+    var detail_url = "http://localhost:{{ port }}/detail";
     function init() {
-        var div = document.getElementById('diagram');
-        var socket = new WebSocket("ws://localhost:8888/message",["protocolOne", "protocolTwo"]); 
-        socket.onmessage = function (event) {
+        var diagram = document.getElementById('diagram');
+        var socket = new WebSocket("ws://localhost:{{ port }}/message",["protocolOne", "protocolTwo"]); 
+        socket.onmessage = function(event) {
             var newElement = document.createElement('div');
             var message = event.data.split(",");
-            if (message[1] == "") { 
+            if (message.length == 1) { 
                 newElement.innerHTML = "<pre>" + message[0] + "</pre>";
             } else {
-                newElement.innerHTML = "<pre>" + message[0] + "</pre> [<a href=http://localhost:8888/detail?serial=" + message[1] + ' target="detail">*</a>]';
+                var serial = message[1];
+                newElement.id = serial;
+                newElement.innerHTML = "<pre>" + message[0] + '</pre> <button onclick="detail(' + serial + ')">detail</button>';
             }
-            div.appendChild(newElement);
-            div.scrollIntoView(false);
+            diagram.appendChild(newElement);
+            diagram.scrollIntoView(false);
         };
+    }
+    function detail(serial) {
+        var url_serial = detail_url + '?serial=' + serial;
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function() {
+            if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                //var message = JSON.parse(xmlhttp.responseText);
+                var message = xmlhttp.responseText;
+                detail_callback(serial, message);
+            }
+        };
+        xmlhttp.open("GET", url_serial, true);
+        xmlhttp.send();
+    }
+    function detail_callback(serial, message) {
+       alert(message);
     }
 </script>
 <style type="text/css">
 #header {
     width: 100%;
-    background: #fee;
+    background: #eef;
 }
 #main {
     float: left;

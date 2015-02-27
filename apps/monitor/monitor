@@ -31,9 +31,6 @@ import tornado.web
 import tornado.gen
 import tornadoredis
 
-### Monkey patch ###
-# This patch is necessary not to decode a redis response, since the data
-# is encoded in the messagepack format.
 gen = tornado.gen
 @tornado.gen.engine
 def _consume_bulk(self, tail, callback=None):
@@ -47,6 +44,43 @@ def _consume_bulk(self, tail, callback=None):
         response = response[:-2]
         callback(response)
 tornadoredis.client.Client._consume_bulk = _consume_bulk
+
+def _decode_list(data):
+    decode = []
+    for item in data:
+        if isinstance(item, bytes):
+            item = item.decode('utf-8')
+        elif isinstance(item, list):
+            item = _decode_list(item)
+        elif isinstance(item, dict):
+            item = _decode_dict(item)
+        decode.append(item)
+    return decode 
+
+def _decode_dict(data):
+    decode = {}
+    for key, value in iter(data.items()):
+        if isinstance(key, bytes):
+            key = key.decode('utf-8')
+        if isinstance(value, bytes):
+            value = value.decode('utf-8')
+        elif isinstance(value, list):
+            value = _decode_list(value)
+        elif isinstance(value, dict):
+            value = _decode_dict(value)
+        decode[key] = value
+    return decode
+
+def decode(data):
+    '''
+    Converts bytes into 'utf-8'.
+    '''
+    if isinstance(data, dict):
+        return _decode_dict(data)
+    elif isinstance(data, list):
+        return _decode_list(data)
+    else:
+        return data
 
 
 class Monitor:
@@ -86,12 +120,14 @@ class Monitor:
     BODY_SUMMARY = '{} {} {}'
     BODY_SUMMARY_EVENT = '{} {}'
 
-    def __init__(self, object_ids=[], output=print, hyperlink=False, message_buffer=[]):
+    def __init__(self, object_ids=[], output=print, hyperlink=False, message_buffer=[], detail_output=False, json_format=False):
 
         self.object_ids = object_ids
         self.output = output
         self.hyperlink = hyperlink
         self.message_buffer = message_buffer
+        self.detail_output = detail_output
+        self.json_format = json_format
 
         self.serial = 0
         self.output_count = 0
@@ -124,10 +160,11 @@ class Monitor:
             bio.write(msg.body)
             bio.seek(0)
             upk = msgpack.Unpacker(bio)
-            tp = upk.unpack()  # Message type
+            msg_type = upk.unpack()  # Message type
             sno = upk.unpack()  # Serial number assigned by MessageDispatcher
             srcid = upk.unpack().decode('utf-8')  # Source
             body = upk.unpack()
+            #print(json.dumps(decode(body)))
             method = None
             path = None
             status = None
@@ -135,26 +172,26 @@ class Monitor:
             publisher_id = None
             event_type = None
             message_type = '*'
-            if tp == Monitor.TYPE_REQUEST:
+            if msg_type == Monitor.TYPE_REQUEST:
                 message_type = Monitor.REQUEST
                 method = body[1].decode('utf-8')
                 path = '/{}/{}'.format(body[0].decode('utf-8'), body[2].decode('utf-8'))
-                self.message_buffer.append(body)
+                self.message_buffer.append(body[3])
                 self._write_sequence(self.serial, message_type, dstid, srcid, sno, path, method, status, event_type, body)
                 self.serial += 1
-            elif tp == Monitor.TYPE_RESPONSE:
+            elif msg_type == Monitor.TYPE_RESPONSE:
                 message_type = Monitor.RESPONSE
                 status = body[0]
                 path = '' 
-                self.message_buffer.append(body)
+                self.message_buffer.append(body[1])
                 self._write_sequence(self.serial, message_type, dstid, srcid, sno, path, method, status, event_type, body)
                 self.serial += 1
-            elif tp == Monitor.TYPE_REFLECTED_EVENT:
+            elif msg_type == Monitor.TYPE_REFLECTED_EVENT:
                 message_type = Monitor.EVENT
                 dstid = srcid
                 srcid = body[0].decode('utf-8')
                 event_type = body[1].decode('utf-8')
-                self.message_buffer.append(body)
+                self.message_buffer.append(body[2])
                 self._write_sequence(self.serial, message_type, dstid, srcid, sno, path, method, status, event_type, body)
                 self.serial += 1
             #print('serial: {}, type: {}, dstid: {}, srcid: {}: sno: {}'.format(self.serial, message_type, dstid, srcid, sno))
@@ -226,6 +263,7 @@ class Monitor:
                         arrow[C+1] = Monitor.BAR 
                     c += 1 
 
+            final_format = None
             if (message_type == Monitor.EVENT):
                 arrow.append(event_type)
                 final_format = self.vertical_lines_format+'  '+Monitor.BODY_SUMMARY_EVENT 
@@ -238,14 +276,22 @@ class Monitor:
             else:
                 arrow.append('')
             self.output(final_format.format(*arrow))
+            if self.detail_output:
+                if self.json_format:
+                    self.output(json.dumps(decode(self.message_buffer[serial])))
+                else:
+                    self.output(yaml.dump(decode(self.message_buffer[serial])))
+                self.output('')
             self.output_count -= 1
 
 
 class MessageHandler(tornado.websocket.WebSocketHandler):
 
     def initialize(self, host, port, object_ids, message_buffer):
+
         self.host = host
         self.port = port
+
         self.monitor = Monitor(object_ids=object_ids, output=self.write_message, hyperlink=True, message_buffer=message_buffer)
 
     def open(self):
@@ -275,19 +321,49 @@ class MessageHandler(tornado.websocket.WebSocketHandler):
 
 class DetailHandler(tornado.web.RequestHandler):
 
-    def initialize(self, message_buffer):
+    def initialize(self, message_buffer, json_format):
         self.message_buffer = message_buffer
+        self.json_format = json_format;
 
     def get(self):
         serial = int(self.get_argument('serial'))
-        # TODO: messagepack deserialization
-        #self.render(json.dumps(self.message_buffer[serial]))
-        self.write(str(self.message_buffer[serial]))
+        if self.json_format:
+            self.write(json.dumps(decode(self.message_buffer[serial])))
+        else:
+            self.write(yaml.dump(decode(self.message_buffer[serial])))
 
 class PageHandler(tornado.web.RequestHandler):
 
+    def initialize(self, webport):
+        self.webport = webport
+
     def get(self):
-        self.render('web/index.html')
+        self.render('web/index.html', port=self.webport)
+
+class ConsoleOutput(object):
+    ''' 
+    TODO: message retrieval
+    ''' 
+
+    def __init__(self, host, port, object_ids, message_buffer, detail_output=False, json_format=False):
+
+        self.host = host
+        self.port = port
+        self.monitor = Monitor(object_ids=object_ids, output=print, hyperlink=False, message_buffer=message_buffer, detail_output=detail_output, json_format=json_format)
+        self.listen()
+
+    @tornado.gen.engine
+    def listen(self):
+        self.client = tornadoredis.Client(host=self.host, port=self.port)
+        self.client.connect()
+        yield tornado.gen.Task(self.client.psubscribe, '*')
+        self.client.listen(self.on_redis_message)
+
+    def on_redis_message(self, msg):
+        if msg.kind == b'pmessage':
+            self.monitor.on_message(msg)
+        elif msg.kind == b'disconnect':
+            self.close()
 
 
 if __name__ == "__main__":
@@ -297,17 +373,35 @@ if __name__ == "__main__":
     parser.add_argument("-p", "--port", help="Redis server port number", type=int, default=6379)
     parser.add_argument("-w", "--webport", help="HTTP server port number", type=int, default=8888)
     parser.add_argument("-P", "--path", help="HTTP server root path", type=str, default='./web')
+    parser.add_argument("-c", "--console", help="output to console", action="store_true", default=False)
+    parser.add_argument("-d", "--detail", help="message detail output to console", action="store_true", default=False)
+    parser.add_argument("-j", "--json", help="message detail output in JSON rather than YAML", action="store_true", default=False)
     args = parser.parse_args()
+    if args.console:
+        print('Console output mode')
+    else:
+        print('Open "http://localhost:{}/index.html" with your browser! (firefox is recommended)'.format(args.webport))
     if not args.object_ids:
         default = yaml.load(open('default.yaml'))
         args.object_ids = default['object_ids']
         print('object IDs: {}'.format(args.object_ids))
+    print('Ctrl-C to exit')
+    print('')
     message_buffer = []  # A common buffer shared by Tornado handlers
-    application = tornado.web.Application([
-        (r'/index.html', PageHandler),
-        (r'/message', MessageHandler, dict(host=args.ip, port=args.port, object_ids=args.object_ids, message_buffer=message_buffer)),
-        (r'/detail', DetailHandler, dict(message_buffer=message_buffer))
-    ])
-    http_server = tornado.httpserver.HTTPServer(application)
-    http_server.listen(args.webport)
-    tornado.ioloop.IOLoop.instance().start()
+    if args.console:
+        console_output = ConsoleOutput(host=args.ip, port=args.port, object_ids=args.object_ids, message_buffer=message_buffer, detail_output=args.detail, json_format=args.json)
+    else:
+        application = tornado.web.Application([
+            (r'/index.html', PageHandler, dict(webport=args.webport)),
+            (r'/message', MessageHandler, dict(host=args.ip, port=args.port, object_ids=args.object_ids, message_buffer=message_buffer)),
+            (r'/detail', DetailHandler, dict(message_buffer=message_buffer, json_format=args.json))
+        ])
+        http_server = tornado.httpserver.HTTPServer(application)
+        http_server.listen(args.webport)
+    try:
+        tornado.ioloop.IOLoop.instance().start()
+    except KeyboardInterrupt:
+        print('')
+        print('bye!')
+        sys.exit(0)
+

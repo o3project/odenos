@@ -71,6 +71,7 @@ public final class Odenos {
   private CommandParser parser = new CommandParser();
   private int restport;
   private String restroot;
+  private boolean monitorEnabled;
 
   private final class CommandParser {
     CommandLine line;
@@ -88,6 +89,7 @@ public final class Odenos {
       options.addOption("S", "system_with_name", true, "start core system with specified id");
       options.addOption("o", "restport", true, "port number of RestPort");
       options.addOption("h", "restroot", true, "Directory of Rest root");
+      options.addOption("m", "monitor", true, "Directory of Rest root");
     }
 
     public final void parse(String[] args) throws ParseException {
@@ -149,6 +151,18 @@ public final class Odenos {
     public final String getRestRoot() {
       return line.hasOption("restroot") ? line.getOptionValue("restroot") : null;
     }
+    
+    public final boolean getMonitor() {
+      if (line.hasOption("monitor")) {
+        if (line.getOptionValue("monitor").equals("true")) {
+          return true;
+        } else {
+          return false;
+        }
+      } else {
+        return false;
+      }
+    }
   }
 
   /**
@@ -174,6 +188,7 @@ public final class Odenos {
     }
     restport = parser.getRestPort();
     restroot = parser.getRestRoot();
+    monitorEnabled = parser.getMonitor();
   }
 
   /**
@@ -181,6 +196,15 @@ public final class Odenos {
    */
   public final void run() {
     try {
+      EnumSet<MODE> mode;
+      if (monitorEnabled) {
+        mode = EnumSet.of(MODE.RESEND_SUBSCRIBE_ON_RECONNECTED,
+                          MODE.INCLUDE_SOURCE_OBJECT_ID,
+                          MODE.LOCAL_REQUEST_TO_PUBSUB,
+                          MODE.REFLECT_EVENT_TO_MONITOR);
+      } else {
+        mode = EnumSet.of(MODE.RESEND_SUBSCRIBE_ON_RECONNECTED);
+      }
       Config config = new ConfigBuilder()
           .setSystemManagerId(systemMgrId)
           .setEventManagerId(EVENT_MGR_ID)
@@ -189,13 +213,10 @@ public final class Odenos {
           .setPort(msgsvPort)
           .setHostB(msgsvIpBackup)
           .setPortB(msgsvPortBackup)
-          .setMode(EnumSet.of(MODE.RESEND_SUBSCRIBE_ON_RECONNECTED,
-                              MODE.INCLUDE_SOURCE_OBJECT_ID,
-                              MODE.LOCAL_REQUEST_TO_PUBSUB,
-                              MODE.REFLECT_EVENT_TO_MONITOR))
-          //.setRemoteTransactionsMax(20)
-          //.setRemoteTransactionsInitialTimeout(3)
-          //.setRemoteTransactionsFinalTimeout(30)
+          .setMode(mode)
+          .setRemoteTransactionsMax(20)
+          .setRemoteTransactionsInitialTimeout(3)
+          .setRemoteTransactionsFinalTimeout(30)
           .build();
       disp = new MessageDispatcher(config);
       disp.start();
