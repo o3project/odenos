@@ -35,9 +35,9 @@ public interface Config {
     // This is mainly for a debugging purpose to include
     // source ObjectId for Request/Response and Event
     INCLUDE_SOURCE_OBJECT_ID,
-    // Reflects a received event to the channel "event_monitor"
-    // that an event monitor subscribes with
-    REFLECT_EVENT_TO_MONITOR,
+    // Reflects a received request, response or event to Redis server
+    // for a message monitoring purpose.
+    REFLECT_MESSAGE_TO_MONITOR,
     // Re-SUBSCRIBEs onReconnected()
     RESEND_SUBSCRIBE_ON_RECONNECTED,
     // Bridged pubsub client 

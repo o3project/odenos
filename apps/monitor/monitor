@@ -15,7 +15,6 @@
 # limitations under the License.                                           #
 
 import sys
-import redis
 import msgpack
 from io import BytesIO
 import traceback
@@ -88,17 +87,9 @@ class Monitor:
     Generates a message sequence diagram by tapping Redis server.
     """
 
-    TYPE_REQUEST = 0
-    TYPE_RESPONSE = 1
-    TYPE_EVENT = 2
-    TYPE_REFLECTED_EVENT = 99
-
     REQUEST = 'REQUEST' 
     RESPONSE = 'RESPONSE'
     EVENT = 'EVENT' 
-
-    REFLECTED_EVENT_PATTERN = 'reflected_event'
-    REFLECTED_EVENT_PATTERN_BYTE = b'reflected_event'
 
     GET_RIGHT =     '----- GET ---->'
     GET_LEFT =      '<---- GET -----'
@@ -117,8 +108,12 @@ class Monitor:
     REQUEST_LEFT = {'GET': GET_LEFT,  'POST': POST_LEFT, 'PUT': PUT_LEFT, 'DELETE': DELETE_LEFT}
     REQUEST_RIGHT = {'GET': GET_RIGHT, 'POST': POST_RIGHT, 'PUT': PUT_RIGHT, 'DELETE': DELETE_RIGHT}
 
-    BODY_SUMMARY = '{} {} {}'
-    BODY_SUMMARY_EVENT = '{} {}'
+    SUMMARY_REQUEST = '{}  {} {}'
+    SUMMARY_RESPONSE = '{}  {} {} {}'
+    SUMMARY_EVENT = '{} {}'
+    SUMMARY_FORMAT = {REQUEST: SUMMARY_REQUEST, RESPONSE: SUMMARY_RESPONSE, EVENT: SUMMARY_EVENT}
+
+    REASON = {200: 'OK', 201: 'Created', 202: 'Accepted', 204: 'No content', 400: 'Bad request', 403: 'Forbidden', 404: 'Not found', 405: 'Method not allowed'}
 
     def __init__(self, object_ids=[], output=print, hyperlink=False, message_buffer=[], detail_output=False, json_format=False):
 
@@ -151,56 +146,75 @@ class Monitor:
             cc += 2
 
     def on_message(self, msg):
+        '''
+        Packet format
+        -------------
+        Type: REQUEST 
+        - message_type: REQUEST
+        - dstid (or subscriber ID): string
+        - srcid (or publisher ID): string
+        - sno: integer
+        - method: string 
+        - path: string
+        - body: JSON or text
+
+        Type: RESPONSE
+        - message_type: RESPONE
+        - dstid (or publisher ID): string
+        - srcid (or subscriber ID): string
+        - sno: integer
+        - status: integer
+        - body: JSON or text
+
+        Type: EVENT
+        - message_type: EVENT
+        - dstid (subscriber ID): string
+        - srcid (publisher ID): string
+        - event_type: string
+        - body: JSON or text
+
+
+        '''
+        #print(msg)
         if self.output_count <= 0:
             self.output(self.header_format.format(*self.object_ids))
             self.output_count = 30 
-        dstid = msg.channel.decode('utf-8') # Redis pubsub channel  # Destination
+        bio = BytesIO()
+        bio.write(msg.body)
+        bio.seek(0)
+        upk = msgpack.Unpacker(bio)
+        message_type = upk.unpack().decode('utf-8') # Message type
+        dstid = upk.unpack().decode('utf-8')
+        srcid = upk.unpack().decode('utf-8')
         try:
-            bio = BytesIO()
-            bio.write(msg.body)
-            bio.seek(0)
-            upk = msgpack.Unpacker(bio)
-            msg_type = upk.unpack()  # Message type
-            sno = upk.unpack()  # Serial number assigned by MessageDispatcher
-            srcid = upk.unpack().decode('utf-8')  # Source
-            body = upk.unpack()
-            #print(json.dumps(decode(body)))
-            method = None
-            path = None
-            status = None
-            subscriber_id = None
-            publisher_id = None
-            event_type = None
-            message_type = '*'
-            if msg_type == Monitor.TYPE_REQUEST:
-                message_type = Monitor.REQUEST
-                method = body[1].decode('utf-8')
-                path = '/{}/{}'.format(body[0].decode('utf-8'), body[2].decode('utf-8'))
-                self.message_buffer.append(body[3])
-                self._write_sequence(self.serial, message_type, dstid, srcid, sno, path, method, status, event_type, body)
+            if message_type == Monitor.REQUEST:
+                sno = upk.unpack()  # Serial number for a pair of Request/Response
+                method = upk.unpack().decode('utf-8')
+                path = upk.unpack().decode('utf-8')
+                body = upk.unpack()
+                self.message_buffer.append(body)
+                self._write_sequence(self.serial, message_type, dstid, srcid, sno, method, path, None, None, body)
                 self.serial += 1
-            elif msg_type == Monitor.TYPE_RESPONSE:
-                message_type = Monitor.RESPONSE
-                status = body[0]
-                path = '' 
-                self.message_buffer.append(body[1])
-                self._write_sequence(self.serial, message_type, dstid, srcid, sno, path, method, status, event_type, body)
+            elif message_type == Monitor.RESPONSE:
+                sno = upk.unpack()  # Serial number for a pair of Request/Response
+                status = upk.unpack()
+                body = upk.unpack()
+                self.message_buffer.append(body)
+                self._write_sequence(self.serial, message_type, dstid, srcid, sno, None, None, status, None, body)
                 self.serial += 1
-            elif msg_type == Monitor.TYPE_REFLECTED_EVENT:
-                message_type = Monitor.EVENT
-                dstid = srcid
-                srcid = body[0].decode('utf-8')
-                event_type = body[1].decode('utf-8')
-                self.message_buffer.append(body[2])
-                self._write_sequence(self.serial, message_type, dstid, srcid, sno, path, method, status, event_type, body)
+            elif message_type == Monitor.EVENT:
+                event_type = upk.unpack().decode('utf-8')
+                body = upk.unpack()
+                self.message_buffer.append(body)
+                self._write_sequence(self.serial, message_type, dstid, srcid, -1, None, None, None, event_type, body)
                 self.serial += 1
-            #print('serial: {}, type: {}, dstid: {}, srcid: {}: sno: {}'.format(self.serial, message_type, dstid, srcid, sno))
-            #print('serial: {}, type: {}, dstid: {}, srcid: {}: sno: {}, data: {}'.format(self.serial, message_type, dstid, srcid, sno, body))
+            #print('serial: {}, type: {}, dstid: {}, srcid: {}: sno: {}'.format(self.serial, msg_type, dstid, srcid, sno))
+            #print('serial: {}, type: {}, dstid: {}, srcid: {}: sno: {}, data: {}'.format(self.serial, msg_type, dstid, srcid, sno, body))
             #print('')
         except:
             traceback.print_exc()
 
-    def _write_sequence(self, serial, message_type, dstid, srcid, sno, path, method, status, event_type, body):
+    def _write_sequence(self, serial, message_type, dstid, srcid, sno, method, path, status, event_type, body):
         '''
         Writes sequence
         '''
@@ -264,13 +278,20 @@ class Monitor:
                     c += 1 
 
             final_format = None
-            if (message_type == Monitor.EVENT):
-                arrow.append(event_type)
-                final_format = self.vertical_lines_format+'  '+Monitor.BODY_SUMMARY_EVENT 
-            else:
+            if message_type == Monitor.REQUEST:
                 arrow.append(sno)
                 arrow.append(path)
-                final_format = self.vertical_lines_format+'  '+Monitor.BODY_SUMMARY
+            elif message_type == Monitor.RESPONSE:
+                arrow.append(sno)
+                reason = ''
+                if status in Monitor.REASON:
+                    reason = Monitor.REASON[status]
+                arrow.append(status)
+                arrow.append(reason)
+            elif (message_type == Monitor.EVENT):
+                arrow.append(event_type)
+            final_format = self.vertical_lines_format+'  '+Monitor.SUMMARY_FORMAT[message_type]
+
             if self.hyperlink:
                 arrow.append(',{}'.format(self.serial))
             else:
@@ -278,9 +299,9 @@ class Monitor:
             self.output(final_format.format(*arrow))
             if self.detail_output:
                 if self.json_format:
-                    self.output(json.dumps(decode(self.message_buffer[serial])))
+                    self.output(json.dumps(decode(self.message_buffer[serial].decode('utf-8'))))
                 else:
-                    self.output(yaml.dump(decode(self.message_buffer[serial])))
+                    self.output(yaml.dump(decode(self.message_buffer[serial].decode('utf-8')), default_flow_style=False))
                 self.output('')
             self.output_count -= 1
 
@@ -301,7 +322,8 @@ class MessageHandler(tornado.websocket.WebSocketHandler):
     def listen(self):
         self.client = tornadoredis.Client(host=self.host, port=self.port)
         self.client.connect()
-        yield tornado.gen.Task(self.client.psubscribe, '*')
+        #yield tornado.gen.Task(self.client.psubscribe, '*')
+        yield tornado.gen.Task(self.client.subscribe, '_monitor')
         self.client.listen(self.on_redis_message)
 
     # TODO: security check
@@ -309,7 +331,8 @@ class MessageHandler(tornado.websocket.WebSocketHandler):
         return True
 
     def on_redis_message(self, msg):
-        if msg.kind == b'pmessage':
+        #if msg.kind == b'pmessage':
+        if msg.kind == b'message':
             self.monitor.on_message(msg)
         elif msg.kind == b'disconnect':
             self.close()
@@ -334,11 +357,12 @@ class DetailHandler(tornado.web.RequestHandler):
 
 class PageHandler(tornado.web.RequestHandler):
 
-    def initialize(self, webport):
+    def initialize(self, webhost, webport):
+        self.webhost = webhost
         self.webport = webport
 
     def get(self):
-        self.render('web/index.html', port=self.webport)
+        self.render('web/index.html', host=self.webhost, port=self.webport)
 
 class ConsoleOutput(object):
     ''' 
@@ -356,11 +380,13 @@ class ConsoleOutput(object):
     def listen(self):
         self.client = tornadoredis.Client(host=self.host, port=self.port)
         self.client.connect()
-        yield tornado.gen.Task(self.client.psubscribe, '*')
+        #yield tornado.gen.Task(self.client.psubscribe, '*')
+        yield tornado.gen.Task(self.client.subscribe, '_monitor')
         self.client.listen(self.on_redis_message)
 
     def on_redis_message(self, msg):
-        if msg.kind == b'pmessage':
+        #if msg.kind == b'pmessage':
+        if msg.kind == b'message':
             self.monitor.on_message(msg)
         elif msg.kind == b'disconnect':
             self.close()
@@ -369,10 +395,10 @@ class ConsoleOutput(object):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("object_ids", help="a list of object IDs", nargs='*', type=str)
-    parser.add_argument("-i", "--ip", help="Redis server host name or IP address", type=str, default='localhost')
+    parser.add_argument("-i", "--host", help="Redis server host name or IP address", type=str, default='localhost')
     parser.add_argument("-p", "--port", help="Redis server port number", type=int, default=6379)
-    parser.add_argument("-w", "--webport", help="HTTP server port number", type=int, default=8888)
-    parser.add_argument("-P", "--path", help="HTTP server root path", type=str, default='./web')
+    parser.add_argument("-I", "--webhost", help="HTTP server host name or IP address", type=str, default="localhost")
+    parser.add_argument("-P", "--webport", help="HTTP server port number", type=int, default=8888)
     parser.add_argument("-c", "--console", help="output to console", action="store_true", default=False)
     parser.add_argument("-d", "--detail", help="message detail output to console", action="store_true", default=False)
     parser.add_argument("-j", "--json", help="message detail output in JSON rather than YAML", action="store_true", default=False)
@@ -380,7 +406,7 @@ if __name__ == "__main__":
     if args.console:
         print('Console output mode')
     else:
-        print('Open "http://localhost:{}/index.html" with your browser! (firefox is recommended)'.format(args.webport))
+        print('Open "http://{}:{}/index.html" with your browser! (firefox is recommended)'.format(args.webhost, args.webport))
     if not args.object_ids:
         default = yaml.load(open('default.yaml'))
         args.object_ids = default['object_ids']
@@ -389,15 +415,15 @@ if __name__ == "__main__":
     print('')
     message_buffer = []  # A common buffer shared by Tornado handlers
     if args.console:
-        console_output = ConsoleOutput(host=args.ip, port=args.port, object_ids=args.object_ids, message_buffer=message_buffer, detail_output=args.detail, json_format=args.json)
+        console_output = ConsoleOutput(host=args.host, port=args.port, object_ids=args.object_ids, message_buffer=message_buffer, detail_output=args.detail, json_format=args.json)
     else:
         application = tornado.web.Application([
-            (r'/index.html', PageHandler, dict(webport=args.webport)),
-            (r'/message', MessageHandler, dict(host=args.ip, port=args.port, object_ids=args.object_ids, message_buffer=message_buffer)),
+            (r'/index.html', PageHandler, dict(webhost=args.webhost, webport=args.webport)),
+            (r'/message', MessageHandler, dict(host=args.host, port=args.port, object_ids=args.object_ids, message_buffer=message_buffer)),
             (r'/detail', DetailHandler, dict(message_buffer=message_buffer, json_format=args.json))
         ])
         http_server = tornado.httpserver.HTTPServer(application)
-        http_server.listen(args.webport)
+        http_server.listen(args.webport, address=args.webhost)
     try:
         tornado.ioloop.IOLoop.instance().start()
     except KeyboardInterrupt:

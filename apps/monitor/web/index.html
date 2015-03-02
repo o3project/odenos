@@ -6,10 +6,10 @@
 <meta charset="UTF-8">
 <title>OdenOS message sequence diagram</title>
 <script type="text/javascript">
-    var detail_url = "http://localhost:{{ port }}/detail";
+    var detail_url = "http://{{ host }}:{{ port }}/detail";
     function init() {
         var diagram = document.getElementById('diagram');
-        var socket = new WebSocket("ws://localhost:{{ port }}/message",["protocolOne", "protocolTwo"]); 
+        var socket = new WebSocket("ws://{{ host }}:{{ port }}/message",["protocolOne", "protocolTwo"]); 
         socket.onmessage = function(event) {
             var newElement = document.createElement('div');
             var message = event.data.split(",");
@@ -18,7 +18,10 @@
             } else {
                 var serial = message[1];
                 newElement.id = serial;
-                newElement.innerHTML = "<pre>" + message[0] + '</pre> <button onclick="detail(' + serial + ')">detail</button>';
+                newElement.setAttribute("class", "sequence");
+                var detail_script = "detail(" + serial + ")";
+                newElement.setAttribute("onmousedown", detail_script); 
+                newElement.innerHTML = "<pre>" + message[0] + "</pre>";
             }
             diagram.appendChild(newElement);
             diagram.scrollIntoView(false);
@@ -54,6 +57,12 @@
 }
 pre {
     display: inline;
+}
+div.sequence:hover {
+    background-color: LightGreen;
+}
+div.sequence:acrive {
+    background-color: Coral;
 }
 </style>
 

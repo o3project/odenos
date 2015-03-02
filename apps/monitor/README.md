@@ -16,7 +16,6 @@ Dependencies
 
 This program requires Python 3.4 or higher and the following python packages:
 ```
-$ sudo pip3 install redis
 $ sudo pip3 install msgpack-python
 $ sudo pip3 install pyyaml
 $ sudo pip3 install tornado

@@ -201,7 +201,7 @@ public final class Odenos {
         mode = EnumSet.of(MODE.RESEND_SUBSCRIBE_ON_RECONNECTED,
                           MODE.INCLUDE_SOURCE_OBJECT_ID,
                           MODE.LOCAL_REQUEST_TO_PUBSUB,
-                          MODE.REFLECT_EVENT_TO_MONITOR);
+                          MODE.REFLECT_MESSAGE_TO_MONITOR);
       } else {
         mode = EnumSet.of(MODE.RESEND_SUBSCRIBE_ON_RECONNECTED);
       }
