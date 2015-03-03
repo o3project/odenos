@@ -441,8 +441,8 @@ public abstract class Logic extends Component {
     log.debug("onEvnet : objcetId = '" + this.getObjectId() + "'.");
 
     try {
-      if (event.eventType.equals(ComponentConnectionChanged.TYPE)) {
-        log.debug("onEvnet ConnectionChanged : objcetId = '"
+      if (ComponentConnectionChanged.TYPE.equals(event.eventType)) {
+        log.debug("onEvent ConnectionChanged : objectId = '"
             + this.getObjectId() + "'.");
         onEventComponentConnection(event
             .getBody(ComponentConnectionChanged.class));
