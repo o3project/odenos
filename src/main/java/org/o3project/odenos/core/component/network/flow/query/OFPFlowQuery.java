@@ -164,7 +164,7 @@ public class OFPFlowQuery extends FlowQuery {
       return false;
     }
 
-    if (this.status != null && this.status.equals(messageValueOf(flow.getStatus()))) {
+    if (this.status != null && !this.status.equals(messageValueOf(flow.getStatus()))) {
       return false;
     }
 
