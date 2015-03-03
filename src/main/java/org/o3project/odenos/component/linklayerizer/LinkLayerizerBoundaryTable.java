@@ -16,12 +16,12 @@
 
 package org.o3project.odenos.component.linklayerizer;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Manage boundaries class.
@@ -117,7 +117,7 @@ public class LinkLayerizerBoundaryTable {
       throw new IllegalArgumentException("boundary is null");
     }
 
-    if (!boundary.equals(boundary.getId())) {
+    if (!boundaryId.equals(boundary.getId())) {
       logger.warn("set boundaryId: {}", boundaryId);
       boundary.setId(boundaryId);
     }

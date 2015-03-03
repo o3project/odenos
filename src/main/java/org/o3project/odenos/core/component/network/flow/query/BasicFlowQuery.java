@@ -16,18 +16,20 @@
 
 package org.o3project.odenos.core.component.network.flow.query;
 
-import org.o3project.odenos.core.component.network.BasicQuery;
-import org.o3project.odenos.core.component.network.flow.FlowActionQueryFactory;
-import org.o3project.odenos.core.component.network.flow.FlowMatchQueryFactory;
-import org.o3project.odenos.core.component.network.flow.basic.BasicFlow;
-import org.o3project.odenos.core.component.network.flow.basic.BasicFlowMatch;
-import org.o3project.odenos.core.component.network.flow.basic.FlowAction;
-import org.o3project.odenos.core.component.network.flow.FlowObject.FlowStatus;
-import org.o3project.odenos.core.component.network.topology.Link;
-import org.o3project.odenos.remoteobject.message.BaseObject;
+import static org.o3project.odenos.core.component.network.flow.FlowObject.FlowStatus.messageValueOf;
 
 import java.util.List;
 import java.util.Map;
+
+import org.o3project.odenos.core.component.network.BasicQuery;
+import org.o3project.odenos.core.component.network.flow.FlowActionQueryFactory;
+import org.o3project.odenos.core.component.network.flow.FlowMatchQueryFactory;
+import org.o3project.odenos.core.component.network.flow.FlowObject.FlowStatus;
+import org.o3project.odenos.core.component.network.flow.basic.BasicFlow;
+import org.o3project.odenos.core.component.network.flow.basic.BasicFlowMatch;
+import org.o3project.odenos.core.component.network.flow.basic.FlowAction;
+import org.o3project.odenos.core.component.network.topology.Link;
+import org.o3project.odenos.remoteobject.message.BaseObject;
 
 /**
  * Prepares a query for BasicFlow class.
@@ -152,7 +154,7 @@ public class BasicFlowQuery extends FlowQuery {
       return false;
     }
 
-    if (this.status != null && !this.status.equals(flow.getStatus())) {
+    if (this.status != null && !this.status.equals(messageValueOf(flow.getStatus()))) {
       return false;
     }
 
