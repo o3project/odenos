@@ -419,13 +419,14 @@ if __name__ == "__main__":
     parser.add_argument("-c", "--console", help="output to console", action="store_true", default=False)
     parser.add_argument("-d", "--detail", help="message detail output to console", action="store_true", default=False)
     parser.add_argument("-j", "--json", help="message detail output in JSON rather than YAML", action="store_true", default=False)
+    parser.add_argument("-f", "--file", help="preset file name", type=str, default="default.yaml")
     args = parser.parse_args()
     if args.console:
         print('Console output mode')
     else:
         print('Open "http://{}:{}/index.html" with your browser! (firefox is recommended)'.format(args.webhost, args.webport))
     if not args.object_ids:
-        default = yaml.load(open('default.yaml'))
+        default = yaml.load(open(args.file))
         args.object_ids = default['object_ids']
         print('object IDs: {}'.format(args.object_ids))
     print('Ctrl-C to exit')

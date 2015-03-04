@@ -200,7 +200,6 @@ public final class Odenos {
       if (monitorEnabled) {
         mode = EnumSet.of(MODE.RESEND_SUBSCRIBE_ON_RECONNECTED,
                           MODE.INCLUDE_SOURCE_OBJECT_ID,
-                          MODE.LOCAL_REQUEST_TO_PUBSUB,
                           MODE.REFLECT_MESSAGE_TO_MONITOR);
       } else {
         mode = EnumSet.of(MODE.RESEND_SUBSCRIBE_ON_RECONNECTED);
@@ -214,9 +213,9 @@ public final class Odenos {
           .setHostB(msgsvIpBackup)
           .setPortB(msgsvPortBackup)
           .setMode(mode)
-          .setRemoteTransactionsMax(20)
-          .setRemoteTransactionsInitialTimeout(3)
-          .setRemoteTransactionsFinalTimeout(30)
+          //.setRemoteTransactionsMax(20)
+          //.setRemoteTransactionsInitialTimeout(3)
+          //.setRemoteTransactionsFinalTimeout(30)
           .build();
       disp = new MessageDispatcher(config);
       disp.start();

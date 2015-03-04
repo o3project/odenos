@@ -32,6 +32,7 @@ public class RemoteObjectIF {
   private final String id;
   private final String sourceObjectId;
 
+  @Deprecated
   public RemoteObjectIF(final MessageDispatcher dispatcher, final String id) {
     this.dispatcher = dispatcher;
     this.id = id;

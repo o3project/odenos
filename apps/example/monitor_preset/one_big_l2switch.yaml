@@ -1,0 +1,10 @@
+# Object IDs
+object_ids:
+  - systemmanager
+  - romger1
+  - dummy_driver2
+  - original_network2
+  - aggregator2
+  - aggregated_network2
+  - leaning_switch2
+    

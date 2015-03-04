@@ -79,6 +79,7 @@ public class NetworkInterface {
    * @param dispatcher Message Dispatcher object.
    * @param nwcId network ID.
    */
+  @Deprecated
   public NetworkInterface(
       final MessageDispatcher dispatcher,
       final String nwcId) {

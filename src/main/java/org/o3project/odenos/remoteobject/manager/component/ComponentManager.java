@@ -77,7 +77,7 @@ public class ComponentManager extends RemoteObject {
     components = new HashMap<String, Component>();
 
     this.getProperty().setObjectState(ObjectProperty.State.RUNNING);
-    this.sysMngIf = new SystemManagerInterface(dispatcher);
+    this.sysMngIf = new SystemManagerInterface(dispatcher, objectId);
 
     parser = this.createParser();
   }

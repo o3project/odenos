@@ -58,6 +58,7 @@ public class SystemManagerInterface {
    * Constructor.
    * @param dispatcher Message Dispatcher object.
    */
+  @Deprecated
   public SystemManagerInterface(
       final MessageDispatcher dispatcher) {
     this.dispatcher = dispatcher;

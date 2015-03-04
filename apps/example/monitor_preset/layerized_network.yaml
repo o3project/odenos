@@ -1,0 +1,10 @@
+# Object IDs
+object_ids:
+  - systemmanager
+  - romger1
+  - dummy-driver
+  - lower-nw
+  - upper-nw
+  - link-layerizer
+  - layerized-nw
+  - leaning-switch

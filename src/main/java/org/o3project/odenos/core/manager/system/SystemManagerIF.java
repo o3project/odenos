@@ -37,6 +37,7 @@ public class SystemManagerIF extends RemoteObjectIF {
   public static final String PATH_COMPS = "components/";
   public static final String PATH_CONNECTIONS = "connections/";
 
+  @Deprecated
   public SystemManagerIF(final MessageDispatcher dispatcher) {
     super(dispatcher, dispatcher.getSystemManagerId());
   }
