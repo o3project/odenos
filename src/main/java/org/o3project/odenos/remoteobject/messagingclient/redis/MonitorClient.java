@@ -31,6 +31,10 @@ public class MonitorClient extends RedisClient {
     super(true); // TCP keep-alive is set.
     connect(host, port);
   }
+  
+  public synchronized void publish(byte[] channel, byte[] message) {
+    super.publish(channel, message);
+  }
 
   protected synchronized void setClientName(String name) {
     setClientName(name.getBytes());

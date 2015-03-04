@@ -62,20 +62,29 @@ Usage
 IMPORTANT: you have to uncomment "monitor" in etc/odenos.conf to enable the monitoring feature on OdenOS.
 
 ```
-Shows help:
+Show help:
 $ monitor -h
 
-Starts monitoring:
+Start monitoring:
 $ monitor resttranslator systemmanager romgr1 network1 ...
 
-Starts monitoring with "default.yaml":
+Start monitoring with "default.yaml":
 $ monitor
 
-Starts monitoring with additional parameters:
-$ monitor -i 10.10.10.10 -p 6379 -w 8888 resttranslator systemmanager romgr1 network1 ...
+Start monitoring with additional parameters:
+$ monitor -i 172.0.0.1 -p 6379 -w 8888 resttranslator systemmanager romgr1 network1 ...
 
 Then open "http://localhost:8888/index.html" with your browser (firefox is recommended).
 
+Start with -I and -P options for the HTTP server:
+$ monitor -I 10.10.10.10 -P 10082
+
 You can also force the monitor to output the diagram to your console:
 $ monitor -c
+
+Start with -d option to print out each message in YAML format:
+$ monitor -c -d
+
+Start with -d and -j options to print out each message in JSON format:
+$ monitor -c -d -j
 ```

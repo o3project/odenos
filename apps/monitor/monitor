@@ -48,7 +48,10 @@ def _decode_list(data):
     decode = []
     for item in data:
         if isinstance(item, bytes):
-            item = item.decode('utf-8')
+            try:
+                item = item.decode('utf-8')
+            except:
+                item = '<byte array>'
         elif isinstance(item, list):
             item = _decode_list(item)
         elif isinstance(item, dict):
@@ -60,9 +63,15 @@ def _decode_dict(data):
     decode = {}
     for key, value in iter(data.items()):
         if isinstance(key, bytes):
-            key = key.decode('utf-8')
+            try:
+                key = key.decode('utf-8')
+            except:
+                key = '<byte array>'
         if isinstance(value, bytes):
-            value = value.decode('utf-8')
+            try:
+                value = value.decode('utf-8')
+            except:
+                value = '<byte array>'
         elif isinstance(value, list):
             value = _decode_list(value)
         elif isinstance(value, dict):
@@ -78,6 +87,8 @@ def decode(data):
         return _decode_dict(data)
     elif isinstance(data, list):
         return _decode_list(data)
+    elif isinstance(data, bytes):
+        return data.decode('utf-8')
     else:
         return data
 
@@ -113,7 +124,8 @@ class Monitor:
     SUMMARY_EVENT = '{} {}'
     SUMMARY_FORMAT = {REQUEST: SUMMARY_REQUEST, RESPONSE: SUMMARY_RESPONSE, EVENT: SUMMARY_EVENT}
 
-    REASON = {200: 'OK', 201: 'Created', 202: 'Accepted', 204: 'No content', 400: 'Bad request', 403: 'Forbidden', 404: 'Not found', 405: 'Method not allowed'}
+    REASON = {200: 'OK', 201: 'Created', 202: 'Accepted', 204: 'No content', 400: 'Bad request', 403: 'Forbidden', 404: 'Not found', 405: 'Method not allowed', 409: 'Conflict'}
+    HEADER_PER_LINES = 30
 
     def __init__(self, object_ids=[], output=print, hyperlink=False, message_buffer=[], detail_output=False, json_format=False):
 
@@ -126,6 +138,11 @@ class Monitor:
 
         self.serial = 0
         self.output_count = 0
+        if output == print and detail_output == True:
+            self.output_count_reset = 1 
+        else:
+            self.output_count_reset = Monitor.HEADER_PER_LINES 
+
         object_number = len(self.object_ids)
         c = 0
         cc = 0
@@ -178,7 +195,7 @@ class Monitor:
         #print(msg)
         if self.output_count <= 0:
             self.output(self.header_format.format(*self.object_ids))
-            self.output_count = 30 
+            self.output_count = self.output_count_reset 
         bio = BytesIO()
         bio.write(msg.body)
         bio.seek(0)
@@ -236,6 +253,7 @@ class Monitor:
 
             left = None
             right = None
+            result_OK = True 
             if message_type == Monitor.REQUEST:
                 left = Monitor.REQUEST_LEFT[method]
                 right = Monitor.REQUEST_RIGHT[method]
@@ -288,20 +306,22 @@ class Monitor:
                     reason = Monitor.REASON[status]
                 arrow.append(status)
                 arrow.append(reason)
+                if int(status/100) != 2:
+                    result_OK = False 
             elif (message_type == Monitor.EVENT):
                 arrow.append(event_type)
             final_format = self.vertical_lines_format+'  '+Monitor.SUMMARY_FORMAT[message_type]
 
             if self.hyperlink:
-                arrow.append(',{}'.format(self.serial))
+                arrow.append(',{},{}'.format(self.serial, result_OK))
             else:
                 arrow.append('')
             self.output(final_format.format(*arrow))
             if self.detail_output:
                 if self.json_format:
-                    self.output(json.dumps(decode(self.message_buffer[serial].decode('utf-8'))))
+                    self.output(json.dumps(decode(self.message_buffer[serial])))
                 else:
-                    self.output(yaml.dump(decode(self.message_buffer[serial].decode('utf-8')), default_flow_style=False))
+                    self.output(yaml.dump(decode(self.message_buffer[serial]), default_flow_style=False))
                 self.output('')
             self.output_count -= 1
 
@@ -322,7 +342,6 @@ class MessageHandler(tornado.websocket.WebSocketHandler):
     def listen(self):
         self.client = tornadoredis.Client(host=self.host, port=self.port)
         self.client.connect()
-        #yield tornado.gen.Task(self.client.psubscribe, '*')
         yield tornado.gen.Task(self.client.subscribe, '_monitor')
         self.client.listen(self.on_redis_message)
 
@@ -380,12 +399,10 @@ class ConsoleOutput(object):
     def listen(self):
         self.client = tornadoredis.Client(host=self.host, port=self.port)
         self.client.connect()
-        #yield tornado.gen.Task(self.client.psubscribe, '*')
         yield tornado.gen.Task(self.client.subscribe, '_monitor')
         self.client.listen(self.on_redis_message)
 
     def on_redis_message(self, msg):
-        #if msg.kind == b'pmessage':
         if msg.kind == b'message':
             self.monitor.on_message(msg)
         elif msg.kind == b'disconnect':

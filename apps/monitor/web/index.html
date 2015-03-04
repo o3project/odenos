@@ -17,8 +17,13 @@
                 newElement.innerHTML = "<pre>" + message[0] + "</pre>";
             } else {
                 var serial = message[1];
+                var result = message[2];
                 newElement.id = serial;
-                newElement.setAttribute("class", "sequence");
+                if (result == "True") {
+                    newElement.setAttribute("class", "sequence");
+                } else {
+                    newElement.setAttribute("class", "sequence error");
+                }
                 var detail_script = "detail(" + serial + ")";
                 newElement.setAttribute("onmousedown", detail_script); 
                 newElement.innerHTML = "<pre>" + message[0] + "</pre>";
@@ -61,8 +66,11 @@ pre {
 div.sequence:hover {
     background-color: LightGreen;
 }
-div.sequence:acrive {
+div.sequence:active {
     background-color: Coral;
+}
+div.error {
+    color: Red;
 }
 </style>
 
