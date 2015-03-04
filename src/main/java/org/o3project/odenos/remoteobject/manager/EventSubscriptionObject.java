@@ -75,6 +75,10 @@ public class EventSubscriptionObject {
             if (event.equals("ComponentConnectionChanged")) {
               continue;
             }
+            // workaround for NPE
+            if (subscriptionMap.get(publisherId) == null) {
+                continue;
+            }
             List<EventSubscription> eventSubs =
                 subscriptionMap.get(publisherId).get(event);
             if (eventSubs != null) {

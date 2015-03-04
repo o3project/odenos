@@ -76,7 +76,8 @@ public class LearningSwitch extends Logic {
    * @param baseUri Base URI
    * @param dispatcher Message dispatcher.
    * @throws Exception if parameter is wrong.
-   * @deprecated @see org.o3project.odenos.component.learningswitch.LearningSwitch#LearningSwitch(java.util.String, org.o3project.odenos.remoteobject.messagingclient.MessageDispatcher).
+   *
+   * @deprecated @see #LearningSwitch(String, MessageDispatcher)
    */
   @Deprecated
   public LearningSwitch(
@@ -250,7 +251,7 @@ public class LearningSwitch extends Logic {
     this.fdb.clear();
     // Clear Flows.
     this.flows.clear();
-    
+
     this.network = null;
 
     // Changed ConectionProperty's status.

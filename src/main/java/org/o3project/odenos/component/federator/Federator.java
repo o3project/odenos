@@ -598,7 +598,7 @@ public class Federator extends Logic {
       }
     }
   }
-  
+
   @Override
   protected void onPortDelete(String networkId, Port port) {
     logger.debug("");
@@ -740,7 +740,7 @@ public class Federator extends Logic {
       outPacket.getHeader().setInNode(plist[1]);
       outPacket.getHeader().setInPort(plist[2]);
     }
-    
+
     // unicast or multicast.
     if (outPacket.getPorts().size() > 0) {
       postOutPacketNoBroadcast(networkId, outPacket);
@@ -1343,7 +1343,7 @@ public class Federator extends Logic {
         nwPortsMap.put(orgNwId, newPorts);
       }
     }
-        
+
     // Convert node
     if (outPacket.getNodeId() == null) {
       return;
@@ -1356,7 +1356,7 @@ public class Federator extends Logic {
     }
     String[] nlist = convNodeId.get(0).split("::");
     outPacket.setNodeId(nlist[1]);
-    
+
     for (String orgNwId : nwPortsMap.keySet()) {
       // convert outPost.
       for (Port orgPort : nwPortsMap.get(orgNwId)) {
@@ -1557,7 +1557,7 @@ public class Federator extends Logic {
 
   /**
    *
-   * @param Link boundary Link.
+   * @param link boundary Link.
    * @param srcPort boundary src Port
    */
   protected void addBoundaryLinkAttribute(Link link, Port srcPort) {
@@ -1675,7 +1675,9 @@ public class Federator extends Logic {
   /**
    *
    * @return Map of nodes.
+   * {@code
    * dict<federated_node_id, (original_network_id, original_node_id)>
+   * }
    */
   protected Map<String, ArrayList<String>> getNwNodesOrigin() {
 
@@ -1701,7 +1703,9 @@ public class Federator extends Logic {
   /**
    *
    * @return map of the nodes.
+   * {@code
    * dict<original_network_id::original_node_id, federated_node_id>
+   * }
    */
   protected Map<String, String> getNwNodesFed() {
     logger.debug("");
@@ -1774,7 +1778,9 @@ public class Federator extends Logic {
   /**
    *
    * @return Map of ports.
+   * {@code
    * dict<federated_node_id::federated_port_id, (org_network_id, org_node_id, org_port_id)>
+   * }
    */
   protected Map<String, ArrayList<String>> getNwPortsOrigin() {
 
@@ -1802,7 +1808,9 @@ public class Federator extends Logic {
  /**
    *
    * @return map of the ports.
+   * {@code
    * dict<org_nwid::org_node_id::org_port_id, list[federated_node_id, federated_port_id]>
+   * }
    */
   protected Map<String, ArrayList<String>> getNwPortsFed() {
     logger.debug("");
@@ -1859,7 +1867,7 @@ public class Federator extends Logic {
 
   /**
    *
-   * @return Map of links. dict<federated_link_id, list[(original_network_id, original_link_id)]>
+   * @return Map of links. {@code dict<federated_link_id, list[(original_network_id, original_link_id)]>}
    */
   protected Map<String, ArrayList<String>> getNwLinksOrigin() {
 
@@ -1884,7 +1892,7 @@ public class Federator extends Logic {
 
   /**
    *
-   * @return Map of links. dict<original_network_id::original_link_id, federated_link_id>
+   * @return Map of links. {@code dict<original_network_id::original_link_id, federated_link_id>}
    */
   protected Map<String, String> getNwLinksFed() {
     logger.debug("");
@@ -1939,7 +1947,7 @@ public class Federator extends Logic {
 
   /**
    *
-   * @return Map of Flows. dict<federated_flow_id, [(original_network_id, original_flow_id)]>
+   * @return Map of Flows. {@code dict<federated_flow_id, [(original_network_id, original_flow_id)]>}
    */
   protected Map<String, ArrayList<Object>> getNwFlowsOrigin() {
     logger.debug("");
@@ -1968,7 +1976,7 @@ public class Federator extends Logic {
 
   /**
    *
-   * @return Map of flows. dict<original_network_id::original_flow_id, federated_flow_id>
+   * @return Map of flows. {@code dict<original_network_id::original_flow_id, federated_flow_id>}
    */
   protected Map<String, String> getNwFlowsFed() {
     logger.debug("");

@@ -71,7 +71,8 @@ public class NetworkInterface {
 
   private String networkId;
   private MessageDispatcher dispatcher;
-  private String sourceObjectId = null;
+
+  private String sourceObjectId;
 
   /**
    * Constructor.

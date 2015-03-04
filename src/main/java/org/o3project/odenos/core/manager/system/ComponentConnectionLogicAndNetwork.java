@@ -58,7 +58,7 @@ public class ComponentConnectionLogicAndNetwork
 
   /**
    * Constructor.
-   * @deprecated @see #ComponentConnectionLogicAndNetwork(String, String, String, String, String).
+   * @deprecated @see #ComponentConnectionLogicAndNetwork(String, String, String, String, String)
    */
   @Deprecated
   public ComponentConnectionLogicAndNetwork() {

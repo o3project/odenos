@@ -164,8 +164,8 @@ public class ComponentType extends OdenosMessage implements Serializable {
 
     if ((StringUtils.equals(type, compType.getType()))
         && (StringUtils.equals(superType, compType.getType()))
-        && (connectionTypes.equals(getConnectionTypes()))
-        && (cmId.equals(getConnectionTypes()))
+        && (connectionTypes.equals(compType.getConnectionTypes()))
+        && (cmId.equals(compType.getCmId()))
         && (StringUtils.equals(description, compType.getDescription()))) {
       return true;
     }

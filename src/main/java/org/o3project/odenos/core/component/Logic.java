@@ -16,6 +16,14 @@
 
 package org.o3project.odenos.core.component;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import org.o3project.odenos.core.component.network.flow.Flow;
 import org.o3project.odenos.core.component.network.flow.FlowChanged;
 import org.o3project.odenos.core.component.network.flow.FlowObject;
@@ -43,14 +51,6 @@ import org.o3project.odenos.remoteobject.message.Response;
 import org.o3project.odenos.remoteobject.messagingclient.MessageDispatcher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * Logic class.
@@ -114,7 +114,7 @@ public abstract class Logic extends Component {
   }
 
   /**
-   * flow's keys. 
+   * flow's keys.
    */
   public static final ArrayList<String> keysFlow =
       new ArrayList<String>(Arrays.asList(
@@ -123,14 +123,14 @@ public abstract class Logic extends Component {
           NetworkElements.ENABLED, NetworkElements.PRIORITY,
           NetworkElements.STATUS));
   /**
-   * node's default attribute keys. 
+   * node's default attribute keys.
    */
   public static final ArrayList<String> attributesNode = new ArrayList<String>(
       Arrays.asList(
           AttrElements.ADMIN_STATUS, AttrElements.OPER_STATUS,
           AttrElements.PHYSICAL_ID, AttrElements.VENDOR));
   /**
-   * port's default attribute keys. 
+   * port's default attribute keys.
    */
   public static ArrayList<String> attributesPort = new ArrayList<String>(
       Arrays.asList(
@@ -140,7 +140,7 @@ public abstract class Logic extends Component {
           AttrElements.UNRESERVED_BANDWIDTH,
           AttrElements.IS_BOUNDARY));
   /**
-   * link's default attribute keys. 
+   * link's default attribute keys.
    */
   public static final ArrayList<String> attributesLink = new ArrayList<String>(
       Arrays.asList(
@@ -150,7 +150,7 @@ public abstract class Logic extends Component {
           AttrElements.UNRESERVED_BANDWIDTH,
           AttrElements.REQ_BANDWIDTH));
   /**
-   * flow's default attribute keys. 
+   * flow's default attribute keys.
    */
   public static final ArrayList<String> attributesFlow = new ArrayList<String>(
       Arrays.asList(
@@ -183,7 +183,7 @@ public abstract class Logic extends Component {
    * @param baseUri Base URI.
    * @param dispatcher Message dispatcher.
    * @throws Exception if parameter is wrong.
-   * @deprecated @see org.o3project.odenos.component.Logic#Logic(java.lang.String, org.o3project.odenos.remoteobject.messagingclient.MessageDispatcher)
+   * @deprecated @see #Logic(String, MessageDispatcher)
    */
   @Deprecated
   public Logic(
@@ -233,7 +233,7 @@ public abstract class Logic extends Component {
           return;
         }
         NetworkInterface networkInterface = new NetworkInterface(
-            this.messageDispatcher, nwcId, getObjectId());
+            this.messageDispatcher, nwcId);
         this.networkInterfaces.put(nwcId, networkInterface);
         this.onConnectionChangedAdded(message);
         return;
@@ -437,19 +437,18 @@ public abstract class Logic extends Component {
   // //////////////////////////////////////////////////
   @Override
   protected void onEvent(final Event event) {
-    log.debug("");
-    log.debug("onEvnet : objcetId = '" + this.getObjectId() + "'.");
+    log.debug("onEvent : objectId = '{}'.", this.getObjectId());
 
     try {
-      if (event.eventType.equals(ComponentConnectionChanged.TYPE)) {
-        log.debug("onEvnet ConnectionChanged : objcetId = '"
-            + this.getObjectId() + "'.");
+      if (ComponentConnectionChanged.TYPE.equals(event.eventType)) {
+        log.debug("onEvent ConnectionChanged : objectId = '{}'.",
+                this.getObjectId());
         onEventComponentConnection(event
             .getBody(ComponentConnectionChanged.class));
         return;
       }
 
-      log.debug("Recieved Message: " + event.eventType);
+      log.debug("Recieved Message: {}", event.eventType);
       if (event.eventType == null) {
         return;
       }
@@ -480,11 +479,11 @@ public abstract class Logic extends Component {
               event.getBody(OutPacketAdded.class));
           break;
         default:
-          log.info("Unexpected event: " + event.eventType);
+          log.info("Unexpected event: {}", event.eventType);
           break;
       }
     } catch (ParseBodyException e) {
-      log.error("Recieved Message which can't be parsed.");
+      log.error("Recieved Message which can't be parsed.", e);
     } catch (Exception e) {
       log.error("Recieved Message Exception.", e);
     }
@@ -494,9 +493,8 @@ public abstract class Logic extends Component {
       final String networkId,
       final NodeChanged msg)
       throws Exception {
-    log.debug("");
-    log.debug("Recieved NodeChangedMessag ["
-        + msg.action + "]networkId:" + networkId);
+    log.debug("Recieved NodeChangedMessage [{}]networkId:{}",
+                msg.action, networkId);
 
     String key = null;
     switch (msg.action) {
@@ -532,9 +530,8 @@ public abstract class Logic extends Component {
       final String networkId,
       final PortChanged msg)
       throws Exception {
-    log.debug("");
-    log.debug("Recieved PortChangedMessag ["
-        + msg.action + "]networkId:" + networkId);
+    log.debug("Recieved PortChangedMessage [{}]networkId:{}",
+              msg.action, networkId);
 
     String key = null;
     switch (msg.action) {
@@ -570,9 +567,8 @@ public abstract class Logic extends Component {
       final String networkId,
       final LinkChanged msg)
       throws Exception {
-    log.debug("");
-    log.debug("Recieved LinkChangedMessag ["
-        + msg.action + "]networkId_id:" + networkId);
+    log.debug("Recieved LinkChangedMessage [{}]networkId:{}",
+              msg.action, networkId);
 
     String key = null;
     switch (msg.action) {
@@ -608,9 +604,8 @@ public abstract class Logic extends Component {
       final String networkId,
       final FlowChanged msg)
       throws Exception {
-    log.debug("");
-    log.debug("Recieved FlowChangedMessag ["
-        + msg.action + "]networkId_id:" + networkId);
+    log.debug("Recieved FlowChangedMessage [{}]networkId:{}",
+              msg.action, networkId);
 
     String key = null;
     switch (msg.action) {
@@ -1315,7 +1310,7 @@ public abstract class Logic extends Component {
       boolean updated = false;
       Map<String, String> currAttributes = curr.getAttributes();
       for (String key : currAttributes.keySet()) {
-        String oldAttr = body.getAttribute(key);
+        String oldAttr = prev.getAttribute(key);
         if (nodeMessageIgnoreAttributes.contains(key)
             || (oldAttr != null && oldAttr.equals(currAttributes
                 .get(key)))) {
@@ -1372,7 +1367,7 @@ public abstract class Logic extends Component {
       boolean updated = false;
       Map<String, String> currAttributes = curr.getAttributes();
       for (String key : currAttributes.keySet()) {
-        String oldAttr = body.getAttribute(key);
+        String oldAttr = prev.getAttribute(key);
         if (portMessageIgnoreAttributes.contains(key)
             || (oldAttr != null && oldAttr.equals(currAttributes
                 .get(key)))) {
@@ -1428,7 +1423,7 @@ public abstract class Logic extends Component {
       boolean updated = false;
       Map<String, String> currAttributes = curr.getAttributes();
       for (String key : currAttributes.keySet()) {
-        String oldAttr = body.getAttribute(key);
+        String oldAttr = prev.getAttribute(key);
         if (messageIgnoreAttributes.contains(key)
             || (oldAttr != null && oldAttr.equals(currAttributes
                 .get(key)))) {
@@ -1506,7 +1501,7 @@ public abstract class Logic extends Component {
       // attributes copy (curr -> body)
       Map<String, String> currAttributes = curr.getAttributes();
       for (String key : currAttributes.keySet()) {
-        String oldAttr = body.getAttribute(key);
+        String oldAttr = prev.getAttribute(key);
         if (messageIgnoreAttributes.contains(key)
             || (oldAttr != null && oldAttr.equals(currAttributes
                 .get(key)))) {
@@ -1756,7 +1751,7 @@ public abstract class Logic extends Component {
 
     try {
       /**
-       * convert matches. 
+       * convert matches.
        */
       List<BasicFlowMatch> matches = convFlow.getMatches();
       List<BasicFlowMatch> convMatches = new ArrayList<>();

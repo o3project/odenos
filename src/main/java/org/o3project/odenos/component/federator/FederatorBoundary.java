@@ -77,7 +77,7 @@ public class FederatorBoundary extends Boundary {
 
   /**
    * Constructor.
-   * @deprecated @see #FederatorBoundary(String, String, String, String, String, String, String, String);
+   * @deprecated @see #FederatorBoundary(String, String, String, String, String, String, String, String)
    */
   @Deprecated
   public FederatorBoundary() {
@@ -154,6 +154,7 @@ public class FederatorBoundary extends Boundary {
    * Get a parameter of id.
    * @return ID for boundary.
    */
+  @Override
   public String getId() {
     return id;
   }
@@ -162,6 +163,7 @@ public class FederatorBoundary extends Boundary {
    * Set a parameter of id.
    * @param id parameter of id
    */
+  @Override
   public void setId(String id) {
     this.id = id;
   }
@@ -170,6 +172,7 @@ public class FederatorBoundary extends Boundary {
    * Get a parameter of type.
    * @return Type of Object.
    */
+  @Override
   public String getType() {
     return type;
   }
@@ -178,6 +181,7 @@ public class FederatorBoundary extends Boundary {
    * Set a parameter of type.
    * @param type parameter of type
    */
+  @Override
   public void setType(String type) {
     this.type = type;
   }

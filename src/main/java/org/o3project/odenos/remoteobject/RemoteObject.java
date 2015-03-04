@@ -188,9 +188,9 @@ public class RemoteObject {
    */
   protected Response requestSync(String objectId, Request.Method method,
       String path, Object body) throws Exception {
-    return messageDispatcher.requestSync(new Request(objectId, method,
-        path, body), this.getObjectId());
-  }
+      return messageDispatcher.requestSync(new Request(objectId, method,
+      path, body), this.getObjectId());
+      }
 
   /**
    * Send a request to the specified RemoteObject and get the response of it.
