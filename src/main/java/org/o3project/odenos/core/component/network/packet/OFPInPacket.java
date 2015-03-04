@@ -29,7 +29,6 @@ import java.util.Map;
  */
 public class OFPInPacket extends InPacket {
   private float time;
-  public byte[] data;
 
   /**
    * Constructor.
