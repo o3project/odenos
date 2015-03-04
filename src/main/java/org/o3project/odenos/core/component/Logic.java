@@ -16,6 +16,14 @@
 
 package org.o3project.odenos.core.component;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import org.o3project.odenos.core.component.network.flow.Flow;
 import org.o3project.odenos.core.component.network.flow.FlowChanged;
 import org.o3project.odenos.core.component.network.flow.FlowObject;
@@ -43,14 +51,6 @@ import org.o3project.odenos.remoteobject.message.Response;
 import org.o3project.odenos.remoteobject.messagingclient.MessageDispatcher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * Logic class.
@@ -437,19 +437,18 @@ public abstract class Logic extends Component {
   // //////////////////////////////////////////////////
   @Override
   protected void onEvent(final Event event) {
-    log.debug("");
-    log.debug("onEvnet : objcetId = '" + this.getObjectId() + "'.");
+    log.debug("onEvent : objectId = '{}'.", this.getObjectId());
 
     try {
-      if (event.eventType.equals(ComponentConnectionChanged.TYPE)) {
-        log.debug("onEvnet ConnectionChanged : objcetId = '"
-            + this.getObjectId() + "'.");
+      if (ComponentConnectionChanged.TYPE.equals(event.eventType)) {
+        log.debug("onEvent ConnectionChanged : objectId = '{}'.",
+                this.getObjectId());
         onEventComponentConnection(event
             .getBody(ComponentConnectionChanged.class));
         return;
       }
 
-      log.debug("Recieved Message: " + event.eventType);
+      log.debug("Recieved Message: {}", event.eventType);
       if (event.eventType == null) {
         return;
       }
@@ -480,11 +479,11 @@ public abstract class Logic extends Component {
               event.getBody(OutPacketAdded.class));
           break;
         default:
-          log.info("Unexpected event: " + event.eventType);
+          log.info("Unexpected event: {}", event.eventType);
           break;
       }
     } catch (ParseBodyException e) {
-      log.error("Recieved Message which can't be parsed.");
+      log.error("Recieved Message which can't be parsed.", e);
     } catch (Exception e) {
       log.error("Recieved Message Exception.", e);
     }
@@ -494,9 +493,8 @@ public abstract class Logic extends Component {
       final String networkId,
       final NodeChanged msg)
       throws Exception {
-    log.debug("");
-    log.debug("Recieved NodeChangedMessag ["
-        + msg.action + "]networkId:" + networkId);
+    log.debug("Recieved NodeChangedMessage [{}]networkId:{}",
+                msg.action, networkId);
 
     String key = null;
     switch (msg.action) {
@@ -532,9 +530,8 @@ public abstract class Logic extends Component {
       final String networkId,
       final PortChanged msg)
       throws Exception {
-    log.debug("");
-    log.debug("Recieved PortChangedMessag ["
-        + msg.action + "]networkId:" + networkId);
+    log.debug("Recieved PortChangedMessage [{}]networkId:{}",
+              msg.action, networkId);
 
     String key = null;
     switch (msg.action) {
@@ -570,9 +567,8 @@ public abstract class Logic extends Component {
       final String networkId,
       final LinkChanged msg)
       throws Exception {
-    log.debug("");
-    log.debug("Recieved LinkChangedMessag ["
-        + msg.action + "]networkId_id:" + networkId);
+    log.debug("Recieved LinkChangedMessage [{}]networkId:{}",
+              msg.action, networkId);
 
     String key = null;
     switch (msg.action) {
@@ -608,9 +604,8 @@ public abstract class Logic extends Component {
       final String networkId,
       final FlowChanged msg)
       throws Exception {
-    log.debug("");
-    log.debug("Recieved FlowChangedMessag ["
-        + msg.action + "]networkId_id:" + networkId);
+    log.debug("Recieved FlowChangedMessage [{}]networkId:{}",
+              msg.action, networkId);
 
     String key = null;
     switch (msg.action) {
