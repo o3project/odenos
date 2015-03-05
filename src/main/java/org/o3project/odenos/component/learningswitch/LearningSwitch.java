@@ -48,6 +48,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * LearningSwitch that emulates a layer 2 switch.
@@ -859,8 +860,8 @@ public class LearningSwitch extends Logic {
           continue;
         }
         // Check node.
-        if (link.getSrcNode() == nodeId
-            || link.getDstNode() == nodeId) {
+        if (Objects.equals(link.getSrcNode(), nodeId)
+            || Objects.equals(link.getDstNode(), nodeId)) {
           nwIf.delFlow(flowId);
         }
       }
@@ -882,8 +883,8 @@ public class LearningSwitch extends Logic {
           continue;
         }
         // Check port.
-        if (link.getSrcPort() == portId
-            || link.getDstPort() == portId) {
+        if (Objects.equals(link.getSrcPort(), portId)
+            || Objects.equals(link.getDstPort(), portId)) {
           nwIf.delFlow(flowId);
         }
       }
@@ -901,8 +902,8 @@ public class LearningSwitch extends Logic {
       List<BasicFlowMatch> matchs = ofpFlow.getMatches();
       for (BasicFlowMatch match : matchs) {
         OFPFlowMatch ofMatch = (OFPFlowMatch) match;
-        if (ofMatch.getEthDst() == ethAddr
-            || ofMatch.getEthSrc() == ethAddr) {
+        if (Objects.equals(ofMatch.getEthDst(), ethAddr)
+            || Objects.equals(ofMatch.getEthSrc(), ethAddr)) {
           delFlowList.add(flowId);
         }
       }
