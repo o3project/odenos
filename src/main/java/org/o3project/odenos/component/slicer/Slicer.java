@@ -62,7 +62,7 @@ public class Slicer extends Logic {
   protected static final String ORIGINAL = "original";
   protected static final String SLIVER = "sliver";
 
-  protected final RequestParser<IActionCallback> parser;
+  protected RequestParser<IActionCallback> parser;
 
   protected final SliceConditionTable getConditionTable() {
     return this.conditionTable;
