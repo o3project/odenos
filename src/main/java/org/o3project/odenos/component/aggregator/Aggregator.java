@@ -595,8 +595,7 @@ public class Aggregator extends Logic {
     }
     NetworkInterface aggNetworkIf = networkInterfaces().get(aggNetworkId);
 
-    String aggNodeId = getConvNodeId(networkId, node.getId());
-    if (aggNodeId == null) {
+    if (getConvNodeId(aggNetworkId, this.getObjectId()) == null) {
       node.putAttribute(AttrElements.PHYSICAL_ID, this.getObjectId());
       Node aggNodeMsg = new Node(
           node.getVersion(), this.getObjectId(),
