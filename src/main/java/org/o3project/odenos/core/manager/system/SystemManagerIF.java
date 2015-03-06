@@ -37,18 +37,25 @@ public class SystemManagerIF extends RemoteObjectIF {
   public static final String PATH_COMPS = "components/";
   public static final String PATH_CONNECTIONS = "connections/";
 
+  @Deprecated
   public SystemManagerIF(final MessageDispatcher dispatcher) {
     super(dispatcher, dispatcher.getSystemManagerId());
   }
 
+  public SystemManagerIF(final String sourceDispatcherId, final MessageDispatcher dispatcher) {
+    super(sourceDispatcherId, dispatcher);
+  }
+
   public final NetworkIF createNetwork(final String id) {
     this.createComponent(T_NETWORK, id);
-    return new NetworkIF(this.dispatcher(), id);
+    //return new NetworkIF(this.dispatcher(), id);
+    return new NetworkIF(getSourceObjectId(), this.dispatcher());
   }
 
   public final LogicIF createLogic(final String type, final String id) {
     this.createComponent(type, id);
-    return new LogicIF(this.dispatcher(), id);
+    //return new LogicIF(this.dispatcher(), id);
+    return new LogicIF(getSourceObjectId(), this.dispatcher());
   }
 
   /**

@@ -35,8 +35,13 @@ public class NetworkIF extends RemoteObjectIF {
   public static final String PATH_OUTPACKETS_HEAD = "packets/out/head";
   public static final String PATH_PACKETS = "packets/";
 
+  @Deprecated
   public NetworkIF(final MessageDispatcher dispatcher, final String id) {
     super(dispatcher, id);
+  }
+
+  public NetworkIF(final String sourceObjectId, final MessageDispatcher dispatcher) {
+    super(sourceObjectId, dispatcher);
   }
 
   public final Topology getTopology() {

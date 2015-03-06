@@ -52,11 +52,13 @@ public class SystemManagerInterface {
   public static final String OBJECT_PATH = "objects/%s";
 
   private MessageDispatcher dispatcher;
+  private String sourceObjectId = null;
 
   /**
    * Constructor.
    * @param dispatcher Message Dispatcher object.
    */
+  @Deprecated
   public SystemManagerInterface(
       final MessageDispatcher dispatcher) {
     this.dispatcher = dispatcher;
@@ -64,6 +66,19 @@ public class SystemManagerInterface {
         + this.getSystemManagerId() + "'.");
   }
 
+  /**
+   * Constructor.
+   * @param dispatcher Message Dispatcher object.
+   */
+  public SystemManagerInterface(
+      final MessageDispatcher dispatcher,
+      final String sourceObjectId) {
+    this.dispatcher = dispatcher;
+    this.sourceObjectId = sourceObjectId;
+    log.debug("Create SystemManagerInterface : Id = '"
+        + this.getSystemManagerId() + "'.");
+  }
+  
   /**
    * Returns a system manager ID.
    * @return value of the system manager ID.
@@ -557,7 +572,7 @@ public class SystemManagerInterface {
         this.dispatcher.getSystemManagerId(), method, path, body);
     log.debug("   " + req.getBodyValue());
     try {
-      rsp = this.dispatcher.requestSync(req);
+      rsp = this.dispatcher.requestSync(req, sourceObjectId);
 
     } catch (Exception e) {
       log.error("Recieved Message Exception.", e);

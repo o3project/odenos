@@ -31,7 +31,13 @@ public interface Config {
   public static enum MODE {
     // Sends also "local" requests to pubsub server.
     // This is mainly for a debugging purpose to monitor all messages.
-    LOCAL_REQUESTS_TO_PUBSUB,
+    LOCAL_REQUEST_TO_PUBSUB,
+    // This is mainly for a debugging purpose to include
+    // source ObjectId for Request/Response and Event
+    INCLUDE_SOURCE_OBJECT_ID,
+    // Reflects a received request, response or event to Redis server
+    // for a message monitoring purpose.
+    REFLECT_MESSAGE_TO_MONITOR,
     // Re-SUBSCRIBEs onReconnected()
     RESEND_SUBSCRIBE_ON_RECONNECTED,
     // Bridged pubsub client 
