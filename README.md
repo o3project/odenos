@@ -1,11 +1,4 @@
-<<<<<<< HEAD
-![Build Status](https://travis-ci.org/haizawa/odenos.svg?branch=develop)
-
-![Build Status](https://travis-ci.org/o3project/odenos.svg?branch=develop)
-=======
-
 [![Build Status](https://travis-ci.org/o3project/odenos.svg?branch=develop)](https://travis-ci.org/o3project/odenos)
->>>>>>> 3b6a184f31977425828b888fe51b840d229c4bb8
 
 What's ODENOS
 ==========================
