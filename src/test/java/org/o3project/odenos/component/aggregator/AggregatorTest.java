@@ -1167,38 +1167,27 @@ public class AggregatorTest {
   @Test
   public final void testOnNodeAddedNodeIdNotNUll() throws Exception {
     String networkId = ORIGINAL_NW_ID;
-    Map<String, Port> ports1 = new HashMap<String, Port>();
-    Node nodeMessage = new Node("0", "ORIGINAL_NW_ID", ports1,
-        new HashMap<String, String>());
+    Map<String, Port> ports1 = new HashMap<>();
+    Node nodeMessage = new Node("0", "ORIGINAL_NW_ID", ports1, new HashMap<String, String>());
     nodeMessage.setId("ORIGINAL_NW_ID");
 
-    ConversionTable conversionTable = PowerMockito
-        .spy(new ConversionTable());
-    PowerMockito.doReturn("original").when(conversionTable,
-        "getConnectionType", networkId);
-    PowerMockito.doReturn(conversionTable).when(target, "conversionTable");
+    ConversionTable conversionTable = PowerMockito.spy(new ConversionTable());
+    conversionTable = PowerMockito.spy(new ConversionTable());
 
-    PowerMockito.doReturn("network2").when(target, "getNetworkIdByType",
-        "aggregated");
-
-    Map<String, NetworkInterface> nwifs = new HashMap<String, NetworkInterface>();
-    NetworkInterface originalNwInterface =
-        new NetworkInterface(dispatcher, ORIGINAL_NW_ID);
-    nwifs.put("network2", originalNwInterface);
-
-    PowerMockito.doReturn(AGGREGATED_NW_ID).when(target, "getConvNodeId",
-        ORIGINAL_NW_ID,
-        nodeMessage.getId());
+    //PowerMockito.doReturn("original").when(conversionTable, "getConnectionType", networkId);
+    PowerMockito.doReturn(AGGREGATED_NW_ID).when(target, "getNetworkIdByType", "aggregated");
+    
+    Map<String, NetworkInterface> nwifs = new HashMap<>();
+    NetworkInterface nwIf = new NetworkInterface(
+        dispatcher, AGGREGATED_NW_ID, AggregatorTest.class.getSimpleName());
+    nwifs.put(AGGREGATED_NW_ID, nwIf);
     PowerMockito.doReturn(nwifs).when(target, "networkInterfaces");
+    PowerMockito.doReturn(ORIGINAL_NW_ID).when(
+        target, "getConvNodeId", AGGREGATED_NW_ID, "objectId");
 
     target.onNodeAdded(networkId, nodeMessage);
 
-    PowerMockito.verifyPrivate(target).invoke("getConvNodeId", networkId,
-        nodeMessage.getId());
-    PowerMockito.verifyPrivate(conversionTable).invoke("addEntryNode",
-        anyString(),
-        anyString(), anyString(), anyString());
-
+    PowerMockito.verifyPrivate(target).invoke("getConvNodeId", AGGREGATED_NW_ID, "objectId");
   }
 
   /**
