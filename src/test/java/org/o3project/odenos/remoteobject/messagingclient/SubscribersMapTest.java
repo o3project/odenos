@@ -16,11 +16,10 @@
 
 package org.o3project.odenos.remoteobject.messagingclient;
 
-import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.*;
 
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.CopyOnWriteArraySet;
 
 import org.junit.After;
 import org.junit.Before;
@@ -31,7 +30,7 @@ public class SubscribersMapTest {
   
   
   SubscribersMap target = null;
-  private ConcurrentHashMap<String, CopyOnWriteArrayList<String>> subscribersMap;
+  private ConcurrentHashMap<String, CopyOnWriteArraySet<String>> subscribersMap;
   
   @Before
   public void setUp() {
@@ -48,16 +47,16 @@ public class SubscribersMapTest {
   public void testSetSubscription() {
     target.setSubscription("tokyo", "subscriber1");
     subscribersMap =
-        (ConcurrentHashMap<String, CopyOnWriteArrayList<String>>)
+        (ConcurrentHashMap<String, CopyOnWriteArraySet<String>>)
         Whitebox.getInternalState(target, "subscribersMap");
-    CopyOnWriteArrayList<String> subscribers = subscribersMap.get("tokyo");
-    assertThat(subscribers.get(0), is("subscriber1"));
+    CopyOnWriteArraySet<String> subscribers = subscribersMap.get("tokyo");
+    assertTrue(subscribers.contains("subscriber1"));
   }
   
   @Test
   public void testRemoveSubscription() {
     subscribersMap = new ConcurrentHashMap<>();
-    CopyOnWriteArrayList<String> subscribers = new CopyOnWriteArrayList<>();
+    CopyOnWriteArraySet<String> subscribers = new CopyOnWriteArraySet<>();
     subscribers.add("subscriber1");
     subscribers.add("subscriber2");
     subscribersMap.put("tokyo", subscribers);
@@ -71,7 +70,7 @@ public class SubscribersMapTest {
   @Test
   public void testRemoveSubscriber() {
     subscribersMap = new ConcurrentHashMap<>();
-    CopyOnWriteArrayList<String> subscribers = new CopyOnWriteArrayList<>();
+    CopyOnWriteArraySet<String> subscribers = new CopyOnWriteArraySet<>();
     subscribers.add("subscriber1");
     subscribers.add("subscriber2");
     subscribersMap.put("tokyo", subscribers);

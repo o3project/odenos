@@ -24,7 +24,7 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.CopyOnWriteArraySet;
 
 /**
  * Hash map to keep info on which subscriber subscribes which channel.
@@ -66,7 +66,7 @@ public class SubscribersMap {
         // version is used here, since the operation expected here is read-intensive.
         // If subscribeChannels()/unsubscribeChannels()'s performance significantly
         // degrades, another measure will be taken... 
-        subscribers = new CopyOnWriteArrayList<>();
+        subscribers = new CopyOnWriteArraySet<>();
         subscribers.add(subscriberId);
         subscribersMap.put(channel, subscribers);
         return true;
