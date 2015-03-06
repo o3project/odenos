@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<!-- 
+    Message sequence diagram
+-->
+<head>
+<meta charset="UTF-8">
+<title>OdenOS message sequence diagram</title>
+<script type="text/javascript">
+    var detail_url = "http://{{ host }}:{{ port }}/detail";
+    function init() {
+        var diagram = document.getElementById('diagram');
+        var socket = new WebSocket("ws://{{ host }}:{{ port }}/message",["protocolOne", "protocolTwo"]); 
+        socket.onmessage = function(event) {
+            var newElement = document.createElement('div');
+            var message = event.data.split(",");
+            if (message.length == 1) { 
+                newElement.innerHTML = "<pre>" + message[0] + "</pre>";
+            } else {
+                var serial = message[1];
+                var result = message[2];
+                newElement.id = serial;
+                if (result == "True") {
+                    newElement.setAttribute("class", "sequence");
+                } else {
+                    newElement.setAttribute("class", "sequence error");
+                }
+                var detail_script = "detail(" + serial + ")";
+                newElement.setAttribute("onmousedown", detail_script); 
+                newElement.innerHTML = "<pre>" + message[0] + "</pre>";
+            }
+            diagram.appendChild(newElement);
+            diagram.scrollIntoView(false);
+        };
+    }
+    function detail(serial) {
+        var url_serial = detail_url + '?serial=' + serial;
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function() {
+            if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                //var message = JSON.parse(xmlhttp.responseText);
+                var message = xmlhttp.responseText;
+                detail_callback(serial, message);
+            }
+        };
+        xmlhttp.open("GET", url_serial, true);
+        xmlhttp.send();
+    }
+    function detail_callback(serial, message) {
+       alert(message);
+    }
+</script>
+<style type="text/css">
+#header {
+    width: 100%;
+    background: #eef;
+}
+#main {
+    float: left;
+    width: 99.5%;
+    height: 99.5%;
+    overflow: auto;
+}
+pre {
+    display: inline;
+}
+div.sequence:hover {
+    background-color: LightGreen;
+}
+div.sequence:active {
+    background-color: Coral;
+}
+div.error {
+    color: Red;
+}
+</style>
+
+<body onload="init()"> 
+<div id="header">
+    <h2>OdenOS message sequence diagram</h2>
+</div>
+<div id="main">
+    <div id="diagram"></div>
+</div>
+</body>
+</html>

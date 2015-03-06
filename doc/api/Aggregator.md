@@ -101,7 +101,7 @@ network_id       | \<String>                  |Network ID
 
 ##### [Response]:
   * **Status Code** : 200
-  * **Body** : dict<original_node_id::original_port_id, (aggregated_node_id, aggregated_port_id)>
+  * **Body** : dict\<original_node_id::original_port_id, (aggregated_node_id, aggregated_port_id)>
 
 ----
 #### <a name="GEToriginal_nw_port">GET \<base_uri>/original_nw_port</a>
@@ -113,7 +113,7 @@ network_id       | \<String>                  |Network ID
 
 ##### [Response]:
   * **Status Code** : 200
-  * **Body** : dict<aggregated_node_id::aggregated_port_id, (original_node_id, original_port_id)>
+  * **Body** : dict\<aggregated_node_id::aggregated_port_id, (original_node_id, original_port_id)>
 
 
 ----
@@ -126,7 +126,7 @@ network_id       | \<String>                  |Network ID
 
 ##### [Response]:
   * **Status Code** : 200
-  * **Body** : dict<original_flow_id, aggregated_flow_id>
+  * **Body** : dict\<original_flow_id, aggregated_flow_id>
 
 ----
 #### <a name="GEToriginal_nw_flow">GET \<base_uri>/original_nw_flow</a>
@@ -138,4 +138,4 @@ network_id       | \<String>                  |Network ID
 
 ##### [Response]:
   * **Status Code** : 200
-  * **Body** : dict<aggregated_flow_id, original_flow_id>
+  * **Body** : dict\<aggregated_flow_id, original_flow_id>

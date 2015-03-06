@@ -28,6 +28,7 @@ import org.o3project.odenos.remoteobject.message.MessageBodyUnpacker;
 import org.o3project.odenos.remoteobject.message.Request;
 import org.o3project.odenos.remoteobject.message.Response;
 import org.o3project.odenos.remoteobject.messagingclient.Config.MODE;
+import org.o3project.odenos.remoteobject.messagingclient.redis.MonitorClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -44,24 +45,25 @@ import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.SynchronousQueue;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * <h1>PubSub messaging client for OdenOS</h1>
- *
+ * 
  * <p>
- * This class provides the following services to remote objects:
+ * This class provides the following services to remote objects: 
  * <ul>
  * <li>asynchronous channel subscription (SUBSCRIBE/UNSUBSCRIBE)
  * <li>asynchronous event publication (PUBLISH)
  * <li>synchronous request/response (remote transactions)
  * <li>event dispatch to local objects
  * </ul>
- *
- * <p>
- * Some of parameters in this class are configurable.
+ * 
+ * <p> 
+ * Some of parameters in this class are configurable.  
  * See {@link ConfigBuilder}.
- *
- * <p>
+ * 
+ * <p> 
  * The user of this class needs to take the following steps:
  * <ol>
  * <li> Instantiate this class.
@@ -70,15 +72,15 @@ import java.util.concurrent.SynchronousQueue;
  * (e.g., Odenos.java's main()).
  * <li> Call "close()" to terminate the instance of this class, or try-with-resources.
  * </ol>
- *
+ * 
  * <p>
  * If you want to monitor all the messages being sent/received, enable the logger's
  * DEBUG flag (log4j). The logger dumps messages in a YAML-like format.
- *
+ * 
  * <p>
- * You may extend this class (override some methods) to enhance the features
- * or add additional capabilities.
- *
+ * You may extend this class (override some methods) to enhance the features 
+ * or add additional capabilities. 
+ * 
  * @see IPubSubDriver
  * @see IMessageListener
  * @see Config
@@ -93,6 +95,11 @@ public class MessageDispatcher implements Closeable, IMessageListener {
   protected static final byte TYPE_REQUEST = 0;
   protected static final byte TYPE_RESPONSE = 1;
   protected static final byte TYPE_EVENT = 2;
+
+  protected static final byte[] MONITOR_CHANNEL = "_monitor".getBytes();
+  protected static final String REQUEST = "REQUEST";
+  protected static final String RESPONSE = "RESPONSE";
+  protected static final String EVENT = "EVENT";
 
   protected BlockingQueue<Runnable> subscriberQueue;
 
@@ -125,7 +132,15 @@ public class MessageDispatcher implements Closeable, IMessageListener {
 
   protected final Actor actor;
   protected int serial = 0;
+
+  protected AtomicInteger loopbackSequenceNumber = new AtomicInteger(0);
+
   protected boolean localRequestsToPubSubServer = false;
+  protected boolean includeSourceObjectId = false;
+  protected boolean reflectMessageToMonitor = false;
+
+  // For message monitoring
+  protected MonitorClient monitor = null;
 
   protected static final String channelString(final String publisherId, final String eventId) {
     return publisherId + ":" + eventId;
@@ -140,7 +155,7 @@ public class MessageDispatcher implements Closeable, IMessageListener {
 
   /**
    * Constructor.
-   *
+   * 
    * @param systemManagerId System Manager ID
    */
   public MessageDispatcher(final String systemManagerId) {
@@ -151,7 +166,7 @@ public class MessageDispatcher implements Closeable, IMessageListener {
 
   /**
    * Constructor.
-   *
+   * 
    * @param systemManagerId System Manager ID
    * @param host pubsub server host name or IP addrss
    * @param port pubsub server port number
@@ -166,21 +181,23 @@ public class MessageDispatcher implements Closeable, IMessageListener {
   }
 
   /**
-   *
-   * @param config {@link MessageDispatcher}'s config
+   * 
+   * @param config {@link MessageDispatcher}'s config 
    * @see org.o3project.odenos.remoteobject.messagingclient.redis.PubSubDriverImpl
    */
   public MessageDispatcher(Config config) {
 
-    // Config
+    // Config 
     systemManagerId = config.getSystemManagerId();
     eventManagerId = config.getEventManagerId();
     sourceDispatcherId = config.getSourceDispatcherId();
     mode = config.getMode();
-    localRequestsToPubSubServer =
-        config.getMode().contains(MODE.LOCAL_REQUESTS_TO_PUBSUB);
 
-    // Actor system instantiation.
+    localRequestsToPubSubServer = mode.contains(MODE.LOCAL_REQUEST_TO_PUBSUB);
+    includeSourceObjectId = mode.contains(MODE.INCLUDE_SOURCE_OBJECT_ID);
+    reflectMessageToMonitor = mode.contains(MODE.REFLECT_MESSAGE_TO_MONITOR);
+
+    // Actor system instantiation. 
     // The number of woker threads: the max number of remote transactions.
     actor = Actor.getInstance(config.getRemoteTransactionsMax());
 
@@ -197,11 +214,18 @@ public class MessageDispatcher implements Closeable, IMessageListener {
 
     // Remote Transactions pool
     remoteTransactions = new RemoteTransactions(this, config);
+
+    // Monitoring
+    if (reflectMessageToMonitor) {
+      String monitorName = "monitor@" + sourceDispatcherId;
+      monitor = new MonitorClient(config.getHost(), config.getPort()); // Keep-alive
+      monitor.setClientName(monitorName.getBytes());
+    }
   }
 
   /**
-   * onMessage implementation.
-   *
+   * onMessage implementation. 
+   * 
    * <p>
    * This method has two roles:
    * <ul>
@@ -213,14 +237,14 @@ public class MessageDispatcher implements Closeable, IMessageListener {
   @Override
   public void onMessage(final String channel, byte[] message) {
 
-    serial++;  // Serial number for incoming messages.
+    serial++; // Serial number for incoming messages.
 
     try {
       BufferUnpacker upk = msgpack.createBufferUnpacker(message);
       // read delivery header.
       byte type = upk.readByte();
-      final int sno = upk.readInt();  // Sequence number for outgoing request messages.
-      final String sourceObjectId = upk.readString(); // i.e., channel
+      final int sno = upk.readInt(); // Sequence number for outgoing request messages.
+      final String sourceObjectId = upk.readString();
 
       RemoteObject localObject = null;
       Queue<Mail> mailbox = null;
@@ -235,19 +259,19 @@ public class MessageDispatcher implements Closeable, IMessageListener {
            *  <-- response --- publishResponseAsync() <-------+
            */
           final Request request = upk.read(Request.class);
-          if (log.isDebugEnabled()) {
-            log.debug("Request received:\n"
-                + "  MessageDispatcher: {}\n"
-                + "  sno: {}\n"
-                + "  channel: {}\n"
-                + "  method: {}\n"
-                + "  objectId: {}\n"
-                + "  sourceObjectId: {}\n"
-                + "  path: /{}/\n"
-                + "  body: {}",
-                sourceDispatcherId, sno, channel,
-                request.method, request.objectId, sourceObjectId, request.path,
-                request.getBodyValue());
+
+          // Monitoring
+          if (reflectMessageToMonitor) {
+            BufferPacker pk = msgpack.createBufferPacker();
+            pk.write(REQUEST);
+            pk.write(channel);
+            pk.write(sourceObjectId);
+            pk.write(sno);
+            pk.write(request.method.name());
+            pk.write("/" + channel + "/" + request.path);
+            pk.write(request.getBodyValue());
+            byte[] data = pk.toByteArray();
+            monitor.publish(MONITOR_CHANNEL, data);
           }
 
           // Wraps the request with Mail and deliver it to a mailbox.
@@ -277,33 +301,30 @@ public class MessageDispatcher implements Closeable, IMessageListener {
            *                             +- signalResponse() <-- response --+
            */
           Response response = upk.read(Response.class);
-          if (log.isDebugEnabled()) {
-            log.debug("Response received:\n"
-                + "  MessageDispatcher: {}\n"
-                + "  channel: {}\n"
-                + "  statusCode: {}\n"
-                + "  body: {}",
-                sourceDispatcherId, channel,
-                response.statusCode, response.getBodyValue());
+
+          // Monitoring
+          if (reflectMessageToMonitor) {
+            BufferPacker pk = msgpack.createBufferPacker();
+            pk.write(RESPONSE);
+            pk.write(channel);
+            pk.write(sourceObjectId);
+            pk.write(sno);
+            pk.write(response.statusCode);
+            pk.write(response.getBodyValue());
+            byte[] data = pk.toByteArray();
+            monitor.publish(MONITOR_CHANNEL, data);
           }
+
           remoteTransactions.signalResponse(sno, response);
           break;
 
-        case TYPE_EVENT: // Asynchronous
+        case TYPE_EVENT: // Asynchronous 
           /*
            * publishEventAsync() -- event --> dispatchEvent() --> [RemoteObject]
            *                                         :
            *                              [EventSubscriptionMap]
            */
           final Event event = upk.read(Event.class);
-          if (log.isDebugEnabled()) {
-            log.debug("Event received:\n"
-                + "  MessageDispatcher: {}\n"
-                + "  channel: {}\n"
-                + "  body: {}",
-                sourceDispatcherId, channel,
-                event.getBodyValue());
-          }
 
           // All the subscribers of the channel
           final Collection<String> subscribers =
@@ -319,6 +340,19 @@ public class MessageDispatcher implements Closeable, IMessageListener {
           for (String subscriber : subscribers) {
             localObject = localObjectsMap.get(subscriber);
             if (localObject != null) {
+
+              // Monitoring
+              if (reflectMessageToMonitor) {
+                BufferPacker pk = msgpack.createBufferPacker();
+                pk.write(EVENT);
+                pk.write(subscriber);
+                pk.write(event.publisherId);
+                pk.write(event.publisherId + ":" + event.getEventType());
+                pk.write(event.getBodyValue());
+                byte[] data = pk.toByteArray();
+                monitor.publish(MONITOR_CHANNEL, data);
+              }
+
               mail = new Mail(serial, sno, subscriber, channel, this, null, event);
               mailbox = localObject.getMailbox();
               synchronized (mailbox) {
@@ -353,7 +387,7 @@ public class MessageDispatcher implements Closeable, IMessageListener {
 
   /**
    * Starts the services.
-   *
+   * 
    * <p>
    * This method must be called after instantiating this class to start
    * a {@link IPubSubDriver} implementation class.
@@ -378,7 +412,7 @@ public class MessageDispatcher implements Closeable, IMessageListener {
           Request request = null;
           try {
             request = eventManagerQueue.take();
-            Response response = requestSync(request);
+            Response response = requestSync(request, getSourceDispatcherId());
             if (response == null || !response.statusCode.equals(Response.OK)) {
               log.warn("Unsuccessful transaction to EventManager: " + response.statusCode);
             }
@@ -399,11 +433,11 @@ public class MessageDispatcher implements Closeable, IMessageListener {
    * After starting this class (start()), this method MAY be called to block the
    * thread that created the instance of this class. Otherwise, the thread will
    * finish and the instance of this class will be terminated.
-   *
+   * 
    * @throws InterruptedException unsuccessful join
    */
   public void join() throws InterruptedException {
-    // TODO:
+    // TODO:  
     // initiate a graceful termination procedure (i.e., close()).
     log.info("joining");
     @SuppressWarnings("unused")
@@ -418,11 +452,10 @@ public class MessageDispatcher implements Closeable, IMessageListener {
 
   /**
    * Closes the services.
-   *
+   * 
    * <p>
    * You can also do "try-with-resources" to automatically close this class.
    */
-  @Override
   public void close() {
     // TODO: Graceful termination of all the components and the transport
     // TODO: subscriptionFeeder termination
@@ -433,14 +466,14 @@ public class MessageDispatcher implements Closeable, IMessageListener {
   }
 
   /**
-   * Adds a local object as a listener of messages.
-   *
+   * Adds a local object as a listener of messages. 
+   * 
    * <p>
-   * The user (i.e., RemoteObject) of this class calls this method
+   * The user (i.e., RemoteObject) of this class calls this method 
    * to register the RemoteObject as "local RemoteObject" with
    * this class.
-   *
-   * {@literal
+   * 
+   * <pre>
    *   [RemoteObject]    [RemoteObject]    [RemoteObject]
    *   dispatchEvent()  dispatchRequest() dispatchRequest()
    *         ^                 ^                 ^
@@ -452,14 +485,14 @@ public class MessageDispatcher implements Closeable, IMessageListener {
    *                        message
    *                           |
    *                    [pubsub server]
-   * }
-   *
+   * </pre>
+   *                
    * <p>
    * This method also sends "SUBSCRIBE own-object-ID-as-channel"
    * to pubsub server to receive PUBLISH destined to the remote object,
    * since requestSync() method sends PUBLISH as "request" to the remote
    * object.
-   *
+   * 
    * @param localObject a remote object
    * @see org.o3project.odenos.remoteobject.RemoteObject#dispatchEvent
    * @see org.o3project.odenos.remoteobject.RemoteObject#dispatchRequest
@@ -476,12 +509,12 @@ public class MessageDispatcher implements Closeable, IMessageListener {
 
   /**
    * Removes a local object.
-   *
+   * 
    * <p>
    * This method also sends "UNSUBSCRIBE own-object-ID-as-channel"
    * to pubsub server to stop receiving PUBLISH destined to the
    * remote object.
-   *
+   * 
    * @param localObject a remote object
    */
   public void removeLocalObject(RemoteObject localObject) {
@@ -495,7 +528,7 @@ public class MessageDispatcher implements Closeable, IMessageListener {
 
   /**
    * Returns Object ID registered as "local RemoteObject".
-   *
+   * 
    * @param objectId Object ID of a remote object
    * @return true if the remote object has already been registered as "local RemoteObject"
    */
@@ -505,7 +538,7 @@ public class MessageDispatcher implements Closeable, IMessageListener {
 
   /**
    * Appends a remote object.
-   *
+   * 
    * <p>
    * TODO: Should this method be deprecated or not?
    * @param objectId object ID.
@@ -516,10 +549,10 @@ public class MessageDispatcher implements Closeable, IMessageListener {
 
   /**
    * Removes a remote object.
-   *
+   * 
    * <p>
    * TODO: Should this method be deprecated or not?
-   *
+   * 
    * @param objectId Object ID
    */
   public void removeRemoteObject(String objectId) {
@@ -528,7 +561,7 @@ public class MessageDispatcher implements Closeable, IMessageListener {
 
   /**
    * Returns MessageDispatcher's ID.
-   *
+   * 
    * @return Source Dispatcher ID
    */
   public String getSourceDispatcherId() {
@@ -537,7 +570,7 @@ public class MessageDispatcher implements Closeable, IMessageListener {
 
   /**
    * Sets a remote system manager.
-   *
+   * 
    * <p>
    * TODO: Should this method be deprecated or not?
    */
@@ -571,7 +604,7 @@ public class MessageDispatcher implements Closeable, IMessageListener {
 
   /**
    * Synchronous request/response service (remote transactions)
-   *
+   *  
    * <p>
    * This method operates in two modes:
    * <ul>
@@ -582,57 +615,92 @@ public class MessageDispatcher implements Closeable, IMessageListener {
    * this method uses RemoteTransactions class to send the
    * request to "remote RemoteObject" via pubsub server.
    * </ul>
-   *
+   * 
    * <pre>
    *                 (local)
    * [RemoteObject]  [RemoteObject]
    *  requestSync()        ^
    *       |               |
    *       |               |
-   *       +---------------+
+   *       +---------------+ 
    *           loopback
-   *
+   * 
    *                               (remote)
    * [RemoteObject]                [RemoteObject]
    *  requsetSync()                      ^
    *       |                             |
    *       |                             |
-   *       +-------[pubsub server]-------+
+   *       +-------[pubsub server]-------+ 
    * </pre>
-   *
+   * 
    * @param request Request to be sent
-   * @return Response response to the request
+   * @return Response response to the request 
    * @throws Exception exception
    */
-  public Response requestSync(Request request)
+  public Response requestSync(Request request) throws Exception {
+    return requestSync(request, getSourceDispatcherId());
+  }
+
+  public Response requestSync(Request request, String sourceObjectId)
       throws Exception {
     String objectId = request.objectId;
     Response response;
     RemoteObject localObject = localObjectsMap.get(objectId);
+    int sno = loopbackSequenceNumber.getAndIncrement();
     if (localObject != null && !localRequestsToPubSubServer) {
-      // synchronized with Actor#read()
+
+      // Monitoring
+      if (reflectMessageToMonitor) {
+        BufferPacker pk = msgpack.createBufferPacker();
+        pk.write(REQUEST);
+        pk.write(objectId);
+        pk.write(sourceObjectId);
+        pk.write(sno);
+        pk.write(request.method.name());
+        pk.write("/" + request.objectId + "/" + request.path);
+        pk.write(request.getBodyValue());
+        byte[] data = pk.toByteArray();
+        monitor.publish(MONITOR_CHANNEL, data);
+      }
+
+      // Loopback of request/response
+      // synchronized with Actor#read() 
       synchronized (localObject) {
         Request requested = deepCopy(request);
         Response responsed = localObject.dispatchRequest(requested);
         response = deepCopy(responsed);
       }
+
+      // Monitoring
+      if (reflectMessageToMonitor) {
+        BufferPacker pk = msgpack.createBufferPacker();
+        pk.write(RESPONSE);
+        pk.write(sourceObjectId);
+        pk.write(objectId);
+        pk.write(sno);
+        pk.write(response.statusCode);
+        pk.write(request.getBodyValue());
+        byte[] data = pk.toByteArray();
+        monitor.publish(MONITOR_CHANNEL, data);
+      }
+
       // TODO: remoteObjectsMap is not unused.
     } else if (remoteObjectsMap.containsKey(objectId)) {
-      response = remoteTransactions.sendRequest(request);
+      response = remoteTransactions.sendRequest(request, sourceObjectId);
     } else {
       // request to an unregistered remote object
       remoteObjectsMap.put(objectId, Boolean.valueOf(false));
-      response = remoteTransactions.sendRequest(request);
+      response = remoteTransactions.sendRequest(request, sourceObjectId);
     }
     return response;
   }
 
   /**
    * Deep copy.
-   *
+   * 
    * <p>
    * This is mainly to avoid {@link java.util.ConcurrentModificationException}.
-   *
+   * 
    * @param object original data.
    * @return copy data.
    * @throws IOException exception.
@@ -646,77 +714,68 @@ public class MessageDispatcher implements Closeable, IMessageListener {
 
   /**
    * Asynchronous event publication service
-   *
+   * 
    * <p>
    * Remote objects use this method to publish an event
    * asynchronously.
    */
   public void publishEventAsync(final Event event) throws IOException {
+    final String channel = channelString(event.publisherId, event.eventType);
+    publishEventAsync(channel, event, null);
+  }
+
+  private void
+      publishEventAsync(final String channel, final Event event, final String subscriberId)
+          throws IOException {
     BufferPacker pk = msgpack.createBufferPacker();
     // write delivery header.
+    byte[] message = null;
     pk.write(TYPE_EVENT);
     pk.write(0);
     pk.write("event");
     // write delivery body.
     pk.write(event);
-    byte[] message = pk.toByteArray();
-    String channel = channelString(event.publisherId, event.eventType);
+    message = pk.toByteArray();
     // PUBLISH
     driverImpl.publish(channel, message);
-    if (log.isDebugEnabled()) {
-      log.debug("Event sent:\n"
-          + "  MessageDispatcher: {}\n"
-          + "  channel: {}\n"
-          + "  body: {}",
-          sourceDispatcherId, channel,
-          event.getBodyValue());
-    }
   }
 
   /**
    * Asynchronous event publication service for requestSync().
-   *
+   * 
    * <p>
    * requestSync() turns into this method via RemoteMessageTransport.
-   *
+   * 
    * <p>
    * Remote objects uses this method to publish a request as event asynchronously.
-   *
+   * 
    * <p>
-   * Although this method is asynchronous, {@link RemoteTransactions} provides
+   * Although this method is asynchronous, {@link RemoteTransactions} provides 
    * a synchronous method to wait for a response from another remote object.
    */
-  protected void publishRequestAsync(final int sno, final Request request)
+  protected void publishRequestAsync(final int sno, final Request request,
+      final String sourceObjectId)
       throws IOException {
     BufferPacker pk = msgpack.createBufferPacker();
     // write delivery header.
     pk.write(TYPE_REQUEST);
     pk.write(sno);
-    pk.write(getSourceDispatcherId());
+    if (sourceObjectId != null && includeSourceObjectId) {
+      pk.write(sourceObjectId);
+    } else {
+      pk.write(getSourceDispatcherId());
+    }
     // write delivery body.
     pk.write(request);
     byte[] message = pk.toByteArray();
     String channel = request.objectId;
     // PUBLISH
     driverImpl.publish(channel, message);
-    if (log.isDebugEnabled()) {
-      log.debug("Request sent:\n"
-          + "  MessageDispatcher: {}\n"
-          + "  sno: {}\n"
-          + "  channel: {}\n"
-          + "  method: {}\n"
-          + "  objectId: {}\n"
-          + "  path: /{}/\n"
-          + "  body: {}",
-          sourceDispatcherId, sno, channel,
-          request.method, request.objectId, request.path,
-          request.getBodyValue());
-    }
   }
 
   /**
    * Asynchronous event publication service for requestSync().
-   *
+   * 
    * <p>
    * The response eventually reaches its originating method (requestSync()) via
    * RemoteMessageTransport.
@@ -734,20 +793,11 @@ public class MessageDispatcher implements Closeable, IMessageListener {
     byte[] message = pk.toByteArray();
     // PUBLISH
     driverImpl.publish(channel, message);
-    if (log.isDebugEnabled()) {
-      log.debug("Response returned:\n"
-          + "  MessageDispatcher: {}\n"
-          + "  channel: {}\n"
-          + "  statusCode: {}\n"
-          + "  body: {}",
-          sourceDispatcherId, channel,
-          response.statusCode, response.getBodyValue());
-    }
   }
 
   /**
    * Event subscription service.
-   *
+   * 
    * @param eventSubscription pubsub channel to be subscribed
    */
   public Response subscribeEvent(final EventSubscription eventSubscription) {
@@ -795,7 +845,7 @@ public class MessageDispatcher implements Closeable, IMessageListener {
 
   /**
    * Channel subscription service.
-   *
+   * 
    * @param subscriberId Subscriber's object ID
    * @param channelsToBeSubscribed channels to be subscribed
    */
@@ -818,7 +868,7 @@ public class MessageDispatcher implements Closeable, IMessageListener {
 
   /**
    * Channel unsubscription service.
-   *
+   * 
    * @param subscriberId subscriber's object ID
    * @param channelsToBeUnsubscribed channels to be unsubscribed
    */
@@ -841,7 +891,7 @@ public class MessageDispatcher implements Closeable, IMessageListener {
 
   /**
    * Returns an system manager ID.
-   *
+   * 
    * <p>
    * @return system manager ID
    */
@@ -851,7 +901,7 @@ public class MessageDispatcher implements Closeable, IMessageListener {
 
   /**
    * Returns an event manager ID.
-   *
+   * 
    * <p>
    * @return event manager ID.
    */
@@ -861,7 +911,7 @@ public class MessageDispatcher implements Closeable, IMessageListener {
 
   /**
    * Returns a ChannelChecker instance.
-   *
+   * 
    * <p>
    * @return an instance of Channel Checker
    */
@@ -887,7 +937,7 @@ public class MessageDispatcher implements Closeable, IMessageListener {
         driverImpl.subscribeChannels(channels);
       }
 
-      // all channels registered with subscribersMap
+      // all channels registered with subscribersMap 
       channels = subscribersMap.getSubscribedChannels();
       if (!channels.isEmpty()) {
         driverImpl.subscribeChannels(channels);
@@ -913,4 +963,5 @@ public class MessageDispatcher implements Closeable, IMessageListener {
       // has become unavailable.
     }
   }
+
 }

@@ -48,6 +48,7 @@ HOST=localhost
 PORT=6379
 HOST_B=null
 PORT_B=0
+MONITOR=false
 
 ##########################################################################
 # common functions                                                       #
@@ -102,6 +103,9 @@ read_config_file() {
             "rest.root")
                 REST_ROOT=`echo $line | awk '{print $2}'`
                 ;;
+            "monitor")
+                MONITOR=true
+                ;;
             *)
                 ;;
         esac
@@ -133,7 +137,7 @@ start_system() {
 	-Dlog4j.configuration=file:${ODENOS_CONF}/log_java.conf \
 	-Dapp.log=${ODENOS_LOG}/odenos_system.log \
 	$ODENOS_MAIN -s -S $MANAGER -o ${REST_PORT} -h ${REST_ROOT} \
-	-i $HOST -p $PORT -I $HOST_B -P $PORT_B &
+	-i $HOST -p $PORT -I $HOST_B -P $PORT_B -m $MONITOR &
     echo $! > $FILE_ODENOS_SYSTEM_PID
 }
 
@@ -168,7 +172,8 @@ start_process() {
 		-Dlog4j.configuration=file:${ODENOS_CONF}/log_java.conf \
 		-Dapp.log=${ODENOS_LOG}/odenos_${PROC_NAME}.log \
 		$ODENOS_MAIN -r ${PROC_NAME} -d ${PROC_DIR} \
-		-S $MANAGER -i $HOST -p $PORT -I $HOST_B -P $PORT_B &
+		-S $MANAGER -i $HOST -p $PORT -I $HOST_B -P $PORT_B \
+		-m $MONITOR &
 
 	    echo $! > $ODENOS_TMP/odenos_${PROC_NAME}.pid
 

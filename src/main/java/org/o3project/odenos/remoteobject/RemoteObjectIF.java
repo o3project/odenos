@@ -30,10 +30,19 @@ public class RemoteObjectIF {
 
   private final MessageDispatcher dispatcher;
   private final String id;
+  private final String sourceObjectId;
 
+  @Deprecated
   public RemoteObjectIF(final MessageDispatcher dispatcher, final String id) {
     this.dispatcher = dispatcher;
     this.id = id;
+    this.sourceObjectId = null;
+  }
+
+  public RemoteObjectIF(final String sourceObjectId, final MessageDispatcher dispatcher) {
+    this.dispatcher = dispatcher;
+    this.id = dispatcher.getSystemManagerId();
+    this.sourceObjectId = sourceObjectId;
   }
 
   public MessageDispatcher dispatcher() {
@@ -42,6 +51,10 @@ public class RemoteObjectIF {
 
   public final String id() {
     return this.id;
+  }
+  
+  public final String getSourceObjectId() {
+    return this.sourceObjectId;
   }
 
   public final ObjectProperty getProperty() {
@@ -68,7 +81,7 @@ public class RemoteObjectIF {
    */
   public Response post(final String path, final Object body) {
     Response resp = this.sendRequest(Request.Method.POST, path, body);
-    if (resp.isError("POST") || resp == null) {
+    if (resp == null || resp.isError("POST")) {
       log.error("invalid POST:" + resp.statusCode);
     }
     return resp;
@@ -82,7 +95,7 @@ public class RemoteObjectIF {
    */
   public Response put(final String path, final Object body) {
     Response resp = this.sendRequest(Request.Method.PUT, path, body);
-    if (resp.isError("PUT") || resp == null) {
+    if (resp == null || resp.isError("PUT")) {
       log.error("PUT failed:" + resp.statusCode);
     }
     return resp;
@@ -106,7 +119,7 @@ public class RemoteObjectIF {
   }
 
   /**
-   * Delete object. 
+   * Delete object.
    * @param path path to delete object.
    * @param body body to delete object.
    * @return response body.
@@ -122,7 +135,7 @@ public class RemoteObjectIF {
   private Response sendRequest(final Request.Method method, final String path, final Object body) {
     Request req = new Request(this.id(), method, path, body);
     try {
-      return this.dispatcher().requestSync(req);
+      return this.dispatcher().requestSync(req, sourceObjectId);
     } catch (Exception e) {
       //e.printStackTrace();
       return new Response(Response.INTERNAL_SERVER_ERROR, null);

@@ -35,12 +35,14 @@ import org.o3project.odenos.remoteobject.ObjectProperty;
 import org.o3project.odenos.remoteobject.RemoteObject;
 import org.o3project.odenos.remoteobject.manager.EventManager;
 import org.o3project.odenos.remoteobject.messagingclient.Config;
+import org.o3project.odenos.remoteobject.messagingclient.Config.MODE;
 import org.o3project.odenos.remoteobject.messagingclient.ConfigBuilder;
 import org.o3project.odenos.remoteobject.messagingclient.MessageDispatcher;
 import org.o3project.odenos.remoteobject.rest.RESTTranslator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -69,6 +71,7 @@ public final class Odenos {
   private CommandParser parser = new CommandParser();
   private int restport;
   private String restroot;
+  private boolean monitorEnabled;
 
   private final class CommandParser {
     CommandLine line;
@@ -86,6 +89,7 @@ public final class Odenos {
       options.addOption("S", "system_with_name", true, "start core system with specified id");
       options.addOption("o", "restport", true, "port number of RestPort");
       options.addOption("h", "restroot", true, "Directory of Rest root");
+      options.addOption("m", "monitor", true, "Directory of Rest root");
     }
 
     public final void parse(String[] args) throws ParseException {
@@ -147,6 +151,18 @@ public final class Odenos {
     public final String getRestRoot() {
       return line.hasOption("restroot") ? line.getOptionValue("restroot") : null;
     }
+    
+    public final boolean getMonitor() {
+      if (line.hasOption("monitor")) {
+        if (line.getOptionValue("monitor").equals("true")) {
+          return true;
+        } else {
+          return false;
+        }
+      } else {
+        return false;
+      }
+    }
   }
 
   /**
@@ -172,6 +188,7 @@ public final class Odenos {
     }
     restport = parser.getRestPort();
     restroot = parser.getRestRoot();
+    monitorEnabled = parser.getMonitor();
   }
 
   /**
@@ -179,6 +196,14 @@ public final class Odenos {
    */
   public final void run() {
     try {
+      EnumSet<MODE> mode;
+      if (monitorEnabled) {
+        mode = EnumSet.of(MODE.RESEND_SUBSCRIBE_ON_RECONNECTED,
+                          MODE.INCLUDE_SOURCE_OBJECT_ID,
+                          MODE.REFLECT_MESSAGE_TO_MONITOR);
+      } else {
+        mode = EnumSet.of(MODE.RESEND_SUBSCRIBE_ON_RECONNECTED);
+      }
       Config config = new ConfigBuilder()
           .setSystemManagerId(systemMgrId)
           .setEventManagerId(EVENT_MGR_ID)
@@ -187,7 +212,7 @@ public final class Odenos {
           .setPort(msgsvPort)
           .setHostB(msgsvIpBackup)
           .setPortB(msgsvPortBackup)
-          //.setMode(EnumSet.of(MODE.RESEND_SUBSCRIBE_ON_RECONNECTED))
+          .setMode(mode)
           //.setRemoteTransactionsMax(20)
           //.setRemoteTransactionsInitialTimeout(3)
           //.setRemoteTransactionsFinalTimeout(30)
@@ -218,9 +243,9 @@ public final class Odenos {
       = new RESTTranslator(REST_TRANSLATOR_ID, disp, restroot, restport);
   }
 
-  private final void runComponentManager(final String id, final String dir) throws Exception {
-    SystemManagerIF sysmgr = new SystemManagerIF(disp);
-    ComponentManager2 romgr = new ComponentManager2(id, disp);
+  private final void runComponentManager(final String romgrId, final String dir) throws Exception {
+    SystemManagerIF sysmgr = new SystemManagerIF(romgrId, disp);
+    ComponentManager2 romgr = new ComponentManager2(romgrId, disp);
     romgr.registerComponents(this.findComponents(dir));
     sysmgr.addComponentManager(romgr.getProperty());
     romgr.setState(ObjectProperty.State.RUNNING);

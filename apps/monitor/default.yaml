@@ -1,0 +1,15 @@
+#
+# Default settings for monitor
+#
+
+# Object IDs
+object_ids:
+  - resttranslator
+  - systemmanager
+  - romgr1
+  - gen
+  - network1
+  - aggre
+  - network0
+  - lsw
+    

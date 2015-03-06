@@ -16,6 +16,7 @@
 
 package org.o3project.odenos.remoteobject;
 
+import org.apache.commons.lang.StringUtils;
 import org.o3project.odenos.remoteobject.actor.Mail;
 import org.o3project.odenos.remoteobject.event.EventSubscription;
 import org.o3project.odenos.remoteobject.event.ObjectPropertyChanged;
@@ -188,9 +189,9 @@ public class RemoteObject {
    */
   protected Response requestSync(String objectId, Request.Method method,
       String path, Object body) throws Exception {
-    return messageDispatcher.requestSync(new Request(objectId, method,
-        path, body));
-  }
+      return messageDispatcher.requestSync(new Request(objectId, method,
+      path, body), this.getObjectId());
+      }
 
   /**
    * Send a request to the specified RemoteObject and get the response of it.
@@ -248,7 +249,7 @@ public class RemoteObject {
    */
   public Response dispatchRequest(Request request) {
     log.debug("dispatchRequest: " + request.method + ", " + request.path);
-    if (request.path == null || request.path == "") {
+    if (StringUtils.stripToNull(request.path) == null) {
       return new Response(Response.BAD_REQUEST, null);
     }
 
@@ -415,8 +416,8 @@ public class RemoteObject {
   }
 
   protected void onStateChanged(String oldState, String newState) {
-    if (oldState != ObjectProperty.State.FINALIZING
-        && newState == ObjectProperty.State.FINALIZING) {
+    if (!ObjectProperty.State.FINALIZING.equals(oldState)
+        && ObjectProperty.State.FINALIZING.equals(newState)) {
       onFinalize();
     }
   }

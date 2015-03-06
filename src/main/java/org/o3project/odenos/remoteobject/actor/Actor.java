@@ -86,7 +86,7 @@ public class Actor implements Closeable {
 
   private static ThreadPoolExecutor threadPoolExecutor = null;
 
-  private static Actor actor = null;
+  private static volatile Actor actor = null;
 
   /**
    * Adjust these parameters to gain the best performance for your
@@ -130,7 +130,7 @@ public class Actor implements Closeable {
    *
    * <p>
    * You can dump all the incoming messages by enabling the log
-   * threadhold to DEBUG. If you also want to dump messaging
+   * threshold to DEBUG. If you also want to dump messaging
    * between RemoteObject instances on same JVM, set
    * MODE.LOCAL_REQUESTS_TO_PUBSUB.
    *

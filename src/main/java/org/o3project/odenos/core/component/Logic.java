@@ -206,7 +206,7 @@ public abstract class Logic extends Component {
       throws Exception {
     super(objectId, dispatcher);
     this.conversionTable = new ConversionTable();
-    this.systemMngInterface = new SystemManagerInterface(dispatcher);
+    this.systemMngInterface = new SystemManagerInterface(dispatcher, objectId);
     this.networkInterfaces = new HashMap<String, NetworkInterface>();
   }
 
@@ -233,7 +233,7 @@ public abstract class Logic extends Component {
           return;
         }
         NetworkInterface networkInterface = new NetworkInterface(
-            this.messageDispatcher, nwcId);
+            this.messageDispatcher, nwcId, getObjectId());
         this.networkInterfaces.put(nwcId, networkInterface);
         this.onConnectionChangedAdded(message);
         return;
