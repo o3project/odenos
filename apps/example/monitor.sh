@@ -10,7 +10,7 @@ if [ -z "$1" ]; then
     echo "$ ./monitor.sh <test case>"
     echo "Example:  ./monitor.sh  federated_network"
     echo ""
-    echo "Or, you may start a WebSocket server to show the diagram on your firefox browser."
+    echo "Or, you may start a HTTP server to show the diagram on your firefox browser."
     echo "$ ./monitor.sh <test case> w"
     echo "Example:  ./monitor.sh  federated_network w"
     echo ""

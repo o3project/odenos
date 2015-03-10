@@ -133,7 +133,7 @@ public class SubscribersMap {
   protected Collection<String> getSubscribers(String channel) {
     return subscribersMap.get(channel);
   }
-  
+
   /**
    * Returns a set of channels starting with the publisherId.
    * 
@@ -142,8 +142,30 @@ public class SubscribersMap {
    */
   protected Set<String> filterChannels(String publisherId) {
     Set<String> channels = new HashSet<>();
-    for (String channel: subscribersMap.keySet()) {
+    for (String channel : subscribersMap.keySet()) {
       if (channel.startsWith(publisherId + ":")) {
+        channels.add(channel);
+      }
+    }
+    return channels;
+  }
+
+  /**
+   * Returns a set of channels NOT starting with the publisherIds.
+   * 
+   * @param publisherId publisherId 
+   * @return a set of channels
+   */
+  protected Set<String> filterUnmatchedChannels(Collection<String> publisherIds) {
+    Set<String> channels = new HashSet<>();
+    for (String channel : subscribersMap.keySet()) {
+      boolean match = false;
+      for (String publisherId : publisherIds) {
+        if (channel.startsWith(publisherId + ":")) {
+          match = true;
+        }
+      }
+      if (!match) {
         channels.add(channel);
       }
     }

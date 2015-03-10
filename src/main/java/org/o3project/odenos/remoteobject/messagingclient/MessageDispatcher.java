@@ -512,7 +512,9 @@ public class MessageDispatcher implements Closeable, IMessageListener {
         // Channels published by the publisher on the same ODENOS process.
         Set<String> channels = subscribersMap.filterChannels(objectId);
         // Applies loopback and unsubscribes the channels.
-        driverImpl.unsubscribeChannels(channels);
+        if (!channels.isEmpty()) {
+          driverImpl.unsubscribeChannels(channels);
+        }
       }
       if (localObjectsMap.putIfAbsent(objectId, localObject) == null) {
         driverImpl.subscribeChannel(objectId);
@@ -540,7 +542,9 @@ public class MessageDispatcher implements Closeable, IMessageListener {
         // Channels published by the publisher on the same ODENOS process.
         Set<String> channels = subscribersMap.filterChannels(objectId);
         // Disables loopback and subscribes the channels.
-        driverImpl.subscribeChannels(channels);
+        if (!channels.isEmpty()) {
+          driverImpl.subscribeChannels(channels);
+        }
       }
       if (localObjectsMap.remove(objectId) != null) {
         // Unsubscribes objectId as a channel to stop receiving Request
@@ -957,22 +961,32 @@ public class MessageDispatcher implements Closeable, IMessageListener {
     if (mode.contains(MODE.RESEND_SUBSCRIBE_ON_RECONNECTED)) {
 
       Set<String> channels;
+      Set<String> localObjectIds;
 
-      // channel as sourceDispatcherId
-      channels = new HashSet<String>();
-      channels.add(getSourceDispatcherId());
-      driverImpl.subscribeChannels(channels);
-
-      // channels as object_IDs registered with localObjectsMap
-      channels = localObjectsMap.keySet();
-      if (!channels.isEmpty()) {
+      synchronized(subscribersMap) {
+        // channel as sourceDispatcherId
+        channels = new HashSet<String>();
+        channels.add(getSourceDispatcherId());
         driverImpl.subscribeChannels(channels);
-      }
 
-      // all channels registered with subscribersMap
-      channels = subscribersMap.getSubscribedChannels();
-      if (!channels.isEmpty()) {
-        driverImpl.subscribeChannels(channels);
+        // channels as object_IDs registered with localObjectsMap
+        localObjectIds = localObjectsMap.keySet();
+        if (!localObjectIds.isEmpty()) {
+          driverImpl.subscribeChannels(localObjectIds);
+        }
+
+        // all channels registered with subscribersMap
+        if (loopbackDisabled) {
+          channels = subscribersMap.getSubscribedChannels();
+          if (!channels.isEmpty()) {
+            driverImpl.subscribeChannels(channels);
+          }
+        } else {  // loopback enabled for events
+          channels = subscribersMap.filterUnmatchedChannels(localObjectIds);
+          if (!channels.isEmpty()) {
+            driverImpl.subscribeChannels(channels);
+          }
+        }
       }
 
       // re-SUBSCRIBE completed with all the registered channels.
