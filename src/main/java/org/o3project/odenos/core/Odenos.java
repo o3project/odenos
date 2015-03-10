@@ -249,6 +249,7 @@ public final class Odenos {
     romgr.registerComponents(this.findComponents(dir));
     sysmgr.addComponentManager(romgr.getProperty());
     romgr.setState(ObjectProperty.State.RUNNING);
+    
   }
 
   private Set<Class<? extends RemoteObject>> findComponents(String rootOfPackages) {

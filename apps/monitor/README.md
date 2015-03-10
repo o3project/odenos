@@ -37,8 +37,9 @@ Architecture
        | server    |
        +-----------+
           ^      |
- psubscribe'*'   |
-          |  pmessage (non-blocking IO: tornado-redis)
+subscribe'_monitor'
+          |      |
+          |  message (non-blocking IO: tornado-redis)
           |      |
           |      V
        +-----------+
