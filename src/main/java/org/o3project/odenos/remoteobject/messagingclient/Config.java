@@ -35,7 +35,7 @@ public interface Config {
     // This is mainly for a debugging purpose to include
     // source ObjectId for Request/Response and Event
     INCLUDE_SOURCE_OBJECT_ID,
-    // Reflects a received request, response or event to Redis server
+    // Reflects a received request, response or event to pubsub server
     // for a message monitoring purpose.
     REFLECT_MESSAGE_TO_MONITOR,
     // Re-SUBSCRIBEs onReconnected()

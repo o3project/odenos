@@ -23,6 +23,7 @@ import java.util.concurrent.RejectedExecutionHandler;
 import java.util.concurrent.TimeUnit;
 
 import org.o3project.odenos.remoteobject.messagingclient.Config.MODE;
+import org.o3project.odenos.remoteobject.messagingclient.redis.PubSubDriverImpl;
 
 /**
  * {@link MessageDispatcher} configuration builder.
@@ -41,9 +42,9 @@ public class ConfigBuilder {
   /**
    *  Default {@link IPubSubDriver} implementation class
    */
-  private static final String DEFAULT_PUBSUB_DRIVER_IMPL_CLASS =
-      org.o3project.odenos.remoteobject.messagingclient.redis.PubSubDriverImpl.class.getName();
-  private String pubSubDriverImpl = DEFAULT_PUBSUB_DRIVER_IMPL_CLASS;
+  public static final Class<?> DEFAULT_PUBSUB_DRIVER_IMPL_CLASS =
+      org.o3project.odenos.remoteobject.messagingclient.redis.PubSubDriverImpl.class;
+  private String pubSubDriverImpl = DEFAULT_PUBSUB_DRIVER_IMPL_CLASS.getName();
 
   // MessageDispatcher basic properties
   // "0" means that an IPubSubDriver impl class should set its default.

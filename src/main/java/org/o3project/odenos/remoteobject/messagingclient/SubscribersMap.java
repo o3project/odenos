@@ -161,7 +161,7 @@ public class SubscribersMap {
     for (String channel : subscribersMap.keySet()) {
       boolean match = false;
       for (String publisherId : publisherIds) {
-        if (channel.startsWith(publisherId + ":")) {
+        if (channel.equals(publisherId) || channel.startsWith(publisherId + ":")) {
           match = true;
         }
       }

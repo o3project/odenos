@@ -28,7 +28,6 @@ import org.o3project.odenos.remoteobject.message.MessageBodyUnpacker;
 import org.o3project.odenos.remoteobject.message.Request;
 import org.o3project.odenos.remoteobject.message.Response;
 import org.o3project.odenos.remoteobject.messagingclient.Config.MODE;
-import org.o3project.odenos.remoteobject.messagingclient.redis.MonitorClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -96,7 +95,7 @@ public class MessageDispatcher implements Closeable, IMessageListener {
   protected static final byte TYPE_RESPONSE = 1;
   protected static final byte TYPE_EVENT = 2;
 
-  protected static final byte[] MONITOR_CHANNEL = "_monitor".getBytes();
+  protected static final String MONITOR_CHANNEL = "_monitor";
   protected static final String REQUEST = "REQUEST";
   protected static final String RESPONSE = "RESPONSE";
   protected static final String EVENT = "EVENT";
@@ -129,6 +128,8 @@ public class MessageDispatcher implements Closeable, IMessageListener {
   // Loopback driver for events
   // Note: this driver is never used for request/response.
   protected final IPubSubDriver loopBackDriver;
+  
+  protected IPubSubDriver monitor = null;
 
   protected SubscribersMap subscribersMap = new SubscribersMap();
 
@@ -143,12 +144,10 @@ public class MessageDispatcher implements Closeable, IMessageListener {
   protected boolean includeSourceObjectId = false;
   protected boolean reflectMessageToMonitor = false;
 
-  // For message monitoring
-  protected MonitorClient monitor = null;
-
   protected static final String channelString(final String publisherId, final String eventId) {
     return publisherId + ":" + eventId;
   }
+  
 
   /**
    * Constructor with no arguments.
@@ -213,6 +212,17 @@ public class MessageDispatcher implements Closeable, IMessageListener {
       Constructor<?> constructor = clazz.getDeclaredConstructor(
           Config.class, IMessageListener.class);
       driverImpl = (IPubSubDriver) constructor.newInstance(config, this);
+      // Monitor client instantiation
+      if (reflectMessageToMonitor && clazz != ConfigBuilder.DEFAULT_PUBSUB_DRIVER_IMPL_CLASS) {
+        clazz = classLoader.loadClass(ConfigBuilder.DEFAULT_PUBSUB_DRIVER_IMPL_CLASS.getName());
+        constructor = clazz.getDeclaredConstructor(
+          Config.class, IMessageListener.class);
+        monitor = (IPubSubDriver) constructor.newInstance(config, null);
+      } else if (reflectMessageToMonitor) {
+        monitor = driverImpl;
+      } else {
+        // NOP
+      }
     } catch (Exception e) {
       log.error("class load error", e);
     }
@@ -220,12 +230,6 @@ public class MessageDispatcher implements Closeable, IMessageListener {
     // Remote Transactions pool
     remoteTransactions = new RemoteTransactions(this, config);
 
-    // Monitoring
-    if (reflectMessageToMonitor) {
-      String monitorName = "monitor@" + sourceDispatcherId;
-      monitor = new MonitorClient(config.getHost(), config.getPort()); // Keep-alive
-      monitor.setClientName(monitorName.getBytes());
-    }
   }
 
   /**
@@ -276,7 +280,7 @@ public class MessageDispatcher implements Closeable, IMessageListener {
             pk.write("/" + channel + "/" + request.path);
             pk.write(request.getBodyValue());
             byte[] data = pk.toByteArray();
-            monitor.publish(MONITOR_CHANNEL, data);
+            driverImpl.publish(MONITOR_CHANNEL, data);
           }
 
           // Wraps the request with Mail and deliver it to a mailbox.

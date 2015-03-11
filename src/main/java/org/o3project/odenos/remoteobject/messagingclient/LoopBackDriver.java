@@ -23,7 +23,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * {@link IPubSubDriver} implementation to be used as a loopback interface.
+ * {@link IPubSubDriver} implementation as a loopback interface for events.
  */
 public class LoopBackDriver implements IPubSubDriver {
 
