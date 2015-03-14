@@ -416,7 +416,7 @@ matches      | list[[OFPFlowMatch](#OFPFlowMatch)] | One or more of the match co
 idle_timeout | \<number>    | Units sec. Is regarded as 0 specified if it is omitted. | Optional  |  Optional  
 hard_timeout | \<number>    | Units sec. Is regarded as 0 specified if it is omitted. | Optional  |  Optional  
 path         | list[[Link](#Link).link_id ] | list of [Link](#Link) that [Flow](#Flow) goes through. there is a need for a connected acyclic graph. | Mandatory |  Mandatory
-edge_actions | dict<[Node](#Node).node_id, list[[BasicFlowAction](#BasicFlowAction)]> |Action of edge node.  | Mandatory |  Mandatory
+edge_actions | dict<[Node](#Node).node_id, list[[OFPFlowAction](#OFPFlowAction)]> |Action of edge node.  | Mandatory |  Mandatory
 
 
 ----
