@@ -252,6 +252,9 @@ public class Aggregator extends Logic {
       }
       orgNwIf = networkInterfaces().get(orgNetworkId.get(0));
       aggNwIf = networkInterfaces().get(networkId);
+    } else {
+      log.error("Unexpected network type: {}", type);
+      throw new IllegalArgumentException("Unexpected network type: " + type);
     }
     // Update conversionTable.
     conversionTable().addEntryNetwork(
@@ -604,7 +607,7 @@ public class Aggregator extends Logic {
       aggNetworkIf.putNode(aggNodeMsg);
     }
 
-    // changed node's oper_status. ("UP" -> "DOWN")  
+    // changed node's oper_status. ("UP" -> "DOWN")
     Map<String, String> updateAttr = new HashMap<>();
     updateAttr.put(Logic.AttrElements.OPER_STATUS, STATUS_DOWN);
     aggNetworkIf.putAttributeOfNode(updateAttr);
