@@ -112,7 +112,13 @@ module Odenos
                 fail 'Not an LLDP packet!'
               end
 
-              link = Link.new(dpid, packet_in)
+              begin
+                link = Link.new(dpid, packet_in)
+              rescue => e
+                lldp = Pio::Lldp.read(packet_in.data.pack('C*'))
+                warn ">>Can not be created link dpid:#{dpid} - lldp.lpid:#{lldp.dpid}"
+              end
+
               unless @links.include?(link)
                 @links << link
                 @links.sort!
