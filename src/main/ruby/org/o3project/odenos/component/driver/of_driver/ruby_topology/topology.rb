@@ -116,7 +116,7 @@ module Odenos
                 link = Link.new(dpid, packet_in)
               rescue => e
                 lldp = Pio::Lldp.read(packet_in.data.pack('C*'))
-                warn ">>Can not be created link dpid:#{dpid} lldp.lpid:#{lldp.dpid}"
+                warn ">>Can not be created link dpid:#{dpid} - lldp.lpid:#{lldp.dpid}"
               end
 
               unless @links.include?(link)
