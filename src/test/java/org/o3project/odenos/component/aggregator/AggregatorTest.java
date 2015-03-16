@@ -2350,8 +2350,6 @@ public class AggregatorTest {
 
     PowerMockito.verifyPrivate(dstFlow, times(1)).invoke("setEnabled",
         eq(true));
-    PowerMockito.verifyPrivate(dstFlow, times(1)).invoke("setStatus",
-        eq("status"));
     PowerMockito.verifyPrivate(dstFlow, times(1)).invoke("setPriority",
         eq("priority"));
   }
