@@ -990,7 +990,6 @@ public class Aggregator extends Logic {
     }
     // Aggregated Network ==> Aggregator
     dstFlow.setEnabled(srcFlow.getEnabled());
-    dstFlow.setStatus(srcFlow.getStatus());
     dstFlow.setPriority(srcFlow.getPriority());
     updateFlow(dstNetworkIf, srcNetworkIf, dstFlow, srcFlow);
 
