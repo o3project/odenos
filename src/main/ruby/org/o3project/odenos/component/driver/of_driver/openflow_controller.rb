@@ -1400,7 +1400,7 @@ module Odenos
             end
               # Whole Flow setup complete
               case flow.status
-              when Flow::ESTABLISHING
+              when Flow::ESTABLISHING, Flow::NONE
                 begin
                   flow = getFlow(flow.flow_id, _nw_if)
                   flow.status = Flow::ESTABLISHED
