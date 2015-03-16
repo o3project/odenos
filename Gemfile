@@ -1,7 +1,7 @@
 source 'http://rubygems.org'
 
 gem 'bindata', '~> 2.1.0'
-gem 'pio', '~> 0.8.1'
+gem 'pio', '~> 0.18.2'
 gem 'msgpack', '~> 0.5.9'
 gem 'redis',  '~> 3.1.0'
 gem 'concurrent-ruby', '~>0.7.0'
