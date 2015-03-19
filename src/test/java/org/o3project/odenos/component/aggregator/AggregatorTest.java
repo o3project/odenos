@@ -2771,31 +2771,6 @@ public class AggregatorTest {
    * @throws Exception
    */
   @Test
-  public final void testUpdateFlow() throws Exception {
-    NetworkInterface orgIf = new NetworkInterface(dispatcher,
-        ORIGINAL_NW_ID);
-    NetworkInterface aggIf = new NetworkInterface(dispatcher,
-        AGGREGATED_NW_ID);
-    BasicFlow orgFlow = new BasicFlow();
-    BasicFlow aggFlow = PowerMockito.spy(new BasicFlow());
-
-    List<String> path = new ArrayList<String>();
-    PowerMockito.doReturn(path).when(target, "createOriginalFlowPath",
-        anyString(), anyList());
-    PowerMockito.doReturn(true).when(target, "setMatch", anyList(),
-        anyString());
-
-    assertThat(target.updateFlow(orgIf, aggIf, orgFlow, aggFlow), is(true));
-
-  }
-
-  /**
-   * Test method for
-   * {@link org.o3project.odenos.component.aggregator.Aggregator#updateFlow(org.o3project.odenos.component.networkinterface, org.o3project.odenos.component.networkinterface, org.o3project.odenos.core.component.network.flow.basic.BasicFlow, org.o3project.odenos.core.component.network.flow.basic.BasicFlow)}
-   * .
-   * @throws Exception
-   */
-  @Test
   public final void testUpdateFlowWithFalse() throws Exception {
     NetworkInterface orgIf = null;
     NetworkInterface aggIf = null;
@@ -2868,7 +2843,7 @@ public class AggregatorTest {
 
   /**
    * Test method for
-   * {@literal org.o3project.odenos.component.aggregator.Aggregator#createOriginalFlowPath(java.lang.String, java.util.List<String>)}
+   * {@literal org.o3project.odenos.component.aggregator.Aggregator#createOriginalFlowPath(java.lang.String, java.util.List<String>, PathCalculator)}
    * .
    * @throws Exception
    */
@@ -2877,40 +2852,11 @@ public class AggregatorTest {
     String srcNode = "node01";
     List<String> dstNodes = new ArrayList<String>();
 
-    assertThat(Whitebox.invokeMethod(target, "createOriginalFlowPath",
-        srcNode, dstNodes), is(notNullValue()));
-
-  }
-
-  /**
-   * Test method for
-   * {@literal org.o3project.odenos.component.aggregator.Aggregator#createOriginalFlowPath(java.lang.String, java.util.List<String>)}
-   * .
-   * @throws Exception
-   */
-  @Test
-  public final void testCreateOriginalFlowPathSrtNodeNull() throws Exception {
-    String srcNode = null;
-    List<String> dstNodes = new ArrayList<String>();
+    PathCalculator mockCal = Mockito.mock(PathCalculator.class);
+    Whitebox.setInternalState(target, "pathCalculator", mockCal);
 
     assertThat(Whitebox.invokeMethod(target, "createOriginalFlowPath",
-        srcNode, dstNodes), is(nullValue()));
-
-  }
-
-  /**
-   * Test method for
-   * {@literal org.o3project.odenos.component.aggregator.Aggregator#createOriginalFlowPath(java.lang.String, java.util.List<String>)}
-   * .
-   * @throws Exception
-   */
-  @Test
-  public final void testCreateOriginalFlowPathDstNodesNull() throws Exception {
-    String srcNode = "node01";
-    List<String> dstNodes = null;
-
-    assertThat(Whitebox.invokeMethod(target, "createOriginalFlowPath",
-        srcNode, dstNodes), is(nullValue()));
+        srcNode, dstNodes, mockCal), is(notNullValue()));
 
   }
 

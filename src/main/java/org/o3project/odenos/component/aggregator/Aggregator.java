@@ -1131,7 +1131,8 @@ public class Aggregator extends Logic {
       List<String> dstPorts = getConvPortIdByActions(
           aggNetworkIf.getNetworkId(), aggFlow.getEdgeActions());
       // Create a Path & Set Match.
-      List<String> path = createOriginalFlowPath(srcPort, dstPorts);
+      List<String> path
+          = createOriginalFlowPath(srcPort, dstPorts, pathCalculator);
       if (path == null
           || !setMatch(orgFlow.getMatches(), srcPort)) {
         aggFlow.setStatus(FlowStatus.FAILED.toString());
@@ -1224,7 +1225,8 @@ public class Aggregator extends Logic {
 
   protected List<String> createOriginalFlowPath(
       final String srcNode,
-      final List<String> dstNodes) {
+      final List<String> dstNodes,
+      final PathCalculator calc) {
     log.debug("");
 
     List<String> path = new ArrayList<String>();
@@ -1243,7 +1245,7 @@ public class Aggregator extends Logic {
       if (srcNList[1].equals(dstNId)) {
         continue;
       }
-      List<String> plist = pathCalculator.createPath(srcNList[1], dstNId);
+      List<String> plist = calc.createPath(srcNList[1], dstNId);
       if (plist == null || plist.size() == 0) {
         return null;
       }
