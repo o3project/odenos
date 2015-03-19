@@ -252,7 +252,7 @@ module Odenos
                 end
               end
 
-              info format(' packet_in [%s]', message.inspect)
+              debug format(' packet_in [%s]', message.inspect)
 
               # convert match
               # OFPFlowMacth for OpenFlow1.3
@@ -339,7 +339,7 @@ module Odenos
             # TODO
             # currently, block ipv6 packet
             if message.ipv6?
-              info 'drop ipv6 packet'
+              debug 'drop ipv6 packet'
               return
             end
             if message.udp?
@@ -516,7 +516,7 @@ module Odenos
             debug ">> #{__method__}"
 
             begin
-              info "on_out_packet_added( #{out_packet.inspect} )"
+              debug "on_out_packet_added( #{out_packet.inspect} )"
               match = OFPFlowMatch.new(out_packet.header)
               message = Marshal.load(out_packet.data)
 
@@ -545,7 +545,7 @@ module Odenos
 
               dpid = get_dpid out_packet.node
               # Use ports
-              info ">> out_packet info: #{out_packet.inspect}"
+              debug ">> out_packet info: #{out_packet.inspect}"
               out_packet.ports.each do|portid|
                 actions << Trema::Actions::SendOutPort.new(
                 port_number: get_of_port_no(out_packet.node, portid))
