@@ -28,7 +28,9 @@ import org.o3project.odenos.core.component.network.flow.basic.FlowAction;
 import org.o3project.odenos.core.component.network.topology.Link;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
@@ -36,15 +38,28 @@ import java.util.Set;
  * Path calculator class.
  *
  */
-public class PathCalculator {
+public class PathCalculator implements Cloneable {
 
   private Graph<String, String> graph;
+  private HashMap<String, List<String>> links;
 
   /**
    * Constructor.
    */
   public PathCalculator() {
-    graph = new DirectedSparseMultigraph<String, String>();
+    graph = new DirectedSparseMultigraph<>();
+    links = new HashMap<>();
+  }
+
+  @Override
+  public PathCalculator clone() {
+    PathCalculator clonePath = new PathCalculator();
+
+    for (String key : this.links.keySet()) {
+      clonePath.graph.addEdge(
+          key , links.get(key).get(0), links.get(key).get(1), EdgeType.DIRECTED);
+    }
+    return clonePath;
   }
 
   /**
@@ -63,9 +78,10 @@ public class PathCalculator {
       return false;
     }
     // Directed graph
-    graph.addEdge(
-        link.getId(), link.getSrcNode(), link.getDstNode(),
-        EdgeType.DIRECTED);
+    graph.addEdge(link.getId(), link.getSrcNode(), link.getDstNode(), EdgeType.DIRECTED);
+
+    List<String> list = Arrays.asList(link.getSrcNode(), link.getDstNode());
+    links.put(link.getId(),list);
     return true;
   }
 
@@ -80,6 +96,7 @@ public class PathCalculator {
       return false;
     }
     graph.removeEdge(link.getId());
+    links.remove(link.getId());
     return true;
   }
 
@@ -94,6 +111,7 @@ public class PathCalculator {
       return false;
     }
     graph.removeEdge(linkId);
+    links.remove(linkId);
     return true;
   }
 
