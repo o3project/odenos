@@ -43,6 +43,7 @@ import java.util.concurrent.TimeUnit;
  * RemoteObject via {@link
  * org.o3project.odenos.remoteobject.messagingclient.MessageDispatcher}.
  *
+ * <pre>
  * {@literal
  *            RemoteObject                      MessageDispatcher
  *           +------------+                     +---------------------+
@@ -53,6 +54,7 @@ import java.util.concurrent.TimeUnit;
  *           |           <---- response ----------               <--------
  *           +------------+                     +---------------------+
  * }
+ * </pre>
  *
  * <p>
  * MessageDispatcher provides asynchronous and synchronous messaging
