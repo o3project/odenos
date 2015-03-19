@@ -134,6 +134,7 @@ public class PubSubDriverImpl implements IPubSubDriver, Closeable {
    *
    * @param config {@link org.o3project.odenos.remoteobject.messagingclient.Config}
    * @param listener {@link org.o3project.odenos.remoteobject.messagingclient.IMessageListener}
+   * or null in case of a monitoring-only client
    */
   public PubSubDriverImpl(Config config, IMessageListener listener) {
 
@@ -307,7 +308,7 @@ public class PubSubDriverImpl implements IPubSubDriver, Closeable {
       @Override
       public Void call() {
         boolean logOutput = false;
-        while(true) {
+        while (true) {
           try {
             Thread.sleep(1000); // Polling every 1sec
           } catch (InterruptedException e) {
@@ -343,16 +344,19 @@ public class PubSubDriverImpl implements IPubSubDriver, Closeable {
   }
 
   public void onMessage(String channel, byte[] message) {
-    listener.onMessage(channel, message);
+    if (listener != null) {  // checks if this is monitoring-only client or not.
+      listener.onMessage(channel, message);
+    }
   }
 
   public void onPmessage(String pattern, String channel, byte[] message) {
-    listener.onPmessage(pattern, channel, message);
+    if (listener != null) {  // checks if this is monitoring-only client or not.
+      listener.onPmessage(pattern, channel, message);
+    }
   }
 
-  // TODO: GC on unused data.
-  private Collection<Integer> acceptedOnReconnected = new HashSet<Integer>();
-  private Collection<Integer> acceptedOnDisconnected = new HashSet<Integer>();
+  private int acceptedOnReconnected = -1;
+  private int acceptedOnDisconnected = -1;
 
   /**
    * Called by {@link PublisherClient} and {@link SubscriberClient} to
@@ -362,14 +366,16 @@ public class PubSubDriverImpl implements IPubSubDriver, Closeable {
    * and {@link SubscriberClient}
    */
   public synchronized void onReconnected(int sessionId) {
-    if (log.isDebugEnabled()) {
-      log.debug("sessionId: {}, "
-          + "acceptedOnReconnected: {}", sessionId, acceptedOnReconnected);
-    }
     if (publisherClient.isConnected() && subscriberClient.isConnected()
-        && !acceptedOnReconnected.contains(sessionId)) {
-      acceptedOnReconnected.add(sessionId);
-      listener.onReconnected();
+        && acceptedOnReconnected < sessionId) {
+      if (log.isDebugEnabled()) {  // checks if this is monitoring-only client or not.
+        log.debug("sessionId: {}, "
+            + "acceptedOnReconnected: {}", sessionId, acceptedOnReconnected);
+      }
+      acceptedOnReconnected = sessionId;
+      if (listener != null) {  // checks if this is monitoring-only client or not.
+        listener.onReconnected();
+      }
       connected = true;
     }
   }
@@ -382,14 +388,16 @@ public class PubSubDriverImpl implements IPubSubDriver, Closeable {
    * and {@link SubscriberClient}
    */
   public synchronized void onDisconnected(int sessionId) {
-    if (log.isDebugEnabled()) {
-      log.debug("sessionId: {}, "
-          + "acceptedOnDisconnected: {}", sessionId, acceptedOnDisconnected);
-    }
-    if (connected && !acceptedOnDisconnected.contains(sessionId)) {
-      acceptedOnDisconnected.add(sessionId);
+    if (connected && acceptedOnDisconnected < sessionId) {
+      if (log.isDebugEnabled()) {
+        log.debug("sessionId: {}, "
+            + "acceptedOnDisconnected: {}", sessionId, acceptedOnDisconnected);
+      }
+      acceptedOnDisconnected = sessionId;
       close();
-      listener.onDisconnected();
+      if (listener != null) {  // checks if this is monitoring-only client or not.
+        listener.onDisconnected();
+      }
       redisServerAddress.next();
       start();
     }

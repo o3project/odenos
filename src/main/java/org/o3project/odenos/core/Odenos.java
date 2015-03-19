@@ -200,6 +200,7 @@ public final class Odenos {
       if (monitorEnabled) {
         mode = EnumSet.of(MODE.RESEND_SUBSCRIBE_ON_RECONNECTED,
                           MODE.INCLUDE_SOURCE_OBJECT_ID,
+                          //MODE.LOOPBACK_DISABLED,
                           MODE.REFLECT_MESSAGE_TO_MONITOR);
       } else {
         mode = EnumSet.of(MODE.RESEND_SUBSCRIBE_ON_RECONNECTED);
@@ -249,6 +250,7 @@ public final class Odenos {
     romgr.registerComponents(this.findComponents(dir));
     sysmgr.addComponentManager(romgr.getProperty());
     romgr.setState(ObjectProperty.State.RUNNING);
+    
   }
 
   private Set<Class<? extends RemoteObject>> findComponents(String rootOfPackages) {

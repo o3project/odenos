@@ -142,10 +142,6 @@ public class RedisClient implements Closeable {
   /**
    * Sends a Redis command
    *
-   * <p>
-   * This method first establishes a TCP connection to Redis server.
-   * The TCP connection can be kept alive by setting keepAlive true
-   * when instantiating this class (its default is true).
    * @param command Redis command
    * @param args command arguments
    */
@@ -161,7 +157,6 @@ public class RedisClient implements Closeable {
   /**
    * Sends a Redis command.
    *
-   * <p>
    * @param cmd Redis command
    */
   public void sendCommand(final Command cmd) {
