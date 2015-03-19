@@ -23,6 +23,7 @@ import org.apache.commons.cli.ParseException;
 import org.o3project.odenos.component.aggregator.Aggregator;
 import org.o3project.odenos.component.federator.Federator;
 import org.o3project.odenos.component.learningswitch.LearningSwitch;
+import org.o3project.odenos.component.learningswitch.LearningSwitchVlan;
 import org.o3project.odenos.component.linklayerizer.LinkLayerizer;
 import org.o3project.odenos.component.slicer.Slicer;
 import org.o3project.odenos.core.component.DummyDriver;
@@ -264,6 +265,7 @@ public final class Odenos {
     classes.add(Aggregator.class);
     classes.add(Federator.class);
     classes.add(LearningSwitch.class);
+    classes.add(LearningSwitchVlan.class);
     classes.add(LinkLayerizer.class);
     classes.add(Slicer.class);
     classes.add(Network.class);
