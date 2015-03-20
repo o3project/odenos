@@ -919,6 +919,7 @@ public class Federator extends Logic {
 
   /**
    * Register the boundary.
+   * @param boundaryId Registered boundary Id.
    * @param boundary Registered boundary.
    * @return posted Boundary
    */

@@ -350,6 +350,9 @@ public class FederatorOnFlow {
 
   /**
    * Check for updated other than status
+   * @param prev Flow
+   * @param curr Flow
+   * @param attr ArrayList String
    * @return  boolean true : updated other  false: updated status only
    */
   protected boolean checkUpdateFederator(

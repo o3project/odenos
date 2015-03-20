@@ -101,7 +101,7 @@ public class ConfigBuilder {
    * Master pubsub server host name or IP address.
    * 
    * @param host master pubsub server host name or IP address
-   * @return
+   * @return ConfigBuilder ConfigBuilder
    */
   public ConfigBuilder setHost(final String host) {
     this.host = host;
@@ -116,7 +116,7 @@ public class ConfigBuilder {
    * Master pubsub server port number.
    * 
    * @param port master pubsub server port number
-   * @return
+   * @return ConfigBuilder ConfigBuilder
    */
   public ConfigBuilder setPort(final int port) {
     this.port = port;
@@ -134,7 +134,7 @@ public class ConfigBuilder {
    * This parameter is optional.
    * 
    * @param hostB slave pubsub server host name or IP address
-   * @return
+   * @return ConfigBuilder ConfigBuilder
    */
   public ConfigBuilder setHostB(final String hostB) {
     this.hostB = hostB;
@@ -152,7 +152,7 @@ public class ConfigBuilder {
    * This parameter is optional.
    * 
    * @param portB slave pubsub server port number
-   * @return
+   * @return ConfigBuilder ConfigBuilder
    */
   public ConfigBuilder setPortB(final int portB) {
     this.portB = portB;
@@ -248,6 +248,8 @@ public class ConfigBuilder {
  
   /**
    * Returns an instance of immutable config. 
+   *
+   * @return Config ConfigImpl(this)
    */
   public Config build() {
     return new ConfigImpl(this);

@@ -130,6 +130,7 @@ public abstract class MessageBodyUnpacker implements MessagePackable {
   /**
    * Returns the value of specified class.
    * @param clazz a class.
+   * @param <T> Class
    * @return the value of specified class.
    * @throws ParseBodyException if failed to parse a body.
    */
@@ -152,6 +153,7 @@ public abstract class MessageBodyUnpacker implements MessagePackable {
   /**
    * Returns the value of specified class.
    * @param clazz a class.
+   * @param <T> class.
    * @return the value of specified class.
    */
   public <T> T getBody2(Class<T> clazz) {
@@ -183,6 +185,7 @@ public abstract class MessageBodyUnpacker implements MessagePackable {
   /**
    * Returns the map of specified class.
    * @param clazz a class.
+   * @param <T> a class.
    * @return the map of specified class.
    */
   @SuppressWarnings("unchecked")
@@ -208,6 +211,7 @@ public abstract class MessageBodyUnpacker implements MessagePackable {
   /**
    * Returns the list of specified class.
    * @param clazz a class.
+   * @param <T> a class.
    * @return the list of specified class.
    */
   @SuppressWarnings("unchecked")

@@ -732,7 +732,8 @@ public class MessageDispatcher implements Closeable, IMessageListener {
    * This is mainly to avoid {@link java.util.ConcurrentModificationException}.
    *
    * @param object original data.
-   * @return copy data.
+   * @param <T> extends MessageBodyUnpacker
+   * @return T copy data.
    * @throws IOException exception.
    */
   @SuppressWarnings("unchecked")
@@ -745,6 +746,8 @@ public class MessageDispatcher implements Closeable, IMessageListener {
   /**
    * Asynchronous event publication service
    *
+   * @param event Event
+   * @throws IOException for java.io.IOException
    * <p>
    * Remote objects use this method to publish an event
    * asynchronously.
@@ -776,6 +779,11 @@ public class MessageDispatcher implements Closeable, IMessageListener {
 
   /**
    * Asynchronous event publication service for requestSync().
+   *
+   * @param sno sec no
+   * @param request Request
+   * @param sourceObjectId String
+   * @throws IOException for java.io.IOException
    *
    * <p>
    * requestSync() turns into this method via RemoteMessageTransport.
@@ -810,6 +818,11 @@ public class MessageDispatcher implements Closeable, IMessageListener {
   /**
    * Asynchronous event publication service for requestSync().
    *
+   * @param sno     Sec no.
+   * @param channel Channel
+   * @param request Request
+   * @param response Response
+   * @throws IOException for java.io.IOException
    * <p>
    * The response eventually reaches its originating method (requestSync()) via
    * RemoteMessageTransport.
@@ -833,6 +846,7 @@ public class MessageDispatcher implements Closeable, IMessageListener {
    * Event subscription service.
    *
    * @param eventSubscription pubsub channel to be subscribed
+   * @return Response 
    */
   public Response subscribeEvent(final EventSubscription eventSubscription) {
     subscribeChannelsWithDiff(eventSubscription);

@@ -153,7 +153,7 @@ public class SubscribersMap {
   /**
    * Returns a set of channels NOT starting with the publisherIds.
    * 
-   * @param publisherId publisherId 
+   * @param publisherIds publisherIds
    * @return a set of channels
    */
   protected Set<String> filterUnmatchedChannels(Collection<String> publisherIds) {
