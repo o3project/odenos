@@ -327,6 +327,8 @@ public class RedisClient implements Closeable {
 
   /**
    * Issues "SCRIPT exists" command to Redis server.
+   *
+   * @param sha1hash sha1hash
    */
   public void scriptExists(final byte[] sha1hash) {
     sendCommand(SCRIPT, EXISTS, sha1hash);
@@ -334,6 +336,8 @@ public class RedisClient implements Closeable {
 
   /**
    * Issues "SCRIPT load" command to Redis server.
+   *
+   * @param script script
    */
   public void scriptLoad(final byte[] script) {
     sendCommand(SCRIPT, LOAD, script);
@@ -341,6 +345,8 @@ public class RedisClient implements Closeable {
 
   /**
    * Issues "EVALSHA" command to Redis server.
+   *
+   * @param argv argv
    */
   public void evalsha(final byte[]... argv) {
     sendCommand(EVALSHA, argv);
@@ -401,7 +407,9 @@ public class RedisClient implements Closeable {
   /**
    * Reads a reply as a response to "PUBSUB numsub channel".
    *
+   * @param channel String
    * @return raw object list
+   * @throws ProtocolException channel mismatch
    */
   public long readPubsubNumsubReply(String channel)
       throws ProtocolException {

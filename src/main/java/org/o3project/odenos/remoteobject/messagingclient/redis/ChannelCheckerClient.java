@@ -43,6 +43,7 @@ public class ChannelCheckerClient extends RedisClient {
   /**
    * Constructor.
    * 
+   * @param redisServerAddress redisServerAddress
    */
   protected ChannelCheckerClient(RedisServerAddress redisServerAddress) {
     super(false);  // TCP keep-alive is not set.

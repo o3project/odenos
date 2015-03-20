@@ -167,6 +167,7 @@ public class RemoteObject {
    *
    * @param objectId
    *            ID of the unregistering RemoteObject
+   * @throws IOException for java.io.IOException
    */
   protected final void removeRemoteObject(final String objectId)
       throws IOException {
