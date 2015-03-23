@@ -101,8 +101,7 @@ public class Federator extends Logic {
     super(objectId, dispatcher);
     parser = createParser();
     federatorBoundaryTable = new FederatorBoundaryTable();
-    federatorOnFlow = new FederatorOnFlow(
-        conversionTable(), networkInterfaces(), federatorBoundaryTable);
+    federatorOnFlow = new FederatorOnFlow(conversionTable(), networkInterfaces()) ;
   }
 
   /**
@@ -694,7 +693,7 @@ public class Federator extends Logic {
       logger.info("Drop Packet.");
       return false;
     }
-
+    
     return true;
   }
 
@@ -808,13 +807,11 @@ public class Federator extends Logic {
       onFlowUpdateOriginal(networkId, prev, curr);
     }
     if (connType.equals(FEDERATED_NETWORK)) {
-      onFlowUpdateFederate(networkId, prev, curr);
+      conversion(networkId, prev, curr, attributesList);
     }
-
   }
 
   protected void onFlowUpdateOriginal(String networkId, Flow prev, Flow curr) {
-    logger.debug("");
     try {
       verifyFlow(curr);
     } catch (FederatorException ex) {
@@ -841,24 +838,6 @@ public class Federator extends Logic {
     federatorOnFlow.flowUpdateFromOriginal(networkId, (BasicFlow)curr);
   }
 
-  protected void onFlowUpdateFederate(String networkId, Flow prev, Flow curr) {
-    logger.debug("");
-    try {
-      verifyFlow(curr);
-      BasicFlow basicFlow = (BasicFlow) curr;
-      int length = basicFlow.getPath().size();
-      if (length == 0) {
-        federatorOnFlow.flowUpdateNotExistPath(networkId, basicFlow);
-      } else {
-        federatorOnFlow.flowUpdateExistPath(networkId, basicFlow);
-      }
-
-    } catch (FederatorException ex) {
-      logger.warn("validate fail: " + ex.getMessage(), ex);
-      return;
-    }
-  }
-
   protected void verifyFlow(Flow flow) throws FederatorException {
     logger.debug("");
 
@@ -875,6 +854,7 @@ public class Federator extends Logic {
       throw new FederatorException("path is null");
     }
   }
+
 
   /**
    *
@@ -919,7 +899,6 @@ public class Federator extends Logic {
 
   /**
    * Register the boundary.
-   * @param boundaryId Registered boundary Id.
    * @param boundary Registered boundary.
    * @return posted Boundary
    */
