@@ -30,7 +30,7 @@ Python or Ruby environment, please see "Appendix A".
 
    ```
    $ sudo apt-get install maven openjdk-7-jdk
-   $ export JAVA_HOME=/usr/lib/jvm/default-java
+   $ export JAVA_HOME=/usr/lib/jvm/java-7-openjdk-amd64
    ```
 
 ## 2. Build, Run, Test
