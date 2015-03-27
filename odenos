@@ -37,7 +37,7 @@ ODENOS_TMP=/tmp
 REST_PORT=10080
 REST_ROOT=.
 
-ODENOS_OPT="-Xms2048m -Xmx2048m -server"
+ODENOS_OPT="-Xms512m -Xmx512m -server"
 ODENOS_MAIN=org.o3project.odenos.core.Odenos
 FILE_ODENOS_SYSTEM_PID=$ODENOS_TMP/odenos_system.pid
 
