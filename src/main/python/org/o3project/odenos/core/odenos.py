@@ -39,6 +39,8 @@ class Parser(object):
         parser = OptionParser()
         parser.add_option("-r", dest="rid", help="ComponentManager ID")
         parser.add_option("-d", dest="dir", help="Directory of Components")
+        parser.add_option("-i", dest="ip", help="Pubsub server host name or ip address", default="localhost")
+        parser.add_option("-p", dest="port", help="Pubsub server port number", type=int, default=6379)
         (options, args) = parser.parse_args()
         return options
 
@@ -69,7 +71,7 @@ if __name__ == '__main__':
     options = Parser().parse()
     logging.info("python ComponentManager options: %s", options)
 
-    dispatcher = MessageDispatcher()
+    dispatcher = MessageDispatcher(redis_server=options.ip, redis_port=options.port)
     dispatcher.start()
 
     component_manager = ComponentManager(options.rid, dispatcher)
