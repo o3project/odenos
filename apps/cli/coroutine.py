@@ -115,7 +115,6 @@ def cr_rest_request(args, rest, status_all=None, cr_next=None):
     pipe_in: REST request (req_data)
     pipe_out: response, res_body, out 
     """
-    send_request = rest.send_request
     verbose = args.verbose
     print_json = args.json
 
@@ -125,7 +124,7 @@ def cr_rest_request(args, rest, status_all=None, cr_next=None):
         rest_args = get_crud(pipe_in)
         loop = True 
         while loop: 
-            response, res_body, out = send_request(*rest_args, verbose=verbose, print_json=print_json)
+            response, res_body, out = rest(*rest_args, verbose=verbose, print_json=print_json)
             if response['status'] != '403':  # 403 Forbidden
                 loop = False
             else:
