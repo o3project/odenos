@@ -37,7 +37,7 @@ ODENOS_TMP=/tmp
 REST_PORT=10080
 REST_ROOT=.
 
-ODENOS_OPT="-Xms512m -Xmx512m -server"
+ODENOS_OPT="-Xms2048m -Xmx2048m -server"
 ODENOS_MAIN=org.o3project.odenos.core.Odenos
 FILE_ODENOS_SYSTEM_PID=$ODENOS_TMP/odenos_system.pid
 
@@ -183,7 +183,7 @@ start_process() {
 		LOGGING_CONF=${ODENOS_CONF}/log_python.conf \
 		APP_LOG=${ODENOS_LOG}/odenos_${PROC_NAME}.log \
 		$PYTHON ${ODENOS_LIB}/python/org/o3project/odenos/core/odenos.py \
-		-r ${PROC_NAME} -d ${PROC_DIR} &
+		-r ${PROC_NAME} -d ${PROC_DIR} -i $HOST -p $PORT &
 
 	    echo $! > $ODENOS_TMP/odenos_${PROC_NAME}.pid
 
