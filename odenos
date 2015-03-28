@@ -183,7 +183,7 @@ start_process() {
 		LOGGING_CONF=${ODENOS_CONF}/log_python.conf \
 		APP_LOG=${ODENOS_LOG}/odenos_${PROC_NAME}.log \
 		$PYTHON ${ODENOS_LIB}/python/org/o3project/odenos/core/odenos.py \
-		-r ${PROC_NAME} -d ${PROC_DIR} &
+		-r ${PROC_NAME} -d ${PROC_DIR} -i $HOST -p $PORT &
 
 	    echo $! > $ODENOS_TMP/odenos_${PROC_NAME}.pid
 

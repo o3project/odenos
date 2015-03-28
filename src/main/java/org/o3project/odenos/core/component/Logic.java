@@ -1171,8 +1171,12 @@ public abstract class Logic extends Component {
       body.getHeader().setInPort(list[2]);
 
       NetworkInterface networkIfpost = networkInterfaces().get(list[0]);
-      respList.put(networkIfpost.getNetworkId(),
-          networkIfpost.postInPacket(body));
+      Port convPort = networkIfpost.getPort(nlist[1], plist[2]);
+      if ((convPort.getInLink() == null )
+          && (convPort.getInLink() == null)) {
+        respList.put(networkIfpost.getNetworkId(),
+            networkIfpost.postInPacket(body));
+      }
     } catch (Exception e) {
       log.error("Recieved Message Exception.", e);
     }
@@ -1676,8 +1680,10 @@ public abstract class Logic extends Component {
       srcFlow.setEnabled(true);
       srcFlow.setStatus(FlowObject.FlowStatus.TEARDOWN.toString());
       networkIf.putFlow(srcFlow);
-
-      srcFlow = networkIf.getFlow(flow.getFlowId());
+    }
+    
+    srcFlow = networkIf.getFlow(flow.getFlowId());
+    if (srcFlow != null) {
       srcFlow.setEnabled(true);
       srcFlow.setStatus(FlowObject.FlowStatus.NONE.toString());
       networkIf.putFlow(srcFlow);

@@ -137,10 +137,12 @@ class DummyDriver(Driver):
         if target_flow.status == Flow.Status.NONE and\
            target_flow.enabled:
             target_flow.status = Flow.Status.ESTABLISHING
+            network_if.put_flow(target_flow)
 
             # Driver needs to set Flow to physical switch here.
             # Setting of Flow After completing the physical switch,
             # to "Established".
+            target_flow = network_if.get_flow(flow.flow_id)
             target_flow.status = Flow.Status.ESTABLISHED
             network_if.put_flow(target_flow)
 
@@ -169,6 +171,7 @@ class DummyDriver(Driver):
             # Driver needs to set Flow to physical switch here.
             # Setting of Flow After completing the physical switch,
             # to "None".
+            target_flow = network_if.get_flow(flow.flow_id)
             target_flow.status = Flow.Status.NONE
             network_if.put_flow(target_flow)
 

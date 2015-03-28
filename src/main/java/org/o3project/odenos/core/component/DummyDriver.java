@@ -185,11 +185,13 @@ public class DummyDriver extends Driver {
         .equals(FlowObject.FlowStatus.NONE.toString())
         && targetFlow.getEnabled()) {
       targetFlow.setStatus(FlowObject.FlowStatus.ESTABLISHING.toString());
+      networkIf.putFlow(targetFlow);
 
       // Driver needs to set Flow to physical switch here.
       // Setting of Flow After completing the physical switch,
       // to "Established".
 
+      targetFlow = getFlow(networkIf, flow.getFlowId());
       targetFlow.setStatus(FlowObject.FlowStatus.ESTABLISHED.toString());
       networkIf.putFlow(targetFlow);
     }
@@ -226,6 +228,7 @@ public class DummyDriver extends Driver {
       // Deleting of Flow After completing the physical switch,
       // to "None".
 
+      targetFlow = getFlow(networkIf, flow.getFlowId());
       targetFlow.setStatus(FlowObject.FlowStatus.NONE.toString());
       networkIf.putFlow(targetFlow);
     }

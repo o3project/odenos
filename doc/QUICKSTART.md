@@ -30,7 +30,7 @@ Python or Ruby environment, please see "Appendix A".
 
    ```
    $ sudo apt-get install maven openjdk-7-jdk
-   $ export JAVA_HOME=/usr/lib/jvm/default-java
+   $ export JAVA_HOME=/usr/lib/jvm/java-7-openjdk-amd64
    ```
 
 ## 2. Build, Run, Test
@@ -100,8 +100,8 @@ Python or Ruby environment, please see "Appendix A".
    $ sudo apt-get --purge remove ruby rubygems
    $ curl -L https://get.rvm.io | bash -s stable --ruby
    $ source ~/.rvm/scripts/rvm
-   $ rvm install ruby-2.0.0-p576
-   $ rvm use --default ruby-2.0.0-p576
+   $ rvm install ruby-2.0.0-p643
+   $ rvm use --default ruby-2.0.0-p643
    $ gem install bundler
    $ bundle install
    $ bundle update

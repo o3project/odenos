@@ -29,7 +29,7 @@ from difflib import unified_diff
 import subprocess
 
 from util import substitute, dict2yaml 
-from rest import Rest
+from rest import build_send_request_function
 from coroutine import do_pipeline
 from env import *
 
@@ -389,7 +389,7 @@ def cli(args, rest, tag=None):
                     ope, path = parse_cli(cmd)
                     if ope in METHODS:
                         method = 'GET'
-                        response, res_body, out = rest.send_request(method, path, params, body, verbose=args.verbose, print_json=args.json)
+                        response, res_body, out = rest(method, path, params, body, verbose=args.verbose, print_json=args.json)
                         getbuf = StringIO()
                         getbuf.write(dict2yaml(res_body))
                         getbuf.seek(0)
@@ -463,7 +463,7 @@ def update_schema(args, rest, original_schema, bootstrap):
     Updates schema
     """
     schema = copy.deepcopy(original_schema)
-    response, res_body, out = rest.send_request(method='GET', path=bootstrap, params=None, body=None)
+    response, res_body, out = rest(method='GET', path=bootstrap, params=None, body=None)
     print('updating schema...')
     print('status: {}'.format(response.status))
     print('reason: {}'.format(response.reason))
@@ -609,7 +609,7 @@ def do(args, rest, scenario, scenario_name=None):
                                 body_checked[1] += 1
                     else:
                         rest_args = get_crud(req_data)
-                        response, res_body, out = rest.send_request(*rest_args, verbose=args.verbose, print_json=args.json)
+                        response, res_body, out = rest(*rest_args, verbose=args.verbose, print_json=args.json)
                         if not args.quiet:
                             print(out, end='')
                         try:
@@ -718,9 +718,9 @@ def generate_scenario(filename, mako, clistyle):
 
 def create_rest():
     if 'headers' in init:
-        return Rest(URL, init['headers'])
+        return build_send_request_function(URL, init['headers'])
     else:
-        return Rest(URL)
+        return build_send_request_function(URL)
 
 if __name__ == '__main__':
 
