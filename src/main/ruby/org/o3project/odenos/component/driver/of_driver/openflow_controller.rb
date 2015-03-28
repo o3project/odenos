@@ -53,7 +53,6 @@ module Odenos
           IPPROTO_TCP = 6
           IPPROTO_UDP = 17
 
-          PORT_ATTR_KEY_LINK_STATUS = 'link_status'
           PORT_ATTR_KEY_HW_ADDR = 'hw_addr'
 
           public
@@ -1736,7 +1735,6 @@ module Odenos
             node.attributes[Node::ATTR_KEY_ADMIN_STATUS] = 'UP'
             node.attributes[Node::ATTR_KEY_OPER_STATUS] = 'UP'
             node.attributes[Node::ATTR_KEY_PHYSICAL_ID] = '%#x' % dpid
-            #node.attributes[Node::ATTR_KEY_VENDOR_ID] = ATTR_OFD_VENDORID
             node.attributes[Node::ATTR_KEY_VENDOR_ID] = @vendor_id
           end
 
@@ -1755,11 +1753,6 @@ module Odenos
             else
               port.attributes[Port::ATTR_KEY_ADMIN_STATUS] = 'DOWN'
             end
-            if _is_link_up(of_port)
-              port.attributes[PORT_ATTR_KEY_LINK_STATUS] = 'UP'
-            else
-              port.attributes[PORT_ATTR_KEY_LINK_STATUS] = 'DOWN'
-            end
             if _is_port_up(of_port) && _is_link_up(of_port)
               port.attributes[Port::ATTR_KEY_OPER_STATUS] = 'UP'
             else
@@ -1767,7 +1760,6 @@ module Odenos
             end
 
             port.attributes[Port::ATTR_KEY_PHYSICAL_ID] = '%d@%#x' % [of_port.port_no, dpid]
-            #port.attributes[Port::ATTR_KEY_VENDOR_ID] = ATTR_OFD_VENDORID
             port.attributes[Port::ATTR_KEY_VENDOR_ID] = @vendor_id
 
             port.attributes[PORT_ATTR_KEY_HW_ADDR] = of_port.hw_addr.to_s
