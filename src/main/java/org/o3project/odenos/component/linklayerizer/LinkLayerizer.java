@@ -1175,6 +1175,11 @@ public class LinkLayerizer extends Logic {
       return false;
     }
 
+    if (isLowerNetwork(networkId)) {
+      linkLayerizerOnFlow.flowAddedLowerNw(networkId, basicFlow);
+      return false;
+    }
+
     if (isLayerizedNetwork(networkId)) {
       if (basicFlow.getPath() != null
           && basicFlow.getPath().size() > 0) {
@@ -1183,10 +1188,7 @@ public class LinkLayerizer extends Logic {
       } else {
         return true;
       }
-    } else if (isLowerNetwork(networkId)) {
-      linkLayerizerOnFlow.flowAddedLowerNw(networkId, basicFlow);
     }
-
     return false;
   }
 
@@ -1204,8 +1206,7 @@ public class LinkLayerizer extends Logic {
     }
 
     if (isLowerNetwork(networkId)) {
-      linkLayerizerOnFlow.flowUpdateLowerNw(
-          networkId, basicFlow, attributesList);
+      linkLayerizerOnFlow.flowUpdateLowerNw(networkId, basicFlow, attributesList);
       return false;
     }
 
@@ -1234,17 +1235,17 @@ public class LinkLayerizer extends Logic {
     }
     BasicFlow basicFlow = (BasicFlow) flow;
 
+    if (isLowerNetwork(networkId)) {
+      linkLayerizerOnFlow.flowDeleteLowerNw(networkId, basicFlow);
+      return false;
+    }
+
     if (isLayerizedNetwork(networkId)) {
       if (!upperLinkSync) {
         
       }
       return true;
     }
-
-    if (isLowerNetwork(networkId)) {
-      linkLayerizerOnFlow.flowDeleteLowerNw(networkId, basicFlow);
-    }
-
     return false;
   }
 
