@@ -250,9 +250,9 @@ class DummyDriverTest(unittest.TestCase):
 
                 self.target._on_flow_added("NetworkId", flow_body2)
 
-                self.assertEqual(m_get_flow.call_count, 1)
+                self.assertEqual(m_get_flow.call_count, 2)
                 m_get_flow.assert_any_call("FlowId1")
-                self.assertEqual(m_put_flow.call_count, 1)
+                self.assertEqual(m_put_flow.call_count, 2)
                 m_put_flow.assert_any_call(flow_body1)
                 self.assertEqual(flow_body1.status, "established")
 
@@ -418,7 +418,7 @@ class DummyDriverTest(unittest.TestCase):
 
                 self.target._on_flow_delete("NetworkId", flow_body2)
 
-                self.assertEqual(m_get_flow.call_count, 1)
+                self.assertEqual(m_get_flow.call_count, 2)
                 m_get_flow.assert_any_call("FlowId1")
                 self.assertEqual(m_put_flow.call_count, 2)
                 m_put_flow.assert_any_call(flow_body1)
