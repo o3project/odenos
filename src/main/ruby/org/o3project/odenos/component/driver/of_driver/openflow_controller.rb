@@ -580,16 +580,7 @@ module Odenos
                 return
               end
 
-              # registered flowentries with new list
-              new_flowentries = flow_to_flowentries(flow)
-
-              debug '>> register_flow_entries'
-              register_flow_entries(flow.flow_id, new_flowentries)
-
-              unless new_flowentries.empty?
-                setup_flowentries(flow, new_flowentries)
-              end
-
+              # flow status NONE -> ESTABLISHING
               begin
                 flow = getFlow(flow.flow_id, _nw_if)
                 flow.status = Flow::ESTABLISHING
@@ -600,6 +591,16 @@ module Odenos
                 end
               rescue RequestError => e
                 error "PUT Flow failed: #{e.backtrace}"
+              end
+
+              # registered flowentries with new list
+              new_flowentries = flow_to_flowentries(flow)
+
+              debug '>> register_flow_entries'
+              register_flow_entries(flow.flow_id, new_flowentries)
+
+              unless new_flowentries.empty?
+                setup_flowentries(flow, new_flowentries)
               end
 
             rescue => ex
