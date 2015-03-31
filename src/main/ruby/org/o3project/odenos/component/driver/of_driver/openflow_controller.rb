@@ -582,12 +582,12 @@ module Odenos
 
               # flow status NONE -> ESTABLISHING
               begin
-                flow = getFlow(flow.flow_id, _nw_if)
-                flow.status = Flow::ESTABLISHING
+                _flow = getFlow(flow.flow_id, _nw_if)
+                _flow.status = Flow::ESTABLISHING
                 # PUT flow (update)
-                updated_flow = putFlow(flow, _nw_if)
+                updated_flow = putFlow(_flow, _nw_if)
                 unless updated_flow.nil?
-                  flow.version = updated_flow.version
+                  _flow.version = updated_flow.version
                 end
               rescue RequestError => e
                 error "PUT Flow failed: #{e.backtrace}"
