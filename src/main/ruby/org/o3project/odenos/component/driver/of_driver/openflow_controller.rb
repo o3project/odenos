@@ -2023,14 +2023,14 @@ module Odenos
                     unless match.ipv4_src_mask.nil?
                       val = format('%s/%s', match.ipv4_src, match.ipv4_src_mask)
                     end
-                    fields.push(Trema::Actions::Ipv4SrcAddr.new(IPAddr.new(val)))
+                    fields.push(Trema::Actions::Ipv4SrcAddr.new(ip_addr: IPAddr.new(val)))
                   end
                   unless match.ipv4_dst.nil?
                     val = match.ipv4_dst
                     unless match.ipv4_dst_mask.nil?
                       val = format('%s/%s', match.ipv4_dst, match.ipv4_dst_mask)
                     end
-                    fields.push(Trema::Actions::Ipv4DstAddr.new(IPAddr.new(val)))
+                    fields.push(Trema::Actions::Ipv4DstAddr.new(ip_addr: IPAddr.new(val)))
                   end
                   unless match.tcp_src.nil?
                     val = match.tcp_src.to_i
