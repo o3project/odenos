@@ -97,6 +97,7 @@ Python or Ruby environment, please see "Appendix A".
 1. Install rvm, ruby2.0.0 and gem package
 
    ```
+   $ cd ./odenos
    $ sudo apt-get --purge remove ruby rubygems
    $ curl -L https://get.rvm.io | bash -s stable --ruby
    $ source ~/.rvm/scripts/rvm
