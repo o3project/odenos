@@ -384,7 +384,7 @@ latency      | \<Number>  | Unit is msec.     | any    | Lower  ->  Upper
 type         | \<String>   | type is "BasicFlow"       | Mandatory |  Mandatory
 matches      | list[[BasicFlowMatch](#BasicFlowMatch)] | One or more of the match conditions | Mandatory |  Mandatory
 path         | list[[Link](#Link).link_id ]            | list of [Link](#Link) that [Flow](#Flow) goes through. there is a need for a connected acyclic graph. | Mandatory |  Mandatory
-edge_actions | dict<[Node](#Node).node_id, list[[BasicFlowAction](#BasicFlowAction)]> |Action of edge node.  | Mandatory |  Mandatory
+edge_actions | dict<[Node](#Node).node_id, list[[FlowAction](#FlowAction)]> |Action of edge node.  | Mandatory |  Mandatory
 
 ##### example(JSON)
 
