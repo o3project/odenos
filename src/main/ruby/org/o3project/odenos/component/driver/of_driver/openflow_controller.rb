@@ -1934,12 +1934,13 @@ module Odenos
             debug ">> #{__method__}"
 
             actions = []
+            outport = nil
             edge_actions.each do |od_action|
               # FlowAction for OpenFlow1.3
               case od_action.action_type
               when 'FlowActionOutput'
                 of_port_no = get_of_port_no(nodeid, od_action.output)
-                actions << Trema::Actions::SendOutPort.new(port_number: of_port_no)
+                outport = Trema::Actions::SendOutPort.new(port_number: of_port_no)
               when 'OFPFlowActionCopyTtlIn'
                 actions.push(Trema::Actions::CopyTtlIn.new)
               when 'OFPFlowActionCopyTtlOut'
@@ -2179,6 +2180,9 @@ module Odenos
               end
             end
 
+            unless outport.nil?
+              actions.push(outport)
+            end
             actions
           end
 
