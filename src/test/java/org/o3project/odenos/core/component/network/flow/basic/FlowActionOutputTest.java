@@ -129,7 +129,7 @@ public class FlowActionOutputTest {
   public final void testValidateFalse() {
     target = new FlowActionOutput();
 
-    assertThat(target.validate(), is(false));
+    assertThat(target.validate(), is(true));
   }
 
   /**
@@ -141,7 +141,7 @@ public class FlowActionOutputTest {
   public final void testValidateFalseNull() {
     target = new FlowActionOutput(null);
 
-    assertThat(target.validate(), is(false));
+    assertThat(target.validate(), is(true));
   }
 
   /**
@@ -154,7 +154,7 @@ public class FlowActionOutputTest {
     output = "";
     target = new FlowActionOutput(output);
 
-    assertThat(target.validate(), is(false));
+    assertThat(target.validate(), is(true));
   }
 
   /**
