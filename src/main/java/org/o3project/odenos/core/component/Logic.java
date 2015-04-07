@@ -1816,7 +1816,11 @@ public abstract class Logic extends Component {
             ArrayList<String> convPortId = conversionTable.getPort(
                 networkId, nodeId, outputAct.getOutput());
             if (convPortId.size() == 0) {
-              log.error("not found conversion port (flow.action's output).");
+              log.warn("not found conversion port (flow.action Drop).");
+              if (!convEdgeActions.containsKey(edgeNodeId)) {
+                convEdgeActions.put(edgeNodeId, new ArrayList<FlowAction>());
+              }
+              convEdgeActions.get(edgeNodeId).add(new FlowActionOutput(""));
               continue;
             }
             String[] plist = convPortId.get(0).split("::");

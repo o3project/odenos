@@ -1512,17 +1512,29 @@ module Odenos
               @transactions.add_transaction txid, txinfo
 
               info ">> send_flow_mod_add. #{flowentry.inspect}"
-              inst = Instructions::ApplyAction.new(actions: flowentry.actions)
-
-              send_flow_mod_add(flowentry.dpid,
-                                match: flowentry.match,
-                                idle_timeout: idle_timeout,
-                                hard_timeout: hard_timeout,
-                                priority: priority,
-                                transaction_id: txid,
-                                buffer_id: OFP_NO_BUFFER,
-                                flags: OFPFF_SEND_FLOW_REM,
-                                instructions: [inst])
+              if flowentry.actions.nil?
+                # Drop
+                send_flow_mod_add(flowentry.dpid,
+                                  match: flowentry.match,
+                                  idle_timeout: idle_timeout,
+                                  hard_timeout: hard_timeout,
+                                  priority: priority,
+                                  transaction_id: txid,
+                                  buffer_id: OFP_NO_BUFFER,
+                                  flags: OFPFF_SEND_FLOW_REM,
+                                  instructions: nil)
+              else
+                inst = Instructions::ApplyAction.new(actions: flowentry.actions)
+                send_flow_mod_add(flowentry.dpid,
+                                  match: flowentry.match,
+                                  idle_timeout: idle_timeout,
+                                  hard_timeout: hard_timeout,
+                                  priority: priority,
+                                  transaction_id: txid,
+                                  buffer_id: OFP_NO_BUFFER,
+                                  flags: OFPFF_SEND_FLOW_REM,
+                                  instructions: [inst])
+              end
 
               # send barrier request with txid to be notified for success
               send_message(flowentry.dpid, BarrierRequest.new(txid))
@@ -2180,7 +2192,9 @@ module Odenos
               end
             end
 
-            unless outport.nil?
+            if outport.nil?
+              actions = nil
+            else
               actions.push(outport)
             end
             actions
