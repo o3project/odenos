@@ -1107,6 +1107,10 @@ public abstract class Logic extends Component {
 
         Response resp = networkIf.putFlow(convFlow);
         respList.put(nwcId, resp);
+
+        // Update conversionTable (add flowId).
+        conversionTable.addEntryFlow(
+          networkId, flow.getFlowId(), nwcId, convFlow.getFlowId());
       } else {
         log.warn("There is no inheritance relationship with 'BasicFlow'.");
       }
