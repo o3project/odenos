@@ -79,7 +79,7 @@ Python or Ruby environment, please see "Appendix A".
 1. Install python packages
 
    ```
-   $ sudo apt-get install python-setuptools
+   $ sudo apt-get install python-setuptools python-dev
    $ sudo -E easy_install msgpack-python redis futures mock coverage
    ```
 
