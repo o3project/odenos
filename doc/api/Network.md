@@ -472,7 +472,7 @@ Delete the link. (specify the id that you want to delete)
 
 ##### [Response]\(Conflict):
   * **Status Code** : 409
-  * **Body** : [Port](./DataClass.md#Port) or none
+  * **Body** : [Link](./DataClass.md#Link) or none
   * **Note** : failure(Version mismatch)
 
 ---- 
