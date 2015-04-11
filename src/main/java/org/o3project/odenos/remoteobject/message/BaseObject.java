@@ -79,6 +79,16 @@ public abstract class BaseObject extends MessageBodyUnpacker {
   }
 
   /**
+   * is attribute form key
+   *
+   * @param key Name of attribute.
+   * @return boolean
+   */
+  public boolean isAttribute(String key) {
+    return attributes.containsKey(key);
+  }
+
+  /**
    * Set attribute value.
    *
    * @param key Name of attribute.
