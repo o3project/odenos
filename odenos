@@ -267,7 +267,7 @@ set_conf() {
   if [ $# = 3 ]; then
     case "$2" in
     -c)
-      echo Read confing files :: $3
+      echo Read config files :: $3
       ODENOS_CONF_FILE=$3
     esac
   fi
@@ -276,7 +276,7 @@ set_conf() {
 show_help() {
     echo >&2 "usage : $0 [start|stop|restart|status]"
     echo >&2 ">$0 start     (./etc/odenos.conf is loaded by default.)"
-    echo >&2 ">$0 start -c [FILE]     (loaded original confing flie.)"
+    echo >&2 ">$0 start -c [FILE]     (loaded original config file.)"
 }
 
 case "$1" in
