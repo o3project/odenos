@@ -354,6 +354,10 @@ public class Network extends Component {
           "not compatible object");
     }
 
+    if(!node.isAttribute(AttrElements.OPER_STATUS)) {
+      node.putAttribute(AttrElements.OPER_STATUS, STATUS_UP);
+    }
+
     notifyNodeChanged(null, node, NodeChanged.Action.add);
 
     return new Response(Response.OK, node);
@@ -407,6 +411,9 @@ public class Network extends Component {
     if (node == null) {
       nodeOld = null;
       node = topology.createNode(msg);
+      if(!node.isAttribute(AttrElements.OPER_STATUS)) {
+        node.putAttribute(AttrElements.OPER_STATUS, STATUS_UP);
+      }
       action = NodeChanged.Action.add;
       returnCode = Response.CREATED;
     } else {
@@ -477,6 +484,9 @@ public class Network extends Component {
       msg.setId(null);
     }
     Port port = node.createPort(msg);
+    if(!port.isAttribute(AttrElements.OPER_STATUS)) {
+       port.putAttribute(AttrElements.OPER_STATUS, STATUS_UP);
+    }
 
     if (port == null) {
       return createErrorResponse(Response.BAD_REQUEST,
@@ -556,6 +566,9 @@ public class Network extends Component {
     if (port == null) {
       portOld = null;
       port = node.createPort(msg);
+      if(!port.isAttribute(AttrElements.OPER_STATUS)) {
+        port.putAttribute(AttrElements.OPER_STATUS, STATUS_UP);
+      }
       action = PortChanged.Action.add;
       returnCode = Response.CREATED;
     } else {
@@ -725,6 +738,15 @@ public class Network extends Component {
           "not compatible object");
     }
 
+    if(!link.isAttribute(AttrElements.OPER_STATUS)) {
+      if(STATUS_DOWN.equals(srcPrev.getAttribute(AttrElements.OPER_STATUS))
+      || STATUS_DOWN.equals(dstPrev.getAttribute(AttrElements.OPER_STATUS))) {
+         link.putAttribute(AttrElements.OPER_STATUS, STATUS_DOWN);
+       } else {
+         link.putAttribute(AttrElements.OPER_STATUS, STATUS_UP);
+       }
+    }
+
     notifyLinkChanged(null, link, LinkChanged.Action.add);
 
     String nodeId;
@@ -808,6 +830,15 @@ public class Network extends Component {
           .clone();
       dstPrev = topology.getPort(msg.getDstNode(), msg.getDstPort())
           .clone();
+
+      if(!link.isAttribute(AttrElements.OPER_STATUS)) {
+         if(STATUS_DOWN.equals(srcPrev.getAttribute(AttrElements.OPER_STATUS))
+         || STATUS_DOWN.equals(dstPrev.getAttribute(AttrElements.OPER_STATUS))) {
+           link.putAttribute(AttrElements.OPER_STATUS, STATUS_DOWN);
+         } else {
+           link.putAttribute(AttrElements.OPER_STATUS, STATUS_UP);
+         }
+      }
     } else {
       // version conflict
       if (msg.getVersion() != null

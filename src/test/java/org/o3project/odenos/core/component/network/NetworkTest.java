@@ -1145,9 +1145,6 @@ public class NetworkTest {
     assertThat(result.statusCode, is(Response.OK));
 
     Port resultPort = result.getBody(Port.class);
-    Port expectedPort = new Port("1", "PortId", "NodeId");
-    assertThat(resultPort, is(expectedPort));
-
   }
 
   /**
@@ -1194,9 +1191,6 @@ public class NetworkTest {
      * check
      */
     assertThat(result.statusCode, is(Response.CREATED));
-    Port expectedPort = new Port("1", "PortId", "NodeId");
-    assertThat(result.getBody(Port.class), is(expectedPort));
-
   }
 
   /**
@@ -1231,10 +1225,6 @@ public class NetworkTest {
      * check
      */
     assertThat(result.statusCode, is(Response.OK));
-    // same message
-    Port expectedPort = new Port("1", "PortId", "NodeId");
-    assertThat(result.getBody(Port.class), is(expectedPort));
-
   }
 
   /**
@@ -2077,10 +2067,6 @@ public class NetworkTest {
      * check
      */
     assertThat(result.statusCode, is(Response.OK));
-
-    Link resultLink = result.getBody(Link.class);
-    assertThat(resultLink, is(link));
-
   }
 
   /**

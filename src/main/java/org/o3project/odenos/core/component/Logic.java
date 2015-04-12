@@ -59,60 +59,6 @@ import org.slf4j.LoggerFactory;
 public abstract class Logic extends Component {
   private static final Logger log = LoggerFactory.getLogger(Logic.class);
 
-  public static final String CONN_ADD = "add";
-  public static final String CONN_UPDATE = "update";
-  public static final String CONN_DELETE = "delete";
-  public static final String NODE_CHANGED = "NODE_CHANGED";
-  public static final String PORT_CHANGED = "PORT_CHANGED";
-  public static final String LINK_CHANGED = "LINK_CHANGED";
-  public static final String FLOW_CHANGED = "FLOW_CHANGED";
-  public static final String IN_PACKET_ADDED = "IN_PACKET_ADDED";
-  public static final String OUT_PACKET_ADDED = "OUT_PACKET_ADDED";
-
-  /**
-   * NetworkElements class.
-   *
-   */
-  public class NetworkElements {
-    public static final String TYPE = "type";
-    public static final String VERSION = "version";
-    public static final String NODE_ID = "node_id";
-    public static final String PORT_ID = "port_id";
-    public static final String LINK_ID = "link_id";
-    public static final String FLOW_ID = "flow_id";
-    public static final String IN_LINK = "in_link";
-    public static final String OUT_LINK = "out_link";
-    public static final String SRC_NODE = "src_node";
-    public static final String SRC_PORT = "src_port";
-    public static final String DST_NODE = "dst_node";
-    public static final String DST_PORT = "dst_port";
-    public static final String OWNER = "owner";
-    public static final String ENABLED = "enabled";
-    public static final String PRIORITY = "priority";
-    public static final String STATUS = "status";
-  }
-
-  /**
-   * AttrElements class.
-   *
-   */
-  public class AttrElements {
-    public static final String ATTRIBUTES = "attributes";
-    public static final String ADMIN_STATUS = "admin_status";
-    public static final String OPER_STATUS = "oper_status";
-    public static final String PHYSICAL_ID = "physical_id";
-    public static final String VENDOR = "vendor";
-    public static final String MAX_BANDWIDTH = "max_bandwidth";
-    public static final String UNRESERVED_BANDWIDTH = "unreserved_bandwidth";
-    public static final String IS_BOUNDARY = "is_boundary";
-    public static final String COST = "cost";
-    public static final String LATENCY = "latency";
-    public static final String BANDWIDTH = "bandwidth";
-    public static final String REQ_LATENCY = "req_latency";
-    public static final String REQ_BANDWIDTH = "req_bandwidth";
-    public static final String ESTABLISHMENT_STATUS = "establishment_status";
-  }
-
   /**
    * flow's keys.
    */
