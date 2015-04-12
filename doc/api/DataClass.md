@@ -72,7 +72,7 @@ attributes|dict{\<String>, \<String>}|See the table attributes.     | Optional |
 **Key**      | **Value** |**Description**                                              | init   | Direction of the reflected(*)
 -------------|-----------|-------------------------------------------------------------|--------|---------------
 admin_status | \<String> | "UP" : normal operation. <br> "DOWN" : failure operation.   | "UP"   | Upper -> Lower 
-oper_status  | \<String> | "UP" : Physical device normal. <br> "DOWN" : Physical device failure.    | any    | Lower -> Upper
+oper_status  | \<String> | "UP" : Physical device normal. <br> "DOWN" : Physical device failure.    | "UP"    | Lower -> Upper
 physical_id  | \<String> |ID of the physical device. Numbering in the driver.<br> For example, openflow driver to set the "dpid" | any         |   Lower  ->  Upper
 vendor        | \<String>  |Vendor name is set.<br> For example, It is used for the GUI system. | any | Lower -> Upper
 
@@ -102,7 +102,7 @@ attributes|dict{\<String>, \<String>}|See the table attributes. | Optional  | Op
 **Key**       | **Value**  |**Description**                                              | init   | Direction of the reflected(*)
 --------------|------------|-------------------------------------------------------------|--------|-----------------
 admin_status  | \<String>  | "UP" : normal operation. <br> "DOWN" : failure operation.   | "UP"   | Upper -> Lower 
-oper_status   | \<String>  | "UP" : Physical device normal. <br> "DOWN" : Physical device failure.| any    | Lower -> Upper
+oper_status   | \<String>  | "UP" : Physical device normal. <br> "DOWN" : Physical device failure.| "UP"    | Lower -> Upper
 max_bandwidth | \<Number>  | Unit is Mbps. maximum bandwidth of the port.<br> Driver to set the value.| any    | Lower -> Upper
 unreserved_bandwidth | \<Number>  | Unit is Mbps. Current bandwidth of the port.<br > Driver to set the initial value. |max_bandwidth   | Upper -> Lower 
 physical_id   | \<String>  |ID of the physical device. Driver may assign this ID.<br> For example, openflow driver will assign like "port_no@dpid" | any         |   Lower  ->  Upper
@@ -133,7 +133,7 @@ attributes|dict{\<String>, \<String>}|See the table attributes.   | Optional  | 
 ##### Attributes
 **Key**              | **Value** |**Description**                                                                      | init  | Direction of the reflected(*)
 ---------------------|-----------|-------------------------------------------------------------------------------------|-------|-----------------
-oper_status          | \<String> | "UP" : Link is in a state ready to forward traffic. <br> "DOWN" : Link is in a state not ready to forward traffic.               | any   | Lower -> Upper
+oper_status          | \<String> | "UP" : Link is in a state ready to forward traffic. <br> "DOWN" : Link is in a state not ready to forward traffic.               | "UP"   | Lower -> Upper
 cost                 | \<Number> | link cost.                                                                          | 1     | Upper -> Lower              
 req_latency          | \<Number> | Unit is msec. Request latency. (There may be different from the actual latency.）   | any   | Upper -> Lower
 latency              | \<Number> | Unit is  msec.                                                                      | any   | Lower -> Upper                 
