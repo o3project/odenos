@@ -432,7 +432,7 @@ public class Aggregator extends Logic {
               public Response process(
                   final RequestParser<IActionCallback>
                   .ParsedRequest parsed) throws Exception {
-                return getNwPort(AGGREGATED);
+                return getNwPort(ORIGINAL);
               }
             });
         addRule(Method.GET, "original_nw_port", new IActionCallback() {
@@ -440,7 +440,7 @@ public class Aggregator extends Logic {
           public Response process(
               final RequestParser<IActionCallback>
               .ParsedRequest parsed) throws Exception {
-            return getNwPort(ORIGINAL);
+            return getNwPort(AGGREGATED);
           }
         });
         addRule(Method.GET, "aggregated_nw_flow",
@@ -449,7 +449,7 @@ public class Aggregator extends Logic {
               public Response process(
                   final RequestParser<IActionCallback>
                   .ParsedRequest parsed) throws Exception {
-                return getNwFlow(AGGREGATED);
+                return getNwFlow(ORIGINAL);
               }
             });
         addRule(Method.GET, "original_nw_flow", new IActionCallback() {
@@ -457,7 +457,7 @@ public class Aggregator extends Logic {
           public Response process(
               final RequestParser<IActionCallback>
               .ParsedRequest parsed) throws Exception {
-            return getNwFlow(ORIGINAL);
+                return getNwFlow(AGGREGATED);
           }
 
         });
