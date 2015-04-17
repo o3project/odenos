@@ -150,19 +150,22 @@ class MessageDispatcher:
                     request = Request.create_from_packed(upk.unpack())
 
                     def request_runnable(request, sno, srcid):
-                        response = self.dispatch_request(request)
-                        pk = msgpack.Packer()
-                        resb = bytearray()
-                        resb.extend(pk.pack(self.TYPE_RESPONSE))
-                        resb.extend(pk.pack(sno))
-                        resb.extend(pk.pack(request.object_id))
-                        resb.extend(pk.pack(response.packed_object()))
-                        self.__pubsqueue.put(
-                            MessageDispatcher.PublishData(None,
-                                                          self.TYPE_RESPONSE,
-                                                          sno,
-                                                          srcid,
-                                                          resb))
+                        try:
+                            response = self.dispatch_request(request)
+                            pk = msgpack.Packer()
+                            resb = bytearray()
+                            resb.extend(pk.pack(self.TYPE_RESPONSE))
+                            resb.extend(pk.pack(sno))
+                            resb.extend(pk.pack(request.object_id))
+                            resb.extend(pk.pack(response.packed_object()))
+                            self.__pubsqueue.put(
+                                MessageDispatcher.PublishData(None,
+                                                              self.TYPE_RESPONSE,
+                                                              sno,
+                                                              srcid,
+                                                              resb))
+                        except:
+                            logging.exception('Request processing error')
                     self.thread_pool.submit(request_runnable,
                                             request,
                                             sno,
@@ -175,7 +178,10 @@ class MessageDispatcher:
                     event = Event.create_from_packed(upk.unpack())
 
                     def event_runnable(event):
-                        self.dispatch_event(event)
+                        try:
+                            self.dispatch_event(event)
+                        except:
+                            logging.exception('Event processing error')
                     self.thread_pool.submit(event_runnable, event)
             except:
                 logging.error(traceback.format_exc())
@@ -327,7 +333,7 @@ class MessageDispatcher:
             event.publisher_id,
             event.event_type)
         del_obj_ids = []
-        for es in subscribers:
+        for es in subscribers.copy():
             if es in self.__local_objects:
                 if self.__local_objects[es] is None:
                     del_obj_ids.append(es)
