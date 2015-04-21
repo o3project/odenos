@@ -318,6 +318,8 @@ class Monitor:
                 arrow.append('')
             self.output(final_format.format(*arrow))
             if self.detail_output:
+                self.output('dstid: {}'.format(dstid))
+                self.output('srcid: {}'.format(srcid))
                 if self.json_format:
                     self.output(json.dumps(decode(self.message_buffer[serial])))
                 else:

@@ -26,13 +26,18 @@ class RemoteObjectInterface(object):
     PROPETY_PATH = "property"
     SETTINGS_PATH = "settings"
 
-    def __init__(self, dispatcher, object_id):
+    def __init__(self, dispatcher, object_id, source_object_id=None):
         self.__dispatcher = dispatcher
         self.__object_id = object_id
+        self.__source_object_id = source_object_id
 
     @property
     def object_id(self):
         return self.__object_id
+    
+    @property
+    def source_object_id(self):
+        return self.__source_object_id
 
     ###################################
     # Basic request
@@ -72,8 +77,7 @@ class RemoteObjectInterface(object):
     ###################################
 
     def _post_object_to_remote_object(self, path, body):
-        resp = self.__send_request(self.__object_id, Request.Method.POST,
-                                   path, body)
+        resp = self.__send_request(Request.Method.POST, path, body)
         if resp.is_error(Request.Method.POST):
             logging.debug("Error Response POST DestID:" + self.__object_id
                           + " Path:" + path
@@ -81,8 +85,7 @@ class RemoteObjectInterface(object):
         return resp
 
     def _put_object_to_remote_object(self, path, body):
-        resp = self.__send_request(self.__object_id, Request.Method.PUT,
-                                   path, body)
+        resp = self.__send_request(Request.Method.PUT, path, body)
         if resp.is_error(Request.Method.PUT):
             logging.debug("Error Response PUT DestID:" + self.__object_id
                           + " Path:" + path
@@ -90,8 +93,7 @@ class RemoteObjectInterface(object):
         return resp
 
     def _del_object_to_remote_object(self, path, body=None):
-        resp = self.__send_request(self.__object_id, Request.Method.DELETE,
-                                   path, body=body)
+        resp = self.__send_request(Request.Method.DELETE, path, body=body)
         if resp.is_error(Request.Method.DELETE):
             logging.debug("Error Response DELETE DestID:" + self.__object_id
                           + " Path:" + path
@@ -99,21 +101,21 @@ class RemoteObjectInterface(object):
         return resp
 
     def _get_object_to_remote_object(self, path):
-        resp = self.__send_request(self.__object_id, Request.Method.GET, path)
+        resp = self.__send_request(Request.Method.GET, path)
         if resp.is_error(Request.Method.GET):
             logging.debug("Error Response GET DestID:" + self.__object_id
                           + " Path:" + path
                           + " StatusCode:" + str(resp.status_code))
         return resp
 
-    def __send_request(self, object_id, method, path, body=None):
+    def __send_request(self, method, path, body=None):
         resp = Response(Response.StatusCode.INTERNAL_SERVER_ERROR,
                         None)
-        req = Request(object_id, method, path, body=body)
+        req = Request(self.__object_id, method, path, body=body)
         try:
-            resp = self.__dispatcher.request_sync(req)
+            resp = self.__dispatcher.request_sync(req, self.__source_object_id)
         except:
-            logging.error("Exception: Request to " + object_id
+            logging.error("Exception: Request to " + self.__object_id
                           + " Method:" + method
                           + " Path:" + path)
             logging.error(traceback.format_exc())

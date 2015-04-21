@@ -40,12 +40,12 @@ class SystemManagerInterface(RemoteObjectInterface):
     CONNECTION_PATH = "connections/%s"
     OBJECT_PATH = "objects/%s"
 
-    def __init__(self, dispatcher):
+    def __init__(self, dispatcher, source_object_id=None):
         logging.debug("Create SystemManagerInterface ID:"
                       + dispatcher.system_manager_id)
         super(SystemManagerInterface, self).__init__(
             dispatcher,
-            dispatcher.system_manager_id)
+            dispatcher.system_manager_id, source_object_id)
 
     @property
     def system_manager_id(self):

@@ -71,7 +71,7 @@ class Logic(Component):
         # SystemManager IF
         if self.dispatcher is None:
             return
-        self._sys_manager_interface = SystemManagerInterface(dispatcher)
+        self._sys_manager_interface = SystemManagerInterface(dispatcher, object_id)
 
     ###################################
     # Receive ComponentConnectionChanged
@@ -93,7 +93,7 @@ class Logic(Component):
                 if network_id in self._network_interfaces:
                     return
                 self._network_interfaces[network_id] = \
-                    NetworkInterface(self.dispatcher, network_id)
+                    NetworkInterface(self.dispatcher, network_id, self.object_id())
                 self._connection_changed_added(msg)
         elif msg.action == ComponentConnectionChanged.Action.UPDATE:
             if (self._connection_changed_update_pre(msg)):

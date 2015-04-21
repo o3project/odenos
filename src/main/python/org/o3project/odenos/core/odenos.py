@@ -41,6 +41,8 @@ class Parser(object):
         parser.add_option("-d", dest="dir", help="Directory of Components")
         parser.add_option("-i", dest="ip", help="Pubsub server host name or ip address", default="localhost")
         parser.add_option("-p", dest="port", help="Pubsub server port number", type=int, default=6379)
+        parser.add_option("-m", dest="monitor", help="Toggle monitor", default="false")
+        parser.add_option("-S", dest="manager", help="System Manager ID", default="systemmanager")
         (options, args) = parser.parse_args()
         return options
 
@@ -71,7 +73,10 @@ if __name__ == '__main__':
     options = Parser().parse()
     logging.info("python ComponentManager options: %s", options)
 
-    dispatcher = MessageDispatcher(redis_server=options.ip, redis_port=options.port)
+    dispatcher = MessageDispatcher(system_manager_id=options.manager,
+                                   redis_server=options.ip,
+                                   redis_port=options.port,
+                                   enable_monitor=(options.monitor=="true"))
     dispatcher.start()
 
     component_manager = ComponentManager(options.rid, dispatcher)
@@ -92,7 +97,7 @@ if __name__ == '__main__':
 
     classes.append(DummyDriver)
     component_manager.register_components(classes)
-    sysmgr = SystemManagerInterface(dispatcher)
+    sysmgr = SystemManagerInterface(dispatcher, options.rid)
     sysmgr.add_component_manager(component_manager)
     component_manager.set_state(ObjectProperty.State.RUNNING)
 

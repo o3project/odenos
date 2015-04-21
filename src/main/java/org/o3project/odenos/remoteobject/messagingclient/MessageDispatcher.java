@@ -280,7 +280,7 @@ public class MessageDispatcher implements Closeable, IMessageListener {
             pk.write("/" + channel + "/" + request.path);
             pk.write(request.getBodyValue());
             byte[] data = pk.toByteArray();
-            driverImpl.publish(MONITOR_CHANNEL, data);
+            monitor.publish(MONITOR_CHANNEL, data);
           }
 
           // Wraps the request with Mail and deliver it to a mailbox.
