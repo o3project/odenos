@@ -175,3 +175,7 @@ Try the following instruction:
    ```
    $ gem install bundler
    ```
+
+### Q. Where could I find other technical documents (API, etc.)?
+
+Please start looking from here [doc/api](/doc/api/index.md)
