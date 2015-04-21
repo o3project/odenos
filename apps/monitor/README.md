@@ -1,9 +1,9 @@
-OdenOS message sequence diagram generator
-=========================================
+monitor: ODENOS message sequence diagram generator
+==================================================
 
-The program "monitor" taps Redis server to monitor messages exchanged among OdenOS RemoteObject instances, then automatically generates a message sequence diagram.
+The program "monitor" monitors messages being exchanged among ODENOS RemoteObject instances, then automatically generates a message sequence diagram.
 
-Everything works in an asynchronous manner with coroutines supported by Tornado packege.
+Everything works in an asynchronous manner with Python coroutines (Python generators) supported by Tornado package.
 
 Screen shots
 ------------
@@ -24,14 +24,15 @@ $ sudo pip3 install tornado-redis
 
 Limitation
 ----------
-Python/Ruby-based message_dispatcher does now work with this tool at the moment.
+- Browsers other than Firefox may not work with this tool.
+- Ruby-based message_dispatcher does now work with this tool at the moment.
 
 
 Architecture
 ------------
 ```
 +------------------------------++++
-| OdenOS RemoteObject instance |||| resttranslator, systemmanager, ...
+| ODENOS RemoteObject instance |||| resttranslator, systemmanager, ...
 +------------------------------++++
          | |  |  |
   publish/subscribe/message
@@ -41,23 +42,25 @@ Architecture
        | server    |
        +-----------+
           ^      |
-subscribe'_monitor'
+subscribe '_monitor'
           |      |
           |  message (non-blocking IO: tornado-redis)
           |      |
           |      V
-       +-----------+
-       | monitor   | Tornado web server (coroutine-based)
-       |           |
-       +-----------+
-          |     ^
-     WebSocket  |
-          |    GET message detail
-          V     |
-       +-----------+
-       | browser   | index.html (HTML5 + CSS + JavaScript)
-       |           |
-       +-----------+
+       +-------------------+
+       | monitor           | Tornado web server (coroutine-based)
+       |                   |
+       +-------------------+
+          |     ^     |
+     WebSocket  |     |
+          |    GET   200 OK
+          |  message  |
+          |  detail  message detail
+          V     |     V
+       +-------------------+
+       | browser           | index.html (HTML5 + CSS + JavaScript)
+       |                   |
+       +-------------------+
 ```
 
 
@@ -73,7 +76,7 @@ $ monitor -h
 Start monitoring:
 $ monitor resttranslator systemmanager romgr1 network1 ...
 
-Start monitoring with "default.yaml":
+Start monitoring messages being exchanged among ODENOS RemoteObject instances pre-defined in "default.yaml":
 $ monitor
 
 Start monitoring with additional parameters:

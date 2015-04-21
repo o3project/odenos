@@ -309,6 +309,7 @@ class MessageDispatcher:
     def request_sync(self, request, source_object_id=None):
         client = self.__get_message_client(request.object_id)
         logging.debug("[request_sync ]:send to " + client.object_id)
+        logging.debug("[request_sync ]:from " + source_object_id)
         return client.send_request_message(request, source_object_id)
 
     def publish_event_async(self, event):
@@ -333,6 +334,7 @@ class MessageDispatcher:
         resb.extend(pk.pack(self.REQUEST))
         resb.extend(pk.pack(channel))
         resb.extend(pk.pack(source_object_id))
+        resb.extend(pk.pack(sno))
         resb.extend(pk.pack(request.method))
         resb.extend(pk.pack("/" + channel + "/" + request.path))
         resb.extend(pk.pack(request.packed_object()))
@@ -388,7 +390,7 @@ class MessageDispatcher:
                           Request.Method.PUT,
                           "settings/event_subscriptions/%s" % event_subscription.subscriber_id,
                           event_subscription)
-        return self.request_sync(request)
+        return self.request_sync(request, self.get_source_dispatcher_id())
 
     def pushPublishQueue(self, trans, type_, sno, channel, data):
         self.__pubsqueue.put(MessageDispatcher.PublishData(trans,
