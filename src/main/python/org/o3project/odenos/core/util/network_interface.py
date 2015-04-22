@@ -76,6 +76,9 @@ class NetworkInterface(RemoteObjectInterface):
     PACKETS_PATH = "packets"
 
     def __init__(self, dispatcher, network_id, source_object_id=None):
+        '''
+        NOTE: source_object_id is required for the ODENOS monitor tool.
+        '''
         logging.debug("Create NetworkInterface : NetworkID:" + network_id)
         super(NetworkInterface, self).__init__(dispatcher, network_id, source_object_id)
 

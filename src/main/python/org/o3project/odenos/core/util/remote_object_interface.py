@@ -27,6 +27,9 @@ class RemoteObjectInterface(object):
     SETTINGS_PATH = "settings"
 
     def __init__(self, dispatcher, object_id, source_object_id=None):
+        '''
+        NOTE: source_object_id is required for the ODENOS monitor tool.
+        '''
         self.__dispatcher = dispatcher
         self.__object_id = object_id
         self.__source_object_id = source_object_id
@@ -37,6 +40,9 @@ class RemoteObjectInterface(object):
     
     @property
     def source_object_id(self):
+        '''
+        ID of ODENOS RemoteObject instance using this interface.
+        '''
         return self.__source_object_id
 
     ###################################
@@ -113,7 +119,7 @@ class RemoteObjectInterface(object):
                         None)
         req = Request(self.__object_id, method, path, body=body)
         try:
-            resp = self.__dispatcher.request_sync(req, self.__source_object_id)
+            resp = self.__dispatcher.request_sync(req, self.source_object_id)
         except:
             logging.error("Exception: Request to " + self.__object_id
                           + " Method:" + method

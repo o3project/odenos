@@ -64,6 +64,9 @@ class RemoteMessageTransport(BaseMessageTransport):
         self.responseMap = {}
 
     def send_request_message(self, request, source_object_id):
+        '''
+        NOTE: source_object_id is required for the ODENOS monitor tool.
+        '''
         logging.debug("[(B1) send request ]: " + str(request.packed_object()))
         queue = self.addRequet(request, source_object_id)
         response = queue.get()
@@ -82,7 +85,7 @@ class RemoteMessageTransport(BaseMessageTransport):
                 message_dispatcher.MessageDispatcher.TYPE_REQUEST))
             reqb.extend(pk.pack(sno))
             if self.dispatcher.monitor_enabled():  # Monitor
-                reqb.extend(pk.pack(source_object_id))
+                reqb.extend(pk.pack(source_object_id))  # Uses source_object_id instead.
             else:
                 reqb.extend(pk.pack(self.dispatcher.get_source_dispatcher_id()))
             reqb.extend(pk.pack(request.packed_object()))

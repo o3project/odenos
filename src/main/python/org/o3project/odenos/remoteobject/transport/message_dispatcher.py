@@ -307,9 +307,11 @@ class MessageDispatcher:
             RemoteMessageTransport(self.system_manager_id, self)
 
     def request_sync(self, request, source_object_id=None):
+        '''
+        Note: source_object_id is required for the ODENOS monitor tool.
+        '''
         client = self.__get_message_client(request.object_id)
         logging.debug("[request_sync ]:send to " + client.object_id)
-        logging.debug("[request_sync ]:from " + source_object_id)
         return client.send_request_message(request, source_object_id)
 
     def publish_event_async(self, event):
@@ -328,6 +330,7 @@ class MessageDispatcher:
     def publish_reflected_request(self, channel, source_object_id, sno, request):
         '''
         Publishes an event as a reflected request to the monitor.
+        Note: this function is for the ODENOS monitor tool.
         '''
         pk = msgpack.Packer()
         resb = bytearray()
@@ -347,6 +350,7 @@ class MessageDispatcher:
     def publish_reflected_response(self, channel, source_object_id, sno, response):
         '''
         Publishes an event as a reflected response to the monitor.
+        Note: this function is for the ODENOS monitor tool.
         '''
         pk = msgpack.Packer()
         resb = bytearray()
@@ -365,6 +369,7 @@ class MessageDispatcher:
     def publish_reflected_event(self, channel, subscriber, event):
         '''
         Publishes an event as a reflected event to the monitor.
+        Note: this function is for the ODENOS monitor tool.
         '''
         pk = msgpack.Packer()
         resb = bytearray()
