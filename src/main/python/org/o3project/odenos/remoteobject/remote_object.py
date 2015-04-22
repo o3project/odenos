@@ -98,7 +98,7 @@ class RemoteObject(object):
                                                     method,
                                                     path,
                                                     body),
-                                            self.object_id())
+                                            self.object_id)
 
     def _request(self, object_id, method, path, body=None):
         resp = Response(Response.StatusCode.INTERNAL_SERVER_ERROR, None)
