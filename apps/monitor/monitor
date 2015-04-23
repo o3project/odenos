@@ -137,7 +137,7 @@ class Monitor:
         self.json_format = json_format
 
         self.serial = 0
-        self.output_count = 0
+        self.output_count = 0 
         if output == print and detail_output == True:
             self.output_count_reset = 1 
         else:
@@ -148,10 +148,10 @@ class Monitor:
         cc = 0
         self.header_format = ' '
         self.arrow_default = [] 
-        self.vertical_lines_format = '    ' 
+        self.vertical_lines_format = '       ' 
 
         for count in range(object_number):
-            self.header_format += '{:<16}'  
+            self.header_format += '{:^16}'  
             c += 1
             if count < object_number - 1:
                 self.vertical_lines_format += '{}{:<15}'
@@ -378,12 +378,24 @@ class DetailHandler(tornado.web.RequestHandler):
 
 class PageHandler(tornado.web.RequestHandler):
 
-    def initialize(self, webhost, webport):
+    def initialize(self, webhost, webport, object_ids, title):
         self.webhost = webhost
         self.webport = webport
+        self.title = title
+        td_text_format = ''
+        td_img_format = ''
+        img_data = []
+        for count in range(len(object_ids)):
+            img_data.append('/web/Driver.png')
+            td_text_format += '<td><pre>{:^16}</pre></td>'  
+            td_img_format += '<td><img src={}></img></td>'
+        tr_text = td_text_format.format(*object_ids)
+        tr_img = td_img_format.format(*img_data)
+        table = '<table><tr>{}</tr><tr>{}</tr></table>'.format(tr_img, tr_text)
+        self.object_ids = table 
 
     def get(self):
-        self.render('web/index.html', host=self.webhost, port=self.webport)
+        self.render('web/index.html', host=self.webhost, port=self.webport, object_ids=self.object_ids, title=self.title)
 
 class ConsoleOutput(object):
     ''' 
@@ -422,6 +434,7 @@ if __name__ == "__main__":
     parser.add_argument("-d", "--detail", help="message detail output to console", action="store_true", default=False)
     parser.add_argument("-j", "--json", help="message detail output in JSON rather than YAML", action="store_true", default=False)
     parser.add_argument("-f", "--file", help="preset file name", type=str, default="default.yaml")
+    parser.add_argument("-t", "--title", help="title", type=str, default="ODENOS message sequence diagram")
     args = parser.parse_args()
     if args.console:
         print('Console output mode')
@@ -438,10 +451,12 @@ if __name__ == "__main__":
         console_output = ConsoleOutput(host=args.host, port=args.port, object_ids=args.object_ids, message_buffer=message_buffer, detail_output=args.detail, json_format=args.json)
     else:
         application = tornado.web.Application([
-            (r'/index.html', PageHandler, dict(webhost=args.webhost, webport=args.webport)),
+            (r'/index.html', PageHandler, dict(webhost=args.webhost, webport=args.webport, object_ids=args.object_ids, title=args.title)),
             (r'/message', MessageHandler, dict(host=args.host, port=args.port, object_ids=args.object_ids, message_buffer=message_buffer)),
-            (r'/detail', DetailHandler, dict(message_buffer=message_buffer, json_format=args.json))
-        ])
+            (r'/detail', DetailHandler, dict(message_buffer=message_buffer, json_format=args.json)),
+            (r'/web/(.*)', tornado.web.StaticFileHandler, dict(path='web/'))
+        ],
+        autoescape=None)
         http_server = tornado.httpserver.HTTPServer(application)
         http_server.listen(args.webport, address=args.webhost)
     try:
