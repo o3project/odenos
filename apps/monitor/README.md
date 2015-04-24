@@ -25,7 +25,7 @@ $ sudo pip3 install tornado-redis
 Limitation
 ----------
 - Browsers other than Firefox may not work with this tool.
-- Ruby-based message_dispatcher does now work with this tool at the moment.
+- Ruby-based message_dispatcher does not work with this tool at the moment.
 
 
 Architecture
@@ -96,3 +96,9 @@ $ monitor -c -d
 Start with -d and -j options to print out each message in JSON format:
 $ monitor -c -d -j
 ```
+
+You want your favorite icons?
+-----------------------------
+- Place your favorite icons in web/images directory.
+- Modify default.yaml.
+

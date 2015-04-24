@@ -4,12 +4,11 @@
 
 # Object IDs
 object_ids:
-  - resttranslator
-  - systemmanager
-  - romgr1
-  - gen
-  - network1
-  - aggre
-  - network0
-  - lsw
-    
+  - resttranslator:Default.png
+  - systemmanager:Default.png
+  - romgr1:Default.png
+  - gen:Default.png
+  - network1:Network.png
+  - aggre:Default.png
+  - network0:Network.png
+  - lsw:Default.png
