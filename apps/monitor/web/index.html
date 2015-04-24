@@ -51,18 +51,22 @@
 </script>
 <style type="text/css">
 #header {
+    z-index: 10;
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
+    height: 110px;
     background: #eef;
     font-family: monospace;
     padding: 5px 5px 5px 5px;
 }
 
 #main {
+    z-index: 5;
+    position: absolute;
+    top: 110px;
     width: 100%;
-    overflow: hidden;
     padding: 5px 5px 5px 5px;
 }
 
@@ -76,7 +80,7 @@ td {
     text-align: center;
 }
 
-table, tr, td, img {
+table, tr, td, img, pre {
     padding: 0px 0px 0px 0px;
 }
 
@@ -85,11 +89,7 @@ img {
     height: 40px;
 }
 
-td img {
-    display: inline;
-}
-
-pre {
+pre, img {
     display: inline;
 }
 

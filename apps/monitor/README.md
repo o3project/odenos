@@ -96,3 +96,9 @@ $ monitor -c -d
 Start with -d and -j options to print out each message in JSON format:
 $ monitor -c -d -j
 ```
+
+You want your favorite icons?
+-----------------------------
+- Place your favorite icons in web/images directory.
+- Modify default.yaml.
+

@@ -127,6 +127,8 @@ class Monitor:
     REASON = {200: 'OK', 201: 'Created', 202: 'Accepted', 204: 'No content', 400: 'Bad request', 403: 'Forbidden', 404: 'Not found', 405: 'Method not allowed', 409: 'Conflict'}
     HEADER_PER_LINES = 30
 
+    DEFAULT_ICON = 'Default.png'
+
     def __init__(self, object_ids=[], output=print, hyperlink=False, message_buffer=[], detail_output=False, json_format=False):
 
         self.object_ids = object_ids
@@ -146,7 +148,7 @@ class Monitor:
         object_number = len(self.object_ids)
         c = 0
         cc = 0
-        self.header_format = ' '
+        self.header_format = ''
         self.arrow_default = [] 
         self.vertical_lines_format = '       ' 
 
@@ -193,7 +195,7 @@ class Monitor:
 
         '''
         #print(msg)
-        if self.output_count <= 0:
+        if self.output_count <= 0 and self.output == print:
             self.output(self.header_format.format(*self.object_ids))
             self.output_count = self.output_count_reset 
         bio = BytesIO()
@@ -225,9 +227,6 @@ class Monitor:
                 self.message_buffer.append(body)
                 self._write_sequence(self.serial, message_type, dstid, srcid, -1, None, None, None, event_type, body)
                 self.serial += 1
-            #print('serial: {}, type: {}, dstid: {}, srcid: {}: sno: {}'.format(self.serial, msg_type, dstid, srcid, sno))
-            #print('serial: {}, type: {}, dstid: {}, srcid: {}: sno: {}, data: {}'.format(self.serial, msg_type, dstid, srcid, sno, body))
-            #print('')
         except:
             traceback.print_exc()
 
@@ -377,16 +376,23 @@ class DetailHandler(tornado.web.RequestHandler):
             self.write(yaml.dump(decode(self.message_buffer[serial])))
 
 class PageHandler(tornado.web.RequestHandler):
+    '''
+    Renders index.html template with input arguments 
+    '''
 
-    def initialize(self, webhost, webport, object_ids, title):
+    def initialize(self, webhost, webport, object_ids, images, title):
         self.webhost = webhost
         self.webport = webport
         self.title = title
         td_text_format = ''
         td_img_format = ''
         img_data = []
+        len_images = len(images)
+        if len_images == 0:
+            img_data = ['/web/images/{}'.format(Monitor.DEFAULT_ICON) for i in range(len(object_ids))]
         for count in range(len(object_ids)):
-            img_data.append('/web/Driver.png')
+            if len_images > 0:
+                img_data.append('/web/images/{}'.format(images[count]))
             td_text_format += '<td><pre>{:^16}</pre></td>'  
             td_img_format += '<td><img src={}></img></td>'
         tr_text = td_text_format.format(*object_ids)
@@ -440,10 +446,19 @@ if __name__ == "__main__":
         print('Console output mode')
     else:
         print('Open "http://{}:{}/index.html" with your browser! (firefox is recommended)'.format(args.webhost, args.webport))
+    images = []
     if not args.object_ids:
         default = yaml.load(open(args.file))
-        args.object_ids = default['object_ids']
-        print('object IDs: {}'.format(args.object_ids))
+        object_ids = []
+        for object_id in default['object_ids']:
+            data = object_id.split(':')
+            object_ids.append(data[0])
+            images.append(data[1])
+        args.object_ids = object_ids
+    else:
+        for object_id in args.object_ids:
+            images.append(Monitor.DEFAULT_ICON)
+    print('object IDs: {}'.format(args.object_ids))
     print('Ctrl-C to exit')
     print('')
     message_buffer = []  # A common buffer shared by Tornado handlers
@@ -451,7 +466,7 @@ if __name__ == "__main__":
         console_output = ConsoleOutput(host=args.host, port=args.port, object_ids=args.object_ids, message_buffer=message_buffer, detail_output=args.detail, json_format=args.json)
     else:
         application = tornado.web.Application([
-            (r'/index.html', PageHandler, dict(webhost=args.webhost, webport=args.webport, object_ids=args.object_ids, title=args.title)),
+            (r'/index.html', PageHandler, dict(webhost=args.webhost, webport=args.webport, object_ids=args.object_ids, images=images, title=args.title)),
             (r'/message', MessageHandler, dict(host=args.host, port=args.port, object_ids=args.object_ids, message_buffer=message_buffer)),
             (r'/detail', DetailHandler, dict(message_buffer=message_buffer, json_format=args.json)),
             (r'/web/(.*)', tornado.web.StaticFileHandler, dict(path='web/'))
