@@ -45,19 +45,19 @@ so the following scripts configure ODENOS as below:
 
 ```
 $ cd {ODENOS HOME}
-$ ./apps/mininet_examples/single_node_control/start_odenos.sh start
+$ ./apps/mininet_examples/single_network_control/start_odenos.sh start
 ```
 
 ### 2. Start Mininet
 
 ```
-$ sudo ./apps/mininet_examples/single_node_control/start_mininet.py
+$ sudo ./apps/mininet_examples/single_network_control/start_mininet.py
 ```
 
 ### 3. Configure ODENOS
 
 ```
-$ sudo PYTHONPATH=lib/python/ ./apps/mininet_examples/single_node_control/config_odenos.py
+$ sudo PYTHONPATH=lib/python/ ./apps/mininet_examples/single_network_control/config_odenos.py
 ```
 
 ### 4. Check ODENOS status
@@ -111,5 +111,5 @@ $ sudo PYTHONPATH=lib/python/ ./apps/mininet_examples/single_node_control/config
 ### 5. Stop ODENOS
 
 ```
-$ ./apps/mininet_examples/single_node_control/start_odenos.sh stop
+$ ./apps/mininet_examples/single_network_control/start_odenos.sh stop
 ```
