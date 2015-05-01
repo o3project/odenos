@@ -64,23 +64,16 @@ $ sudo apt-get install mininet
 ### 1. Start ODENOS
 
 ```
-$ cd {ODENOS HOME}
-$ ./apps/mininet_examples/multi_network_control/start_odenos.sh start
+$ ./start_odenos.sh start
 ```
 
 ### 2. Start mininet
 
 ```
-$ sudo ./apps/mininet_examples/multi_network_control/start_mininet.py
+$ sudo ./start_mininet.py
 ```
 
-### 3. Configure ODENOS
-
-```
-$ sudo PYTHONPATH=lib/python/ ./apps/mininet_examples/multi_network_control/config_odenos.py
-```
-
-### 4. Check ODENOS status
+### 3. Check ODENOS status
 
 1. check components
 
@@ -143,8 +136,8 @@ $ sudo PYTHONPATH=lib/python/ ./apps/mininet_examples/multi_network_control/conf
    ```
 
 
-### 5. Stop ODENOS
+### 4. Stop ODENOS
 
 ```
-$ ./apps/mininet_examples/multi_network_control/start_odenos.sh stop
+$ ./start_odenos.sh stop
 ```
