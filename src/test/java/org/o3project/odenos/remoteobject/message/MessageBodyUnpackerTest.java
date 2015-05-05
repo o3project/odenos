@@ -92,7 +92,6 @@ public class MessageBodyUnpackerTest {
         = Whitebox.getInternalState(MessageBodyUnpacker.class, "pool");
     pool.clear();
     pool.add(mockmsgpack);
-
   }
 
   /**
@@ -101,6 +100,9 @@ public class MessageBodyUnpackerTest {
   @After
   public void tearDown() throws Exception {
     target = null;
+    ConcurrentLinkedQueue<MessagePack> pool
+        = Whitebox.getInternalState(MessageBodyUnpacker.class, "pool");
+    pool.clear();
   }
 
   // FIXME this case is not really testing anything.
