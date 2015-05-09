@@ -38,15 +38,29 @@ import java.util.UUID;
 public class Node extends BaseObject implements Cloneable {
   private static final int MSG_NUM_MIN = 1;
   private static final int MSG_NUM_MAX = 5;
-  private String type = "Node";
-  private String nodeId;
-  private Map<String, Port> ports;
+  private String nodeId = null;
+  private Map<String, Port> ports = new HashMap<String, Port>();
+  private Map<String, String> attributes = new HashMap<String, String>();
+
+  /* NetworkElements */
+  public static final String TYPE = "type";
+  public static final String VERSION = "version";
+  public static final String NODE_ID = "node_id";
+  public static final String PORTS = "ports";
+  public static final String ATTRIBUTES = "attributes";
+
+  /* AttrbuteElements */
+  public static final String ADMIN_STATUS = "admin_status";
+  public static final String OPER_STATUS = "oper_status";
+  public static final String PHYSICAL_ID = "physical_id";
+  public static final String VENDOR = "vendor";
+
 
   /**
    * Constructor.
    */
   public Node() {
-    this.ports = new HashMap<String, Port>();
+    initElements(this.INITIAL_VERSION, null, this.ports, null);
   }
 
   /**
@@ -54,18 +68,16 @@ public class Node extends BaseObject implements Cloneable {
    * @param nodeId node ID.
    */
   public Node(String nodeId) {
-    this();
-    this.nodeId = nodeId;
+    initElements(this.INITIAL_VERSION, nodeId, this.ports, null);
   }
 
   /**
    * Constructor.
-   * @param version number of version.
+   * @param version string of version.
    * @param nodeId node ID.
    */
   public Node(String version, String nodeId) {
-    this(nodeId);
-    this.setVersion(version);
+    initElements(version, nodeId, this.ports, null);
   }
 
   /**
@@ -78,10 +90,35 @@ public class Node extends BaseObject implements Cloneable {
   public Node(String version, String nodeId,
       Map<String, Port> ports,
       Map<String, String> attributes) {
+
+    initElements(version, nodeId, ports, attributes);
+  }
+
+  protected void initElements(
+      String version, String nodeId,
+      Map<String, Port> ports,
+      Map<String, String> attributes) {
+
+    this.setType("Node");
     this.setVersion(version);
-    this.nodeId = nodeId;
+    this.setId(nodeId);
     this.ports = ports;
-    this.putAttributes(attributes);
+
+    if(attributes != null) {
+      this.putAttributes(attributes);
+    }
+    if(!this.isAttribute(ADMIN_STATUS)) {
+      this.putAttribute(ADMIN_STATUS, STATUS_UP);
+    }
+    if(!this.isAttribute(OPER_STATUS)) {
+      this.putAttribute(OPER_STATUS, STATUS_UP);
+    }
+    if(!this.isAttribute(PHYSICAL_ID)) {
+      this.putAttribute(PHYSICAL_ID, nodeId);
+    }
+    if(!this.isAttribute(VENDOR)) {
+      this.putAttribute(VENDOR, "unknown");
+    }
   }
 
   /**
@@ -106,19 +143,11 @@ public class Node extends BaseObject implements Cloneable {
    * @return true if parameter is valid.
    */
   public boolean validate() {
-    if (this.nodeId == null
-        || this.type == null) {
+    if (this.getId() == null
+        || this.getType() == null) {
       return false;
     }
     return true;
-  }
-
-  /**
-   * Returns a type of node.
-   * @return type of node.
-   */
-  public String getType() {
-    return type;
   }
 
   /**
@@ -266,10 +295,10 @@ public class Node extends BaseObject implements Cloneable {
 
     while (size-- > 0) {
       switch (upk.readString()) {
-        case "type":
-          type = upk.readString();
+        case TYPE:
+          this.setType(upk.readString());
           break;
-        case "version":
+        case VERSION:
           if (upk.getNextType() == ValueType.NIL) {
             upk.readNil();
             setVersion("0");
@@ -277,7 +306,7 @@ public class Node extends BaseObject implements Cloneable {
             setVersion(upk.readString());
           }
           break;
-        case "node_id":
+        case NODE_ID:
           if (upk.getNextType() == ValueType.NIL) {
             upk.readNil();
             nodeId = null;
@@ -285,7 +314,7 @@ public class Node extends BaseObject implements Cloneable {
             nodeId = upk.readString();
           }
           break;
-        case "ports":
+        case PORTS:
           ports.clear();
           // ports.addAll(upk.read(tList(TString)));
           int portsSize = upk.readMapBegin();
@@ -296,7 +325,7 @@ public class Node extends BaseObject implements Cloneable {
           }
           upk.readMapEnd();
           break;
-        case "attributes":
+        case ATTRIBUTES:
           putAttributes(upk.read(tMap(TString, TString)));
           break;
         default:
@@ -310,19 +339,19 @@ public class Node extends BaseObject implements Cloneable {
   public void writeTo(Packer pk) throws IOException {
     pk.writeMapBegin(MSG_NUM_MAX);
 
-    pk.write("type");
-    pk.write(type);
+    pk.write(TYPE);
+    pk.write(getType());
 
-    pk.write("version");
+    pk.write(VERSION);
     pk.write(getVersion());
 
-    pk.write("node_id");
+    pk.write(NODE_ID);
     pk.write(nodeId);
 
-    pk.write("ports");
+    pk.write(PORTS);
     pk.write(ports);
 
-    pk.write("attributes");
+    pk.write(ATTRIBUTES);
     pk.write(getAttributes());
 
     pk.writeMapEnd();
@@ -345,7 +374,7 @@ public class Node extends BaseObject implements Cloneable {
 
     Node nodeMessage = (Node) obj;
 
-    if (nodeMessage.getType().equals(this.type)
+    if (nodeMessage.getType().equals(this.getType())
         && nodeMessage.getVersion().equals(this.getVersion())
         && nodeMessage.getId().equals(this.nodeId)
         && nodeMessage.getPortMap().equals(this.ports)
@@ -368,13 +397,12 @@ public class Node extends BaseObject implements Cloneable {
   public String toString() {
 
     ToStringBuilder sb = new ToStringBuilder(this);
-    sb.append("version", getVersion());
-    sb.append("nodeId", nodeId);
-    sb.append("ports", ports);
-    sb.append("attributes", getAttributes());
+    sb.append(VERSION, getVersion());
+    sb.append(NODE_ID, nodeId);
+    sb.append(PORTS, ports);
+    sb.append(ATTRIBUTES, getAttributes());
 
     return sb.toString();
 
   }
-
 }

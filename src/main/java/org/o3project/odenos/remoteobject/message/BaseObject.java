@@ -24,11 +24,31 @@ import java.util.Map;
  *
  */
 public abstract class BaseObject extends MessageBodyUnpacker {
-  private Map<String, String> attributes = new HashMap<String, String>();
 
+  private String type = null;
   private int version = 0;
-
+  private Map<String, String> attributes = new HashMap<String, String>();
   public static final String INITIAL_VERSION = "0";
+  public static final String STATUS_UP = "UP";
+  public static final String STATUS_DOWN = "DOWN";
+
+  /**
+   * Get type of this object.
+   *
+   * @return object type.
+   */
+  public String getType() {
+    return type;
+  }
+
+  /**
+   * Set type of this object.
+   *
+   * @return object type.
+   */
+  protected void setType(String type) {
+    this.type = type;
+  }
 
   /**
    * Get version of this object.

@@ -1107,8 +1107,8 @@ public class NodeTest {
     /*
      * check
      */
-    assertThat(result.contains("[version=123,nodeId=NodeId"), is(true));
-    assertThat(result.contains("attributes={att123=val123}]"), is(true));
+    assertThat(result.contains("[version=123,node_id=NodeId"), is(true));
+    assertThat(result.contains("attributes={physical_id=NodeId, vendor=unknown, oper_status=UP, admin_status=UP, att123=val123}]"), is(true));
 
   }
 
@@ -1138,9 +1138,9 @@ public class NodeTest {
      */
     String expectedString = StringUtils.join(new String[] {
         "[version=123",
-        "nodeId=NodeId",
+        "node_id=NodeId",
         "ports={}",
-        "attributes={att123=val123}]"
+        "attributes={physical_id=NodeId, vendor=unknown, oper_status=UP, admin_status=UP, att123=val123}]"
     }, ",");
 
     assertThat(result.endsWith(expectedString), is(true));
