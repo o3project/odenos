@@ -822,14 +822,12 @@ public class Network extends Component {
       if (err != null) {
         return createErrorResponse(Response.BAD_REQUEST, null, err);
       }
+      srcPrev = topology.getPort(msg.getSrcNode(), msg.getSrcPort()).clone();
+      dstPrev = topology.getPort(msg.getDstNode(), msg.getDstPort()).clone();
       link = topology.createLink(msg);
       linkOld = null;
       action = LinkChanged.Action.add;
       returnCode = Response.CREATED;
-      srcPrev = topology.getPort(msg.getSrcNode(), msg.getSrcPort())
-          .clone();
-      dstPrev = topology.getPort(msg.getDstNode(), msg.getDstPort())
-          .clone();
 
       if(!link.isAttribute(AttrElements.OPER_STATUS)) {
          if(STATUS_DOWN.equals(srcPrev.getAttribute(AttrElements.OPER_STATUS))
