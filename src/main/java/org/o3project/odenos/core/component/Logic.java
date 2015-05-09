@@ -1254,28 +1254,37 @@ public abstract class Logic extends Component {
         continue;
       }
 
-      // GET node
-      Node body = networkIf.getNode(nodeId[1]);
-      if (body == null) {
-        continue;
-      }
-
-      // attributes copy (curr -> body)
+      Response resp = null;
+      int retry = 3;
       boolean updated = false;
-      Map<String, String> currAttributes = curr.getAttributes();
-      for (String key : currAttributes.keySet()) {
-        String oldAttr = prev.getAttribute(key);
-        if (nodeMessageIgnoreAttributes.contains(key)
-            || (oldAttr != null && oldAttr.equals(currAttributes
-                .get(key)))) {
-          continue;
+      do {
+        // GET node
+        Node body = networkIf.getNode(nodeId[1]);
+        if (body == null) {
+          break;
         }
-        updated = true;
-        body.putAttribute(key, currAttributes.get(key));
-      }
-      if (updated) {
+
+        // attributes copy (curr -> body)
+        Map<String, String> currAttributes = curr.getAttributes();
+        for (String key : currAttributes.keySet()) {
+          String oldAttr = prev.getAttribute(key);
+          if (nodeMessageIgnoreAttributes.contains(key)
+              || (oldAttr != null && oldAttr.equals(currAttributes.get(key)))) {
+            continue;
+          }
+          updated = true;
+          body.putAttribute(key, currAttributes.get(key));
+        }
         // PUT Node
-        respList.put(dstNode, networkIf.putNode(body));
+        if (updated) {
+          resp = networkIf.putNode(body);
+          retry--;
+        }
+      } while ((resp != null)
+            && (resp.statusCode == Response.CONFLICT)
+            && (retry > 0)) ;
+      if (updated) {
+        respList.put(dstNode, resp);
       }
     }
     return respList;
