@@ -725,10 +725,10 @@ public class Network extends Component {
       return createErrorResponse(Response.BAD_REQUEST, null, err);
     }
 
-    Port srcPrev = topology.getPort(msg.getSrcNode(), msg.getSrcPort())
-        .clone();
-    Port dstPrev = topology.getPort(msg.getDstNode(), msg.getDstPort())
-        .clone();
+    Node srcNodePrev = topology.getNode(msg.getSrcNode()).clone();
+    Node dstNodePrev = topology.getNode(msg.getDstNode()).clone();
+    Port srcPortPrev = topology.getPort(msg.getSrcNode(), msg.getSrcPort()).clone();
+    Port dstPortPrev = topology.getPort(msg.getDstNode(), msg.getDstPort()).clone();
 
     // forced to auto-number
     msg.setId(null);
@@ -739,8 +739,8 @@ public class Network extends Component {
     }
 
     if(!link.isAttribute(AttrElements.OPER_STATUS)) {
-      if(STATUS_DOWN.equals(srcPrev.getAttribute(AttrElements.OPER_STATUS))
-      || STATUS_DOWN.equals(dstPrev.getAttribute(AttrElements.OPER_STATUS))) {
+      if(STATUS_DOWN.equals(srcPortPrev.getAttribute(AttrElements.OPER_STATUS))
+      || STATUS_DOWN.equals(dstPortPrev.getAttribute(AttrElements.OPER_STATUS))) {
          link.putAttribute(AttrElements.OPER_STATUS, STATUS_DOWN);
        } else {
          link.putAttribute(AttrElements.OPER_STATUS, STATUS_UP);
@@ -749,23 +749,22 @@ public class Network extends Component {
 
     notifyLinkChanged(null, link, LinkChanged.Action.add);
 
-    String nodeId;
-    String portId;
-
-    nodeId = link.getSrcNode();
-    portId = link.getSrcPort();
-    Port srcCurr = topology.getNodeMap().get(nodeId).getPort(portId);
-    if (isNeededVerbosePortEvent()) {
-      notifyPortChanged(srcPrev.clone(), srcCurr.clone(),
-          PortChanged.Action.update);
+    String srcNodeId = link.getSrcNode();
+    String dstNodeId = link.getDstNode();
+    if (isNeededVerboseNodeEvent()) {
+      Node srcNodeCurr = topology.getNode(srcNodeId).clone();
+      Node dstNodeCurr = topology.getNode(dstNodeId).clone();
+      notifyNodeChanged(srcNodePrev, srcNodeCurr, NodeChanged.Action.update);
+      notifyNodeChanged(dstNodePrev, dstNodeCurr, NodeChanged.Action.update);
     }
 
-    nodeId = link.getDstNode();
-    portId = link.getDstPort();
-    Port dstCurr = topology.getNodeMap().get(nodeId).getPort(portId);
     if (isNeededVerbosePortEvent()) {
-      notifyPortChanged(dstPrev.clone(), dstCurr.clone(),
-          PortChanged.Action.update);
+      String srcPortId = link.getSrcPort();
+      String dstPortId = link.getDstPort();
+      Port srcPortCurr = topology.getPort(srcNodeId, srcPortId).clone();
+      Port dstPortCurr = topology.getPort(dstNodeId, dstPortId).clone();
+      notifyPortChanged(srcPortPrev, srcPortCurr, PortChanged.Action.update);
+      notifyPortChanged(dstPortPrev, dstPortCurr, PortChanged.Action.update);
     }
 
     return new Response(Response.OK, link);
@@ -807,11 +806,12 @@ public class Network extends Component {
       return createErrorResponse(Response.BAD_REQUEST, "invalid linkId");
     }
 
+    Node srcNodePrev = topology.getNode(msg.getSrcNode()).clone();
+    Node dstNodePrev = topology.getNode(msg.getDstNode()).clone();
+    Port srcPortPrev = topology.getPort(msg.getSrcNode(), msg.getSrcPort()).clone();
+    Port dstPortPrev = topology.getPort(msg.getDstNode(), msg.getDstPort()).clone();
+
     Link linkOld;
-
-    Port srcPrev = null;
-    Port dstPrev = null;
-
     Link link = topology.getLink(linkId);
 
     LinkChanged.Action action;
@@ -822,16 +822,15 @@ public class Network extends Component {
       if (err != null) {
         return createErrorResponse(Response.BAD_REQUEST, null, err);
       }
-      srcPrev = topology.getPort(msg.getSrcNode(), msg.getSrcPort()).clone();
-      dstPrev = topology.getPort(msg.getDstNode(), msg.getDstPort()).clone();
+
       link = topology.createLink(msg);
       linkOld = null;
       action = LinkChanged.Action.add;
       returnCode = Response.CREATED;
 
       if(!link.isAttribute(AttrElements.OPER_STATUS)) {
-         if(STATUS_DOWN.equals(srcPrev.getAttribute(AttrElements.OPER_STATUS))
-         || STATUS_DOWN.equals(dstPrev.getAttribute(AttrElements.OPER_STATUS))) {
+         if(STATUS_DOWN.equals(srcPortPrev.getAttribute(AttrElements.OPER_STATUS))
+         || STATUS_DOWN.equals(dstPortPrev.getAttribute(AttrElements.OPER_STATUS))) {
            link.putAttribute(AttrElements.OPER_STATUS, STATUS_DOWN);
          } else {
            link.putAttribute(AttrElements.OPER_STATUS, STATUS_UP);
@@ -884,15 +883,21 @@ public class Network extends Component {
     notifyLinkChanged(linkOld, link.clone(), action);
 
     if (action.equals(LinkChanged.Action.add)) {
+      String srcNodeId = link.getSrcNode();
+      String dstNodeId = link.getDstNode();
+      if (isNeededVerboseNodeEvent()) {
+        Node srcNodeCurr = topology.getNode(srcNodeId).clone();
+        Node dstNodeCurr = topology.getNode(dstNodeId).clone();
+        notifyNodeChanged(srcNodePrev, srcNodeCurr, NodeChanged.Action.update);
+        notifyNodeChanged(dstNodePrev, dstNodeCurr, NodeChanged.Action.update);
+      }
       if (isNeededVerbosePortEvent()) {
-        notifyPortChanged(srcPrev,
-            topology.getPort(msg.getSrcNode(), msg.getSrcPort())
-                .clone(),
-            PortChanged.Action.update);
-        notifyPortChanged(dstPrev,
-            topology.getPort(msg.getDstNode(), msg.getDstPort())
-                .clone(),
-            PortChanged.Action.update);
+        String srcPortId = link.getSrcPort();
+        String dstPortId = link.getDstPort();
+        Port srcPortCurr = topology.getPort(srcNodeId, srcPortId).clone();
+        Port dstPortCurr = topology.getPort(dstNodeId, dstPortId).clone();
+        notifyPortChanged(srcPortPrev, srcPortCurr, PortChanged.Action.update);
+        notifyPortChanged(dstPortPrev, dstPortCurr, PortChanged.Action.update);
       }
     }
 

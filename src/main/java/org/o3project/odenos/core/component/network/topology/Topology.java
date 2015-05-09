@@ -192,7 +192,6 @@ public class Topology extends BaseObject implements Cloneable {
       linkId = msg.getId();
     }
     Link link = getLink(linkId);
-    Port port;
     if (link == null) {
       link = new Link(linkId);
       link.setVersion(INITIAL_VERSION);
@@ -203,7 +202,11 @@ public class Topology extends BaseObject implements Cloneable {
       link.setPorts(msg.getSrcNode(), msg.getSrcPort(),
           msg.getDstNode(), msg.getDstPort());
       link.putAttributes(msg.getAttributes());
-      port = nodes.get(msg.getSrcNode()).getPort(msg.getSrcPort());
+
+      Node node = nodes.get(msg.getSrcNode());
+      node.updateVersion();
+
+      Port port = nodes.get(msg.getSrcNode()).getPort(msg.getSrcPort());
       port.setOutLink(linkId);
       port.updateVersion();
       port = nodes.get(msg.getDstNode()).getPort(msg.getDstPort());

@@ -188,6 +188,7 @@ public class Node extends BaseObject implements Cloneable {
       port.putAttributes(msg.getAttributes());
     }
     port.updateVersion();
+    this.updateVersion();
 
     return port;
   }

@@ -389,7 +389,6 @@ public class TopologyTest {
       assertThat(value, is(notNullValue()));
       assertThat(value.getPort("port1_id123"), is(notNullValue()));
       assertThat(value.getAttribute("node1_att123"), is("node1_val123"));
-      assertThat(value.getVersion(), is("1"));
     }
   }
 
