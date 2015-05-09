@@ -1458,12 +1458,6 @@ public class Federator extends Logic {
       return false;
     }
 
-    // update original_nw's port attributes{"is_boundary":true}.
-    doPutAttributeBoundaryPort(nwIf1, port1);
-    doPutAttributeBoundaryPort(nwIf2, port2);
-
-    logger.info("update boundary port attributes.");
-
     String fedNwId = getNetworkIdByType(FEDERATED_NETWORK);
     if (fedNwId == null) {
       logger.warn("is not connected to federated network.");
@@ -1476,6 +1470,9 @@ public class Federator extends Logic {
     if (fedPorts1.size() == 0 || fedPorts2.size() == 0) {
       return false;
     }
+
+    logger.info("update boundary port attributes.");
+
     String[] fedPortList1 = fedPorts1.get(0).split(SEPARATOR);
     String[] fedPortList2 = fedPorts2.get(0).split(SEPARATOR);
 
@@ -1508,10 +1505,8 @@ public class Federator extends Logic {
     }
 
     if (originalNwAndBoundaryLinkMap.containsKey(nwIf1.getNetworkId())) {
-      originalNwAndBoundaryLinkMap.get(nwIf1.getNetworkId()).add(
-          fedLinkId1);
-      originalNwAndBoundaryLinkMap.get(nwIf1.getNetworkId()).add(
-          fedLinkId2);
+      originalNwAndBoundaryLinkMap.get(nwIf1.getNetworkId()).add(fedLinkId1);
+      originalNwAndBoundaryLinkMap.get(nwIf1.getNetworkId()).add(fedLinkId2);
     } else {
       List<String> newLinks = new ArrayList<>();
       newLinks.add(fedLinkId1);
@@ -1520,16 +1515,18 @@ public class Federator extends Logic {
     }
 
     if (originalNwAndBoundaryLinkMap.containsKey(nwIf2.getNetworkId())) {
-      originalNwAndBoundaryLinkMap.get(nwIf2.getNetworkId()).add(
-          fedLinkId1);
-      originalNwAndBoundaryLinkMap.get(nwIf2.getNetworkId()).add(
-          fedLinkId2);
+      originalNwAndBoundaryLinkMap.get(nwIf2.getNetworkId()).add(fedLinkId1);
+      originalNwAndBoundaryLinkMap.get(nwIf2.getNetworkId()).add(fedLinkId2);
     } else {
       List<String> newLinks = new ArrayList<>();
       newLinks.add(fedLinkId1);
       newLinks.add(fedLinkId2);
       originalNwAndBoundaryLinkMap.put(nwIf2.getNetworkId(), newLinks);
     }
+
+    // update original_nw's port attributes{"is_boundary":true}.
+    doPutAttributeBoundaryPort(nwIf1, port1);
+    doPutAttributeBoundaryPort(nwIf2, port2);
 
     return true;
   }
