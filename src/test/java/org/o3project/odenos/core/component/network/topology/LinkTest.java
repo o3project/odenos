@@ -795,14 +795,16 @@ public class LinkTest {
      */
     String expectedString = StringUtils.join(new String[] {
         "[version=123",
-        "linkId=LinkId",
-        "srcNode=SrcNode",
-        "srcPort=SrcPort",
-        "dstNode=DstNode",
-        "dstPort=DstPort",
-        "attributes={att123=val123}]"
+        "link_id=LinkId",
+        "src_node=SrcNode",
+        "src_port=SrcPort",
+        "dst_node=DstNode",
+        "dst_port=DstPort",
+        "attributes={cost=1, att123=val123}]"
     }, ",");
 
+    System.out.print(result);
+    System.out.print(expectedString);
     assertThat(result.endsWith(expectedString), is(true));
 
   }
