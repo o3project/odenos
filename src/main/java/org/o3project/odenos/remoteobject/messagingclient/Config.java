@@ -16,6 +16,7 @@
 
 package org.o3project.odenos.remoteobject.messagingclient;
 
+import java.util.Collection;
 import java.util.EnumSet;
 
 /**
@@ -41,7 +42,9 @@ public interface Config {
     // Re-SUBSCRIBEs onReconnected()
     RESEND_SUBSCRIBE_ON_RECONNECTED,
     // Bridged pubsub client 
-    PUBSUB_BRIDGED
+    PUBSUB_BRIDGED,
+    // Outputs a received request, response or event to logger
+    OUTPUT_MESSAGE_TO_LOGGER
   };
 
   public String getSystemManagerId();
@@ -73,5 +76,6 @@ public interface Config {
   public EnumSet<MODE> getMode();
   
   public String getPublishScript();
-
+  
+  public Collection<String> getObjectIds();
 }

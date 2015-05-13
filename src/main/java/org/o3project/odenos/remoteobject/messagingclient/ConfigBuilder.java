@@ -16,6 +16,7 @@
 
 package org.o3project.odenos.remoteobject.messagingclient;
 
+import java.util.Collection;
 import java.util.EnumSet;
 import java.util.UUID;
 import java.util.concurrent.BlockingQueue;
@@ -23,7 +24,6 @@ import java.util.concurrent.RejectedExecutionHandler;
 import java.util.concurrent.TimeUnit;
 
 import org.o3project.odenos.remoteobject.messagingclient.Config.MODE;
-import org.o3project.odenos.remoteobject.messagingclient.redis.PubSubDriverImpl;
 
 /**
  * {@link MessageDispatcher} configuration builder.
@@ -78,6 +78,9 @@ public class ConfigBuilder {
   // Pubsub server such as Redis support scripting to extend its capabilities.
   private String publishScript =
       "redis.call('publish', KEYS[1]..'@bridge', ARGV[1]) ; redis.call('publish', KEYS[1], ARGV[1])";
+  
+  // A list of object IDs to filter out messages to be output to logger
+  private Collection<String> objectIds = null;
 
   public ConfigBuilder setSystemManagerId(final String systemManagerId) {
     this.systemManagerId = systemManagerId;
@@ -245,6 +248,15 @@ public class ConfigBuilder {
   public String getPublishScript() {
     return publishScript;
   }
+  
+  public ConfigBuilder setObjectIds(Collection<String> objectIds) {
+    this.objectIds = objectIds;
+    return this;
+  }
+  
+  public Collection<String> getObjectIds() {
+    return objectIds;
+  }
  
   /**
    * Returns an instance of immutable config. 
@@ -271,6 +283,7 @@ public class ConfigBuilder {
     private final boolean systemManagerStatusCheck;
     private final EnumSet<MODE> mode;
     private final String publishScript;
+    private final Collection<String> objectIds;
 
     private ConfigImpl(ConfigBuilder builder) {
       this.systemManagerId = builder.getSystemManagerId();
@@ -287,6 +300,7 @@ public class ConfigBuilder {
       this.systemManagerStatusCheck = builder.getSystemManagerStatusCheck();
       this.mode = builder.getMode();
       this.publishScript = builder.getPublishScript();
+      this.objectIds = builder.getObjectIds();
     }
 
     @Override
@@ -362,6 +376,11 @@ public class ConfigBuilder {
     @Override
     public String getPublishScript() {
       return publishScript;
+    }
+    
+    @Override
+    public Collection<String> getObjectIds() {
+      return objectIds;
     }
   }
 }
