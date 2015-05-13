@@ -21,6 +21,7 @@ import org.o3project.odenos.remoteobject.RemoteObject;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Modifier;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
@@ -92,7 +93,8 @@ public final class ComponentLoader {
         String filename = entry.getName();
         String className = packageName + FilenameUtils.removeExtension(filename);
         Class<?> clazz = classLoader.loadClass(className);
-        if (RemoteObject.class.isAssignableFrom(clazz)) {
+        if (RemoteObject.class.isAssignableFrom(clazz) &&
+            !Modifier.isAbstract(clazz.getModifiers())) {
           System.out.println("Loading... " + className);
           result.add((Class<? extends RemoteObject>) clazz);
         }
