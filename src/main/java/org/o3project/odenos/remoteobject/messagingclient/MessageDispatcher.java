@@ -128,7 +128,7 @@ public class MessageDispatcher implements Closeable, IMessageListener {
   // Loopback driver for events
   // Note: this driver is never used for request/response.
   protected final IPubSubDriver loopBackDriver;
-  
+
   protected IPubSubDriver monitor = null;
 
   protected SubscribersMap subscribersMap = new SubscribersMap();
@@ -143,11 +143,12 @@ public class MessageDispatcher implements Closeable, IMessageListener {
   protected boolean loopbackDisabled = false;
   protected boolean includeSourceObjectId = false;
   protected boolean reflectMessageToMonitor = false;
+  protected boolean outputMessageToLogger = false;
+  protected Collection<String> objectIds = null;
 
   protected static final String channelString(final String publisherId, final String eventId) {
     return publisherId + ":" + eventId;
   }
-  
 
   /**
    * Constructor with no arguments.
@@ -199,6 +200,8 @@ public class MessageDispatcher implements Closeable, IMessageListener {
     loopbackDisabled = mode.contains(MODE.LOOPBACK_DISABLED);
     includeSourceObjectId = mode.contains(MODE.INCLUDE_SOURCE_OBJECT_ID);
     reflectMessageToMonitor = mode.contains(MODE.REFLECT_MESSAGE_TO_MONITOR);
+    outputMessageToLogger = mode.contains(MODE.OUTPUT_MESSAGE_TO_LOGGER);
+    objectIds = config.getObjectIds();
 
     // Actor system instantiation.
     // The number of woker threads: the max number of remote transactions.
@@ -216,7 +219,7 @@ public class MessageDispatcher implements Closeable, IMessageListener {
       if (reflectMessageToMonitor && clazz != ConfigBuilder.DEFAULT_PUBSUB_DRIVER_IMPL_CLASS) {
         clazz = classLoader.loadClass(ConfigBuilder.DEFAULT_PUBSUB_DRIVER_IMPL_CLASS.getName());
         constructor = clazz.getDeclaredConstructor(
-          Config.class, IMessageListener.class);
+            Config.class, IMessageListener.class);
         monitor = (IPubSubDriver) constructor.newInstance(config, null);
       } else if (reflectMessageToMonitor) {
         monitor = driverImpl;
@@ -283,6 +286,16 @@ public class MessageDispatcher implements Closeable, IMessageListener {
             monitor.publish(MONITOR_CHANNEL, data);
           }
 
+          // Logging
+          if (log.isDebugEnabled() && outputMessageToLogger) {
+            if (objectIds.contains(channel) ||
+                objectIds.contains(sourceObjectId)) {
+              log.debug("MONITOR|{}|{}|{}|{}|{}|{}|{}",
+                  REQUEST, channel, sourceObjectId, sno, request.method.name(),
+                  "/" + channel + "/" + request.path, request);
+            }
+          }
+
           // Wraps the request with Mail and deliver it to a mailbox.
           String to = request.objectId;
           mail = new Mail(serial, sno, to, sourceObjectId, this, request, null);
@@ -324,6 +337,16 @@ public class MessageDispatcher implements Closeable, IMessageListener {
             monitor.publish(MONITOR_CHANNEL, data);
           }
 
+          // Logging
+          if (log.isDebugEnabled() && outputMessageToLogger) {
+            if (objectIds.contains(channel) ||
+                objectIds.contains(sourceObjectId)) {
+              log.debug("MONITOR|{}|{}|{}|{}|{}|{}",
+                  RESPONSE, channel, sourceObjectId, sno, response.statusCode,
+                  response.getBodyValue());
+            }
+          }
+
           remoteTransactions.signalResponse(sno, response);
           break;
 
@@ -360,6 +383,17 @@ public class MessageDispatcher implements Closeable, IMessageListener {
                 pk.write(event.getBodyValue());
                 byte[] data = pk.toByteArray();
                 monitor.publish(MONITOR_CHANNEL, data);
+              }
+
+              // Logging
+              if (log.isDebugEnabled() && outputMessageToLogger) {
+                if (objectIds.contains(subscriber) ||
+                    objectIds.contains(event.publisherId)) {
+                  log.debug("MONITOR|{}|{}|{}|{}|{}",
+                      EVENT, subscriber, event.publisherId,
+                      event.publisherId + ":" + event.getEventType(),
+                      event.getBodyValue());
+                }
               }
 
               mail = new Mail(serial, sno, subscriber, channel, this, null, event);
@@ -698,6 +732,16 @@ public class MessageDispatcher implements Closeable, IMessageListener {
         monitor.publish(MONITOR_CHANNEL, data);
       }
 
+      // Logging
+      if (log.isDebugEnabled() && outputMessageToLogger) {
+        if (objectIds.contains(objectId) ||
+            objectIds.contains(sourceObjectId)) {
+          log.debug("MONITOR|{}|{}|{}|{}|{}|{}|{}",
+              REQUEST, objectId, sourceObjectId, sno, request.method.name(),
+              "/" + request.objectId + "/" + request.path, request.getBodyValue());
+        }
+      }
+
       // Loopback of request/response
       // synchronized with Actor#read()
       synchronized (localObject) {
@@ -714,9 +758,19 @@ public class MessageDispatcher implements Closeable, IMessageListener {
         pk.write(objectId);
         pk.write(sno);
         pk.write(response.statusCode);
-        pk.write(request.getBodyValue());
+        pk.write(response.getBodyValue());
         byte[] data = pk.toByteArray();
         monitor.publish(MONITOR_CHANNEL, data);
+      }
+
+      // Logging
+      if (log.isDebugEnabled() && outputMessageToLogger) {
+        if (objectIds.contains(sourceObjectId) ||
+            objectIds.contains(objectId)) {
+          log.debug("MONITOR|{}|{}|{}|{}|{}|{}",
+              RESPONSE, sourceObjectId, objectId, sno, response.statusCode,
+              response.getBodyValue());
+        }
       }
 
     } else {
@@ -981,7 +1035,7 @@ public class MessageDispatcher implements Closeable, IMessageListener {
       Set<String> channels;
       Set<String> localObjectIds;
 
-      synchronized(subscribersMap) {
+      synchronized (subscribersMap) {
         // channel as sourceDispatcherId
         channels = new HashSet<String>();
         channels.add(getSourceDispatcherId());
@@ -999,7 +1053,7 @@ public class MessageDispatcher implements Closeable, IMessageListener {
           if (!channels.isEmpty()) {
             driverImpl.subscribeChannels(channels);
           }
-        } else {  // loopback enabled for events
+        } else { // loopback enabled for events
           channels = subscribersMap.filterUnmatchedChannels(localObjectIds);
           if (!channels.isEmpty()) {
             driverImpl.subscribeChannels(channels);

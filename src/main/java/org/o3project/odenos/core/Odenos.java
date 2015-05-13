@@ -43,6 +43,8 @@ import org.o3project.odenos.remoteobject.rest.RESTTranslator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.Set;
@@ -73,6 +75,7 @@ public final class Odenos {
   private int restport;
   private String restroot;
   private boolean monitorEnabled;
+  private Collection<String> objectIds;
 
   private final class CommandParser {
     CommandLine line;
@@ -90,7 +93,8 @@ public final class Odenos {
       options.addOption("S", "system_with_name", true, "start core system with specified id");
       options.addOption("o", "restport", true, "port number of RestPort");
       options.addOption("h", "restroot", true, "Directory of Rest root");
-      options.addOption("m", "monitor", true, "Directory of Rest root");
+      options.addOption("m", "monitor", true, "Output message to monitor");
+      options.addOption("l", "monitor_logging", true, "Output message to logger");
     }
 
     public final void parse(String[] args) throws ParseException {
@@ -164,7 +168,17 @@ public final class Odenos {
         return false;
       }
     }
-  }
+
+    public final Collection<String> getMonitorLogging() {
+      if (line.hasOption("monitor_logging")) {
+        String opt = line.getOptionValue("monitor_logging");
+        Collection<String> objectIds = Arrays.asList(opt.split("\\s*,\\s*")); 
+        return objectIds;
+      } else {
+      return null;
+      }
+    }
+  } 
 
   /**
    * Parse parameters.
@@ -190,6 +204,7 @@ public final class Odenos {
     restport = parser.getRestPort();
     restroot = parser.getRestRoot();
     monitorEnabled = parser.getMonitor();
+    objectIds = parser.getMonitorLogging();
   }
 
   /**
@@ -197,14 +212,17 @@ public final class Odenos {
    */
   public final void run() {
     try {
-      EnumSet<MODE> mode;
+      EnumSet<MODE> mode = EnumSet.noneOf(MODE.class);
+      mode.add(MODE.RESEND_SUBSCRIBE_ON_RECONNECTED);
       if (monitorEnabled) {
-        mode = EnumSet.of(MODE.RESEND_SUBSCRIBE_ON_RECONNECTED,
-                          MODE.INCLUDE_SOURCE_OBJECT_ID,
-                          //MODE.LOOPBACK_DISABLED,
-                          MODE.REFLECT_MESSAGE_TO_MONITOR);
-      } else {
-        mode = EnumSet.of(MODE.RESEND_SUBSCRIBE_ON_RECONNECTED);
+        mode.add(MODE.INCLUDE_SOURCE_OBJECT_ID);
+        mode.add(MODE.REFLECT_MESSAGE_TO_MONITOR);
+      }
+      if (objectIds != null) {
+        if (!mode.contains(MODE.INCLUDE_SOURCE_OBJECT_ID)) {
+          mode.add(MODE.INCLUDE_SOURCE_OBJECT_ID);
+        }
+        mode.add(MODE.OUTPUT_MESSAGE_TO_LOGGER);
       }
       Config config = new ConfigBuilder()
           .setSystemManagerId(systemMgrId)
@@ -218,6 +236,7 @@ public final class Odenos {
           //.setRemoteTransactionsMax(20)
           //.setRemoteTransactionsInitialTimeout(3)
           //.setRemoteTransactionsFinalTimeout(30)
+          .setObjectIds(objectIds)
           .build();
       disp = new MessageDispatcher(config);
       disp.start();
