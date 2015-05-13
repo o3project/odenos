@@ -431,25 +431,22 @@ public class SettingNetwork extends StartFederatedNetwork {
                 ORIGINAL_02_NW_ID, org02Port0022.getNode(), org02Port0022.getId()));
 
         // action1
-        FlowAction action1 = new FlowActionOutput(String.format("%s_%s",
-                ORIGINAL_02_NW_ID, org02Port0022.getNode()));
         List<FlowAction> actionsList1 = new ArrayList<FlowAction>();
+        FlowAction action1
+          = new FlowActionOutput(String.format("%s_%s_%s", ORIGINAL_02_NW_ID, org02Port0022.getNode(), org02Port0022.getId()));
         actionsList1.add(action1);
-        Map<String, List<FlowAction>> actions1 =
-                new HashMap<String, List<FlowAction>>();
-        String outNode1 = String.format("%s_%s_%s",
-                ORIGINAL_02_NW_ID, org02Port0022.getNode(), org02Port0022.getId());
+        Map<String, List<FlowAction>> actions1 = new HashMap<String, List<FlowAction>>();
+        String outNode1 = String.format("%s_%s", ORIGINAL_02_NW_ID, org02Port0022.getNode());
         actions1.put(outNode1, actionsList1);
         // action2
-        FlowAction action2 = new FlowActionOutput(String.format("%s_%s",
-                ORIGINAL_01_NW_ID, org01Port0011.getNode()));
         List<FlowAction> actionsList2 = new ArrayList<FlowAction>();
-        actionsList1.add(action2);
+        FlowAction action2
+          = new FlowActionOutput(String.format("%s_%s_%s", ORIGINAL_01_NW_ID, org01Port0011.getNode(), org01Port0011.getId()));
+        actionsList2.add(action2);
         Map<String, List<FlowAction>> actions2 =
                 new HashMap<String, List<FlowAction>>();
-        String outNode2 = String.format("%s_%s_%s",
-                ORIGINAL_01_NW_ID, org01Port0011.getNode(), org01Port0011.getId());
-        actions1.put(outNode2, actionsList2);
+        String outNode2 = String.format("%s_%s", ORIGINAL_01_NW_ID, org01Port0011.getNode());
+        actions2.put(outNode2, actionsList2);
 
         List<BasicFlowMatch> matches1 = new ArrayList<BasicFlowMatch>();
         List<BasicFlowMatch> matches2 = new ArrayList<BasicFlowMatch>();
