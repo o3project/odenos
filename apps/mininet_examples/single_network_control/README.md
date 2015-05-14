@@ -55,7 +55,7 @@ $ sudo ./start_mininet.py
 
 ### 3. Check ODENOS status
 
-1. check components
+####1. check components
 
    ```
    $ curl http://localhost:10080/systemmanager/components
@@ -101,7 +101,7 @@ Response
 }
 ```
 
-2. check connections
+####2. check connections
 
    ```
    $ curl http://localhost:10080/systemmanager/connections
@@ -145,7 +145,7 @@ Response
 }
 ```
 
-3. check networks' topology
+####3. check networks' topology
 
    ```
    $ curl http://localhost:10080/network1/topology
@@ -172,7 +172,7 @@ Response
 ```
 
 
-4. start ping from h1 to h2
+####4. start ping from h1 to h2
 
    ```
    mininet> h1 ping h2
@@ -187,7 +187,7 @@ Response
   :
 ```
 
-5. check networks' flows
+####5. check networks' flows
 
    ```
    $ curl http://localhost:10080/network1/flows
@@ -222,7 +222,7 @@ Response
 }
 ```
 
-6. check networks' packets
+####6. check networks' packets
 
    ```
    $ curl http://localhost:10080/network1/packets/
@@ -244,7 +244,7 @@ Response
 }
 ```
 
-7. check l2sw1's fdb
+####7. check l2sw1's fdb
 
    ```
    $ curl http://localhost:10080/l2sw1/fdb
