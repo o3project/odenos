@@ -222,6 +222,14 @@ stop_process() {
 }
 
 start() {
+    echo "--  ----------------------------------> "
+    echo "--   o-o  o-o   o--o o   o  o-o   o-o   "
+    echo "--  o   o |  \  |    |\  | o   o |      "
+    echo "--  |   | |   O O-o  | \ | |   |  o-o   "
+    echo "--  o   o |  /  |    |  \| o   o     |  "
+    echo "--   o-o  o-o   o--o o   o  o-o  o--o   "
+    echo "--                                      "
+    echo ""
     echo "starting ODENOS"
     cp $ODENOS_CONF_FILE $ODENOS_CONF_FILE_TMP
     read_config_file
@@ -231,6 +239,7 @@ start() {
         sleep 3
     fi
     start_process
+
 }
 
 stop() {
