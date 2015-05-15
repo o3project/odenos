@@ -1218,7 +1218,7 @@ public class NetworkTest {
     /*
      * test
      */
-    Port port = new Port("1", "NodeId", "PortId");
+    Port port = new Port("1", "PortId", "NodeId");
     port.setInLink("LinkIn");
     port.setOutLink("LinkOut");
     Response result = target.putPort("NodeId", "PortId", port);
