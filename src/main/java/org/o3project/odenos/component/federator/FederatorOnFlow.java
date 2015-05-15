@@ -26,6 +26,7 @@ import org.o3project.odenos.core.component.network.flow.basic.BasicFlowMatch;
 import org.o3project.odenos.core.component.network.flow.basic.FlowAction;
 import org.o3project.odenos.core.component.network.flow.basic.FlowActionOutput;
 import org.o3project.odenos.core.component.network.topology.Link;
+import org.o3project.odenos.remoteobject.message.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -40,7 +41,7 @@ import java.util.regex.Pattern;
  * Dispose onFlow in Federator class.
  */
 public class FederatorOnFlow {
-  private static final Logger logger = LoggerFactory.getLogger(Federator.class);
+  private static final Logger log = LoggerFactory.getLogger(Federator.class);
 
   protected ConversionTable conversionTable;
   protected Map<String, NetworkInterface> networkInterfaces;
@@ -66,7 +67,7 @@ public class FederatorOnFlow {
    * @param flow BasicFlow.
    */
   public void flowAddedExistPath(String networkId, BasicFlow flow) {
-    logger.debug("");
+    log.debug("");
     // set orgFlowList
     doFlowAddedSelect(flow);
   }
@@ -77,13 +78,13 @@ public class FederatorOnFlow {
    * @param flow BasicFlow.
    */
   public void flowAddedNotExistPath(String networkId, BasicFlow flow) {
-    logger.debug("");
+    log.debug("");
 
     
     BasicFlowMatch flowMatch = flow.getMatches().get(0);
     BasicFlow orgFlow = createOriginalFlowNotExistPath(networkId, flow);
     if (flowMatch == null || orgFlow == null) {
-      logger.warn("invalid federated flow.");
+      log.warn("invalid federated flow.");
       return;
     }
 
@@ -110,7 +111,7 @@ public class FederatorOnFlow {
    * @param flow BasicFlow
    */
   public void flowUpdatePreStatusFailed(String networkId, BasicFlow flow) {
-    logger.debug("");
+    log.debug("");
 
     String fedNwId = getNetworkIdByType(Federator.FEDERATED_NETWORK);
     NetworkInterface fedNwIf = networkInterfaces.get(fedNwId);
@@ -141,7 +142,7 @@ public class FederatorOnFlow {
    * @return boolean true:status established. false:status isn't established.
    */
   public boolean flowUpdatePreStatusEstablished(String networkId, BasicFlow flow) {
-    logger.debug("");
+    log.debug("");
 
     List<String> orgNetworks =
         conversionTable.getConnectionList(Federator.ORIGINAL_NETWORK);
@@ -157,11 +158,11 @@ public class FederatorOnFlow {
 
       if (!FlowObject.FlowStatus.ESTABLISHED.toString().equalsIgnoreCase(
           orgFlow.getStatus())) {
-        logger.debug("not flow's status established.");
+        log.debug("not flow's status established.");
         return false;
       }
     }
-    logger.debug("next federate stauts:: established.");
+    log.debug("next federate stauts:: established.");
     return true;
   }
 
@@ -172,7 +173,7 @@ public class FederatorOnFlow {
    * @return boolean true:status none. false:status isn't none.
    */
   public boolean flowUpdatePreStatusNone(String networkId, BasicFlow flow) {
-    logger.debug("");
+    log.debug("");
 
     List<String> orgNetworks =
         conversionTable.getConnectionList(Federator.ORIGINAL_NETWORK);
@@ -188,11 +189,11 @@ public class FederatorOnFlow {
 
       if (!FlowObject.FlowStatus.NONE.toString().equalsIgnoreCase(
           orgFlow.getStatus())) {
-        logger.debug("not flow's status none.");
+        log.debug("not flow's status none.");
         return false;
       }
     }
-    logger.debug("next federate stauts:: none");
+    log.debug("next federate stauts:: none");
     return true;
   }
   
@@ -202,11 +203,11 @@ public class FederatorOnFlow {
    * @param flow BasicFlow.
    */
   public void flowUpdateFromOriginal(String networkId, BasicFlow flow) {
-    logger.debug("");
+    log.debug("");
     
     BasicFlowMatch flowMatch = flow.getMatches().get(0);
     if (flowMatch == null) {
-      logger.warn("invalid federated flow.");
+      log.warn("invalid federated flow.");
       return;
     }
 
@@ -237,13 +238,13 @@ public class FederatorOnFlow {
   }
    
   protected BasicFlow createOriginalFlowNotExistPath(String fedNwId, BasicFlow fedFlow) {
-    logger.debug("");
+    log.debug("");
 
     BasicFlow orgFlow = fedFlow.clone();
 
     List<BasicFlowMatch> flowMatches = fedFlow.getMatches(); /* non null */
     if (flowMatches.size() == 0) {
-      logger.warn("there is no flow match");
+      log.warn("there is no flow match");
       return null;
     }
     BasicFlowMatch flowMatch = flowMatches.get(0);
@@ -251,7 +252,7 @@ public class FederatorOnFlow {
     String nodeId = flowMatch.getInNode();
     List<FlowAction> actions = fedFlow.getEdgeActions(nodeId); /* non null */
     if (actions.size() == 0) {
-      logger.warn("there is no flow action");
+      log.warn("there is no flow action");
       return null;
     }
 
@@ -259,14 +260,14 @@ public class FederatorOnFlow {
     try {
       convertAction(fedNwId, orgFlow);
     } catch (Exception e) {
-      logger.warn("failed convert flow's actions.");
+      log.warn("failed convert flow's actions.");
     }
 
     // convert flow's match..
     try {
       convertMatch(fedNwId, orgFlow);
     } catch (Exception e) {
-      logger.warn("failed convert flow's matches.");
+      log.warn("failed convert flow's matches.");
     }
 
     return orgFlow;
@@ -283,7 +284,7 @@ public class FederatorOnFlow {
       final Flow prev,
       final Flow curr,
       final ArrayList<String> attr) {
-    logger.debug("");
+    log.debug("");
 
     BasicFlow basicFlowCurr = (BasicFlow) curr;
     BasicFlow basicFlowPrev = (BasicFlow) prev;
@@ -329,7 +330,7 @@ public class FederatorOnFlow {
       }
       return true;
     }
-    logger.debug("");
+    log.debug("");
     return false;
   }
 
@@ -359,12 +360,12 @@ public class FederatorOnFlow {
         ignorekeys.remove(updatekey);
       }
     }
-    logger.debug("ignore key_list:: " + ignorekeys);
+    log.debug("ignore key_list:: " + ignorekeys);
     return ignorekeys;
   }
 
   protected void doFlowAddedSelect(BasicFlow fedFlow) {
-    logger.debug("");
+    log.debug("");
 
     String fedNwId = getNetworkIdByType(Federator.FEDERATED_NETWORK);
     String orgNwId;
@@ -377,7 +378,7 @@ public class FederatorOnFlow {
     try {
       orgNwId = convertMatch(fedNwId, orgFlow);
     } catch (Exception e) {
-      logger.warn("failed convert flow's actions.");
+      log.warn("failed convert flow's actions.");
       return ;
     }
 
@@ -391,9 +392,7 @@ public class FederatorOnFlow {
       }
 
       Link fedLink = networkInterfaces.get(fedNwId).getLink(fedPathId);
-      String srcPortId = getConvPortId(fedNwId, fedLink.getSrcNode(), fedLink.getSrcPort());
       String dstPortId = getConvPortId(fedNwId, fedLink.getDstNode(), fedLink.getDstPort());
-      String[] srcPortIds = srcPortId.split(Federator.SEPARATOR);
       String[] dstPortIds = dstPortId.split(Federator.SEPARATOR);
 
       // convert action
@@ -415,13 +414,13 @@ public class FederatorOnFlow {
     try {
       convertAction(fedNwId, orgFlow);
     } catch (Exception e) {
-      logger.warn("failed convert flow's actions.");
+      log.warn("failed convert flow's actions.");
     }
     doFlowAddedSetFlowRegister(orgNwId, orgFlow);
   }
 
   protected String convertPath(String fedNwId, String fedPathId) { 
-    logger.debug("");
+    log.debug("");
 
     List<String> orgPaths = conversionTable.getLink(fedNwId, fedPathId);
     if (orgPaths.size() == 0) {
@@ -439,7 +438,7 @@ public class FederatorOnFlow {
       String portId,
       Map<String, List<FlowAction>> edgeActions) {
 
-    logger.debug("");
+    log.debug("");
 
     Map<String, List<FlowAction>> newEdgeActions = new HashMap<String, List<FlowAction>>();
     String cnvPortId = getConvPortId(nwId, nodeId, portId);
@@ -465,7 +464,7 @@ public class FederatorOnFlow {
   protected void doFlowAddedSetFlowRegister(
       String orgNwId,
       BasicFlow orgFlow) {
-    logger.debug("");
+    log.debug("");
 
     // Register Flow
     String fedNwId = getNetworkIdByType(Federator.FEDERATED_NETWORK);
@@ -499,7 +498,7 @@ public class FederatorOnFlow {
       BasicFlow flow,
       String dstNodeId,
       String dstPortId) {
-    logger.debug("");
+    log.debug("");
 
     if (flow.getMatches() == null) {
       return false;
@@ -514,7 +513,7 @@ public class FederatorOnFlow {
   protected String convertMatch(
       String fedNwId,
       BasicFlow flow) throws Exception {
-    logger.debug("");
+    log.debug("");
 
     String networkId = null;
     for (BasicFlowMatch match : flow.getMatches()) {
@@ -544,7 +543,7 @@ public class FederatorOnFlow {
       BasicFlow flow,
       String srcNodeId,
       String srcPortId) {
-    logger.debug("");
+    log.debug("");
 
     try {
       List<FlowAction> actionOutputs = new ArrayList<FlowAction>();
@@ -560,7 +559,7 @@ public class FederatorOnFlow {
   protected String convertAction(
       String fedNwId,
       BasicFlow flow) throws Exception {
-    logger.debug("");
+    log.debug("");
 
     String networkId = null;
     BasicFlow fedFlow = flow.clone();
@@ -619,7 +618,7 @@ public class FederatorOnFlow {
    * @return ID for the network.
    */
   protected final String getNetworkIdByType(final String connType) {
-    logger.debug("");
+    log.debug("");
 
     if (connType == null) {
       return null;
@@ -641,7 +640,7 @@ public class FederatorOnFlow {
   protected final String getConvNodeId(
       final String networkId,
       final String nodeId) {
-    logger.debug("");
+    log.debug("");
 
     if (networkId == null || nodeId == null) {
       return null;
@@ -665,7 +664,7 @@ public class FederatorOnFlow {
       final String networkId,
       final String nodeId,
       final String portId) {
-    logger.debug("");
+    log.debug("");
 
     if (networkId == null || nodeId == null || portId == null) {
       return null;
@@ -712,5 +711,77 @@ public class FederatorOnFlow {
     }
     String[] fedFlowIds = convFlowId.get(0).split(Federator.SEPARATOR);
     return fedFlowIds[1];
+  }
+
+  /**
+   *
+   * @param networkId ID for network.
+   * @param prev flow object.
+   * @param curr flow object.
+   * @return true : reroute, false : not reroute
+   */
+  protected boolean isReroute(String networkId, BasicFlow prev, BasicFlow curr) {
+
+	boolean ret = false;
+    /* update matches */
+    List<BasicFlowMatch> prevMatches = prev.getMatches();
+    List<BasicFlowMatch> currMatches = curr.getMatches();
+    if (!prevMatches.equals(currMatches)) {
+      ret = true;
+    }
+    /* update actions */
+    Map<String, List<FlowAction>> prevEdgeActions = prev.getEdgeActions();
+    Map<String, List<FlowAction>> currEdgeActions = curr.getEdgeActions();
+    if (!prevEdgeActions.equals(currEdgeActions)) {
+      ret = true;
+    }
+    /* update path */
+    List<String> prevPath = prev.getPath();
+    List<String> currPath = curr.getPath();
+    if (!prevPath.equals(currPath)) {
+      ret = true;
+    }
+
+    return ret;
+  }
+  
+  protected void deleteOrignFlow(
+      final String networkId, final Flow flow) {
+    log.debug("");
+
+    if (networkId == null || flow == null) {
+      return;
+    }
+
+    ArrayList<String> orgFlows
+        = conversionTable.getFlow(networkId, flow.getFlowId());
+
+    for (String orgFlow : orgFlows) {
+      String[] flowId = orgFlow.split("::");
+      NetworkInterface networkIf = this.networkInterfaces.get(flowId[0]);
+      if (networkIf == null) {
+        continue;
+      }
+      networkIf.delFlow(flowId[1]);
+    }
+
+    // check delete flows.
+    for (String orgFlow : orgFlows) {
+      String[] flowId = orgFlow.split("::");
+      NetworkInterface networkIf = this.networkInterfaces.get(flowId[0]);
+      if (networkIf == null) {
+        continue;
+      }
+      int retry  = 100;
+      do {
+        if (networkIf.getFlow(flowId[1]) == null) {
+          break;
+        }
+        // sleep 1s
+        try { Thread.sleep(1000); } catch(InterruptedException e){} 
+        retry--;
+      } while (retry > 0 );
+    }
+    conversionTable.delEntryFlow(networkId, flow.getFlowId());
   }
 }
