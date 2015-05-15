@@ -156,7 +156,7 @@ version    | \<String>  |NetworkCompnent will assign valid version in response m
 flow_id    | \<string>  |Unique flow's Identifier in this network.                       | -(*1)     |  Mandatory
 owner      | \<string>  |Author of flow.                                             | Mandatory |  Mandatory
 enabled    | \<boolean> |The value the owner is usually set.  "True":flow is activation.  "False":flow is invalidation. | Mandatory |  Mandatory
-priority   | \<number>  |value:0-65535. It is to be 65535 (max priority) if not set. | Mandatory |  Mandatory
+priority   | \<number>  |value:0-65535(max priority). It is to be 32768 if not set. | Mandatory |  Mandatory
 status     | \<string>  |see <State Transition Table> Flow status, Lower Layer Component(usually, Driver Component) makes a state transition.  | Optional(*3) |  Mandatory
 attributes |dict{\<String>, \<String>}|See the table attributes.                     | Optional  |  Optional  
 
