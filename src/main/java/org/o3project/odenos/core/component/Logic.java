@@ -1640,7 +1640,7 @@ public abstract class Logic extends Component {
       srcFlow.setStatus(FlowObject.FlowStatus.TEARDOWN.toString());
       networkIf.putFlow(srcFlow);
     }
-    
+
     srcFlow = networkIf.getFlow(flow.getFlowId());
     if (srcFlow != null) {
       srcFlow.setEnabled(true);
@@ -1749,8 +1749,8 @@ public abstract class Logic extends Component {
           convMatches.add(convMatch); // append match
         }
       }
-      log.info("before:" + matches.toString());
-      log.info("after: " + convMatches.toString());
+      log.debug("{} Matches: {}", networkId, matches);
+      log.debug("Converted Matches: {}", convMatches);
       /**
        * convert actions.
        */
@@ -1795,8 +1795,8 @@ public abstract class Logic extends Component {
           }
         }
       }
-      log.info("before: " + edgeActions.toString());
-      log.info("after: " + convEdgeActions.toString());
+      log.debug("{} EdgeAction: {}", networkId, edgeActions);
+      log.debug("Converted EdgeAction: {}", convEdgeActions);
       /**
        * convert path.
        */
@@ -1810,14 +1810,18 @@ public abstract class Logic extends Component {
         ArrayList<String> convLinkId =
             conversionTable.getLink(networkId, linkId);
         if (convLinkId.size() == 0) {
-          log.error("not found conversion link (flow.path's linkId).");
+          if (!getDescription().contains("Aggregator")) {
+            // FIXME Dirty hack: If the Logic is Aggregator,
+            // no corresponding Link is expected.
+            log.error("not found conversion link (flow.path's linkId).");
+          }
           continue;
         }
         String[] llist = convLinkId.get(0).split("::");
         convPath.add(llist[1]);
       }
-      log.info("before: " + path.toString());
-      log.info("after: " + convPath.toString());
+      log.debug("{} Path: {}", networkId, path);
+      log.debug("Converted Path: {}", convPath);
 
       /**
        * set conversion matches, actions, path.
