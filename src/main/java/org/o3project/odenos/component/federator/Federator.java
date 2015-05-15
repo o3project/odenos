@@ -798,7 +798,7 @@ public class Federator extends Logic {
       ArrayList<String> attributesList) {
 
     logger.debug("");
-    if(!onFlowUpdatePre(networkId, prev, curr, attributesList)) {
+    if (!onFlowUpdatePre(networkId, prev, curr, attributesList)) {
       return;
     }
 
@@ -807,7 +807,20 @@ public class Federator extends Logic {
       onFlowUpdateOriginal(networkId, prev, curr);
     }
     if (connType.equals(FEDERATED_NETWORK)) {
-      conversion(networkId, prev, curr, attributesList);
+      // update matches or path or edge_actions, 
+      BasicFlow flowPrev  = (BasicFlow) prev;
+      BasicFlow flowCurr  = (BasicFlow) curr;
+      if (federatorOnFlow.isReroute(networkId, flowPrev, flowCurr)) {
+        federatorOnFlow.deleteOrignFlow(networkId, prev);
+        
+        if (flowCurr.getPath().size() == 0) {
+          federatorOnFlow.flowAddedNotExistPath(networkId, flowCurr);
+        } else {
+          federatorOnFlow.flowAddedExistPath(networkId, flowCurr);
+        }
+      } else {
+        conversion(networkId, prev, curr, attributesList);
+      }
     }
   }
 
@@ -822,7 +835,7 @@ public class Federator extends Logic {
     BasicFlow basicFlow = (BasicFlow) curr;
     if (curr.getStatus().equals(
         FlowObject.FlowStatus.ESTABLISHED.toString())) {
-      if(!federatorOnFlow.flowUpdatePreStatusEstablished(networkId, basicFlow)) {
+      if (!federatorOnFlow.flowUpdatePreStatusEstablished(networkId, basicFlow)) {
         return;
       }
     } else if (curr.getStatus().equals(
@@ -831,7 +844,7 @@ public class Federator extends Logic {
       return;
     } else if (curr.getStatus().equals(
         FlowObject.FlowStatus.NONE.toString())) {
-      if(!federatorOnFlow.flowUpdatePreStatusNone(networkId, basicFlow)) {
+      if (!federatorOnFlow.flowUpdatePreStatusNone(networkId, basicFlow)) {
         return;
       }
     }
