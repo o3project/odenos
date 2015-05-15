@@ -716,7 +716,8 @@ public class FederatorOnFlow {
   /**
    *
    * @param networkId ID for network.
-   * @param flowId ID for link in the network.
+   * @param prev flow object.
+   * @param curr flow object.
    * @return true : reroute, false : not reroute
    */
   protected boolean isReroute(String networkId, BasicFlow prev, BasicFlow curr) {
