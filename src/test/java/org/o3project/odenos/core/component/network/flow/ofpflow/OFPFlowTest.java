@@ -35,6 +35,7 @@ import org.o3project.odenos.core.component.network.flow.basic.BasicFlowMatch;
 import org.o3project.odenos.core.component.network.flow.basic.FlowAction;
 import org.o3project.odenos.core.component.network.flow.basic.FlowActionOutput;
 import org.powermock.reflect.internal.WhiteboxImpl;
+import org.o3project.odenos.core.component.network.flow.FlowObject.FlowStatus;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -107,16 +108,16 @@ public class OFPFlowTest {
     assertThat(flowId, is(nullValue()));
 
     String owner = WhiteboxImpl.getInternalState(target, "owner");
-    assertThat(owner, is(nullValue()));
+    assertThat(owner, is("unknown"));
 
     boolean enabled = WhiteboxImpl.getInternalState(target, "enabled");
-    assertThat(enabled, is(false));
+    assertThat(enabled, is(true));
 
     String priority = WhiteboxImpl.getInternalState(target, "priority");
-    assertThat(priority, is(nullValue()));
+    assertThat(priority, is(OFPFlow.DEFAULT_PRIORITY));
 
     String status = WhiteboxImpl.getInternalState(target, "status");
-    assertThat(status, is(nullValue()));
+    assertThat(status, is(FlowStatus.NONE.toString()));
   }
 
   /**
@@ -144,16 +145,16 @@ public class OFPFlowTest {
     assertThat(flowId, is("FlowId"));
 
     String owner = WhiteboxImpl.getInternalState(target, "owner");
-    assertThat(owner, is(nullValue()));
+    assertThat(owner, is("unknown"));
 
     boolean enabled = WhiteboxImpl.getInternalState(target, "enabled");
-    assertThat(enabled, is(false));
+    assertThat(enabled, is(true));
 
     String priority = WhiteboxImpl.getInternalState(target, "priority");
-    assertThat(priority, is(nullValue()));
+    assertThat(priority, is(OFPFlow.DEFAULT_PRIORITY));
 
     String status = WhiteboxImpl.getInternalState(target, "status");
-    assertThat(status, is(nullValue()));
+    assertThat(status, is(FlowStatus.NONE.toString()));
   }
 
   /**

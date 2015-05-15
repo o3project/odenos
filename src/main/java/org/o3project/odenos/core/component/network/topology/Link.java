@@ -36,17 +36,39 @@ import java.util.Map;
 public class Link extends BaseObject implements Cloneable {
   private static final int MSG_NUM_MIN = 5;
   private static final int MSG_NUM_MAX = 8;
-  private String type = "Link";
   private String linkId;
   private String srcNode;
   private String srcPort;
   private String dstNode;
   private String dstPort;
 
+  /* NetworkElements */
+  public static final String TYPE = "type";
+  public static final String VERSION = "version";
+  public static final String LINK_ID = "link_id";
+  public static final String SRC_NODE = "src_node";
+  public static final String SRC_PORT = "src_port";
+  public static final String DST_NODE = "dst_node";
+  public static final String DST_PORT = "dst_port";
+  public static final String ATTRIBUTES = "attributes";
+
+  /* AttrbuteElements */
+  public static final String OPER_STATUS = "oper_status";
+  public static final String COST = "cost";
+  public static final String REQ_LATENCY = "req_latency";
+  public static final String LATENCY = "latency";
+  public static final String REQ_BANDWIDTH = "req_bandwidth";
+  public static final String MAX_BANDWIDTH = "max_bandwidth";
+  public static final String UNRESERVED_BANDWIDTH = "unreserved_bandwidth";
+  public static final String ESTABLISHMENT_STATUS = "establishment_status";
+
+
   /**
    * Constructor.
    */
   public Link() {
+    initElements(this.INITIAL_VERSION, 
+        null, null, null, null, null, null);
   }
 
   /**
@@ -54,7 +76,8 @@ public class Link extends BaseObject implements Cloneable {
    * @param linkId link ID. ID that is unique in the Network.
    */
   public Link(String linkId) {
-    this.linkId = linkId;
+    initElements(this.INITIAL_VERSION, 
+        linkId, null, null, null, null, null);
   }
 
   /**
@@ -67,11 +90,8 @@ public class Link extends BaseObject implements Cloneable {
    */
   public Link(String linkId, String srcNode,
       String srcPort, String dstNode, String dstPort) {
-    this.linkId = linkId;
-    this.srcNode = srcNode;
-    this.srcPort = srcPort;
-    this.dstNode = dstNode;
-    this.dstPort = dstPort;
+    initElements(this.INITIAL_VERSION, 
+        linkId, srcNode, srcPort, dstNode, dstPort, null);
   }
 
   /**
@@ -87,9 +107,25 @@ public class Link extends BaseObject implements Cloneable {
   public Link(String version, String linkId, String srcNode,
       String srcPort, String dstNode, String dstPort,
       Map<String, String> attributes) {
-    this(linkId, srcNode, srcPort, dstNode, dstPort);
+    initElements(version, linkId, srcNode, srcPort, dstNode, dstPort, attributes);
+  }
+
+  protected void initElements(
+      String version, String linkId, String srcNode,
+      String srcPort, String dstNode, String dstPort,
+      Map<String, String> attributes) {
+
+    this.setType("Link");
     this.setVersion(version);
-    this.putAttributes(attributes);
+    this.setId(linkId);
+    this.setPorts(srcNode, srcPort, dstNode, dstPort);
+
+    if(attributes != null) {
+      this.putAttributes(attributes);
+    }
+    if(!this.isAttribute(COST)) {
+      this.putAttribute(COST, "1");
+    }
   }
 
   /**
@@ -113,14 +149,6 @@ public class Link extends BaseObject implements Cloneable {
       return false;
     }
     return true;
-  }
-
-  /**
-   * Returns a type of link.
-   * @return type of link.
-   */
-  public String getType() {
-    return type;
   }
 
   /**
@@ -196,10 +224,10 @@ public class Link extends BaseObject implements Cloneable {
 
     while (size-- > 0) {
       switch (upk.readString()) {
-        case "type":
-          type = upk.readString();
+        case TYPE:
+          setType(upk.readString());
           break;
-        case "version":
+        case VERSION:
           if (upk.getNextType() == ValueType.NIL) {
             upk.readNil();
             setVersion("0");
@@ -207,7 +235,7 @@ public class Link extends BaseObject implements Cloneable {
             setVersion(upk.readString());
           }
           break;
-        case "link_id":
+        case LINK_ID:
           if (upk.getNextType() == ValueType.NIL) {
             upk.readNil();
             linkId = null;
@@ -215,19 +243,19 @@ public class Link extends BaseObject implements Cloneable {
             linkId = upk.readString();
           }
           break;
-        case "src_node":
+        case SRC_NODE:
           srcNode = upk.readString();
           break;
-        case "src_port":
+        case SRC_PORT:
           srcPort = upk.readString();
           break;
-        case "dst_node":
+        case DST_NODE:
           dstNode = upk.readString();
           break;
-        case "dst_port":
+        case DST_PORT:
           dstPort = upk.readString();
           break;
-        case "attributes":
+        case ATTRIBUTES:
           putAttributes(upk.read(tMap(TString, TString)));
           break;
         default:
@@ -241,28 +269,28 @@ public class Link extends BaseObject implements Cloneable {
   public void writeTo(Packer pk) throws IOException {
     pk.writeMapBegin(MSG_NUM_MAX);
 
-    pk.write("type");
-    pk.write(type);
+    pk.write(TYPE);
+    pk.write(getType());
 
-    pk.write("version");
+    pk.write(VERSION);
     pk.write(getVersion());
 
-    pk.write("link_id");
+    pk.write(LINK_ID);
     pk.write(linkId);
 
-    pk.write("src_node");
+    pk.write(SRC_NODE);
     pk.write(srcNode);
 
-    pk.write("src_port");
+    pk.write(SRC_PORT);
     pk.write(srcPort);
 
-    pk.write("dst_node");
+    pk.write(DST_NODE);
     pk.write(dstNode);
 
-    pk.write("dst_port");
+    pk.write(DST_PORT);
     pk.write(dstPort);
 
-    pk.write("attributes");
+    pk.write(ATTRIBUTES);
     pk.write(getAttributes());
 
     pk.writeMapEnd();
@@ -285,7 +313,7 @@ public class Link extends BaseObject implements Cloneable {
 
     Link linkMessage = (Link) obj;
 
-    if (linkMessage.getType().equals(this.type)
+    if (linkMessage.getType().equals(this.getType())
         && linkMessage.getVersion().equals(this.getVersion())
         && linkMessage.getId().equals(this.linkId)
         && linkMessage.getSrcNode().equals(this.srcNode)
@@ -311,13 +339,13 @@ public class Link extends BaseObject implements Cloneable {
   public String toString() {
 
     ToStringBuilder sb = new ToStringBuilder(this);
-    sb.append("version", getVersion());
-    sb.append("linkId", linkId);
-    sb.append("srcNode", srcNode);
-    sb.append("srcPort", srcPort);
-    sb.append("dstNode", dstNode);
-    sb.append("dstPort", dstPort);
-    sb.append("attributes", getAttributes());
+    sb.append(VERSION, getVersion());
+    sb.append(LINK_ID, linkId);
+    sb.append(SRC_NODE, srcNode);
+    sb.append(SRC_PORT, srcPort);
+    sb.append(DST_NODE, dstNode);
+    sb.append(DST_PORT, dstPort);
+    sb.append(ATTRIBUTES, getAttributes());
 
     return sb.toString();
   }
