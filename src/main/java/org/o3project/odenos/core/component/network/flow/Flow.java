@@ -79,7 +79,7 @@ public class Flow extends OdenosMessage implements Cloneable {
    * @param owner Author of flow.
    * @param enabled The value the owner is usually set.
    *                "True":flow is activation. "False":flow is invalidation.
-   * @param priority value:0-65535. It is to be 65535 (max priority) if not set.
+   * @param priority value:0-65535(max priority).
    */
   public Flow(String flowId, String owner, boolean enabled, String priority) {
     this.initElements(this.INITIAL_VERSION, 
@@ -93,7 +93,7 @@ public class Flow extends OdenosMessage implements Cloneable {
    * @param owner Author of flow.
    * @param enabled The value the owner is usually set.
    *                "True":flow is activation. "False":flow is invalidation.
-   * @param priority value:0-65535. It is to be 65535 (max priority) if not set.
+   * @param priority value:0-65535(max priority).
    * @param status Flow status.
    * @param attributes Attributes.
    */
