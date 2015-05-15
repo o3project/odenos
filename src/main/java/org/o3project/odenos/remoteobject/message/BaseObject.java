@@ -44,7 +44,7 @@ public abstract class BaseObject extends MessageBodyUnpacker {
   /**
    * Set type of this object.
    *
-   * @return object type.
+   * @param type Type of this object.
    */
   protected void setType(String type) {
     this.type = type;
