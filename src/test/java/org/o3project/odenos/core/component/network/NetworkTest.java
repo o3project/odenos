@@ -1219,12 +1219,21 @@ public class NetworkTest {
      * test
      */
     Port port = new Port("1", "NodeId", "PortId");
+    port.setInLink("LinkIn");
+    port.setOutLink("LinkOut");
     Response result = target.putPort("NodeId", "PortId", port);
 
     /*
      * check
      */
     assertThat(result.statusCode, is(Response.OK));
+    // In/Out Link is expected to be ignored on PUT Port
+    Port expectedPort = new Port("1", "PortId", "NodeId");
+    expectedPort.setInLink(null);
+    expectedPort.setOutLink(null);
+    expectedPort.updateVersion();
+    assertThat(result.getBody(Port.class), is(expectedPort));
+
   }
 
   /**

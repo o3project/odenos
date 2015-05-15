@@ -36,6 +36,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
  * Unpack a message body.
@@ -125,7 +126,8 @@ public abstract class MessageBodyUnpacker implements MessagePackable {
 
   protected Object body = null;
   protected Value bodyValue = null;
-  private MessagePack msgpack = new MessagePack();
+  // TODO consider using soft references
+  private static final ConcurrentLinkedQueue<MessagePack> pool = new ConcurrentLinkedQueue<>();
 
   /**
    * Returns the value of specified class.
@@ -137,7 +139,12 @@ public abstract class MessageBodyUnpacker implements MessagePackable {
   @SuppressWarnings("unchecked")
   public <T> T getBody(Class<T> clazz) throws ParseBodyException {
     if (body == null && bodyValue != null) {
+      MessagePack msgpack = null;
       try {
+        msgpack = pool.poll();
+        if (msgpack == null) {
+          msgpack = new MessagePack();
+        }
         body = msgpack.convert(bodyValue, clazz);
         // TODO avoid increase of memory use
         bodyValue = null;
@@ -145,6 +152,10 @@ public abstract class MessageBodyUnpacker implements MessagePackable {
         // throw new ParseBodyException(e);
         log.error("IOException", e);
         //e.printStackTrace();
+      } finally {
+        if (msgpack != null) {
+          pool.add(msgpack);
+        }
       }
     }
     return (T) body;
@@ -172,11 +183,20 @@ public abstract class MessageBodyUnpacker implements MessagePackable {
    */
   public Value getBodyValue() {
     if (bodyValue == null && body != null) {
+      MessagePack msgpack = null;
       try {
+        msgpack = pool.poll();
+        if (msgpack == null) {
+          msgpack = new MessagePack();
+        }
         bodyValue = msgpack.unconvert(body);
       } catch (IOException e) {
         log.error("IOException", e);
         //e.printStackTrace();
+      } finally {
+        if (msgpack != null) {
+          pool.add(msgpack);
+        }
       }
     }
     return bodyValue;
@@ -192,7 +212,12 @@ public abstract class MessageBodyUnpacker implements MessagePackable {
   public <T> Map<String, T> getBodyAsMap(Class<T> clazz) {
     Map<String, T> map = new HashMap<String, T>();
     if (body == null && bodyValue != null) {
+      MessagePack msgpack = null;
       try {
+        msgpack = pool.poll();
+        if (msgpack == null) {
+          msgpack = new MessagePack();
+        }
         MapValue mapvalue = bodyValue.asMapValue();
         for (Map.Entry<Value, Value> e : mapvalue.entrySet()) {
           map.put(e.getKey().asRawValue().getString(),
@@ -203,6 +228,10 @@ public abstract class MessageBodyUnpacker implements MessagePackable {
       } catch (IOException e) {
         log.error("IOException", e);
         //e.printStackTrace();
+      } finally {
+        if (msgpack != null) {
+          pool.add(msgpack);
+        }
       }
     }
     return (Map<String, T>) body;
@@ -218,7 +247,12 @@ public abstract class MessageBodyUnpacker implements MessagePackable {
   public <T> List<T> getBodyAsList(Class<T> clazz) {
     List<T> list = new ArrayList<T>();
     if (body == null && bodyValue != null) {
+      MessagePack msgpack = null;
       try {
+        msgpack = pool.poll();
+        if (msgpack == null) {
+          msgpack = new MessagePack();
+        }
         ArrayValue valueList = bodyValue.asArrayValue();
         for (Value e : valueList) {
           list.add(msgpack.convert(e, clazz));
@@ -227,6 +261,10 @@ public abstract class MessageBodyUnpacker implements MessagePackable {
       } catch (IOException e) {
         log.error("IOException", e);
         //e.printStackTrace();
+      } finally {
+        if (msgpack != null) {
+          pool.add(msgpack);
+        }
       }
     }
     return (List<T>) body;

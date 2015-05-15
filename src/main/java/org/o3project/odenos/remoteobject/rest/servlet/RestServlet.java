@@ -16,7 +16,6 @@
 
 package org.o3project.odenos.remoteobject.rest.servlet;
 
-import org.apache.commons.io.IOUtils;
 import org.json.simple.JSONValue;
 import org.msgpack.MessagePack;
 import org.msgpack.type.Value;
@@ -27,12 +26,12 @@ import org.o3project.odenos.remoteobject.rest.RESTTranslator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URLDecoder;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -86,24 +85,19 @@ public class RestServlet extends HttpServlet {
         break;
       }
 
-      String path = root + req.getPathInfo();
-      this.logger.debug("Trying to read \"{}\".", path);
 
-      InputStream in = null;
-      try {
-        in = new FileInputStream(path);
-      } catch (FileNotFoundException e) {
-        break;
-      }
+      Path path = Paths.get(root, req.getPathInfo());
+      logger.debug("Trying to read \"{}\".", path);
 
-      OutputStream out = resp.getOutputStream();
-      IOUtils.copy(in, out);
-      try {
-        in.close();
-      } catch (IOException e) {
-        // just ignore.
+      if (Files.isReadable(path)) {
+        try (OutputStream out = resp.getOutputStream()) {
+          Files.copy(path, out);
+        } catch (IOException e) {
+          // just ignore.
+          logger.error("Failed serving {}", path, e);
+        }
+        return;
       }
-      return;
     } while (false);
 
     doRequestToComponent(req, resp, method);

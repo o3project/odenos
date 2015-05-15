@@ -289,7 +289,7 @@ can not delete if the link is set to port.
 
 ---- 
 ### <a name="POSTports">POST \<base_uri>/topology/nodes/\<node_id>/ports</a>  
-add a Port to Node.id is granted automatically. (specified id is invalid)
+add a Port to Node. Port id will be generated automatically. (Port id specified by request body will be ignored)
 
 
 ##### [Request]:   
@@ -324,7 +324,7 @@ get the port.  (specify the id that you want to get)
 
 ----
 #### <a name="PUTport_id">PUT \<base_uri>/topology/nodes/\<node_id>/ports/\<port_id></a>  
-update the port.(specify the id that you want to update)  
+update the port.  (specify the id that you want to update)  
 create a new port if id does not exist.
 
 

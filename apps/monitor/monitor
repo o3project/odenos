@@ -29,6 +29,7 @@ import tornado.ioloop
 import tornado.web
 import tornado.gen
 import tornadoredis
+from tornadoredis.exceptions import ResponseError
 
 gen = tornado.gen
 @tornado.gen.engine

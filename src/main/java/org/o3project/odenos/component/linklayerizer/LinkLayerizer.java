@@ -862,8 +862,7 @@ public class LinkLayerizer extends Logic {
               public Response process(
                   final RequestParser<IActionCallback>
                   .ParsedRequest parsed) throws Exception {
-                String boundaryId = parsed
-                    .getParam("boundary_id");
+                String boundaryId = parsed.getParam("boundary_id");
                 return getBoundary(boundaryId);
               }
             });
@@ -877,8 +876,7 @@ public class LinkLayerizer extends Logic {
                 LinkLayerizerBoundary boundary = parsed
                     .getRequest().getBody(
                         LinkLayerizerBoundary.class);
-                String boundaryId = parsed
-                    .getParam("boundary_id");
+                String boundaryId = parsed.getParam("boundary_id");
                 return putBoundary(boundaryId, boundary);
               }
             });
@@ -889,8 +887,7 @@ public class LinkLayerizer extends Logic {
               public Response process(
                   final RequestParser<IActionCallback>
                   .ParsedRequest parsed) throws Exception {
-                String boundaryId = parsed
-                    .getParam("boundary_id");
+                String boundaryId = parsed.getParam("boundary_id");
                 return deleteBoundary(boundaryId);
               }
             });
@@ -911,8 +908,7 @@ public class LinkLayerizer extends Logic {
               public Response process(
                   final RequestParser<IActionCallback>
                   .ParsedRequest parsed) throws Exception {
-                String linkId = parsed.getRequest().getBody(
-                    String.class);
+                String linkId = parsed.getParam("link_id");
                 return getLowerFlows(linkId);
               }
             });
@@ -933,8 +929,7 @@ public class LinkLayerizer extends Logic {
               public Response process(
                   final RequestParser<IActionCallback>
                   .ParsedRequest parsed) throws Exception {
-                String flowId = parsed.getRequest().getBody(
-                    String.class);
+                String flowId = parsed.getParam("flow_id");
                 return getLayerizedLink(flowId);
               }
             });

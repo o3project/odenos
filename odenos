@@ -49,6 +49,7 @@ PORT=6379
 HOST_B=null
 PORT_B=0
 MONITOR=false
+MONITOR_LOGGING=""
 
 ##########################################################################
 # common functions                                                       #
@@ -106,6 +107,9 @@ read_config_file() {
             "monitor")
                 MONITOR=true
                 ;;
+	    "monitor.logging")
+                MONITOR_LOGGING="-l "`echo $line | awk '{print $2}'`
+		;;
             *)
                 ;;
         esac
@@ -137,7 +141,8 @@ start_system() {
 	-Dlog4j.configuration=file:${ODENOS_CONF}/log_java.conf \
 	-Dapp.log=${ODENOS_LOG}/odenos_system.log \
 	$ODENOS_MAIN -s -S $MANAGER -o ${REST_PORT} -h ${REST_ROOT} \
-	-i $HOST -p $PORT -I $HOST_B -P $PORT_B -m $MONITOR &
+	-i $HOST -p $PORT -I $HOST_B -P $PORT_B \
+	-m $MONITOR $MONITOR_LOGGING &
     echo $! > $FILE_ODENOS_SYSTEM_PID
 }
 
@@ -173,7 +178,7 @@ start_process() {
 		-Dapp.log=${ODENOS_LOG}/odenos_${PROC_NAME}.log \
 		$ODENOS_MAIN -r ${PROC_NAME} -d ${PROC_DIR} \
 		-S $MANAGER -i $HOST -p $PORT -I $HOST_B -P $PORT_B \
-		-m $MONITOR &
+		-m $MONITOR $MONITOR_LOGGING &
 
 	    echo $! > $ODENOS_TMP/odenos_${PROC_NAME}.pid
 
@@ -217,6 +222,14 @@ stop_process() {
 }
 
 start() {
+    echo "--  ----------------------------------> "
+    echo "--   o-o  o-o   o--o o   o  o-o   o-o   "
+    echo "--  o   o |  \  |    |\  | o   o |      "
+    echo "--  |   | |   O O-o  | \ | |   |  o-o   "
+    echo "--  o   o |  /  |    |  \| o   o     |  "
+    echo "--   o-o  o-o   o--o o   o  o-o  o--o   "
+    echo "--                                      "
+    echo ""
     echo "starting ODENOS"
     cp $ODENOS_CONF_FILE $ODENOS_CONF_FILE_TMP
     read_config_file
@@ -226,6 +239,7 @@ start() {
         sleep 3
     fi
     start_process
+
 }
 
 stop() {
