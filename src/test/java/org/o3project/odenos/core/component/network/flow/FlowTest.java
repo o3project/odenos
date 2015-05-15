@@ -1046,7 +1046,7 @@ public class FlowTest {
      */
     String expectedString = StringUtils.join(new String[] {
         "[version=1",
-        "flowId=FlowId",
+        "flow_id=FlowId",
         "owner=Owner",
         "enabled=true",
         "priority=Priority",
@@ -1054,6 +1054,8 @@ public class FlowTest {
         "attributes={}]"
     }, ",");
 
+    System.out.printf(result);
+    System.out.printf(expectedString);
     assertThat(result.endsWith(expectedString), is(true));
 
   }
