@@ -868,6 +868,16 @@ public class Federator extends Logic {
     }
   }
 
+  @Override
+  protected void onFlowDeletePost(
+      final String networkId,
+      final Flow flow,
+      final HashMap<String, Response> respList) {
+    logger.debug("");
+
+    federatorOnFlow.delOrgFlowCnt(flow.getFlowId());
+  }
+
 
   /**
    *
