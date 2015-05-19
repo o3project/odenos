@@ -287,10 +287,10 @@ public class MessageDispatcher implements Closeable, IMessageListener {
           }
 
           // Logging
-          if (log.isDebugEnabled() && outputMessageToLogger) {
+          if (outputMessageToLogger) {
             if (objectIds.contains(channel) ||
                 objectIds.contains(sourceObjectId)) {
-              log.debug("MONITOR|{}|{}|{}|{}|{}|{}|{}",
+              log.info("MONITOR|{}|{}|{}|{}|{}|{}|{}",
                   REQUEST, channel, sourceObjectId, sno, request.method.name(),
                   "/" + channel + "/" + request.path, request);
             }
@@ -338,10 +338,10 @@ public class MessageDispatcher implements Closeable, IMessageListener {
           }
 
           // Logging
-          if (log.isDebugEnabled() && outputMessageToLogger) {
+          if (outputMessageToLogger) {
             if (objectIds.contains(channel) ||
                 objectIds.contains(sourceObjectId)) {
-              log.debug("MONITOR|{}|{}|{}|{}|{}|{}",
+              log.info("MONITOR|{}|{}|{}|{}|{}|{}",
                   RESPONSE, channel, sourceObjectId, sno, response.statusCode,
                   response.getBodyValue());
             }
@@ -386,10 +386,10 @@ public class MessageDispatcher implements Closeable, IMessageListener {
               }
 
               // Logging
-              if (log.isDebugEnabled() && outputMessageToLogger) {
+              if (outputMessageToLogger) {
                 if (objectIds.contains(subscriber) ||
                     objectIds.contains(event.publisherId)) {
-                  log.debug("MONITOR|{}|{}|{}|{}|{}",
+                  log.info("MONITOR|{}|{}|{}|{}|{}",
                       EVENT, subscriber, event.publisherId,
                       event.publisherId + ":" + event.getEventType(),
                       event.getBodyValue());
@@ -733,10 +733,10 @@ public class MessageDispatcher implements Closeable, IMessageListener {
       }
 
       // Logging
-      if (log.isDebugEnabled() && outputMessageToLogger) {
+      if (outputMessageToLogger) {
         if (objectIds.contains(objectId) ||
             objectIds.contains(sourceObjectId)) {
-          log.debug("MONITOR|{}|{}|{}|{}|{}|{}|{}",
+          log.info("MONITOR|{}|{}|{}|{}|{}|{}|{}",
               REQUEST, objectId, sourceObjectId, sno, request.method.name(),
               "/" + request.objectId + "/" + request.path, request.getBodyValue());
         }
@@ -764,10 +764,10 @@ public class MessageDispatcher implements Closeable, IMessageListener {
       }
 
       // Logging
-      if (log.isDebugEnabled() && outputMessageToLogger) {
+      if (outputMessageToLogger) {
         if (objectIds.contains(sourceObjectId) ||
             objectIds.contains(objectId)) {
-          log.debug("MONITOR|{}|{}|{}|{}|{}|{}",
+          log.info("MONITOR|{}|{}|{}|{}|{}|{}",
               RESPONSE, sourceObjectId, objectId, sno, response.statusCode,
               response.getBodyValue());
         }
