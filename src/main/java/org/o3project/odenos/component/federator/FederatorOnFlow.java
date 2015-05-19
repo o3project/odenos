@@ -46,8 +46,8 @@ public class FederatorOnFlow {
   protected ConversionTable conversionTable;
   protected Map<String, NetworkInterface> networkInterfaces;
 
-  /** Map of flows. key: networkId, value: src boundary */
-  protected Map<String, BasicFlow> orgFlowList = new HashMap<>();
+  /** Map of flows. key: federator flowId, value: counter */
+  protected Map<String, Integer> orgFlowCnt = new HashMap<>();
 
   /**
    * Constructors.
@@ -68,7 +68,6 @@ public class FederatorOnFlow {
    */
   public void flowAddedExistPath(String networkId, BasicFlow flow) {
     log.debug("");
-    // set orgFlowList
     doFlowAddedSelect(flow);
   }
 
@@ -461,30 +460,50 @@ public class FederatorOnFlow {
     return newEdgeActions;
   }
 
-  protected void doFlowAddedSetFlowRegister(
-      String orgNwId,
-      BasicFlow orgFlow) {
+  protected void doFlowAddedSetFlowRegister(String orgNwId, BasicFlow orgFlow) {
     log.debug("");
 
-    // Register Flow
-    String fedNwId = getNetworkIdByType(Federator.FEDERATED_NETWORK);
-
     String fedFlowId = orgFlow.getFlowId();
-    String orgFlowId = fedFlowId;
-    Flow flow = networkInterfaces.get(orgNwId).getFlow(fedFlowId);
-    if (flow != null) {
-      Integer num = 0;
-      do {
-        orgFlowId = fedFlowId + "_" + num.toString();
-        flow = networkInterfaces.get(orgNwId).getFlow(orgFlowId);
-        num++;
-      } while (flow != null);
-      orgFlow.setFlowId(orgFlowId);
-    }
+    String orgFlowId = assignOrgFlowId(orgNwId, fedFlowId);
 
+    orgFlow.setFlowId(orgFlowId);
     networkInterfaces.get(orgNwId).putFlow(orgFlow);
+
     // update conversionTable
+    String fedNwId = getNetworkIdByType(Federator.FEDERATED_NETWORK);
     conversionTable.addEntryFlow(orgNwId, orgFlowId, fedNwId, fedFlowId);
+  }
+
+  /**
+   *
+   * @param orgNwId   original network Id
+   * @param fedFlowId federated flow id
+   * @return oroginal flow id,  federated flow + _cnt + _multiple
+   *
+   */
+  protected String assignOrgFlowId(String orgNwId, String fedFlowId) {
+    log.debug("");
+
+    String orgFlowId = fedFlowId;
+    setOrgFlowCnt(fedFlowId);
+    return orgFlowId + "_" + getOrgFlowCnt(fedFlowId).toString();
+  }
+
+  protected void setOrgFlowCnt(String flowId) {
+    Integer cnt = getOrgFlowCnt(flowId);
+    if (cnt == null) {
+      orgFlowCnt.put(flowId, 1);
+      return; 
+    }
+    orgFlowCnt.put(flowId, ++cnt);
+  }
+
+  protected Integer getOrgFlowCnt(String flowId) {
+    return orgFlowCnt.get(flowId);
+  }
+
+  protected void delOrgFlowCnt(String flowId) {
+    orgFlowCnt.remove(flowId);
   }
 
   /**
