@@ -21,6 +21,7 @@ import org.eclipse.jetty.servlet.FilterHolder;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.eclipse.jetty.servlets.CrossOriginFilter;
+import org.eclipse.jetty.servlets.GzipFilter;
 import org.msgpack.MessagePack;
 import org.msgpack.type.Value;
 import org.o3project.odenos.remoteobject.RemoteObject;
@@ -176,6 +177,7 @@ public class RESTTranslator extends RemoteObject {
           sch.setAttribute(Attributes.REST_TRANSLATOR, RESTTranslator.this);
           sch.setAttribute("resource.root", root);
           sch.getSessionHandler().addEventListener(RESTTranslator.this.sessionListener);
+          sch.addFilter(GzipFilter.class, "/*", EnumSet.allOf(DispatcherType.class));
           EnumSet<DispatcherType> dispatchers = EnumSet.of(DispatcherType.REQUEST);
           sch.addFilter(filterHolder, "/*", dispatchers);
 
