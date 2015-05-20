@@ -238,6 +238,15 @@ public final class Odenos {
           //.setRemoteTransactionsFinalTimeout(30)
           .setObjectIds(objectIds)
           .build();
+
+      log.info("--  ----------------------------------> ");
+      log.info("--   o-o  o-o   o--o o   o  o-o   o-o   ");
+      log.info("--  o   o |  \\  |    |\\  | o   o |      ");
+      log.info("--  |   | |   O O-o  | \\ | |   |  o-o   ");
+      log.info("--  o   o |  /  |    |  \\| o   o     |  ");
+      log.info("--   o-o  o-o   o--o o   o  o-o  o--o   ");
+      log.info("--                                      ");
+
       disp = new MessageDispatcher(config);
       disp.start();
 
