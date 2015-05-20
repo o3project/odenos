@@ -734,8 +734,7 @@ public class NetworkInterface {
    */
   public final Response putFlow(final Flow body) {
     String path = String.format(FLOW_PATH, body.getFlowId());
-    log.debug(">> "
-        + String.format(" [networkId : '%s']", this.networkId));
+    log.debug(">>  [networkId : '{}'] {}", this.networkId, body.getFlowId());
     return putObjectToNetwork(this.networkId, path, body);
   }
 
@@ -752,8 +751,7 @@ public class NetworkInterface {
    */
   public final Response delFlow(final String flowId) {
     String path = String.format(FLOW_PATH, flowId);
-    log.debug(">> "
-        + String.format(" [networkId : '%s']", this.networkId));
+    log.debug(">>  [networkId : '{}'] {}", this.networkId, flowId);
 
     Flow flow = getFlow(flowId);
     if (flow == null) {
