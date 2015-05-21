@@ -28,6 +28,7 @@ import org.o3project.odenos.remoteobject.message.BaseObject;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * Switch Port data class.
@@ -348,10 +349,8 @@ public class Port extends BaseObject implements Cloneable {
           && portMessage.getVersion().equals(this.getVersion())
           && portMessage.getId().equals(this.portId)
           && portMessage.getNode().equals(this.nodeId)
-          && String.format("%s", portMessage.getOutLink()).equals(
-              String.format("%s", this.outLink))
-          && String.format("%s", portMessage.getInLink()).equals(
-              String.format("%s", this.inLink))
+          && Objects.equals(portMessage.getOutLink(), this.outLink)
+          && Objects.equals(portMessage.getInLink(), this.inLink)
           && portMessage.getAttributes().equals(this.getAttributes())) {
         return true;
       }
