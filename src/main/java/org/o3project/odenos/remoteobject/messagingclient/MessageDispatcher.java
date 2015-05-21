@@ -396,7 +396,7 @@ public class MessageDispatcher implements Closeable, IMessageListener {
                 }
               }
 
-              mail = new Mail(serial, sno, subscriber, channel, this, null, event);
+              mail = new Mail(serial, sno, subscriber, channel, this, null, deepCopy(event));
               mailbox = localObject.getMailbox();
               synchronized (mailbox) {
                 mailbox.add(mail);
