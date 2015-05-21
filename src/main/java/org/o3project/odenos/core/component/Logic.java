@@ -27,6 +27,7 @@ import java.util.regex.Pattern;
 import org.o3project.odenos.core.component.network.flow.Flow;
 import org.o3project.odenos.core.component.network.flow.FlowChanged;
 import org.o3project.odenos.core.component.network.flow.FlowObject;
+import org.o3project.odenos.core.component.network.flow.FlowObject.FlowStatus;
 import org.o3project.odenos.core.component.network.flow.basic.BasicFlow;
 import org.o3project.odenos.core.component.network.flow.basic.BasicFlowMatch;
 import org.o3project.odenos.core.component.network.flow.basic.FlowAction;
@@ -1635,18 +1636,31 @@ public abstract class Logic extends Component {
 
     NetworkInterface networkIf = this.networkInterfaces.get(networkId);
     Flow srcFlow = networkIf.getFlow(flow.getFlowId());
-    if (srcFlow != null) {
-      srcFlow.setEnabled(true);
-      srcFlow.setStatus(FlowObject.FlowStatus.TEARDOWN.toString());
-      networkIf.putFlow(srcFlow);
+    if (srcFlow == null) {
+      return respList;
+    }
+    if (srcFlow.getStatus().equals(FlowStatus.NONE.toString())) {
+      return respList;
+    }
+    if (srcFlow.getStatus().equals(FlowStatus.TEARDOWN.toString())) {
+      return respList;
     }
 
+    srcFlow.setEnabled(true);
+    srcFlow.setStatus(FlowObject.FlowStatus.TEARDOWN.toString());
+    networkIf.putFlow(srcFlow);
+
     srcFlow = networkIf.getFlow(flow.getFlowId());
-    if (srcFlow != null) {
-      srcFlow.setEnabled(true);
-      srcFlow.setStatus(FlowObject.FlowStatus.NONE.toString());
-      networkIf.putFlow(srcFlow);
+    if (srcFlow == null) {
+      return respList;
     }
+    if (srcFlow.getStatus().equals(FlowStatus.NONE.toString())) {
+      return respList;
+    }
+
+    srcFlow.setEnabled(true);
+    srcFlow.setStatus(FlowObject.FlowStatus.NONE.toString());
+    networkIf.putFlow(srcFlow);
 
     conversionTable.delEntryFlow(networkId, flow.getFlowId());
     return respList;
