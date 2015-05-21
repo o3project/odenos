@@ -194,11 +194,11 @@ latency      | \<Number>  | Unit is msec.     | any    | Lower  ->  Upper
 
 **State Current ↓ Next→**| **none** | **establishing** | **established** | **teardown** | **failed** | **(none Flow)**  
 ---------------------------|----------|------------------|-----------------|--------------|------------|----------------
-**none**                   |-         |Creating Flow     |-                |-             |-           |-             
-**establishing**           |-         |                  |Created/Updated Flow |-         |failure     |-            
-**established**            |-         |Updating Flow     |-                |Deleting Flow |failure     |-             
-**teardown**               |Invalid Flow |-              |-                |-             |failure     |Deleted Flow  
-**failed**                 |-         |-                 |Updating Flow    |Deleting Flow |-           |-             
+**none**                   |-         |Creating or Updating Flow     |-                |-             |-           |Deleted Flow       
+**establishing**           |-         |                  |Created/Updated Flow |Deleting Flow|failure     |-            
+**established**            |-         |Updating Flow     |-                |Deleting Flow or Invaliding Flow |failure     |-             
+**teardown**               |Deleted or Invalided Flow |-              |-             |-             |failure    |
+**failed**                 |-         |Updating Flow       |-             |Deleting Flow |-           |-             
 
 ### Sequence
 ----
