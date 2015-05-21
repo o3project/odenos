@@ -54,7 +54,7 @@ public class DummyDriver extends Driver {
       final MessageDispatcher dispatcher) throws Exception {
     super(objectId, baseUri, dispatcher);
     resetEventSubscription();
-    log.info("created.");
+    log.debug("created.");
   }
 
   /**
@@ -68,7 +68,7 @@ public class DummyDriver extends Driver {
       final MessageDispatcher dispatcher) throws Exception {
     super(objectId, dispatcher);
     resetEventSubscription();
-    log.info("created.");
+    log.debug("created.");
   }
 
   /**
@@ -174,7 +174,7 @@ public class DummyDriver extends Driver {
       final String networkId,
       final Flow flow) {
 
-    log.debug("onFlowAdded {} ", flow);
+    log.debug("{} : {} ", networkId, flow);
 
     NetworkInterface networkIf = networkInterfaces().get(this.network);
     BasicFlow targetFlow = getFlow(networkIf, flow.getFlowId());
@@ -206,7 +206,7 @@ public class DummyDriver extends Driver {
       final Flow curr,
       final ArrayList<String> attributesList) {
 
-    log.debug("onFlowUpdate {} ", curr);
+    log.debug("{} prev:{} curr:{}", networkId, prev, curr);
     NetworkInterface networkIf = networkInterfaces().get(this.network);
     BasicFlow targetFlow = getFlow(networkIf, curr.getFlowId());
     if (targetFlow == null) {
@@ -225,7 +225,7 @@ public class DummyDriver extends Driver {
       final String networkId,
       final Flow flow) {
 
-    log.debug("onFlowDelete {} ", flow);
+    log.debug("{} : {} ",networkId, flow);
 
     NetworkInterface networkIf = networkInterfaces().get(this.network);
     BasicFlow targetFlow = getFlow(networkIf, flow.getFlowId());
@@ -255,7 +255,7 @@ public class DummyDriver extends Driver {
 
     // GET Packet to Drop
     String packetId = msg.getId();
-    log.info("receive OutPacket: " + packetId);
+    log.debug("receive OutPacket: " + packetId);
     try {
       NetworkInterface networkIf = networkInterfaces().get(networkId);
       Response resp = networkIf.delOutPacket(packetId);
