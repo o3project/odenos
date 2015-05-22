@@ -1191,6 +1191,31 @@ public class NetworkInterface {
     return resps;
   }
 
+  /**
+   * Requests a "GET inLink".
+   * @param port Port Object
+   * @return link Object.
+   */
+  public final Link getInLink(final Port port) {
+    String inLink = port.getInLink();
+    if (inLink == null) {
+      return null;
+    }
+    return this.getLink(inLink);
+  }
+  /**
+   * Requests a "GET outLink".
+   * @param port Port Object
+   * @return link Object.
+   */
+  public final Link getOutLink(final Port port) {
+    String outLink = port.getOutLink();
+    if (outLink == null) {
+      return null;
+    }
+    return this.getLink(outLink);
+  }
+
   // //////////////////////////////////////////////////
   //
   // common method ( private )
