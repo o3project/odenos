@@ -724,7 +724,7 @@ public class Federator extends Logic {
     String portId = inPacket.getPortId();
     if (federatorBoundaryTable.isContainsLink(networkId, nodeId, portId)) {
       // drop packet.
-      logger.info("Drop Packet.");
+      logger.debug("Drop Packet.");
       return false;
     }
     
@@ -768,7 +768,7 @@ public class Federator extends Logic {
       outPacket.getHeader().setInPort(IN_NODE_PORT_ANY);
     } else {
       String[] plist = convPortId.get(0).split("::");
-      logger.info(String.format("outPacket: inNode(%s), inport(%s)", plist[1], plist[2]));
+      logger.debug(String.format("outPacket: inNode(%s), inport(%s)", plist[1], plist[2]));
       srcNetwork = plist[0];
       outPacket.getHeader().setInNode(plist[1]);
       outPacket.getHeader().setInPort(plist[2]);
@@ -789,7 +789,7 @@ public class Federator extends Logic {
    */
   @Override
   protected void onFlowAdded(String networkId, Flow flow) {
-    logger.info("nw:{} ###flow:{}" , networkId , flow);
+    logger.debug("nw:{} flow:{}" , networkId , flow);
 
     try {
       verifyFlow(flow);
@@ -823,7 +823,7 @@ public class Federator extends Logic {
   protected void onFlowUpdate(String networkId, Flow prev, Flow curr,
       ArrayList<String> attributesList) {
 
-    logger.info("nw:{} ###prev:{} ###curr:{}" , networkId , prev, curr);
+    logger.debug("nw:{} prev:{} curr:{}" , networkId , prev, curr);
     if (!onFlowUpdatePre(networkId, prev, curr, attributesList)) {
       return;
     }
@@ -889,7 +889,7 @@ public class Federator extends Logic {
 
   @Override
   protected void onFlowDelete( final String networkId, final Flow flow) {
-    logger.info("nw:{} ###flow:{}" , networkId , flow);
+    logger.debug("nw:{} flow:{}" , networkId , flow);
     if (onFlowDeletePre(networkId, flow)) {
       HashMap<String, Response> respList = deleteConversion(networkId, flow);
       onFlowDeletePost(networkId, flow, respList);
@@ -2054,7 +2054,7 @@ public class Federator extends Logic {
     }
     String isBoudary = port.getAttribute(Logic.AttrElements.IS_BOUNDARY);
     if (isBoudary != null && Boolean.valueOf(isBoudary)) {
-      logger.info("already updated. port.attributes{'is_boundary':'true'}.");
+      logger.debug("already updated. port.attributes{'is_boundary':'true'}.");
       return false;
     }
     port.putAttribute(Logic.AttrElements.IS_BOUNDARY, "true");

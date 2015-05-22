@@ -87,7 +87,6 @@ public class FederatorOnFlow {
       fedFlow.setStatus(FlowObject.FlowStatus.FAILED.toString());
       // PUT flow.
       fedNwIf.putFlow(fedFlow);
-      log.info("### putFlow org->fed  ### {}" , fedFlow);
     }
 
     List<String> orgNetworks =
@@ -201,7 +200,6 @@ public class FederatorOnFlow {
     
     if (updated) {
       fedNwIf.putFlow(fedFlow);
-      log.info("### putFlow org->fed  ### {}" , fedFlow);
     }
   }
 
@@ -485,7 +483,6 @@ public class FederatorOnFlow {
 
     orgFlow.setFlowId(orgFlowId);
     networkInterfaces.get(orgNwId).putFlow(orgFlow);
-    log.info("### putFlow fed->org new Flow ### {}:  {}" , orgNwId, orgFlow);
 
     // update conversionTable
     String fedNwId = getNetworkIdByType(Federator.FEDERATED_NETWORK);
@@ -744,7 +741,6 @@ public class FederatorOnFlow {
         continue;
       }
       networkIf.delFlow(flowId[1]);
-      log.info("### delFlow {} {} ", flowId , flow);
     }
 
     // check delete flows.
