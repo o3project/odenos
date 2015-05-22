@@ -292,7 +292,7 @@ public class MessageDispatcher implements Closeable, IMessageListener {
                 objectIds.contains(sourceObjectId)) {
               log.info("MONITOR|{}|{}|{}|{}|{}|{}|{}",
                   REQUEST, channel, sourceObjectId, sno, request.method.name(),
-                  "/" + channel + "/" + request.path, request);
+                  "/" + channel + "/" + request.path, request.getBodyValue());
             }
           }
 
