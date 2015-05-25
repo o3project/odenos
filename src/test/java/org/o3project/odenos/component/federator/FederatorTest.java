@@ -881,7 +881,7 @@ public class FederatorTest {
     /*
      * check
      */
-    verify(onFlow).flowAddedExistPath("NetworkId", flow);
+    verify(onFlow).createOriginalFlow(flow);
     verifyNoMoreInteractions(onFlow);
   }
 
@@ -908,7 +908,7 @@ public class FederatorTest {
     /*
      * check
      */
-    verify(onFlow).flowAddedNotExistPath("NetworkId", flow);
+    verify(onFlow).createOriginalFlow(flow);
     verifyNoMoreInteractions(onFlow);
   }
 

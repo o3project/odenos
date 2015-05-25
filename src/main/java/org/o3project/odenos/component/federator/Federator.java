@@ -599,6 +599,40 @@ public class Federator extends Logic {
   }
 
   @Override
+  protected boolean onPortUpdatePre(
+      final String networkId,
+      final Port prev,
+      final Port curr,
+      final ArrayList<String> attributesList) {
+    logger.debug("");
+
+    String fedNwId = getNetworkIdByType(FEDERATED_NETWORK);
+    if (fedNwId == null) {
+      return false;
+    }
+
+    // bondary link update
+    String connType = conversionTable().getConnectionType(networkId);
+    if (connType.equals(ORIGINAL_NETWORK)) {
+      if (Boolean.valueOf(curr.getAttribute(Port.IS_BOUNDARY))) {
+        ArrayList<String> dstPort
+            = conversionTable().getPort(networkId, curr.getNode(), curr.getId());
+        String[] portId = dstPort.get(0).split("::");
+        NetworkInterface fedNw = networkInterfaces().get(fedNwId);
+        Port fedPort = fedNw.getPort(portId[1], portId[2]);
+
+        Link link = fedNw.getInLink(fedPort);
+        if (link != null) {
+          updateBoundaryLinkAttribute(link, curr);
+        }
+      }
+    }
+    
+    return true;
+  }
+
+
+  @Override
   protected void onPortDelete(String networkId, Port port) {
     logger.debug("");
 
@@ -690,7 +724,7 @@ public class Federator extends Logic {
     String portId = inPacket.getPortId();
     if (federatorBoundaryTable.isContainsLink(networkId, nodeId, portId)) {
       // drop packet.
-      logger.info("Drop Packet.");
+      logger.debug("Drop Packet.");
       return false;
     }
     
@@ -734,7 +768,7 @@ public class Federator extends Logic {
       outPacket.getHeader().setInPort(IN_NODE_PORT_ANY);
     } else {
       String[] plist = convPortId.get(0).split("::");
-      logger.info(String.format("outPacket: inNode(%s), inport(%s)", plist[1], plist[2]));
+      logger.debug(String.format("outPacket: inNode(%s), inport(%s)", plist[1], plist[2]));
       srcNetwork = plist[0];
       outPacket.getHeader().setInNode(plist[1]);
       outPacket.getHeader().setInPort(plist[2]);
@@ -755,19 +789,11 @@ public class Federator extends Logic {
    */
   @Override
   protected void onFlowAdded(String networkId, Flow flow) {
-    logger.debug("");
+    logger.debug("nw:{} flow:{}" , networkId , flow);
 
     try {
       verifyFlow(flow);
-
-      BasicFlow basicFlow = (BasicFlow) flow;
-      int length = basicFlow.getPath().size();
-      if (length == 0) {
-        federatorOnFlow.flowAddedNotExistPath(networkId, basicFlow);
-      } else {
-        federatorOnFlow.flowAddedExistPath(networkId, basicFlow);
-      }
-
+      federatorOnFlow.createOriginalFlow((BasicFlow)flow);
     } catch (FederatorException ex) {
       logger.warn("validate fail: " + ex.getMessage(), ex);
       return;
@@ -797,7 +823,7 @@ public class Federator extends Logic {
   protected void onFlowUpdate(String networkId, Flow prev, Flow curr,
       ArrayList<String> attributesList) {
 
-    logger.debug("");
+    logger.debug("nw:{} prev:{} curr:{}" , networkId , prev, curr);
     if (!onFlowUpdatePre(networkId, prev, curr, attributesList)) {
       return;
     }
@@ -808,16 +834,9 @@ public class Federator extends Logic {
     }
     if (connType.equals(FEDERATED_NETWORK)) {
       // update matches or path or edge_actions, 
-      BasicFlow flowPrev  = (BasicFlow) prev;
-      BasicFlow flowCurr  = (BasicFlow) curr;
-      if (federatorOnFlow.isReroute(networkId, flowPrev, flowCurr)) {
+      if (federatorOnFlow.isReroute(networkId, (BasicFlow)prev, (BasicFlow)curr)) {
         federatorOnFlow.deleteOrignFlow(networkId, prev);
-        
-        if (flowCurr.getPath().size() == 0) {
-          federatorOnFlow.flowAddedNotExistPath(networkId, flowCurr);
-        } else {
-          federatorOnFlow.flowAddedExistPath(networkId, flowCurr);
-        }
+        federatorOnFlow.createOriginalFlow((BasicFlow)curr);
       } else {
         conversion(networkId, prev, curr, attributesList);
       }
@@ -869,13 +888,25 @@ public class Federator extends Logic {
   }
 
   @Override
+  protected void onFlowDelete( final String networkId, final Flow flow) {
+    logger.debug("nw:{} flow:{}" , networkId , flow);
+    if (onFlowDeletePre(networkId, flow)) {
+      HashMap<String, Response> respList = deleteConversion(networkId, flow);
+      onFlowDeletePost(networkId, flow, respList);
+    }
+  }
+
+  @Override
   protected void onFlowDeletePost(
       final String networkId,
       final Flow flow,
       final HashMap<String, Response> respList) {
     logger.debug("");
-
-    federatorOnFlow.delOrgFlowCnt(flow.getFlowId());
+    
+    String connType = conversionTable().getConnectionType(networkId);
+    if (connType.equals(FEDERATED_NETWORK)) {
+      federatorOnFlow.delOrgFlowCnt(flow.getFlowId());
+    }
   }
 
 
@@ -1571,6 +1602,21 @@ public class Federator extends Logic {
                       srcPort.getAttribute(Logic.AttrElements.UNRESERVED_BANDWIDTH));
 
   }
+  /**
+   *
+   * @param link boundary Link.
+   * @param srcPort boundary src Port
+   */
+  protected void updateBoundaryLinkAttribute(Link link, Port srcPort) {
+    link.putAttribute(Logic.AttrElements.OPER_STATUS,
+                      srcPort.getAttribute(Logic.AttrElements.OPER_STATUS));
+
+    link.putAttribute(Logic.AttrElements.MAX_BANDWIDTH,
+                      srcPort.getAttribute(Logic.AttrElements.MAX_BANDWIDTH));
+
+    link.putAttribute(Logic.AttrElements.UNRESERVED_BANDWIDTH,
+                      srcPort.getAttribute(Logic.AttrElements.UNRESERVED_BANDWIDTH));
+  }
 
   /**
    *
@@ -2008,7 +2054,7 @@ public class Federator extends Logic {
     }
     String isBoudary = port.getAttribute(Logic.AttrElements.IS_BOUNDARY);
     if (isBoudary != null && Boolean.valueOf(isBoudary)) {
-      logger.info("already updated. port.attributes{'is_boundary':'true'}.");
+      logger.debug("already updated. port.attributes{'is_boundary':'true'}.");
       return false;
     }
     port.putAttribute(Logic.AttrElements.IS_BOUNDARY, "true");

@@ -162,7 +162,7 @@ public class FederatorOnFlowTest {
     /*
      * test
      */
-    target.flowAddedExistPath("NetworkId", flow);
+    target.createOriginalFlow(flow);
 
     /*
      * check
