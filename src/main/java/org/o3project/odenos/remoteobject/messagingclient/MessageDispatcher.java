@@ -369,6 +369,7 @@ public class MessageDispatcher implements Closeable, IMessageListener {
           }
 
           // Wraps the event with Mail and deliver it to a mailbox.
+          boolean isSingleDispatch = (subscribers.size() == 1) ? true: false; 
           for (String subscriber : subscribers) {
             localObject = localObjectsMap.get(subscriber);
             if (localObject != null) {
@@ -396,7 +397,9 @@ public class MessageDispatcher implements Closeable, IMessageListener {
                 }
               }
 
-              mail = new Mail(serial, sno, subscriber, channel, this, null, deepCopy(event));
+              Event eventToBeDispatched = isSingleDispatch ? event: deepCopy(event);
+              mail = new Mail(serial, sno, subscriber, channel, this, null,
+                  eventToBeDispatched);
               mailbox = localObject.getMailbox();
               synchronized (mailbox) {
                 mailbox.add(mail);
@@ -793,8 +796,11 @@ public class MessageDispatcher implements Closeable, IMessageListener {
   @SuppressWarnings("unchecked")
   public <T extends MessageBodyUnpacker> T deepCopy(T object) throws IOException {
     Class<?> clazz = object.getClass();
-    byte[] raw = msgpack.write(object);
-    return (T) msgpack.read(raw, clazz);
+    BufferPacker pk = msgpack.createBufferPacker();
+    pk.write(object);
+    byte[] raw = pk.toByteArray();
+    BufferUnpacker upk = msgpack.createBufferUnpacker(raw);
+    return (T) upk.read(clazz);
   }
 
   /**
