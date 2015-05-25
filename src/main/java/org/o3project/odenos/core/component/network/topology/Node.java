@@ -237,9 +237,13 @@ public class Node extends BaseObject implements Cloneable {
    */
   public void setPorts(Map<String, Port> ports) {
     clearPorts();
-    for (Map.Entry<String, Port> port : ports.entrySet()) {
-      createPort(port.getValue());
+    Map<String, Port> newPorts = new HashMap<String, Port>();
+    if (ports != null) {
+      for (Entry<String, Port> entry : ports.entrySet()) {
+        newPorts.put(entry.getKey(), new Port(entry.getValue()));
+      }
     }
+    this.ports = newPorts;
   }
 
   /**
