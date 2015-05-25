@@ -278,7 +278,7 @@ class MessageDispatcherTest(unittest.TestCase):
                                                   self.target)
         self.value = self.target.PublishData(remote_msg_trans, 0,
                                              1, "123456789", "data")
-        self.target._MessageDispatcher__redisPubliser = redis.StrictRedis(
+        self.target._MessageDispatcher__redisPublisher = redis.StrictRedis(
             host=self.target._MessageDispatcher__redisServer,
             port=self.target._MessageDispatcher__redisPort)
 
@@ -327,7 +327,8 @@ class MessageDispatcherTest(unittest.TestCase):
         resb.extend(pk.pack("object_id"))
         resb.extend(pk.pack(request_packed))
         self.value = {"type": "message",
-                      "data": resb}
+                      "data": resb,
+                      "channel": "object_id"}
         self.value02 = {"type": "ERROR",
                         "data": resb}
 
@@ -400,7 +401,8 @@ class MessageDispatcherTest(unittest.TestCase):
         resb.extend(pk.pack("publisher_id:event_type"))
         resb.extend(pk.pack(response.packed_object()))
         self.value = {"type": "message",
-                      "data": resb}
+                      "data": resb,
+                      "channel": "publisher_id:event_type"}
 
         self.target._MessageDispatcher__redisSubscriber = redis.StrictRedis(
             host=self.target._MessageDispatcher__redisServer,
@@ -436,7 +438,8 @@ class MessageDispatcherTest(unittest.TestCase):
         resb.extend(pk.pack("publisher_id:event_type"))
         resb.extend(pk.pack(event.packed_object()))
         self.value = {"type": "message",
-                      "data": resb}
+                      "data": resb,
+                      "channel": "publisher_id:event_type"}
 
         self.target.thread_pool = futures.ThreadPoolExecutor(max_workers=8)
         self.target._MessageDispatcher__redisSubscriber = redis.StrictRedis(
@@ -473,7 +476,8 @@ class MessageDispatcherTest(unittest.TestCase):
         resb.extend(pk.pack("publisher_id:event_type"))
         resb.extend(pk.pack(event.packed_object()))
         self.value = {"type": "message",
-                      "data": resb}
+                      "data": resb,
+                      "channel": "publisher_id:event_type"}
 
         with nested(
             patch("redis.client.PubSub.subscribe"),
@@ -611,7 +615,7 @@ class MessageDispatcherTest(unittest.TestCase):
     def test_getRedisPublisher(self):
         self.assertEqual(
             self.target.getRedisPublisher(),
-            self.target._MessageDispatcher__redisPubliser)
+            self.target._MessageDispatcher__redisPublisher)
 
     def test_update_subscriber_redisSubscriber_Not_None(self):
         self.target._MessageDispatcher__sourceDispatcherId = "DispatcherId"
@@ -853,7 +857,7 @@ class MessageDispatcherTest(unittest.TestCase):
         with patch("org.o3project.odenos.remoteobject." +
                    "remote_object.RemoteObject." +
                    "dispatch_event") as mock_dispatch_event:
-            self.target.dispatch_event(event)
+            self.target.dispatch_event("key01:value01", event)
 
         mock_dispatch_event.assert_called_once_with(event)
 
@@ -877,7 +881,7 @@ class MessageDispatcherTest(unittest.TestCase):
         with patch(self.DISPATCHER_PATH +
                    ".EventSubscriptionMap" +
                    ".remove_subscription") as mock_remove_subscription:
-            self.target.dispatch_event(event)
+            self.target.dispatch_event("key01:value01", event)
 
         mock_remove_subscription.assert_called_once_with("remote_object")
 

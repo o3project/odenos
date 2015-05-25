@@ -102,6 +102,8 @@ class RemoteMessageTransportTest(unittest.TestCase):
             q_get.return_value = "get_item"
             self.target.dispatcher.get_source_dispatcher_id = Mock(
                 return_value="dispatcher_id")
+            self.target.dispatcher.monitor_enabled = Mock(
+                return_value=False)
 
             self.result01 = self.target.send_request_message(self.value01)
 
@@ -116,6 +118,8 @@ class RemoteMessageTransportTest(unittest.TestCase):
             q_get.return_value = None
             self.target.dispatcher.get_source_dispatcher_id = Mock(
                 return_value="dispatcher_id")
+            self.target.dispatcher.monitor_enabled = Mock(
+                return_value=False)
 
             try:
                 self.result = self.target.send_request_message(self.value01)
@@ -128,6 +132,8 @@ class RemoteMessageTransportTest(unittest.TestCase):
 
         self.target.dispatcher.get_source_dispatcher_id = Mock(
             return_value="dispatcher_id")
+        self.target.dispatcher.monitor_enabled = Mock(
+            return_value=False)
 
         self.result01 = self.target.addRequet(self.value01)
 
@@ -145,6 +151,8 @@ class RemoteMessageTransportTest(unittest.TestCase):
 
             self.target.dispatcher.get_source_dispatcher_id = Mock(
                 return_value="dispatcher_id")
+            self.target.dispatcher.monitor_enabled = Mock(
+                return_value=False)
             self.target.dispatcher.get_source_dispatcher_id.side_effect =\
                 Exception()
 
@@ -164,6 +172,8 @@ class RemoteMessageTransportTest(unittest.TestCase):
 
             self.target.dispatcher.get_source_dispatcher_id = Mock(
                 return_value="dispatcher_id")
+            self.target.dispatcher.monitor_enabled = Mock(
+                return_value=False)
 
             self.result01 = self.target.addRequet(self.value01)
             self.result02 = self.target.addRequet(self.value02)

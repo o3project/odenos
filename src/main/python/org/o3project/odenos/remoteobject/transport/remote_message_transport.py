@@ -63,7 +63,7 @@ class RemoteMessageTransport(BaseMessageTransport):
         self.seqnoGenerator = RemoteMessageTransport.AtomicInteger()
         self.responseMap = {}
 
-    def send_request_message(self, request, source_object_id):
+    def send_request_message(self, request, source_object_id=None):
         '''
         NOTE: source_object_id is required for the ODENOS monitor tool.
         '''
@@ -74,7 +74,7 @@ class RemoteMessageTransport(BaseMessageTransport):
             raise IOError("fail subscribe" + request.object_id)
         return response
 
-    def addRequet(self, request, source_object_id):
+    def addRequet(self, request, source_object_id=None):
         try:
             sno = self.seqnoGenerator.increase()
             queue = RemoteMessageTransport.SynchronousQueue()
@@ -85,7 +85,10 @@ class RemoteMessageTransport(BaseMessageTransport):
                 message_dispatcher.MessageDispatcher.TYPE_REQUEST))
             reqb.extend(pk.pack(sno))
             if self.dispatcher.monitor_enabled():  # Monitor
-                reqb.extend(pk.pack(source_object_id))  # Uses source_object_id instead.
+                if source_object_id:
+                    reqb.extend(pk.pack(source_object_id))  # Uses source_object_id instead.
+                else:
+                    logging.warning("source_object_id unset")
             else:
                 reqb.extend(pk.pack(self.dispatcher.get_source_dispatcher_id()))
             reqb.extend(pk.pack(request.packed_object()))

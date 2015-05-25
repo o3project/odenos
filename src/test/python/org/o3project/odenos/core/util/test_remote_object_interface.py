@@ -144,8 +144,7 @@ class RemoteObjectInterfaceTest(unittest.TestCase):
                 self.result = self.target._post_object_to_remote_object(Path,
                                                                         value)
                 self.assertEqual(m_send_request.call_count, 1)
-                m_send_request.assert_any_call(_object_id, method,
-                                               Path, value)
+                m_send_request.assert_any_call(method, Path, value)
                 self.assertEqual(m_log_debug.call_count, 0)
                 self.assertNotEqual(self.result, None)
 
@@ -170,8 +169,7 @@ class RemoteObjectInterfaceTest(unittest.TestCase):
                 self.result = self.target._post_object_to_remote_object(Path,
                                                                         value)
                 self.assertEqual(m_send_request.call_count, 1)
-                m_send_request.assert_any_call(_object_id, method,
-                                               Path, value)
+                m_send_request.assert_any_call(method, Path, value)
                 self.assertEqual(m_log_debug.call_count, 1)
                 m_log_debug.assert_any_call(debug_log)
                 self.assertNotEqual(self.result, None)
@@ -192,8 +190,7 @@ class RemoteObjectInterfaceTest(unittest.TestCase):
                 self.result = self.target._put_object_to_remote_object(Path,
                                                                        value)
                 self.assertEqual(m_send_request.call_count, 1)
-                m_send_request.assert_any_call(_object_id, method,
-                                               Path, value)
+                m_send_request.assert_any_call(method, Path, value)
                 self.assertEqual(m_log_debug.call_count, 0)
                 self.assertNotEqual(self.result, None)
 
@@ -218,8 +215,7 @@ class RemoteObjectInterfaceTest(unittest.TestCase):
                 self.result = self.target._put_object_to_remote_object(Path,
                                                                        value)
                 self.assertEqual(m_send_request.call_count, 1)
-                m_send_request.assert_any_call(_object_id, method,
-                                               Path, value)
+                m_send_request.assert_any_call(method, Path, value)
                 self.assertEqual(m_log_debug.call_count, 1)
                 m_log_debug.assert_any_call(debug_log)
                 self.assertNotEqual(self.result, None)
@@ -240,8 +236,7 @@ class RemoteObjectInterfaceTest(unittest.TestCase):
                 self.result = self.target._del_object_to_remote_object(Path,
                                                                        value)
                 self.assertEqual(m_send_request.call_count, 1)
-                m_send_request.assert_any_call(_object_id, method,
-                                               Path, body=value)
+                m_send_request.assert_any_call(method, Path, body=value)
                 self.assertEqual(m_log_debug.call_count, 0)
                 self.assertNotEqual(self.result, None)
 
@@ -260,8 +255,7 @@ class RemoteObjectInterfaceTest(unittest.TestCase):
                 self.result = self.target._del_object_to_remote_object(Path)
 
                 self.assertEqual(m_send_request.call_count, 1)
-                m_send_request.assert_any_call(_object_id, method,
-                                               Path, body=None)
+                m_send_request.assert_any_call(method, Path, body=None)
                 self.assertEqual(m_log_debug.call_count, 0)
                 self.assertNotEqual(self.result, None)
 
@@ -286,8 +280,7 @@ class RemoteObjectInterfaceTest(unittest.TestCase):
                 self.result = self.target._del_object_to_remote_object(Path,
                                                                        value)
                 self.assertEqual(m_send_request.call_count, 1)
-                m_send_request.assert_any_call(_object_id, method,
-                                               Path, body=value)
+                m_send_request.assert_any_call(method, Path, body=value)
                 self.assertEqual(m_log_debug.call_count, 1)
                 m_log_debug.assert_any_call(debug_log)
                 self.assertNotEqual(self.result, None)
@@ -306,7 +299,7 @@ class RemoteObjectInterfaceTest(unittest.TestCase):
 
                 self.result = self.target._get_object_to_remote_object(Path)
                 self.assertEqual(m_send_request.call_count, 1)
-                m_send_request.assert_any_call(_object_id, method, Path)
+                m_send_request.assert_any_call(method, Path)
                 self.assertEqual(m_log_debug.call_count, 0)
                 self.assertNotEqual(self.result, None)
 
@@ -329,7 +322,7 @@ class RemoteObjectInterfaceTest(unittest.TestCase):
 
                 self.result = self.target._get_object_to_remote_object(Path)
                 self.assertEqual(m_send_request.call_count, 1)
-                m_send_request.assert_any_call(_object_id, method, Path)
+                m_send_request.assert_any_call(method, Path)
                 self.assertEqual(m_log_debug.call_count, 1)
                 m_log_debug.assert_any_call(debug_log)
                 self.assertNotEqual(self.result, None)
@@ -345,7 +338,7 @@ class RemoteObjectInterfaceTest(unittest.TestCase):
         with patch('logging.error') as m_log_error:
 
             self.result = self.target._RemoteObjectInterface__send_request(
-                _object_id, method, Path, value)
+                method, Path, value)
 
             self.assertEqual(dmy_request_sync.call_count, 1)
             self.assertEqual(dmy_request_sync.call_args[0][0].
@@ -370,7 +363,7 @@ class RemoteObjectInterfaceTest(unittest.TestCase):
                 patch('logging.error')) as m_log_error:
 
                 self.result = self.target._RemoteObjectInterface__send_request(
-                    _object_id, method, Path, value)
+                    method, Path, value)
 
                 self.assertEqual(dmy_request_sync.call_count, 1)
                 self.assertEqual(dmy_request_sync.call_args[0][0].
