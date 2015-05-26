@@ -1,4 +1,5 @@
 /*
+ * 
  * Copyright 2015 NEC Corporation.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -20,6 +21,10 @@ import org.apache.commons.cli.BasicParser;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
+import org.apache.zookeeper.CreateMode;
+import org.apache.zookeeper.ZooDefs;
+import org.apache.zookeeper.ZooKeeper;
+import org.apache.zookeeper.data.Stat;
 import org.o3project.odenos.component.aggregator.Aggregator;
 import org.o3project.odenos.component.federator.Federator;
 import org.o3project.odenos.component.learningswitch.LearningSwitch;
@@ -32,6 +37,7 @@ import org.o3project.odenos.core.manager.ComponentManager2;
 import org.o3project.odenos.core.manager.system.SystemManager;
 import org.o3project.odenos.core.manager.system.SystemManagerIF;
 import org.o3project.odenos.core.util.ComponentLoader;
+import org.o3project.odenos.core.util.ZooKeeperService;
 import org.o3project.odenos.remoteobject.ObjectProperty;
 import org.o3project.odenos.remoteobject.RemoteObject;
 import org.o3project.odenos.remoteobject.manager.EventManager;
@@ -60,7 +66,10 @@ public final class Odenos {
   public static final String EVENT_MGR_ID = "eventmanager";
   public static final String REST_TRANSLATOR_ID = "resttranslator";
   public static final String DEFAULT_REST_CONF = "etc/odenos_rest.conf";
-  
+  public static final String ZK_DIR = "./var/zookeeper";
+  public static final String ZK_HOST = "localhost";
+  public static final String ZK_PORT_STRING = "2181";
+  public static final int ZK_PORT = 2181;
 
   private MessageDispatcher disp;
   private String systemMgrId;
@@ -86,7 +95,8 @@ public final class Odenos {
       options.addOption("d", "directory", true, "directory including Components to be loaded");
       options.addOption("i", "ip", true, "ip address or host name of MessagingServer");
       options.addOption("p", "port", true, "port number of MessagingServer");
-      options.addOption("I", "ip_backup", true, "ip address or host name of backup MessagingServer");
+      options
+          .addOption("I", "ip_backup", true, "ip address or host name of backup MessagingServer");
       options.addOption("P", "port_backup", true, "port number of backup MessagingServer");
       options.addOption("r", "romgr", true, "start ComponentManager with specified id");
       options.addOption("s", "system", false, "start core system");
@@ -104,7 +114,7 @@ public final class Odenos {
     public final String getIp() {
       if (line.hasOption("ip")) {
         String ip = line.getOptionValue("ip");
-        return (ip.equals("null")) ?  null: ip;
+        return (ip.equals("null")) ? null : ip;
       } else {
         return null;
       }
@@ -118,14 +128,14 @@ public final class Odenos {
     public final String getIpBackup() {
       if (line.hasOption("ip_backup")) {
         String ip = line.getOptionValue("ip_backup");
-        return (ip.equals("null")) ?  null: ip;
+        return (ip.equals("null")) ? null : ip;
       } else {
         return null;
       }
     }
 
     public final int getPortBackup() {
-      return line.hasOption("port_backup") 
+      return line.hasOption("port_backup")
           ? Integer.parseInt(line.getOptionValue("port_backup")) : 0;
     }
 
@@ -150,13 +160,14 @@ public final class Odenos {
     }
 
     public final int getRestPort() {
-      return line.hasOption("restport") ? Integer.parseInt(line.getOptionValue("restport")) : REST_PORT;
+      return line.hasOption("restport") ? Integer.parseInt(line.getOptionValue("restport"))
+          : REST_PORT;
     }
 
     public final String getRestRoot() {
       return line.hasOption("restroot") ? line.getOptionValue("restroot") : null;
     }
-    
+
     public final boolean getMonitor() {
       if (line.hasOption("monitor")) {
         if (line.getOptionValue("monitor").equals("true")) {
@@ -172,13 +183,13 @@ public final class Odenos {
     public final Collection<String> getMonitorLogging() {
       if (line.hasOption("monitor_logging")) {
         String opt = line.getOptionValue("monitor_logging");
-        Collection<String> objectIds = Arrays.asList(opt.split("\\s*,\\s*")); 
+        Collection<String> objectIds = Arrays.asList(opt.split("\\s*,\\s*"));
         return objectIds;
       } else {
-      return null;
+        return null;
       }
     }
-  } 
+  }
 
   /**
    * Parse parameters.
@@ -251,10 +262,12 @@ public final class Odenos {
       disp.start();
 
       if (systemIsEnabled) {
+        // Starts ODENOS core system
         this.runCoreSystem(systemMgrId);
       }
 
       if (romgrId != null) {
+        // Starts component manager
         this.runComponentManager(romgrId, directory);
       }
 
@@ -267,19 +280,25 @@ public final class Odenos {
   }
 
   private final void runCoreSystem(String systemMgrId) {
+    ZooKeeperService.setZkHost("localhost"); // TODO: set it via a command option.
+    ZooKeeperService.setZkPort(2181); // TODO: set it via a command option.
+    ZooKeeperService.startZkServer();
     EventManager evtmgr = new EventManager(EVENT_MGR_ID, disp);
     SystemManager sysmgr = new SystemManager(systemMgrId, disp, evtmgr.getProperty());
-    RESTTranslator restTranslator
-      = new RESTTranslator(REST_TRANSLATOR_ID, disp, restroot, restport);
+    RESTTranslator restTranslator =
+        new RESTTranslator(REST_TRANSLATOR_ID, disp, restroot, restport);
   }
 
   private final void runComponentManager(final String romgrId, final String dir) throws Exception {
+    ZooKeeperService.setZkHost("localhost"); // TODO: set it via a command option.
+    ZooKeeperService.setZkPort(2181); // TODO: set it via a command option.
+    ZooKeeperService.waitForServerToBeUp();
     SystemManagerIF sysmgr = new SystemManagerIF(romgrId, disp);
     ComponentManager2 romgr = new ComponentManager2(romgrId, disp);
     romgr.registerComponents(this.findComponents(dir));
     sysmgr.addComponentManager(romgr.getProperty());
     romgr.setState(ObjectProperty.State.RUNNING);
-    
+
   }
 
   private Set<Class<? extends RemoteObject>> findComponents(String rootOfPackages) {
@@ -303,7 +322,7 @@ public final class Odenos {
 
     return classes;
   }
-
+ 
   /**
    * initialize and start ODENOS.
    * @param args arguments.

@@ -16,10 +16,17 @@
 
 package org.o3project.odenos.core.manager.system;
 
+import org.apache.zookeeper.CreateMode;
+import org.apache.zookeeper.KeeperException;
+import org.apache.zookeeper.WatchedEvent;
+import org.apache.zookeeper.Watcher;
+import org.apache.zookeeper.ZooDefs;
+import org.apache.zookeeper.ZooKeeper;
 import org.msgpack.type.Value;
 import org.o3project.odenos.core.manager.ComponentManager2;
 import org.o3project.odenos.core.manager.system.event.ComponentConnectionChanged;
 import org.o3project.odenos.core.manager.system.event.ComponentManagerChanged;
+import org.o3project.odenos.core.util.ZooKeeperService;
 import org.o3project.odenos.remoteobject.ObjectProperty;
 import org.o3project.odenos.remoteobject.RemoteObject;
 import org.o3project.odenos.remoteobject.RequestParser;
@@ -81,6 +88,8 @@ public class SystemManager extends RemoteObject {
   // (Key: componentId, Value:BaseUri)
   private HashMap<String, String> baseUriMap = new HashMap<String, String>();
 
+  private ZooKeeper zk = null;
+
   // Note : Request and response procedures are synchronized now.
   @Deprecated
   public SystemManager(String objectId,
@@ -106,7 +115,11 @@ public class SystemManager extends RemoteObject {
     this.getProperty().setObjectState(ObjectProperty.State.RUNNING);
 
     this.parser = this.createParser();
+
+    keepAlive("/system_manager", 5000);
+
   }
+
 
   // When closed, componentManager will be deleted. (Expect when
   // componentManager is finalized, the components created by it automatically

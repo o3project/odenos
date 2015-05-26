@@ -113,11 +113,6 @@ public class LoopBackDriver implements IPubSubDriver {
   }
 
   @Override
-  public void systemManagerAttached() {
-    log.warn("unsupported");
-  }
-
-  @Override
   public <K, V> IMultiMap<K, V> getMultiMap(String name) {
     return null;
   }

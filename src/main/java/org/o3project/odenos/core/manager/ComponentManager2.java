@@ -46,6 +46,8 @@ public class ComponentManager2 extends RemoteObjectManager {
     super(id, disp);
     this.objectProperty.setProperty(ATTR_COMPTYPE, "");
     parser = this.createParser();
+    
+    keepAlive("/component_manager", 5000);
   }
 
   public void registerComponents(Set<Class<? extends RemoteObject>> classes) {

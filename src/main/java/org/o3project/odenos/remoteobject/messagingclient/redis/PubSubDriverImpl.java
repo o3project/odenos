@@ -23,14 +23,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.Closeable;
-import java.util.Collection;
-import java.util.HashSet;
 import java.util.Set;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Future;
 
 import org.o3project.odenos.remoteobject.messagingclient.Config;
 import org.o3project.odenos.remoteobject.messagingclient.Config.MODE;
@@ -120,10 +113,6 @@ public class PubSubDriverImpl implements IPubSubDriver, Closeable {
 
   private IMessageListener listener;
 
-  private String systemManagerId = null;
-  private boolean systemManagerActivated = false;
-  private boolean systemManagerAttached = false;
-
   private boolean bridged = false;
 
   private static final String HOST = "localhost";
@@ -138,7 +127,6 @@ public class PubSubDriverImpl implements IPubSubDriver, Closeable {
    */
   public PubSubDriverImpl(Config config, IMessageListener listener) {
 
-    this.systemManagerId = config.getSystemManagerId();
     this.listener = listener;
 
     bridged = config.getMode().contains(MODE.PUBSUB_BRIDGED);
@@ -149,13 +137,6 @@ public class PubSubDriverImpl implements IPubSubDriver, Closeable {
     String hostB = (config.getHostB() == null) ? HOST : config.getHostB();
     int portB = (config.getPortB() <= 0) ? DEFAULT_PORT : config.getPortB();
     redisServerAddress = new RedisServerAddress(host, port, hostB, portB);
-
-    // Disables System Manager status check
-    if (!config.getSystemManagerStatusCheck()) {
-      // Skip System Manager status check
-      systemManagerActivated = true;
-      systemManagerAttached = true;
-    }
 
     // PublisherQueueSize (default: 1000)
     int publisherQueueSize = (config.getPublisherQueueSize() == 0)
@@ -280,62 +261,12 @@ public class PubSubDriverImpl implements IPubSubDriver, Closeable {
 
   @Override
   public void publish(String channel, byte[] message) {
-    if (!systemManagerActivated) {
-      waitSystemManagerToBeActivated();
-    }
     publisherClient.publish(channel, message);
   }
 
   @Override
   public boolean channelExist(String channel) {
     return channelCheckerClient.channelExist(channel);
-  }
-
-  @Override
-  public void systemManagerAttached() {
-    if (!systemManagerAttached) {
-      publisherClient.setClientName(systemManagerId);
-      systemManagerAttached = true;
-      systemManagerActivated = true;
-    } else {
-      log.warn("this method should not be called twice");
-    }
-  }
-
-  private void waitSystemManagerToBeActivated() {
-    ExecutorService executor = Executors.newSingleThreadExecutor();
-    Callable<Void> callable = new Callable<Void>() {
-      @Override
-      public Void call() {
-        boolean logOutput = false;
-        while (true) {
-          try {
-            Thread.sleep(1000); // Polling every 1sec
-          } catch (InterruptedException e) {
-            log.error("thread sleep error");
-            return null;
-          }
-          if (channelCheckerClient.systemManagerExist(systemManagerId)) {
-            systemManagerActivated = true;
-            log.info("{} is activated", systemManagerId);
-            return null;
-          } else {
-            if (!logOutput) {
-              log.warn("unable to get access to {}", systemManagerId);
-              logOutput = true;
-            }
-          }
-        }
-      }
-    };
-    Future<Void> future = executor.submit(callable);
-    try {
-      future.get();
-    } catch (InterruptedException e) {
-      log.error("Thread execution error", e);
-    } catch (ExecutionException e) {
-      log.error("Thread execution error", e);
-    }
   }
 
   @Override

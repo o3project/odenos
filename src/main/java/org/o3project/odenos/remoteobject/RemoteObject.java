@@ -17,6 +17,13 @@
 package org.o3project.odenos.remoteobject;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.zookeeper.CreateMode;
+import org.apache.zookeeper.KeeperException;
+import org.apache.zookeeper.WatchedEvent;
+import org.apache.zookeeper.Watcher;
+import org.apache.zookeeper.ZooDefs;
+import org.apache.zookeeper.ZooKeeper;
+import org.o3project.odenos.core.util.ZooKeeperService;
 import org.o3project.odenos.remoteobject.actor.Mail;
 import org.o3project.odenos.remoteobject.event.EventSubscription;
 import org.o3project.odenos.remoteobject.event.ObjectPropertyChanged;
@@ -483,6 +490,34 @@ public class RemoteObject {
           ObjectProperty.State.FINALIZING);
     }
     return false;
+  }
+
+  private final int keepAliveCount = 0;
+  /**
+   * Keep-alive registration with ZooKeeper server.
+   */
+  protected void keepAlive(final String path, final int timeout) {
+    final String objectId = getObjectId();
+    Watcher watcher = new Watcher() {
+      @Override
+      public void process(WatchedEvent event) {
+        switch (event.getState()) {
+          case Expired:
+            keepAlive(path, timeout);
+            break;
+          default:
+            break;
+        }
+      }
+    };
+    // Registers system manager ID with ZooKeeper server.
+    ZooKeeper zk = ZooKeeperService.zooKeeper(timeout, watcher);
+    try {
+      zk.create(path+"/"+objectId, "".getBytes(),
+          ZooDefs.Ids.READ_ACL_UNSAFE, CreateMode.EPHEMERAL);
+    } catch (KeeperException | InterruptedException e) {
+      log.error("Unable to register system manager ID with ZooKeeper server", e);
+    }
   }
 
 }
