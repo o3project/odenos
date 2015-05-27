@@ -47,6 +47,7 @@ public class ComponentManager2 extends RemoteObjectManager {
     this.objectProperty.setProperty(ATTR_COMPTYPE, "");
     parser = this.createParser();
     
+    // Registers objectId to ZooKeeper, session timeout: 5 sec 
     keepAlive("/component_manager", 5000);
   }
 

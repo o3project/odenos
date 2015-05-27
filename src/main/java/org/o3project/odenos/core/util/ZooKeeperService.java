@@ -92,7 +92,12 @@ public final class ZooKeeperService {
           try {
             server.runFromConfig(zkServerConfig);
           } catch (IOException e) {
-            log.error("ZooKeeper startup failed", e);
+            log.warn("Retrying to start ZooKeeper server...");
+          }
+          try {
+            Thread.sleep(1000);
+          } catch (InterruptedException e) {
+            log.error("Thread sleep failed", e);
           }
         }
       };
@@ -115,7 +120,8 @@ public final class ZooKeeperService {
       } catch (InterruptedException e) {
         log.error("ZooKeeperSerivce startup failed");
       }
-      if (zk.getState() == ZooKeeper.States.CONNECTED) {
+      ZooKeeper.States st = zk.getState();
+      if (st == ZooKeeper.States.CONNECTED) {
         break;
       }
     }

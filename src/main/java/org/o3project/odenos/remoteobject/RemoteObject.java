@@ -37,6 +37,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.nio.ByteBuffer;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
@@ -197,9 +198,9 @@ public class RemoteObject {
    */
   protected Response requestSync(String objectId, Request.Method method,
       String path, Object body) throws Exception {
-      return messageDispatcher.requestSync(new Request(objectId, method,
-      path, body), this.getObjectId());
-      }
+    return messageDispatcher.requestSync(new Request(objectId, method,
+        path, body), this.getObjectId());
+  }
 
   /**
    * Send a request to the specified RemoteObject and get the response of it.
@@ -492,7 +493,6 @@ public class RemoteObject {
     return false;
   }
 
-  private final int keepAliveCount = 0;
   /**
    * Keep-alive registration with ZooKeeper server.
    */
@@ -504,6 +504,7 @@ public class RemoteObject {
         switch (event.getState()) {
           case Expired:
             keepAlive(path, timeout);
+            log.warn("ZooKeeper session exipired: /{}/{}", path, objectId);
             break;
           default:
             break;
@@ -513,8 +514,16 @@ public class RemoteObject {
     // Registers system manager ID with ZooKeeper server.
     ZooKeeper zk = ZooKeeperService.zooKeeper(timeout, watcher);
     try {
-      zk.create(path+"/"+objectId, "".getBytes(),
-          ZooDefs.Ids.READ_ACL_UNSAFE, CreateMode.EPHEMERAL);
+      // TODO: ACL
+      if (zk.exists(path, false) == null) {
+        zk.create(path, new byte[0], ZooDefs.Ids.OPEN_ACL_UNSAFE,
+            CreateMode.PERSISTENT);
+      }
+      // TODO: ACL
+      zk.create(path + "/" + objectId, new byte[0],
+          ZooDefs.Ids.OPEN_ACL_UNSAFE,
+          CreateMode.EPHEMERAL_SEQUENTIAL);
+      log.info("ZooKeeper node registered: /{}/{}", path, objectId);
     } catch (KeeperException | InterruptedException e) {
       log.error("Unable to register system manager ID with ZooKeeper server", e);
     }

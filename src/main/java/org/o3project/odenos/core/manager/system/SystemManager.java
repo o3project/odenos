@@ -116,6 +116,7 @@ public class SystemManager extends RemoteObject {
 
     this.parser = this.createParser();
 
+    // Registers objectId to ZooKeeper, session timeout: 5 min 
     keepAlive("/system_manager", 5000);
 
   }
