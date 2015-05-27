@@ -37,7 +37,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.nio.ByteBuffer;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
@@ -496,7 +495,7 @@ public class RemoteObject {
   /**
    * Keep-alive registration with ZooKeeper server.
    */
-  protected void keepAlive(final String path, final int timeout) {
+  public void keepAlive(final String path, final int timeout) {
     final String objectId = getObjectId();
     Watcher watcher = new Watcher() {
       @Override
@@ -504,7 +503,7 @@ public class RemoteObject {
         switch (event.getState()) {
           case Expired:
             keepAlive(path, timeout);
-            log.warn("ZooKeeper session exipired: /{}/{}", path, objectId);
+            log.warn("ZooKeeper session exipired: {}/{}", path, objectId);
             break;
           default:
             break;
@@ -522,8 +521,8 @@ public class RemoteObject {
       // TODO: ACL
       zk.create(path + "/" + objectId, new byte[0],
           ZooDefs.Ids.OPEN_ACL_UNSAFE,
-          CreateMode.EPHEMERAL_SEQUENTIAL);
-      log.info("ZooKeeper node registered: /{}/{}", path, objectId);
+          CreateMode.EPHEMERAL);
+      log.info("ZooKeeper node registered: {}/{}", path, objectId);
     } catch (KeeperException | InterruptedException e) {
       log.error("Unable to register system manager ID with ZooKeeper server", e);
     }

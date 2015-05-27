@@ -21,10 +21,7 @@ import org.apache.commons.cli.BasicParser;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
-import org.apache.zookeeper.CreateMode;
-import org.apache.zookeeper.ZooDefs;
 import org.apache.zookeeper.ZooKeeper;
-import org.apache.zookeeper.data.Stat;
 import org.o3project.odenos.component.aggregator.Aggregator;
 import org.o3project.odenos.component.federator.Federator;
 import org.o3project.odenos.component.learningswitch.LearningSwitch;
@@ -49,12 +46,16 @@ import org.o3project.odenos.remoteobject.rest.RESTTranslator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import sun.misc.Signal;
+import sun.misc.SignalHandler;
+
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.Set;
 
+@SuppressWarnings("restriction")
 public final class Odenos {
 
   private static final Logger log = LoggerFactory.getLogger(Odenos.class);
@@ -75,7 +76,7 @@ public final class Odenos {
   private String systemMgrId;
   private String msgsvIp;
   private int msgsvPort;
-  private boolean systemIsEnabled;
+  private static boolean systemIsEnabled;
   private String msgsvIpBackup;
   private int msgsvPortBackup;
   private String romgrId;
@@ -85,6 +86,7 @@ public final class Odenos {
   private String restroot;
   private boolean monitorEnabled;
   private Collection<String> objectIds;
+  private static boolean zooKeeperEmbedded = false;
 
   private final class CommandParser {
     CommandLine line;
@@ -105,6 +107,8 @@ public final class Odenos {
       options.addOption("h", "restroot", true, "Directory of Rest root");
       options.addOption("m", "monitor", true, "Output message to monitor");
       options.addOption("l", "monitor_logging", true, "Output message to logger");
+      options.addOption("z", "zookeeper_host", true, "ZooKeeper server host name or IP address");
+      options.addOption("e", "zookeeper_embed", false, "ZooKeeper server run in JVM for system manager");
     }
 
     public final void parse(String[] args) throws ParseException {
@@ -189,6 +193,19 @@ public final class Odenos {
         return null;
       }
     }
+
+    public final String getZooKeeperHost() {
+      if (line.hasOption("zookeeper_host")) {
+        String zookeeper_host = line.getOptionValue("zookeeper_host");
+        return zookeeper_host;
+      } else {
+        return ZK_HOST;
+      }
+    }
+
+    public final boolean getZooKeeperEmbed() {
+      return line.hasOption("zookeeper_embed") ? true : false;
+    }
   }
 
   /**
@@ -261,6 +278,9 @@ public final class Odenos {
       disp = new MessageDispatcher(config);
       disp.start();
 
+      ZooKeeperService.setZkHost(parser.getZooKeeperHost());
+      ZooKeeperService.setZkPort(2181); // TODO: set it via a command option.
+
       if (systemIsEnabled) {
         // Starts ODENOS core system
         this.runCoreSystem(systemMgrId);
@@ -280,25 +300,47 @@ public final class Odenos {
   }
 
   private final void runCoreSystem(String systemMgrId) {
-    ZooKeeperService.setZkHost("localhost"); // TODO: set it via a command option.
-    ZooKeeperService.setZkPort(2181); // TODO: set it via a command option.
-    ZooKeeperService.startZkServer();
+
+    // ZooKeeper server start in embedded mode.
+    if (parser.getZooKeeperEmbed()) {
+      ZooKeeperService.startZkServer();
+      log.debug("ZooKeeper server started in embedded mode");
+      zooKeeperEmbedded = true;
+    }
+
     EventManager evtmgr = new EventManager(EVENT_MGR_ID, disp);
     SystemManager sysmgr = new SystemManager(systemMgrId, disp, evtmgr.getProperty());
     RESTTranslator restTranslator =
         new RESTTranslator(REST_TRANSLATOR_ID, disp, restroot, restport);
+
+    // Let others know that the system manager has just started.
+    sysmgr.keepAlive("/system_manager", 5000);
   }
 
   private final void runComponentManager(final String romgrId, final String dir) throws Exception {
-    ZooKeeperService.setZkHost("localhost"); // TODO: set it via a command option.
-    ZooKeeperService.setZkPort(2181); // TODO: set it via a command option.
     ZooKeeperService.waitForServerToBeUp();
+
     SystemManagerIF sysmgr = new SystemManagerIF(romgrId, disp);
     ComponentManager2 romgr = new ComponentManager2(romgrId, disp);
+
+    ZooKeeper zk = ZooKeeperService.zooKeeper();
+    // Checks if the system manager has already been started.
+    while (true) {
+      if (zk.exists("/system_manager/" + systemMgrId, null) != null) {
+        log.debug("system manager is up: {}", systemMgrId);
+        break;
+      } else {
+        log.debug("waiting for system manager to be up...");
+        Thread.sleep(2000);
+      }
+    }
+
     romgr.registerComponents(this.findComponents(dir));
     sysmgr.addComponentManager(romgr.getProperty());
     romgr.setState(ObjectProperty.State.RUNNING);
 
+    // Let others know that the component manager has just started.
+    romgr.keepAlive("/component_managers", 5000);
   }
 
   private Set<Class<? extends RemoteObject>> findComponents(String rootOfPackages) {
@@ -322,14 +364,32 @@ public final class Odenos {
 
     return classes;
   }
- 
+
   /**
    * initialize and start ODENOS.
    * @param args arguments.
    * @throws Exception if failed to parse arguments, if failed to run.
    */
+  @SuppressWarnings("restriction")
   public static void main(String[] args) throws Exception {
     Odenos odenos = new Odenos();
+
+    // Graceful shutdown
+    Signal signal = new Signal("TERM");
+    Signal.handle(signal, new SignalHandler() {
+      public void handle(Signal signal) {
+        if (systemIsEnabled) {
+          // Shutdown method 1
+          //       :
+          // Shutdown method n
+          if (zooKeeperEmbedded) {
+            ZooKeeperService.stopZkServer();
+          }
+        }
+        log.info("ODENOS is terminated.");
+        System.exit(0);
+      }
+    });
 
     try {
       odenos.parseParameters(args);

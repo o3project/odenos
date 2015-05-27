@@ -1,17 +1,12 @@
 package org.o3project.odenos.core.util;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.lang.reflect.Method;
+import java.util.List;
 import java.util.Properties;
 
-import org.apache.zookeeper.CreateMode;
-import org.apache.zookeeper.KeeperException;
 import org.apache.zookeeper.WatchedEvent;
 import org.apache.zookeeper.Watcher;
-import org.apache.zookeeper.ZooDefs;
 import org.apache.zookeeper.ZooKeeper;
 import org.apache.zookeeper.server.ServerConfig;
 import org.apache.zookeeper.server.ZooKeeperServerMain;
@@ -36,22 +31,22 @@ import org.slf4j.LoggerFactory;
  */
 
 /**
- * ZooKeeper server for coordinating distributed objects on ODENOS.
- * 
- * Note: this class is to be removed in the future, since ZooKeeper
- * servers should run in other processes for stability.
+ * ZooKeeper service for coordinating distributed objects on ODENOS.
  */
 public final class ZooKeeperService {
 
   private static final Logger log =
       LoggerFactory.getLogger(ZooKeeperService.class);
 
-  private static ZooKeeperServerMain server;
   private static ServerConfig zkServerConfig;
-  private static Thread thread;
+  private static Thread zkServerThread;
   private static String zk_host = "localhost";
   private static int zk_port = 2181;
   private static String zk_dir = "./var/zookeeper";
+  private static final String TICK_TIME = "2000";
+  private static final int DEFAULT_TIMEOUT = 4000;
+
+  private static ZooKeeperServerMain zkServer = null;
 
   public static void setZkHost(String host) {
     zk_host = host;
@@ -66,18 +61,23 @@ public final class ZooKeeperService {
   }
 
   /**
-   * Constructor. 
+   * Starts ZooKeeper server. 
    * 
-   * TODO: the server should be run as a stand alone process supporting HA.
+   * Note: this method is to be removed in the future, since ZooKeeper
+   * servers should run in other processes for stability.
    */
   public static void startZkServer() {
 
-    if (server == null) {
-      server = new ZooKeeperServerMain();
+    if (zkServer == null) {
+      zkServer = new ZooKeeperServerMain();
       zkServerConfig = new ServerConfig();
       Properties startupProperties = new Properties();
+      // Start ZooKeeper server in this JVM.
+      // ZooKeeper server listen port number for clients.
       startupProperties.setProperty("clientPort", new Integer(zk_port).toString());
+      // ZooKeeper server log dir. 
       startupProperties.setProperty("dataDir", zk_dir);
+      startupProperties.setProperty("tickTime", TICK_TIME);
 
       QuorumPeerConfig quorumConfiguration = new QuorumPeerConfig();
       try {
@@ -87,22 +87,18 @@ public final class ZooKeeperService {
       }
       zkServerConfig.readFrom(quorumConfiguration);
 
-      thread = new Thread() {
+      zkServerThread = new Thread() {
         public void run() {
           try {
-            server.runFromConfig(zkServerConfig);
+            // Start the server.
+            zkServer.runFromConfig(zkServerConfig);
           } catch (IOException e) {
             log.warn("Retrying to start ZooKeeper server...");
           }
-          try {
-            Thread.sleep(1000);
-          } catch (InterruptedException e) {
-            log.error("Thread sleep failed", e);
-          }
         }
       };
-      thread.setDaemon(true);
-      thread.start();
+      zkServerThread.setDaemon(true);
+      zkServerThread.start();
 
     } else {
       log.warn("ZooKeeper server already started");
@@ -111,11 +107,62 @@ public final class ZooKeeperService {
     waitForServerToBeUp();
   }
 
+  /**
+   * Stops ZooKeeper server. 
+   * 
+   * Note: this method is to be removed in the future, since ZooKeeper
+   * servers should run in other processes for stability.
+   */
+  public static void stopZkServer() {
+    // Removes ephemeral znodes
+    ZooKeeper zk = zooKeeper();
+    try {
+      List<String> comp_children = zk.getChildren("/component_managers", false);
+      for (String child : comp_children) {
+        log.debug("delete /component_managers/{}", child);
+        zk.delete("/component_managers/"+child, -1);
+      }
+      List<String> sys_children = zk.getChildren("/system_manager", false);
+      for (String child : sys_children) {
+        log.debug("delete /system_manager/{}", child);
+        zk.delete("/system_manager/"+child, -1);
+      }
+    } catch (Exception e) {
+      log.error("unable to delete children", e);
+    }
+    Method shutdown = null;
+    try {
+      shutdown = ZooKeeperServerMain.class.getDeclaredMethod("shutdown");
+    } catch (Exception e) {
+      log.error("shutdown error", e);
+    }
+    shutdown.setAccessible(true);
+    try {
+      shutdown.invoke(zkServer);
+    } catch (Exception e) {
+      log.error("shutdown error", e);
+    }
+    try {
+      zkServerThread.join(5000);
+      zkServerThread = null;
+    } catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      log.warn("interrupted");
+      zkServerThread = null;
+    }
+  }
+
+  /**
+   * Blocks until ZooKeeper server startup completion.
+   * 
+   * Note: this method is to be removed in the future, since ZooKeeper
+   * servers should run in other processes for stability.
+   */
   public static void waitForServerToBeUp() {
     ZooKeeper zk = zooKeeper(60000, null);
     while (true) {
       try {
-        Thread.sleep(1000);
+        Thread.sleep(2000);
         log.debug("ZooKeeper server is starting...");
       } catch (InterruptedException e) {
         log.error("ZooKeeperSerivce startup failed");
@@ -128,12 +175,21 @@ public final class ZooKeeperService {
   }
 
   /**
+   * Returns an instance of ZooKeeper client with default
+   * session timeout and watcher.
+   *  
+   * @return ZooKeeper client instance for the session
+   */
+  public static ZooKeeper zooKeeper() {
+    return zooKeeper(DEFAULT_TIMEOUT, null);
+  }
+
+  /**
    * Returns an instance of ZooKeeper client.
    *  
-   * @param zk_host ZooKeeper server host name or IP address
-   * @param zk_port ZooKeeper server port number
+   * @param timeout ZooKeeper session timeout in msec 
    * @param watcher Watcher instance or null for default Watcher
-   * @return ZooKeeper instance
+   * @return ZooKeeper client instance for the session
    */
   public static ZooKeeper zooKeeper(int timeout, Watcher watcher) {
     // Default watcher
@@ -155,5 +211,4 @@ public final class ZooKeeperService {
     }
     return zk;
   }
-
 }
