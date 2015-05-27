@@ -22,17 +22,18 @@ import time
 from functools import partial
 
 from org.o3project.odenos.core.component.network.flow.ofpflow.ofp_flow_match import OFPFlowMatch
-
-from org.o3project.odenos.core.component.network.flow.basic.basic_flow import (BasicFlow)
+from org.o3project.odenos.core.component.network.flow.basic.basic_flow import BasicFlow
+from org.o3project.odenos.core.component.network.flow.basic.basic_flow_match import BasicFlowMatch
+from org.o3project.odenos.core.component.network.flow.basic.flow_action_output import FlowActionOutput
 from org.o3project.odenos.core.component.network.flow.flow import Flow
 from org.o3project.odenos.core.component.network.flow.flow_set import FlowSet
-from org.o3project.odenos.core.component.network.flow.ofpflow.ofp_flow import (OFPFlow)
+from org.o3project.odenos.core.component.network.flow.ofpflow.ofp_flow import OFPFlow
 from org.o3project.odenos.core.component.network.packet.in_packet import InPacket
-from org.o3project.odenos.core.component.network.packet.ofp_in_packet import (OFPInPacket)
-from org.o3project.odenos.core.component.network.packet.ofp_out_packet import (OFPOutPacket)
+from org.o3project.odenos.core.component.network.packet.ofp_in_packet import OFPInPacket
+from org.o3project.odenos.core.component.network.packet.ofp_out_packet import OFPOutPacket
 from org.o3project.odenos.core.component.network.packet.out_packet import OutPacket
 from org.o3project.odenos.core.component.network.packet.packet import Packet
-from org.o3project.odenos.core.component.network.packet.packet_status import (PacketStatus)
+from org.o3project.odenos.core.component.network.packet.packet_status import PacketStatus
 from org.o3project.odenos.core.component.network.topology.link import Link
 from org.o3project.odenos.core.component.network.topology.node import Node
 from org.o3project.odenos.core.component.network.topology.port import Port
@@ -108,6 +109,9 @@ class OdenosConfigurator(object):
             return None
         return resp.body
 
+    def get_ll_boundaries(self, linklayerizer):
+        return self.get_fed_boundaries(linklayerizer)
+
     def set_fed_boundaries(self, federator, boundaries):
         n = 0
         for ports in boundaries:
@@ -154,7 +158,7 @@ class OdenosConfigurator(object):
                 port2 = net2.get_physical_port(phy_port2)
                 time.sleep(2)
 
-            bond_id = "bond_%s" % str(n)
+            bond_id = "bond_" + str(n) + "_low_" + port1.port_id + "_up_" +  port2.port_id
             bond = {"id": bond_id, "type": "LinkLayerizer",
                      "lower_nw": net1.network_id,
                      "lower_nw_node": port1.node_id, "lower_nw_port": port1.port_id,
@@ -201,6 +205,17 @@ class OdenosConfigurator(object):
         attr.update({"max_bandwidth": "10000000"})
         attr.update({"unreserved_bandwidth": "10000000"})
         return network.put_link(Link("Link", "0", link_id, snode, sport, dnode, dport, attr))
+
+    def create_simple_basicFlow(self, network, flow_id,
+                                in_node, in_port, path, out_node, out_port):
+        matches = []
+        matches.append(BasicFlowMatch("BasicFlowMatch", in_node, in_port))
+        edge_actions = {}
+        edge_actions[out_node] = [FlowActionOutput("FlowActionOutput", out_port)]
+        attributes = {}
+        flow = BasicFlow("BasicFlow", "0", flow_id, "simple_basicFlow",
+                True, None, None, attributes, matches, path, edge_actions)
+        return network.put_flow(flow)
 
     def create_ofp_flow(self, network, flow_id, matches, path, edge_actions):
         attributes = {}
