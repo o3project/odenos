@@ -17,9 +17,11 @@
 
 import imp
 import inspect
+import kazoo.client 
 import logging
 import os
 from optparse import OptionParser
+import time
 
 from org.o3project.odenos.core.component.dummy_driver import DummyDriver
 from org.o3project.odenos.core.manager.component_manager import ComponentManager
@@ -43,6 +45,7 @@ class Parser(object):
         parser.add_option("-p", dest="port", help="Pubsub server port number", type=int, default=6379)
         parser.add_option("-m", dest="monitor", help="Toggle monitor", default="false")
         parser.add_option("-S", dest="manager", help="System Manager ID", default="systemmanager")
+        parser.add_option("-z", dest="zookeeper_host", help="ZooKeeper host name or IP address", default="localhost")
         (options, args) = parser.parse_args()
         return options
 
@@ -68,6 +71,8 @@ def load_modules(path):
 
 
 if __name__ == '__main__':
+
+
     Logger.file_config()
 
     options = Parser().parse()
@@ -93,12 +98,29 @@ if __name__ == '__main__':
                 continue
             if issubclass(clazz, RemoteObject):
                 classes.append(clazz)
-                print "Loading... " + str(clazz)
+                logging.info("Loading... " + str(clazz))
 
     classes.append(DummyDriver)
+    
+    # ZooKeeper client start
+    zk = kazoo.client.KazooClient(hosts=options.zookeeper_host)
+    zk.start()
+
+    # Wait for the system manager to be up
+    while True:
+        if zk.exists('/system_manager/{}'.format(options.manager)):
+            break
+        else:
+            logging.info("Waiting for system manager to be up...")
+            time.sleep(2.0)
+    
     component_manager.register_components(classes)
     sysmgr = SystemManagerInterface(dispatcher, options.rid)
     sysmgr.add_component_manager(component_manager)
     component_manager.set_state(ObjectProperty.State.RUNNING)
+   
+    # Registers the component manager's object ID with ZooKeeper server. 
+    zk.ensure_path('/component_managers')
+    zk.create(path='/component_managers/{}'.format(component_manager.object_id), ephemeral=True)
 
     dispatcher.join()
