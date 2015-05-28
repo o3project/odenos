@@ -303,6 +303,7 @@ public final class Odenos {
 
     // ZooKeeper server start in embedded mode.
     if (parser.getZooKeeperEmbed()) {
+      ZooKeeperService.cleanUp();
       ZooKeeperService.startZkServer();
       log.debug("ZooKeeper server started in embedded mode");
       zooKeeperEmbedded = true;
@@ -370,7 +371,6 @@ public final class Odenos {
    * @param args arguments.
    * @throws Exception if failed to parse arguments, if failed to run.
    */
-  @SuppressWarnings("restriction")
   public static void main(String[] args) throws Exception {
     Odenos odenos = new Odenos();
 

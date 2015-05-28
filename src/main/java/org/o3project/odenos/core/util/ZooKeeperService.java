@@ -1,5 +1,6 @@
 package org.o3project.odenos.core.util;
 
+import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.List;
@@ -8,6 +9,7 @@ import java.util.Properties;
 import org.apache.zookeeper.WatchedEvent;
 import org.apache.zookeeper.Watcher;
 import org.apache.zookeeper.ZooKeeper;
+import org.apache.zookeeper.server.PurgeTxnLog;
 import org.apache.zookeeper.server.ServerConfig;
 import org.apache.zookeeper.server.ZooKeeperServerMain;
 import org.apache.zookeeper.server.quorum.QuorumPeerConfig;
@@ -58,6 +60,20 @@ public final class ZooKeeperService {
 
   public static void setZkDir(String dir) {
     zk_dir = dir;
+  }
+
+  /**
+   * Cleans up ZooKeeper transaction logs.
+   * 
+   * Note: this method is to be removed in the future, since ZooKeeper
+   * servers should run in other processes for stability.
+   */
+  public static void cleanUp() {
+    try {
+      PurgeTxnLog.purge(new File(zk_dir), new File(zk_dir), 3);
+    } catch (IOException e) {
+      log.error("Unable to clea up ZooKeeper transction logs");
+    }
   }
 
   /**

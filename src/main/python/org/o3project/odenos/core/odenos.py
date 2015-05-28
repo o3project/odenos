@@ -17,10 +17,11 @@
 
 import imp
 import inspect
-import kazoo.client 
+#import kazoo.client 
 import logging
 import os
 from optparse import OptionParser
+import sys
 import time
 
 from org.o3project.odenos.core.component.dummy_driver import DummyDriver
@@ -31,6 +32,11 @@ from org.o3project.odenos.remoteobject.object_property import ObjectProperty
 from org.o3project.odenos.remoteobject.remote_object import RemoteObject
 from org.o3project.odenos.remoteobject.transport.message_dispatcher import MessageDispatcher
 
+try:
+    import kazoo.client
+except:
+    logging.error('*** Install kazoo! (pip install kazoo) ***')
+    sys.exit(1)
 
 class Parser(object):
 
