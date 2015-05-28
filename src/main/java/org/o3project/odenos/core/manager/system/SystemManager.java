@@ -108,6 +108,7 @@ public class SystemManager extends RemoteObject {
     this.parser = this.createParser();
   }
 
+
   // When closed, componentManager will be deleted. (Expect when
   // componentManager is finalized, the components created by it automatically
   // deleted.)

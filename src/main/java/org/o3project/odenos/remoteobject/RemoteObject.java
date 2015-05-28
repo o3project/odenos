@@ -17,6 +17,13 @@
 package org.o3project.odenos.remoteobject;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.zookeeper.CreateMode;
+import org.apache.zookeeper.KeeperException;
+import org.apache.zookeeper.WatchedEvent;
+import org.apache.zookeeper.Watcher;
+import org.apache.zookeeper.ZooDefs;
+import org.apache.zookeeper.ZooKeeper;
+import org.o3project.odenos.core.util.ZooKeeperService;
 import org.o3project.odenos.remoteobject.actor.Mail;
 import org.o3project.odenos.remoteobject.event.EventSubscription;
 import org.o3project.odenos.remoteobject.event.ObjectPropertyChanged;
@@ -190,9 +197,9 @@ public class RemoteObject {
    */
   protected Response requestSync(String objectId, Request.Method method,
       String path, Object body) throws Exception {
-      return messageDispatcher.requestSync(new Request(objectId, method,
-      path, body), this.getObjectId());
-      }
+    return messageDispatcher.requestSync(new Request(objectId, method,
+        path, body), this.getObjectId());
+  }
 
   /**
    * Send a request to the specified RemoteObject and get the response of it.
@@ -483,6 +490,42 @@ public class RemoteObject {
           ObjectProperty.State.FINALIZING);
     }
     return false;
+  }
+
+  /**
+   * Keep-alive registration with ZooKeeper server.
+   */
+  public void keepAlive(final String path, final int timeout) {
+    final String objectId = getObjectId();
+    Watcher watcher = new Watcher() {
+      @Override
+      public void process(WatchedEvent event) {
+        switch (event.getState()) {
+          case Expired:
+            keepAlive(path, timeout);
+            log.warn("ZooKeeper session exipired: {}/{}", path, objectId);
+            break;
+          default:
+            break;
+        }
+      }
+    };
+    // Registers system manager ID with ZooKeeper server.
+    ZooKeeper zk = ZooKeeperService.zooKeeper(timeout, watcher);
+    try {
+      // TODO: ACL
+      if (zk.exists(path, false) == null) {
+        zk.create(path, new byte[0], ZooDefs.Ids.OPEN_ACL_UNSAFE,
+            CreateMode.PERSISTENT);
+      }
+      // TODO: ACL
+      zk.create(path + "/" + objectId, new byte[0],
+          ZooDefs.Ids.OPEN_ACL_UNSAFE,
+          CreateMode.EPHEMERAL);
+      log.info("ZooKeeper node registered: {}/{}", path, objectId);
+    } catch (KeeperException | InterruptedException e) {
+      log.error("Unable to register system manager ID with ZooKeeper server", e);
+    }
   }
 
 }

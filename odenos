@@ -50,6 +50,8 @@ HOST_B=null
 PORT_B=0
 MONITOR=false
 MONITOR_LOGGING=""
+ZOOKEEPER_HOST=""
+ZOOKEEPER_EMBED=""
 
 ##########################################################################
 # common functions                                                       #
@@ -110,6 +112,12 @@ read_config_file() {
 	    "monitor.logging")
                 MONITOR_LOGGING="-l "`echo $line | awk '{print $2}'`
 		;;
+	    "zookeeper.host")
+                ZOOKEEPER_HOST="-z "`echo $line | awk '{print $2}'`
+		;;
+	    "zookeeper.embed")
+                ZOOKEEPER_EMBED="-e"
+		;;
             *)
                 ;;
         esac
@@ -142,7 +150,7 @@ start_system() {
 	-Dapp.log=${ODENOS_LOG}/odenos_system.log \
 	$ODENOS_MAIN -s -S $MANAGER -o ${REST_PORT} -h ${REST_ROOT} \
 	-i $HOST -p $PORT -I $HOST_B -P $PORT_B \
-	-m $MONITOR $MONITOR_LOGGING &
+	-m $MONITOR $MONITOR_LOGGING $ZOOKEEPER_HOST $ZOOKEEPER_EMBED &
     echo $! > $FILE_ODENOS_SYSTEM_PID
 }
 
@@ -178,7 +186,7 @@ start_process() {
 		-Dapp.log=${ODENOS_LOG}/odenos_${PROC_NAME}.log \
 		$ODENOS_MAIN -r ${PROC_NAME} -d ${PROC_DIR} \
 		-S $MANAGER -i $HOST -p $PORT -I $HOST_B -P $PORT_B \
-		-m $MONITOR $MONITOR_LOGGING &
+		-m $MONITOR $MONITOR_LOGGING $ZOOKEEPER_HOST &
 
 	    echo $! > $ODENOS_TMP/odenos_${PROC_NAME}.pid
 

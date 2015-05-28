@@ -126,12 +126,6 @@ public interface IPubSubDriver extends Closeable {
   boolean channelExist(String channel) throws ProtocolException;
   
   /**
-   * This method informs the implementation class that SystemManager
-   * has just been attached to the driver.
-   */
-  void systemManagerAttached();
-
-  /**
    * This method provides extended features for future enhancements.
    *
    * @param name String

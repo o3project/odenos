@@ -560,9 +560,6 @@ public class MessageDispatcher implements Closeable, IMessageListener {
       if (localObjectsMap.putIfAbsent(objectId, localObject) == null) {
         driverImpl.subscribeChannel(objectId);
       }
-      if (objectId.equals(systemManagerId)) {
-        driverImpl.systemManagerAttached();
-      }
     }
   }
 
