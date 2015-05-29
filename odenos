@@ -196,13 +196,15 @@ start_process() {
 		LOGGING_CONF=${ODENOS_CONF}/log_python.conf \
 		APP_LOG=${ODENOS_LOG}/odenos_${PROC_NAME}.log \
 		$PYTHON ${ODENOS_LIB}/python/org/o3project/odenos/core/odenos.py \
-		-r ${PROC_NAME} -d ${PROC_DIR} -S $MANAGER -i $HOST -p $PORT -m $MONITOR &
+		-r ${PROC_NAME} -d ${PROC_DIR} -S $MANAGER -i $HOST -p $PORT -m \
+	       	$MONITOR $ZOOKEEPER_HOST &
 
 	    echo $! > $ODENOS_TMP/odenos_${PROC_NAME}.pid
 
 	elif [ $PROC_TYPE = "ruby" ]; then
 	    # start ruby RemoteObjectManager
 	    echo $PROC_NAME, $PROC_TYPE, $PROC_DIR
+	    sleep 3
             $TREMA run -d "./src/main/ruby/org/o3project/odenos/core/odenos.rb --cmpmgr=$PROC_NAME"
 	fi
 	
@@ -244,7 +246,6 @@ start() {
 
     if [ -n "${MANAGER_ENABLED}" ]; then
         start_system
-        sleep 3
     fi
     start_process
 
