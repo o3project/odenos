@@ -79,8 +79,9 @@ Python or Ruby environment, please see "Appendix A".
 1. Install python packages
 
    ```
-   $ sudo apt-get install python-setuptools python-dev
+   $ sudo apt-get install python-setuptools python-dev python-pip
    $ sudo -E easy_install msgpack-python redis futures mock coverage
+   $ sudo pip install kazoo
    ```
 
 2. Add the following line to *./etc/odenos.conf*
