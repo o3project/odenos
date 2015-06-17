@@ -28,7 +28,7 @@ Supported environments
 
 Support
 ==========================
-ODENOS official site is <https://github.com/o3project/odenos>.
+ODENOS official site is <http://o3project.github.io/odenos/>.
 
 
 Development
