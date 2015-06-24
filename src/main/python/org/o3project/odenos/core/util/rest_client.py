@@ -17,6 +17,7 @@
 import logging
 import httplib
 import json
+import traceback
 
 from org.o3project.odenos.remoteobject.message.response import Response
 
@@ -82,6 +83,14 @@ class RestClient:
     self.close()
     return resp
 
+  def get(self, path, body):
+    if not self.connect():
+      self.close()
+      raise
+    resp = self.request("GET", path, body)
+    self.close()
+    return resp
+
   def request(self, method, path, body, retry=3, retry_interval=1):
     logging.debug(self.__class__.__name__ + "::" + "request:%s %s [%s]",method,path,body)
     retrying = True
@@ -92,19 +101,22 @@ class RestClient:
         body = json.dumps(body)
     except Exception:
       logging.error(self.__class__.__name__ + "::" + "json transrate error.")
+      logging.error(traceback.format_exc())
       return Response(500, None)
 
     while retrying:
       try:
         self.client.request(method, path, body, self.headers)
       except Exception:
-        logging.error(self.__class__.__name__ + "::" + "rest error[request]")
+        logging.error(self.__class__.__name__ + "::" + "rest error[request] path:%s body:%s" , path, body)
+        logging.error(traceback.format_exc())
         return Response(500, None)
 
       try:
         resp = self.client.getresponse()
       except Exception:
         logging.error(self.__class__.__name__ + "::" + "rest error[response]")
+        logging.error(traceback.format_exc())
         return Response(500, None)
 
       code = resp.status
