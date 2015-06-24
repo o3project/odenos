@@ -18,6 +18,7 @@
 import logging
 import traceback
 import copy
+import threading
 
 from org.o3project.odenos.remoteobject.object_property import ObjectProperty
 from org.o3project.odenos.remoteobject.message.request import Request
@@ -56,6 +57,7 @@ class RemoteObject(object):
         self._event_subscription = EventSubscription(object_id)
         self.__parser = RequestParser()
         self.__add_rules()
+        self.LOCK = threading.RLock()
 
     def on_initialize(self, obj_prop):
         return True
@@ -199,7 +201,8 @@ class RemoteObject(object):
         return Response(Response.StatusCode.OK, self._object_settings)
 
     def _do_post_event(self, event):
-        self.on_event(event)
+        with self.LOCK:
+          self.on_event(event)
 
     def on_state_changed(self, old_state, new_state):
         if old_state != ObjectProperty.State.FINALIZING:
