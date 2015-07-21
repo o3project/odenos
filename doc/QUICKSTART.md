@@ -29,37 +29,44 @@ Python or Ruby environment, please see "Appendix A".
 1. Install jdk and maven
 
    ```
-   $ sudo apt-get install maven openjdk-7-jdk
+   $ sudo apt-get install git maven openjdk-7-jdk
    $ export JAVA_HOME=/usr/lib/jvm/java-7-openjdk-amd64
    ```
 
 ## 2. Build, Run, Test
 
-1. Build
+1. git clone
+
+   ```
+   $ git clone https://github.com/o3project/odenos.git
+   $ cd odenos
+   ```
+
+2. Build
 
    ```
    $ mvn package
    ```
 
-2. Start odenos
+3. Start odenos
 
    ```
    $ ./odenos start
    ```
 
-3. Stop odenos
+4. Stop odenos
 
    ```
    $ ./odenos stop
   ```
 
-4. run unit tests (if you want)
+5. run unit tests (if you want)
 
    ```
    $ ./run-unittests.sh
    ```
 
-5. run examples (if you want)
+6. run examples (if you want)
 
    ```
    $ cd apps/example
