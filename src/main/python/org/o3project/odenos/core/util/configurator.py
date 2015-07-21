@@ -184,6 +184,9 @@ class OdenosConfigurator(object):
         self.create_component("Network", name, cm_id)
         return NetworkInterface(self.disp, name)
 
+    def get_network(self, name):
+        return NetworkInterface(self.disp, name)
+
     def create_node(self, network, node_id, attr=DEF_ATTR):
         attr = copy.deepcopy(attr)
         attr.update({"physical_id": node_id})
