@@ -105,7 +105,7 @@ public class LearningSwitch extends Logic {
     this.pathCalculator = new PathCalculator();
     this.idleTimeout = DEFAULT_IDLE_TIMER;
     this.hardTimeout = DEFAULT_HARD_TIMER;
-    log.info("created");
+    log.debug("created");
   }
 
   /**
