@@ -522,7 +522,7 @@ public class RemoteObject {
       zk.create(path + "/" + objectId, new byte[0],
           ZooDefs.Ids.OPEN_ACL_UNSAFE,
           CreateMode.EPHEMERAL);
-      log.info("ZooKeeper node registered: {}/{}", path, objectId);
+      log.debug("ZooKeeper node registered: {}/{}", path, objectId);
     } catch (KeeperException | InterruptedException e) {
       log.error("Unable to register system manager ID with ZooKeeper server", e);
     }
