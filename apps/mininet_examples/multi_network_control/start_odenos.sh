@@ -19,7 +19,7 @@ DRV_CONF1=
 start() {
   cd $ODENOS_HOME_DIR
   ./odenos start
-  sleep 2
+  sleep 4
   ${TREMA1} run -d -c ./apps/mininet_examples/multi_network_control/driver_dc1.conf "${TREMA1_PARAM}"
   ${TREMA2} run -d -c ./apps/mininet_examples/multi_network_control/driver_dc2.conf "${TREMA2_PARAM}"
   ${TREMA3} run -d -c ./apps/mininet_examples/multi_network_control/driver_dc3.conf "${TREMA3_PARAM}"
