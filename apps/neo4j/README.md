@@ -3,7 +3,7 @@ Visualize the ODENOS component configuration
 
 # Screen shots
 
-   <img src="./images/Screenshot1.png" width="800">
+   <img src="./images/Screenshot2.png" width="800">
 
 # Architecture
 
