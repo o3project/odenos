@@ -15,8 +15,10 @@
 # See the License for the specific language governing permissions and      #
 # limitations under the License.                                           #
 
+import inspect
 import traceback
 import sys
+from org.o3project.odenos.remoteobject.remote_object import RemoteObject
 from org.o3project.odenos.core.util.configurator import OdenosConfigurator
 from org.o3project.odenos.core.util.rest_client import RestClient
 from neo4jclient import Neo4jClient
@@ -28,13 +30,17 @@ class Neo4jsync(OdenosConfigurator):
     self.client = Neo4jClient()
     self.client.init_db()
     self._sync_components()
-    self._sysc_topology()
+    #self._sysc_topology() #TODO
 
   def _sync_components(self):
     self._components = {}
     components = self.sysmgr.get_components()
     for component in components.itervalues():
-      _id = self.client.post_node(component)
+      print component["super_type"]
+      if "Driver" in component["super_type"]:
+        _id = self.client.post_node(component, label_key="super_type")
+      else:
+        _id = self.client.post_node(component)
       self._components[component["id"]] = _id
 
     connections = self.sysmgr.get_connections()
@@ -47,40 +53,46 @@ class Neo4jsync(OdenosConfigurator):
     _topology = {}
     components = self.sysmgr.get_components()
     for component in components.itervalues():
-      if "Network" in component["type"]:
-        network = self.get_network(component["id"])
-        topology = network.get_topology()
-        for node in topology.nodes.itervalues():
-          obj = {"id":node.node_id, "type":node.type}
-          _id = self.client.post_node(obj)
-          _topology[obj["id"]] = _id
+      if not "Network" in component["type"]:
+        continue
+
+      network = self.get_network(component["id"])
+      topology = network.get_topology()
+      _id = None
+      for node in topology.nodes.itervalues():
+        obj = {"id":node.node_id, "type":node.type}
+        _id = self.client.post_node(obj)
+        _topology[obj["id"]] = _id
         
-        self.client.post_relationship("topology",
-                self._components[component["id"]], _id)
+      if not _id :
+        continue
 
-        for link in topology.links.itervalues():
-          self.client.post_relationship(link.type,
-                                    _topology[link.dst_node],
-                                    _topology[link.src_node])
+      self.client.post_relationship("topology",
+              self._components[component["id"]], _id)
 
-        flowset = network.get_flow_set()
-        flows = flowset.flows
-        for flow in flowset.flows.itervalues():
-          if len(flow.path) == 0:
-            for e in flow.edge_actions:
-              out_node = e
-            self._set_flow(_topology[flow.matches[0].in_node],
-                           _topology[out_node])
-            return
+      for link in topology.links.itervalues():
+        self.client.post_relationship(link.type,
+                                  _topology[link.dst_node],
+                                  _topology[link.src_node])
+
+      flowset = network.get_flow_set()
+      flows = flowset.flows
+      for flow in flowset.flows.itervalues():
+        if len(flow.path) == 0:
+          for e in flow.edge_actions:
+            out_node = e
+          self._set_flow(_topology[flow.matches[0].in_node],
+                         _topology[out_node])
+          return
           
-          for path in flow.path:
-            link = network.get_link(path)
-            self._set_flow(_topology[link.src_node],
-                           _topology[link.dst_node])
-        
+        for path in flow.path:
+          link = network.get_link(path)
+          self._set_flow(flow.flow_id,
+                         _topology[link.src_node],
+                         _topology[link.dst_node])
 
-  def _set_flow(self, in_node, out_node):
-    self.client.post_relationship("Flow", in_node, out_node)
+  def _set_flow(self, flow_id, in_node, out_node):
+    self.client.post_relationship("Flow", in_node, out_node, flow_id)
 
 if __name__ == "__main__":
   try :

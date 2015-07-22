@@ -37,7 +37,7 @@ class Neo4jClient(object):
     self.rest = RestClient(self.settings["address"],
                            self.settings["port"],
                            self.settings["timeout"])
-    self.rest.set_auth(self.settings["auth"])
+    #self.rest.set_auth(self.settings["auth"])
 
   def _read_config(self):
     path = None
@@ -72,7 +72,7 @@ class Neo4jClient(object):
     for node in body:
       self.del_node(node["metadata"]["id"])
 
-  def post_node(self, component):
+  def post_node(self, component, label_key="type"):
     path = "/db/data/node"
     resp = self.rest.post(path, component)
     logging.info("neo4j :: id[%s] POST %s [%s] %s",
@@ -80,12 +80,14 @@ class Neo4jClient(object):
     if resp.is_error("POST"):
       return None
     body = json.loads(resp.body)
-    self._add_label(body["metadata"]["id"], component["type"])
+    self._add_label(body["metadata"]["id"], component[label_key])
     return body["metadata"]["id"]
 
-  def post_relationship(self, conn_type, _id1, _id2):
-    path = "/db/data/node/" + str(_id1) + "/relationships"
-    body = {"to":str(_id2) , "type":conn_type}
+  def post_relationship(self, conn_type, src, dst, _id=None):
+    path = "/db/data/node/" + str(src) + "/relationships"
+    body = {"to":str(dst) , "type":conn_type, "data":{}}
+    if _id:
+      body["data"]["id"] = _id
     resp = self.rest.post(path, body)
     logging.info("neo4j :: POST %s [%s] %s", path, resp.status_code, resp.body)
     if resp.is_error("POST"):

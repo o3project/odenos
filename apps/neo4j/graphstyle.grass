@@ -25,7 +25,7 @@ relationship.Link {
   text-color-internal: #FFFFFF;
   font-size: 0px;
   padding: 0px;
-  caption: "";
+  caption: '';
 }
 
 relationship.Flow {
@@ -35,10 +35,8 @@ relationship.Flow {
   text-color-internal: #FFFFFF;
   font-size: 0px;
   padding: 0px;
-  caption: "";
+  caption: '';
 }
-
-
 
 node {
   diameter: 80px;
@@ -63,12 +61,56 @@ node.component {
   caption: '{id}';
 }
 
+
 node.Network {
   color: #68BDF6;
   border-color: #5CA8DB;
   text-color-internal: #FFFFFF;
   caption: '{id}';
+  diameter: 80px;
 }
+
+node.Driver {
+  color: #FFD86E;
+  border-color: #EDBA39;
+  text-color-internal: #604A0E;
+  caption: '{id}';
+  diameter: 80px;
+}
+
+node.LinkLayerizer {
+  color: #6DCE9E;
+  border-color: #60B58B;
+  text-color-internal: #FFFFFF;
+  diameter: 80px;
+}
+
+
+relationship.lower {
+  color: #6DCE9E;
+  border-color: #60B58B;
+  text-color-internal: #FFFFFF;
+}
+
+relationship.layerized {
+  color: #6DCE9E;
+  border-color: #60B58B;
+  text-color-internal: #FFFFFF;
+}
+
+relationship.upper {
+  color: #6DCE9E;
+  border-color: #60B58B;
+  text-color-internal: #FFFFFF;
+}
+
+relationship.original {
+  color: #A5ABB6;
+  border-color: #9AA1AC;
+  text-color-internal: #FFFFFF;
+}
+
+
 
 node.Node {
   diameter: 40px;
