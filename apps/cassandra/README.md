@@ -6,11 +6,11 @@ Other applications such as the ODENOS monitor app will use Cassandra to obtain n
 
 ##Installation
 
-1. Install Cassandra
+###Step 1: Install Cassandra
 
 Refere to [Cassandra wiki](https://wiki.apache.org/cassandra/GettingStarted).
 
-2. Install cassandra-log4j-appender
+###Step 2: Install cassandra-log4j-appender
 
 Datastax provides a log4j appender for Cassandra under Apache 2.0 license.
 
@@ -19,7 +19,7 @@ $ git clone https://github.com/datastax/cassandra-log4j-appender.git
 $ cd cassandra-log4j-appender
 $ mvn install
 
-3. Uncomment cassandra-related logger setting for ODENOS
+###Step 3: Uncomment cassandra-related logger setting for ODENOS
 
 Uncomment the following depedency element in the ODENOS's pom.xml:
 ```
@@ -47,13 +47,13 @@ log4j.appender.CASS.hosts = 127.0.0.1
 log4j.rootLogger=info, file, stdout, CASS
 ```
 
-4. Start ODENOS
+###Step 4: Start ODENOS
 
 ```
 $ odenos start
 ```
 
-5. Start cqlsh
+###Step 5: Start cqlsh
 
 "cqlsh" is located in ./bin of your Casssandra installation directoy.
 
