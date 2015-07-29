@@ -14,6 +14,7 @@
 # See the License for the specific language governing permissions and      #
 # limitations under the License.                                           #
 
+unset http_proxy
 
 if [ -z "${JAVA_HOME}" ]; then
     echo "set JAVA_HOME."
@@ -207,8 +208,26 @@ start_process() {
 	    sleep 3
             $TREMA run -d "./src/main/ruby/org/o3project/odenos/core/odenos.rb --cmpmgr=$PROC_NAME"
 	fi
-	
+
+        while :
+        do
+          if check_start $PROC_NAME; then
+            break
+          fi
+        done
     done
+}
+
+check_start() {
+    COMPMGR=`curl http://localhost:10080/systemmanager/component_managers/$1 -w "\n%{response_code}\n" 2>/dev/null |grep 200`
+    if [ $(echo ${COMPMGR} | grep -e "200") ]; then
+        #echo "Start Compnent Manager :: "$1
+        return 0
+    else
+        echo "Starting ODENOS Plase wait ..."
+        sleep 1
+        return -1
+    fi
 }
 
 stop_process() {
@@ -248,7 +267,7 @@ start() {
         start_system
     fi
     start_process
-
+    echo "ODENOS Start-up completion."
 }
 
 stop() {
