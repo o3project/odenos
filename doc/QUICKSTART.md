@@ -29,7 +29,7 @@ Python or Ruby environment, please see "Appendix A".
 1. Install jdk and maven
 
    ```
-   $ sudo apt-get install git maven openjdk-7-jdk
+   $ sudo apt-get install git maven openjdk-7-jdk curl
    $ export JAVA_HOME=/usr/lib/jvm/java-7-openjdk-amd64
    ```
 
