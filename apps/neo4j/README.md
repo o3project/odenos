@@ -11,9 +11,11 @@ Visualize the ODENOS component configuration
 
 #Usage
 ```
- To reflect the component configuration and topology of odenos to neo4j.
+ To reflect the component configuration of odenos to neo4j.
   > PYTHONPATH=../../lib/python/ ./neo4jsync.py
 
+ To reflect the component configuration and topology of odenos to neo4j.
+  > PYTHONPATH=../../lib/python/ ./neo4jsync.py topology
 ```
 #Setup Neo4j
 

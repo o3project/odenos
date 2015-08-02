@@ -26,11 +26,12 @@ from neo4jclient import Neo4jClient
 class Neo4jsync(OdenosConfigurator):
   _components = {}
 
-  def sync(self):
+  def sync(self, argvs):
     self.client = Neo4jClient()
     self.client.init_db()
     self._sync_components()
-    #self._sysc_topology() #TODO
+    if "topology"  in argvs :
+      self._sysc_topology()
 
   def _sync_components(self):
     self._components = {}
@@ -97,7 +98,7 @@ class Neo4jsync(OdenosConfigurator):
 if __name__ == "__main__":
   try :
     neo4j = Neo4jsync()
-    neo4j.sync()
+    neo4j.sync(sys.argv)
 
   except Exception, e :
     print e
