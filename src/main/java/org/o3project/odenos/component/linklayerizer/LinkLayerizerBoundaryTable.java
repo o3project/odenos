@@ -30,7 +30,7 @@ import org.slf4j.LoggerFactory;
 public class LinkLayerizerBoundaryTable {
 
   /** logger. */
-  private static final Logger logger =
+  private static final Logger log =
       LoggerFactory.getLogger(LinkLayerizerBoundaryTable.class);
 
   /**
@@ -74,7 +74,7 @@ public class LinkLayerizerBoundaryTable {
       throws LinkLayerizerBoundaryException {
 
     if (boundary == null) {
-      logger.error("boundary is null");
+      log.error("boundary is null");
       throw new IllegalArgumentException("boundary is null");
     }
 
@@ -109,16 +109,16 @@ public class LinkLayerizerBoundaryTable {
       throws LinkLayerizerBoundaryException {
 
     if (boundaryId == null) {
-      logger.error("boundaryId is null");
+      log.error("boundaryId is null");
       throw new IllegalArgumentException("boundaryId is null");
     }
     if (boundary == null) {
-      logger.error("boundary is null");
+      log.error("boundary is null");
       throw new IllegalArgumentException("boundary is null");
     }
 
     if (!boundaryId.equals(boundary.getId())) {
-      logger.warn("set boundaryId: {}", boundaryId);
+      log.warn("set boundaryId: {}", boundaryId);
       boundary.setId(boundaryId);
     }
 
@@ -133,8 +133,8 @@ public class LinkLayerizerBoundaryTable {
    * @return got the boundary
    */
   public LinkLayerizerBoundary getEntry(String boundaryId) {
-    if (logger.isDebugEnabled()) {
-      logger.debug("getEntry: " + boundaryId);
+    if (log.isDebugEnabled()) {
+      log.debug("getEntry: " + boundaryId);
     }
 
     return boundaries.get(boundaryId);
@@ -149,7 +149,7 @@ public class LinkLayerizerBoundaryTable {
    */
   public LinkLayerizerBoundary getBoundary(
       String lowerNwId, String lowerNodeId, String lowerPortId) {
-    logger.debug("");
+    log.debug("");
     if (lowerNodeId == null
         || lowerNwId == null
         || lowerPortId == null) {
@@ -174,7 +174,7 @@ public class LinkLayerizerBoundaryTable {
    */
   public boolean isBoudaryPort(
       String nwId, String nodeId, String portId) {
-    logger.debug("");
+    log.debug("");
 
     for (LinkLayerizerBoundary boundary : boundaries.values()) {
       if (boundary.getLowerNw().equals(nwId)
@@ -197,8 +197,8 @@ public class LinkLayerizerBoundaryTable {
    * @return deleted the boundary
    */
   public LinkLayerizerBoundary deleteEntry(String boundaryId) {
-    if (logger.isDebugEnabled()) {
-      logger.debug("deleteEntry: " + boundaryId);
+    if (log.isDebugEnabled()) {
+      log.debug("deleteEntry: " + boundaryId);
     }
 
     if (!boundaries.containsKey(boundaryId)) {

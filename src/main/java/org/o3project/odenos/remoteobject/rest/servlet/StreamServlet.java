@@ -42,7 +42,7 @@ public class StreamServlet extends HttpServlet {
 
   private static final long serialVersionUID = 1L;
 
-  private static final Logger logger = LoggerFactory.getLogger(StreamServlet.class);
+  private static final Logger log = LoggerFactory.getLogger(StreamServlet.class);
 
   /*
    * (non-Javadoc)
@@ -65,7 +65,7 @@ public class StreamServlet extends HttpServlet {
 
     if (session.getAttribute(Attributes.SUBSCRIPTION_TABLE) == null) {
       // new session
-      this.logger.info("New stream: {}", subscriptionId);
+      this.log.info("New stream: {}", subscriptionId);
       session.setAttribute(Attributes.SUBSCRIPTION_TABLE, new HashMap<String, Set<String>>());
 
       resp.setHeader("Content-type", "application/json");

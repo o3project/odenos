@@ -53,7 +53,7 @@ public class RestServlet extends HttpServlet {
   private static final Pattern PATH_PATTERN = Pattern
       .compile("^/([^/]+)/(.+)");
 
-  private static final Logger logger = LoggerFactory.getLogger(RestServlet.class);
+  private static final Logger log = LoggerFactory.getLogger(RestServlet.class);
 
   private final MessagePack messagePack = new MessagePack();
 
@@ -87,14 +87,14 @@ public class RestServlet extends HttpServlet {
 
 
       Path path = Paths.get(root, req.getPathInfo());
-      logger.debug("Trying to read \"{}\".", path);
+      log.debug("Trying to read \"{}\".", path);
 
       if (Files.isReadable(path)) {
         try (OutputStream out = resp.getOutputStream()) {
           Files.copy(path, out);
         } catch (IOException e) {
           // just ignore.
-          logger.error("Failed serving {}", path, e);
+          log.error("Failed serving {}", path, e);
         }
         return;
       }
@@ -124,7 +124,7 @@ public class RestServlet extends HttpServlet {
     try {
       odenosResp = translator.request(objectId, method, path, reqBody);
     } catch (Exception e) {
-      this.logger.debug("Failed to request [{}, {}, {}, {}]",
+      this.log.debug("Failed to request [{}, {}, {}, {}]",
           objectId, method, path, reqBody, e);
       resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
       return;
@@ -137,7 +137,7 @@ public class RestServlet extends HttpServlet {
         byte[] packed = this.messagePack.write(odenosResp);
         value = this.messagePack.read(packed);
       } catch (IOException e) {
-        this.logger.debug("Failed to serialize a response body. /req:[{}, {}, {}, {}]",
+        this.log.debug("Failed to serialize a response body. /req:[{}, {}, {}, {}]",
             objectId, method, path, reqBody);
         resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         return;

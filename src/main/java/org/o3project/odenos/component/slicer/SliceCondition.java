@@ -33,7 +33,7 @@ import java.io.IOException;
 public abstract class SliceCondition implements MessagePackable {
 
   /** logger. */
-  private static final Logger logger = LoggerFactory.getLogger(SliceCondition.class);
+  private static final Logger log = LoggerFactory.getLogger(SliceCondition.class);
 
   private String id;
   private String type;
@@ -129,7 +129,7 @@ public abstract class SliceCondition implements MessagePackable {
       }
 
     } catch (IOException ex) {
-      logger.error("fail to read packer", ex);
+      log.error("fail to read packer", ex);
       throw ex;
 
     } finally {
@@ -155,7 +155,7 @@ public abstract class SliceCondition implements MessagePackable {
       }
 
     } catch (IOException ex) {
-      logger.error(ex.getMessage(), ex);
+      log.error(ex.getMessage(), ex);
       throw ex;
     }
   }
@@ -176,7 +176,7 @@ public abstract class SliceCondition implements MessagePackable {
         return str;
       }
     } catch (IOException ex) {
-      logger.error(ex.getMessage(), ex);
+      log.error(ex.getMessage(), ex);
       throw ex;
     }
   }
@@ -197,7 +197,7 @@ public abstract class SliceCondition implements MessagePackable {
       doWriteTo(pk);
 
     } catch (IOException ex) {
-      logger.error("fail to write packer", ex);
+      log.error("fail to write packer", ex);
       throw ex;
 
     } finally {
@@ -218,7 +218,7 @@ public abstract class SliceCondition implements MessagePackable {
       pk.write(getConnection());
 
     } catch (IOException ex) {
-      logger.error(ex.getMessage(), ex);
+      log.error(ex.getMessage(), ex);
       throw ex;
     }
 

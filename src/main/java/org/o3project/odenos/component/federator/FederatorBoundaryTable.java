@@ -33,7 +33,7 @@ import java.util.UUID;
 public class FederatorBoundaryTable {
 
   /** logger. */
-  private static final Logger logger =
+  private static final Logger log =
       LoggerFactory.getLogger(FederatorBoundaryTable.class);
 
   /**
@@ -82,7 +82,7 @@ public class FederatorBoundaryTable {
       throws FederatorException {
 
     if (boundary == null) {
-      logger.error("boundary is null");
+      log.error("boundary is null");
       throw new IllegalArgumentException("boundary is null");
     }
 
@@ -90,12 +90,12 @@ public class FederatorBoundaryTable {
       throw new FederatorException("conflict id");
     }
 
-    if (logger.isDebugEnabled()) {
-      logger.debug("addEntry: {}", boundaryId);
+    if (log.isDebugEnabled()) {
+      log.debug("addEntry: {}", boundaryId);
     }
 
     if (StringUtils.equals(boundaryId, boundary.getId())) {
-      logger.warn("set boundaryId: {}", boundary);
+      log.warn("set boundaryId: {}", boundary);
       boundary.setId(boundaryId);
     }
 
@@ -120,8 +120,8 @@ public class FederatorBoundaryTable {
    * @return found the boundary.
    */
   public FederatorBoundary getEntry(String boundaryId) {
-    if (logger.isDebugEnabled()) {
-      logger.debug("getEntry: " + boundaryId);
+    if (log.isDebugEnabled()) {
+      log.debug("getEntry: " + boundaryId);
     }
     return boundaries.get(boundaryId);
   }
@@ -132,8 +132,8 @@ public class FederatorBoundaryTable {
    * @return deleted the boundary.
    */
   public FederatorBoundary deleteEntry(String boundaryId) {
-    if (logger.isDebugEnabled()) {
-      logger.debug("deleteEntry: " + boundaryId);
+    if (log.isDebugEnabled()) {
+      log.debug("deleteEntry: " + boundaryId);
     }
 
     if (!boundaries.containsKey(boundaryId)) {
