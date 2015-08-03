@@ -180,8 +180,7 @@ public class LinkLayerizerOnFlow {
     boolean enable = basicFlow.getEnabled();
 
     if (!(FlowStatus.ESTABLISHING.toString().equals(status) && enable)) {
-      log.info(String.format(
-          "invalid lower flow. [status: %s, enable: %s].", status, enable));
+      log.info("invalid lower flow. [status: {}, enable: {}].", status, enable);
       return;
     }
 
@@ -482,7 +481,7 @@ public class LinkLayerizerOnFlow {
 
     Response resp = networkInterfaces.get(layerizedId).putLink(link);
     if (resp.isError("PUT")) {
-      log.warn(String.format("failed PUT Link. response: %s", resp.getBodyValue()));
+      log.warn("failed PUT Link. response: {}", resp.getBodyValue());
       return;
     }
 
@@ -563,7 +562,7 @@ public class LinkLayerizerOnFlow {
         break;
 
       default:
-        log.warn("unknown status: " + status);
+		  log.warn("unknown status: {}", status);
         return false;
     }
 
@@ -587,9 +586,8 @@ public class LinkLayerizerOnFlow {
     }
     String inNode = matches.get(0).getInNode();
     String inPort = matches.get(0).getInPort();
-    log.debug(String.format(
-        "nwId : %s, inNode : %s, inPort : %s.",
-        lowerNwId, inNode, inPort));
+    log.debug("nwId : {}, inNode : {}, inPort : {}.",
+        lowerNwId, inNode, inPort);
 
     return boundaryTable.getBoundary(
         lowerNwId, inNode, inPort);
@@ -623,9 +621,8 @@ public class LinkLayerizerOnFlow {
         }
       }
     }
-    log.debug(String.format(
-        "nwId : %s, outNode : %s, outPort : %s.",
-        lowerNwId, outNode, outPort));
+    log.debug("nwId : {}, outNode : {}, outPort : {}.",
+        lowerNwId, outNode, outPort);
     if (outNode == null || outPort == null) {
       log.warn("invalid lowerFlow's actions.");
       return null;
@@ -680,7 +677,7 @@ public class LinkLayerizerOnFlow {
         ignorekeys.remove(updatekey);
       }
     }
-    log.debug("ignore key_list:: " + ignorekeys);
+    log.debug("ignore key_list:: {}", ignorekeys);
     return ignorekeys;
   }
 

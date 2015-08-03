@@ -744,7 +744,7 @@ public class Aggregator extends Logic {
       return;
     }
     if (!link.validate()) {
-      log.error(String.format(">> link[ %s ] is invalid.", link.getId()));
+      log.error(">> link[ {} ] is invalid.", link.getId());
       return;
     }
 
@@ -889,7 +889,7 @@ public class Aggregator extends Logic {
 
     FlowSet flowSet = orgNetworkIf.getFlowSet();
     for (String flowId : flowSet.flows.keySet()) {
-      log.debug(String.format(">> target flow : '%s'", flowId));
+      log.debug(">> target flow : '{}'", flowId);
       BasicFlow orgFlow = (BasicFlow) flowSet.flows.get(flowId);
       // Get aggregated_network's flowId from orgFlowId.
       String aggFlowId = getConvFlowId(
@@ -900,7 +900,7 @@ public class Aggregator extends Logic {
         continue;
       }
       String[] list = aggFlowId.split("::");
-      log.debug(String.format(">> conversion flow : '%s'", list[1]));
+      log.debug(">> conversion flow : '{}'", list[1]);
 
       orgFlow = getFlow(orgNetworkIf, flowId);
       BasicFlow aggFlow = getFlow(aggNetworkIf, list[1]);
@@ -1002,8 +1002,7 @@ public class Aggregator extends Logic {
       final InPacketAdded msg) {
     log.debug("");
 
-    log.debug(
-        String.format("###Received InPacketAdded:id(%s)", msg.getId()));
+    log.debug("###Received InPacketAdded:id({})", msg.getId());
     String connType = conversionTable().getConnectionType(networkId);
     if (connType != null
         && connType.equals(AGGREGATED)) {
@@ -1017,8 +1016,8 @@ public class Aggregator extends Logic {
       final OutPacketAdded msg) {
     log.debug("");
 
-    log.debug(String.format("###Received OutPacketAdded:id(%s)",
-        msg.getId()));
+    log.debug("###Received OutPacketAdded:id({})",
+        msg.getId());
     String connType = conversionTable().getConnectionType(networkId);
     if (connType != null
         && connType.equals(ORIGINAL)) {

@@ -367,7 +367,7 @@ public class LinkLayerizer extends Logic {
         doOnConnectionChangedDeleteLayerized(networkId);
         break;
       default:
-        lger.error("unknown type: " + connectionType);
+		  log.error("unknown type: {}", connectionType);
         return;
     }
 
@@ -1142,7 +1142,7 @@ public class LinkLayerizer extends Logic {
     log.debug("");
 
     if (StringUtils.isBlank(networkId)) {
-      log.warn("invalid networkID: " + networkId);
+		log.warn("invalid networkID: {}", networkId);
       return false;
     }
 
@@ -1283,7 +1283,7 @@ public class LinkLayerizer extends Logic {
    * @param upperPort upper's port.
    */
   protected void reflectBoundaryLinkOnUpperPortAdded(String upperNwId, Port upperPort) {
-    logg/debug("");
+    log.debug("");
 
     // get lower flows.
     NetworkInterface lowerNwIf = getLowerNetworkIf();
@@ -1296,7 +1296,7 @@ public class LinkLayerizer extends Logic {
       log.debug("not exist lower flows.");
       return;
     }
-    log.debug(String.format("lower flows : %s", lowerFlows));
+    log.debug("lower flows : {}", lowerFlows);
 
     // reflect boundary links by lower flow.
     Map<String, LinkLayerizerBoundary> layerizerBoundaries =
@@ -1519,7 +1519,7 @@ public class LinkLayerizer extends Logic {
      * PUT <base_uri>/settings/boundaries/<boundary_id>
      */
     if (log.isDebugEnabled()) {
-      log.qdebug("boundaryId: {}", boundaryId);
+      log.debug("boundaryId: {}", boundaryId);
     }
 
     try {

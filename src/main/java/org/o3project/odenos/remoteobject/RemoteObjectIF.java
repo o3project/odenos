@@ -82,7 +82,7 @@ public class RemoteObjectIF {
   public Response post(final String path, final Object body) {
     Response resp = this.sendRequest(Request.Method.POST, path, body);
     if (resp == null || resp.isError("POST")) {
-      log.error("invalid POST:" + resp.statusCode);
+		log.error("invalid POST:{}", resp.statusCode);
     }
     return resp;
   }
@@ -96,7 +96,7 @@ public class RemoteObjectIF {
   public Response put(final String path, final Object body) {
     Response resp = this.sendRequest(Request.Method.PUT, path, body);
     if (resp == null || resp.isError("PUT")) {
-      log.error("PUT failed:" + resp.statusCode);
+		log.error("PUT failed:{}", resp.statusCode);
     }
     return resp;
   }
@@ -109,7 +109,7 @@ public class RemoteObjectIF {
   public final Response get(final String path) {
     Response resp = this.sendRequest(Request.Method.GET, path, null);
     if (resp.isError("GET")) {
-      log.error("GET failed:" + resp.statusCode);
+		log.error("GET failed:{}", resp.statusCode);
     }
     return resp;
   }
@@ -127,7 +127,7 @@ public class RemoteObjectIF {
   public final Response delete(final String path, final Object body) {
     Response resp = this.sendRequest(Request.Method.DELETE, path, body);
     if (resp.isError("DELETE")) {
-      log.error("DELETE failed:" + resp.statusCode);
+		log.error("DELETE failed:{}", resp.statusCode);
     }
     return resp;
   }

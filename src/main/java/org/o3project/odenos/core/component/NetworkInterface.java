@@ -85,8 +85,7 @@ public class NetworkInterface {
       final String nwcId) {
     this.networkId = nwcId;
     this.dispatcher = dispatcher;
-    log.debug("Create NetworkInterface : networkId = '" + this.networkId
-        + "'.");
+    log.debug("Create NetworkInterface : networkId = '{}'.", this.networkId);
   }
 
   /**
@@ -101,8 +100,7 @@ public class NetworkInterface {
     this.networkId = nwcId;
     this.dispatcher = dispatcher;
     this.sourceObjectId = sourceObjectId;
-    log.debug("Create NetworkInterface : networkId = '" + this.networkId
-        + "'.");
+    log.debug("Create NetworkInterface : networkId = '{}'", this.networkId);
   }
 
   /**
@@ -139,8 +137,7 @@ public class NetworkInterface {
    */
   public final Topology getTopology() {
     String path = TOPOLOGY_PATH;
-    log.debug(">> "
-        + String.format(" [networkId : '%s']", this.networkId));
+    log.debug(">> [networkId : '{}']", this.networkId);
     Response resp = getObjectToNetwork(this.networkId, path);
     if (resp == null) {
       return null;
@@ -166,8 +163,7 @@ public class NetworkInterface {
    */
   public final Response putTopology(final Topology body) {
     String path = TOPOLOGY_PATH;
-    log.debug(">> "
-        + String.format(" [networkId : '%s']", this.networkId));
+    log.debug(">> [networkId : '{}']", this.networkId);
     return putObjectToNetwork(this.networkId, path, body);
   }
 
@@ -190,8 +186,7 @@ public class NetworkInterface {
    */
   public final Response postNode(final Node body) {
     String path = NODES_PATH;
-    log.debug(">> "
-        + String.format(" [networkId : '%s']", this.networkId));
+    log.debug(">> [networkId : '{}']", this.networkId);
     return postObjectToNetwork(this.networkId, path, body);
   }
 
@@ -207,8 +202,7 @@ public class NetworkInterface {
    */
   public final Map<String, Node> getNodes() {
     String path = NODES_PATH;
-    log.debug(">> "
-        + String.format(" [networkId : '%s']", this.networkId));
+    log.debug(">> [networkId : '{}']", this.networkId);
     Response resp = getObjectToNetwork(this.networkId, path);
     if (resp == null) {
       return null;
@@ -234,8 +228,7 @@ public class NetworkInterface {
    */
   public final Node getNode(final String nodeId) {
     String path = String.format(NODE_PATH, nodeId);
-    log.debug(">> "
-        + String.format(" [networkId : '%s']", this.networkId));
+    log.debug(">> [networkId : '{}']", this.networkId);
     Response resp = getObjectToNetwork(this.networkId, path);
     if (resp == null) {
       return null;
@@ -261,8 +254,7 @@ public class NetworkInterface {
    */
   public final Response putNode(final Node body) {
     String path = String.format(NODE_PATH, body.getId());
-    log.debug(">> "
-        + String.format(" [networkId : '%s']", this.networkId));
+    log.debug(">> [networkId : '{}']", this.networkId);
     return putObjectToNetwork(this.networkId, path, body);
   }
 
@@ -296,8 +288,7 @@ public class NetworkInterface {
    */
   public final Node getPhysicalNode(final String physicalId) {
     String path = String.format(PHYSICAL_NODES_PATH, physicalId);
-    log.debug(">> "
-        + String.format(" [networkId : '%s']", this.networkId));
+    log.debug(">> [networkId : '{}']", this.networkId);
     Response resp = getObjectToNetwork(this.networkId, path);
     if (resp == null) {
       return null;
@@ -324,8 +315,7 @@ public class NetworkInterface {
   public final Response putPhysicalNode(final Node body) {
     String path = String.format(PHYSICAL_NODES_PATH,
         body.getAttribute(Logic.AttrElements.PHYSICAL_ID));
-    log.debug(">> "
-        + String.format(" [networkId : '%s']", this.networkId));
+    log.debug(">> [networkId : '{}']", this.networkId);
     return putObjectToNetwork(this.networkId, path, body);
   }
 
@@ -745,7 +735,7 @@ public class NetworkInterface {
       Response resp = sendRequest(this.networkId,
           Request.Method.DELETE, path, flow);
       if (resp.isError("DELETE")) {
-        log.warn("invalid DELETE:" + resp.statusCode);
+		  log.warn("invalid DELETE:{}", resp.statusCode);
       }
       return resp;
     } catch (Exception e) {

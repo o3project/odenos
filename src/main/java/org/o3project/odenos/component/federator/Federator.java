@@ -283,7 +283,7 @@ public class Federator extends Logic {
         }
         break;
       default:
-        log.error("unknown type: " + type);
+		  log.error("unknown type: {}", type);
     }
     // Changed ConectionProperty's status.
     systemMngInterface().putConnection(curr);
@@ -331,7 +331,7 @@ public class Federator extends Logic {
         break;
 
       default:
-        log.error("unknown type: " + type);
+		  log.error("unknown type: {}", type);
         return;
     }
 
@@ -768,7 +768,7 @@ public class Federator extends Logic {
       outPacket.getHeader().setInPort(IN_NODE_PORT_ANY);
     } else {
       String[] plist = convPortId.get(0).split("::");
-      log.debug(String.format("outPacket: inNode(%s), inport(%s)", plist[1], plist[2]));
+      log.debug("outPacket: inNode({}), inport({})", plist[1], plist[2]);
       srcNetwork = plist[0];
       outPacket.getHeader().setInNode(plist[1]);
       outPacket.getHeader().setInPort(plist[2]);
@@ -795,7 +795,7 @@ public class Federator extends Logic {
       verifyFlow(flow);
       federatorOnFlow.createOriginalFlow((BasicFlow)flow);
     } catch (FederatorException ex) {
-      log.warn("validate fail: " + ex.getMessage(), ex);
+		log.warn("validate fail: {}", ex.getMessage(), ex);
       return;
     }
   }
@@ -808,7 +808,7 @@ public class Federator extends Logic {
     try {
       verifyFlow(curr);
     } catch (FederatorException ex) {
-      log.warn("validate fail: " + ex.getMessage(), ex);
+		log.warn("validate fail: {}", ex.getMessage(), ex);
       return false;
     }
 
@@ -847,7 +847,7 @@ public class Federator extends Logic {
     try {
       verifyFlow(curr);
     } catch (FederatorException ex) {
-      log.debug("validate: " + ex.getMessage(), ex);
+		log.debug("validate: {}", ex.getMessage(), ex);
       return;
     }
 
