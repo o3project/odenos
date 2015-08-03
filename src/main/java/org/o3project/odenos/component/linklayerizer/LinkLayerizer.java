@@ -367,7 +367,7 @@ public class LinkLayerizer extends Logic {
         doOnConnectionChangedDeleteLayerized(networkId);
         break;
       default:
-		  log.error("unknown type: {}", connectionType);
+        log.error("unknown type: {}", connectionType);
         return;
     }
 
@@ -1142,7 +1142,7 @@ public class LinkLayerizer extends Logic {
     log.debug("");
 
     if (StringUtils.isBlank(networkId)) {
-		log.warn("invalid networkID: {}", networkId);
+      log.warn("invalid networkID: {}", networkId);
       return false;
     }
 

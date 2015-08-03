@@ -121,7 +121,7 @@ public class FederatorBoundaryTable {
    */
   public FederatorBoundary getEntry(String boundaryId) {
     if (log.isDebugEnabled()) {
-		log.debug("getEntry: {}", boundaryId);
+      log.debug("getEntry: {}", boundaryId);
     }
     return boundaries.get(boundaryId);
   }
@@ -133,7 +133,7 @@ public class FederatorBoundaryTable {
    */
   public FederatorBoundary deleteEntry(String boundaryId) {
     if (log.isDebugEnabled()) {
-		log.debug("deleteEntry: {}", boundaryId);
+      log.debug("deleteEntry: {}", boundaryId);
     }
 
     if (!boundaries.containsKey(boundaryId)) {

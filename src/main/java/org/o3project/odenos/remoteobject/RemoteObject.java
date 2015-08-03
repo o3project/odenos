@@ -256,7 +256,7 @@ public class RemoteObject {
    * @return response to the RemoteObject
    */
   public Response dispatchRequest(Request request) {
-	  log.debug("dispatchRequest: {},{}", request.method, request.path);
+    log.debug("dispatchRequest: {}, {}", request.method, request.path);
     if (StringUtils.stripToNull(request.path) == null) {
       return new Response(Response.BAD_REQUEST, null);
     }
@@ -275,7 +275,7 @@ public class RemoteObject {
       try {
         response = callback.process(parsed);
       } catch (Exception e) {
-		  log.error("Exception Request: {},{}", request.method, request.path);
+        log.error("Exception Request: {}, {}", request.method, request.path);
         response = new Response(Response.BAD_REQUEST, null);
       }
     }

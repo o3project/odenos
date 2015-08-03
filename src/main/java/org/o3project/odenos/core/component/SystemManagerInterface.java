@@ -491,7 +491,7 @@ public class SystemManagerInterface {
     try {
       Response resp = sendRequest(Request.Method.POST, path, body);
       if (resp.isError("POST")) {
-		  log.warn("invalid POST: {}", resp.statusCode);
+		  log.warn("invalid POST:{}", resp.statusCode);
       }
       return resp;
     } catch (Exception e) {
@@ -513,7 +513,7 @@ public class SystemManagerInterface {
     try {
       Response resp = sendRequest(Request.Method.PUT, path, body);
       if (resp.isError("PUT")) {
-		  log.warn("invalid PUT: {}", resp.statusCode);
+		  log.warn("invalid PUT:{}", resp.statusCode);
       }
       return resp;
     } catch (Exception e) {
@@ -533,7 +533,7 @@ public class SystemManagerInterface {
     try {
       Response resp = sendRequest(Request.Method.DELETE, path, null);
       if (resp.isError("DELETE")) {
-		  log.warn("invalid DELETE: {}", resp.statusCode);
+		  log.warn("invalid DELETE:{}", resp.statusCode);
       }
       return resp;
     } catch (Exception e) {
@@ -553,7 +553,7 @@ public class SystemManagerInterface {
     try {
       Response resp = sendRequest(Request.Method.GET, path, null);
       if (resp.isError("GET")) {
-		  log.warn("invalid GET: {}", resp.statusCode);
+		  log.warn("invalid GET:{}", resp.statusCode);
       }
       return resp;
     } catch (Exception e) {

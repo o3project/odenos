@@ -325,7 +325,7 @@ public class SystemManager extends RemoteObject {
 
   @Override
   protected Response onRequest(final Request req) {
-	  log.debug("onRequest: {},{}", req.method, req.path);
+    log.debug("onRequest: {}, {}", req.method, req.path);
 
     RequestParser<IActionCallback>.ParsedRequest parsed = parser.parse(req);
     if (parsed == null) {
@@ -349,7 +349,7 @@ public class SystemManager extends RemoteObject {
       }
       response = callback.process(parsed);
     } catch (Exception e) {
-		log.error("Exception Request: {},{}", req.method, req.path, e);
+      log.error("Exception Request: {}, {}", req.method, req.path, e);
       response = new Response(Response.BAD_REQUEST, null);
     }
     if (response == null) {
@@ -800,7 +800,7 @@ public class SystemManager extends RemoteObject {
     try {
       Response resp = request(compmgrId, Method.GET, "component_types", null);
       if (resp.isError("GET")) {
-		  log.warn("invalid GET: {}", resp.statusCode);
+        log.warn("invalid GET:{}", resp.statusCode);
         return resp;
       }
       ComponentTypesHash types = resp.getBody(ComponentTypesHash.class);
@@ -823,7 +823,7 @@ public class SystemManager extends RemoteObject {
     for (String compMgrId : componentMgrsSet) {
       Response resp = getComponentTypes(compMgrId);
       if (resp.isError("GET")) {
-		  log.warn("invalid GET: {}", resp.statusCode);
+        log.warn("invalid GET:{}", resp.statusCode);
         return resp;
       }
       try {

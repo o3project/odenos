@@ -240,12 +240,12 @@ public class DummyDriver1 extends Driver {
 
     // GET Packet to Drop
     String packetId = msg.getId();
-    log.info("receive OutPacket: " + packetId);
+    log.info("receive OutPacket: {}", packetId);
     try {
       NetworkInterface networkIf = networkInterfaces().get(networkId);
       Response resp = networkIf.delOutPacket(packetId);
       if (resp.isError("DELETE")) {
-        log.error("invalid DELETE Packet:" + resp.statusCode);
+        log.error("invalid DELETE Packet:{}", resp.statusCode);
       }
     } catch (Exception e) {
       e.printStackTrace();

@@ -134,7 +134,7 @@ public class LinkLayerizerBoundaryTable {
    */
   public LinkLayerizerBoundary getEntry(String boundaryId) {
     if (log.isDebugEnabled()) {
-		log.debug("getEntry: {}", boundaryId);
+      log.debug("getEntry: {}", boundaryId);
     }
 
     return boundaries.get(boundaryId);
@@ -198,7 +198,7 @@ public class LinkLayerizerBoundaryTable {
    */
   public LinkLayerizerBoundary deleteEntry(String boundaryId) {
     if (log.isDebugEnabled()) {
-		log.debug("deleteEntry: {}", boundaryId);
+      log.debug("deleteEntry: {}", boundaryId);
     }
 
     if (!boundaries.containsKey(boundaryId)) {
