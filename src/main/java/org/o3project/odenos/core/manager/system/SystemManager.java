@@ -121,7 +121,7 @@ public class SystemManager extends RemoteObject {
 
   @Override
   protected void onEvent(Event event) {
-	  log.debug("onEvent: {}", event.eventType);
+    log.debug("onEvent: {}", event.eventType);
     if (event.eventType.equals(ObjectPropertyChanged.TYPE)) {
       ObjectPropertyChanged message = event.getBody2(ObjectPropertyChanged.class);
       if (isComponentChanged(message)) {
@@ -135,7 +135,7 @@ public class SystemManager extends RemoteObject {
   private void onComponentManagerChanged(ObjectPropertyChanged msg) {
     if (ObjectPropertyChanged.Action.valueOf(msg.action()) == ObjectPropertyChanged.Action.add
         || ObjectPropertyChanged.Action.valueOf(msg.action()) == ObjectPropertyChanged.Action.update) {
-		log.debug("onRemoteObjectManaagerChanged: {}", msg.action());
+      log.debug("onRemoteObjectManaagerChanged: {}", msg.action());
       this.updateComponentManager(msg.curr().getObjectId(), msg.curr());
     }
   }

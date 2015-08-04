@@ -411,7 +411,7 @@ public class Generator extends Driver {
   protected final void onOutPacketAdded(final String networkId, final OutPacketAdded msg) {
 
     String packetId = msg.getId();
-    // log.info("receive OutPacket: " + packetId);
+    // log.info("receive OutPacket: {}", packetId);
 
     NetworkInterface networkIf = networkInterfaces().get(networkId);
 
@@ -580,7 +580,7 @@ public class Generator extends Driver {
                 // skip
               } else if (exceptOutPorts.contains(inPort)) {
                 System.out.println("exceptOutPorts: " + inPort);
-                // log.debug("exceptOutPorts: " + inPort);
+                // log.debug("exceptOutPorts: {}", inPort);
                 // skip
               } else {
                 log.debug("postOutPacket");

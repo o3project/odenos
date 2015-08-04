@@ -100,7 +100,7 @@ public class NetworkInterface {
     this.networkId = nwcId;
     this.dispatcher = dispatcher;
     this.sourceObjectId = sourceObjectId;
-    log.debug("Create NetworkInterface : networkId = '{}'", this.networkId);
+    log.debug("Create NetworkInterface : networkId = '{}'.", this.networkId);
   }
 
   /**

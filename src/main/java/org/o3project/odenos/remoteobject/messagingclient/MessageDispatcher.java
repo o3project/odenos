@@ -290,9 +290,9 @@ public class MessageDispatcher implements Closeable, IMessageListener {
           if (outputMessageToLogger) {
             if (objectIds.contains(channel) ||
                 objectIds.contains(sourceObjectId)) {
-              log.info("MONITOR|{}|{}|{}|{}|{}|{}|{}",
+              log.info("MONITOR|{}|{}|{}|{}|{}|/{}/{}|{}",
                   REQUEST, channel, sourceObjectId, sno, request.method.name(),
-                  "/" + channel + "/" + request.path, request.getBodyValue());
+                  channel, request.path, request.getBodyValue());
             }
           }
 
@@ -390,9 +390,9 @@ public class MessageDispatcher implements Closeable, IMessageListener {
               if (outputMessageToLogger) {
                 if (objectIds.contains(subscriber) ||
                     objectIds.contains(event.publisherId)) {
-                  log.info("MONITOR|{}|{}|{}|{}|{}",
+                  log.info("MONITOR|{}|{}|{}|{}:{}|{}",
                       EVENT, subscriber, event.publisherId,
-                      event.publisherId + ":" + event.getEventType(),
+                      event.publisherId, event.getEventType(),
                       event.getBodyValue());
                 }
               }
@@ -425,8 +425,7 @@ public class MessageDispatcher implements Closeable, IMessageListener {
   @Override
   public void onPmessage(String pattern, String channel, byte[] message) {
     if (log.isDebugEnabled()) {
-      log.debug("message received,"
-          + " pattern: {}, channel: {}, message: {}",
+      log.debug("message received, pattern: {}, channel: {}, message: {}",
           pattern, channel, new String(message));
     }
   }
@@ -460,7 +459,7 @@ public class MessageDispatcher implements Closeable, IMessageListener {
             request = eventManagerQueue.take();
             Response response = requestSync(request, getSourceDispatcherId());
             if (response == null || !response.statusCode.equals(Response.OK)) {
-				log.warn("Unsuccessful transaction to EventManager: {}", response.statusCode);
+              log.warn("Unsuccessful transaction to EventManager: {}", response.statusCode);
             }
           } catch (InterruptedException e) {
             log.warn("Unsuccessful transaction to EventManager due to some internal error");
@@ -736,9 +735,9 @@ public class MessageDispatcher implements Closeable, IMessageListener {
       if (outputMessageToLogger) {
         if (objectIds.contains(objectId) ||
             objectIds.contains(sourceObjectId)) {
-          log.info("MONITOR|{}|{}|{}|{}|{}|{}|{}",
+          log.info("MONITOR|{}|{}|{}|{}|{}|/{}/{}|{}",
               REQUEST, objectId, sourceObjectId, sno, request.method.name(),
-              "/" + request.objectId + "/" + request.path, request.getBodyValue());
+              request.objectId, request.path, request.getBodyValue());
         }
       }
 

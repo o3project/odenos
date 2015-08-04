@@ -300,8 +300,7 @@ public class PubSubDriverImpl implements IPubSubDriver, Closeable {
     if (publisherClient.isConnected() && subscriberClient.isConnected()
         && acceptedOnReconnected < sessionId) {
       if (log.isDebugEnabled()) {  // checks if this is monitoring-only client or not.
-        log.debug("sessionId: {}, "
-            + "acceptedOnReconnected: {}", sessionId, acceptedOnReconnected);
+        log.debug("sessionId: {}, acceptedOnReconnected: {}", sessionId, acceptedOnReconnected);
       }
       acceptedOnReconnected = sessionId;
       if (listener != null) {  // checks if this is monitoring-only client or not.
@@ -321,8 +320,7 @@ public class PubSubDriverImpl implements IPubSubDriver, Closeable {
   public synchronized void onDisconnected(int sessionId) {
     if (connected && acceptedOnDisconnected < sessionId) {
       if (log.isDebugEnabled()) {
-        log.debug("sessionId: {}, "
-            + "acceptedOnDisconnected: {}", sessionId, acceptedOnDisconnected);
+        log.debug("sessionId: {}, acceptedOnDisconnected: {}", sessionId, acceptedOnDisconnected);
       }
       acceptedOnDisconnected = sessionId;
       close();
