@@ -36,7 +36,7 @@ import java.util.Map.Entry;
 
 @SuppressWarnings("serial")
 public class ComponentType extends OdenosMessage implements Serializable {
-  private static final Logger logger = LoggerFactory.getLogger(ComponentType.class);
+  private static final Logger log = LoggerFactory.getLogger(ComponentType.class);
 
   private String type = "";
   private String superType = "";
@@ -242,7 +242,7 @@ public class ComponentType extends OdenosMessage implements Serializable {
       return true;
 
     } catch (IllegalArgumentException ex) {
-      logger.error(ex.getMessage(), ex);
+      log.error(ex.getMessage(), ex);
       return false;
     }
   }
@@ -250,7 +250,7 @@ public class ComponentType extends OdenosMessage implements Serializable {
   @Override
   public boolean writeValueSub(Map<String, Value> values) {
     if (values == null) {
-      logger.error("values is null");
+      log.error("values is null");
       throw new IllegalArgumentException("values is null");
     }
 

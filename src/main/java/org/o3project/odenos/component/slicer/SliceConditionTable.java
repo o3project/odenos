@@ -34,7 +34,7 @@ import java.util.UUID;
  */
 public class SliceConditionTable {
 
-  private static final Logger logger = LoggerFactory.getLogger(SliceConditionTable.class);
+  private static final Logger log = LoggerFactory.getLogger(SliceConditionTable.class);
 
   /**
    * Constructor.
@@ -169,7 +169,7 @@ public class SliceConditionTable {
 
     final String connectionId = condition.getConnection();
     if (!StringUtils.equals(conditionId, condition.getId())) {
-      logger.warn("set condition ID: {}", conditionId);
+      log.warn("set condition ID: {}", conditionId);
       condition.setId(connectionId);
     }
 

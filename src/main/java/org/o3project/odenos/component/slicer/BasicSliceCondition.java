@@ -34,7 +34,7 @@ public class BasicSliceCondition extends SliceCondition
     implements MessagePackable {
 
   /** logger. */
-  private static final Logger logger = LoggerFactory
+  private static final Logger log = LoggerFactory
       .getLogger(BasicSliceCondition.class);
 
   protected String matchInNode;
@@ -119,7 +119,7 @@ public class BasicSliceCondition extends SliceCondition
       }
 
     } catch (IOException ex) {
-      logger.error("fail to read packer", ex);
+      log.error("fail to read packer", ex);
       throw ex;
 
     } finally {
@@ -152,7 +152,7 @@ public class BasicSliceCondition extends SliceCondition
       }
 
     } catch (IOException ex) {
-      logger.error(ex.getMessage(), ex);
+      log.error(ex.getMessage(), ex);
       throw ex;
     }
   }
@@ -169,7 +169,7 @@ public class BasicSliceCondition extends SliceCondition
       doWriteTo(pk);
 
     } catch (IOException ex) {
-      logger.error("fail to write packer", ex);
+      log.error("fail to write packer", ex);
       throw ex;
 
     } finally {
@@ -190,7 +190,7 @@ public class BasicSliceCondition extends SliceCondition
       pk.write(getInPort());
 
     } catch (IOException ex) {
-      logger.error(ex.getMessage(), ex);
+      log.error(ex.getMessage(), ex);
       throw ex;
     }
   }

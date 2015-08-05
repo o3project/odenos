@@ -290,7 +290,7 @@ public class FederatorOnFlow {
         ignorekeys.remove(updatekey);
       }
     }
-    log.debug("ignore key_list:: " + ignorekeys);
+    log.debug("ignore key_list:: {}", ignorekeys);
     return ignorekeys;
   }
 

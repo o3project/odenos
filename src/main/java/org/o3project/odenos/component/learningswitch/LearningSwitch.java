@@ -744,7 +744,7 @@ public class LearningSwitch extends Logic {
       BasicFlow sendFlow =
           createOFPFlow(inPacket, dstPList[0], dstPList[1], path);
       // PUT flow
-      log.debug(String.format("Fegisted flow info: %s", this.flows));
+      log.debug("Fegisted flow info: {}", this.flows);
       if (!isRegisteredFlow(sendFlow)) {
         networkIf.putFlow(sendFlow);
         this.flows.put(sendFlow.getFlowId(), sendFlow);

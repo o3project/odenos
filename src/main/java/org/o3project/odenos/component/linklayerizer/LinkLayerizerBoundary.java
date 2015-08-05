@@ -56,7 +56,7 @@ public class LinkLayerizerBoundary extends Boundary implements Serializable {
 
   /** logger. */
   @Ignore
-  private static final Logger logger = LoggerFactory
+  private static final Logger log = LoggerFactory
       .getLogger(LinkLayerizerBoundary.class);
 
   /** ID that is unique in the ODENOS. */
@@ -261,7 +261,7 @@ public class LinkLayerizerBoundary extends Boundary implements Serializable {
       return true;
 
     } catch (IllegalArgumentException ex) {
-      logger.warn(ex.getMessage(), ex);
+      log.warn(ex.getMessage(), ex);
       return false;
     }
   }
@@ -321,7 +321,7 @@ public class LinkLayerizerBoundary extends Boundary implements Serializable {
       return true;
 
     } catch (IllegalArgumentException ex) {
-      logger.error(ex.getMessage(), ex);
+      log.error(ex.getMessage(), ex);
       return false;
     }
   }
@@ -333,7 +333,7 @@ public class LinkLayerizerBoundary extends Boundary implements Serializable {
   @Override
   public boolean writeValueSub(Map<String, Value> values) {
     if (values == null) {
-      logger.error("values is null");
+      log.error("values is null");
       throw new IllegalArgumentException("values is null");
     }
 

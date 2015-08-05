@@ -103,7 +103,7 @@ public class ComponentManager extends RemoteObject {
 
     ObjectProperty eventMngObj = this.sysMngIf.getObject(eventManagerId);
     if (eventMngObj == null) {
-      log.error("Internal Error to Get objects/" + eventManagerId);
+      log.error("Internal Error to Get objects/{}", eventManagerId);
       throw new Exception();
     }
 
@@ -187,7 +187,7 @@ public class ComponentManager extends RemoteObject {
 
   @Override
   protected Response onRequest(Request request) {
-    log.debug("onRequest: " + request.method + ", " + request.path);
+    log.debug("onRequest: {}, {}", request.method, request.path);
 
     RequestParser<IActionCallback>.ParsedRequest parsed = parser
         .parse(request);
@@ -200,8 +200,7 @@ public class ComponentManager extends RemoteObject {
     try {
       response = callback.process(parsed);
     } catch (Exception e) {
-      log.error("Exception Request: " + request.method + ", "
-          + request.path);
+      log.error("Exception Request: {}, {}", request.method, request.path);
       response = new Response(Response.BAD_REQUEST, null);
     }
     if (response == null) {

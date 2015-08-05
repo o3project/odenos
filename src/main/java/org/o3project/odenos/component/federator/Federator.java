@@ -56,7 +56,7 @@ import java.util.Set;
 public class Federator extends Logic {
 
   /** logger. */
-  private static final Logger logger = LoggerFactory.getLogger(Federator.class);
+  private static final Logger log = LoggerFactory.getLogger(Federator.class);
 
   /** ConnectionType: Original Network. */
   public static final String ORIGINAL_NETWORK = "original";
@@ -142,11 +142,11 @@ public class Federator extends Logic {
    */
   @Override
   protected boolean onConnectionChangedAddedPre(ComponentConnectionChanged msg) {
-    logger.debug("");
+    log.debug("");
 
     ComponentConnection curr = msg.curr();
     if (curr == null) {
-      logger.debug("curr is null");
+      log.debug("curr is null");
       return false;
     }
 
@@ -189,11 +189,11 @@ public class Federator extends Logic {
   @Override
   protected boolean onConnectionChangedUpdatePre(
       ComponentConnectionChanged msg) {
-    logger.debug("");
+    log.debug("");
 
     ComponentConnection curr = msg.curr();
     if (curr == null) {
-      logger.debug("curr is null");
+      log.debug("curr is null");
       return false;
     }
 
@@ -213,11 +213,11 @@ public class Federator extends Logic {
   @Override
   protected boolean onConnectionChangedDeletePre(
       ComponentConnectionChanged msg) {
-    logger.debug("");
+    log.debug("");
 
     ComponentConnection curr = msg.curr();
     if (curr == null) {
-      logger.debug("curr is null");
+      log.debug("curr is null");
       return false;
     }
 
@@ -238,7 +238,7 @@ public class Federator extends Logic {
    */
   @Override
   protected void onConnectionChangedAdded(ComponentConnectionChanged msg) {
-    logger.debug("");
+    log.debug("");
 
     ComponentConnection curr = msg.curr();
     String networkId =
@@ -283,7 +283,7 @@ public class Federator extends Logic {
         }
         break;
       default:
-        logger.error("unknown type: " + type);
+        log.error("unknown type: {}", type);
     }
     // Changed ConectionProperty's status.
     systemMngInterface().putConnection(curr);
@@ -294,7 +294,7 @@ public class Federator extends Logic {
    */
   @Override
   protected void onConnectionChangedUpdate(ComponentConnectionChanged msg) {
-    logger.debug("");
+    log.debug("");
     /* do nothing */
   }
 
@@ -303,7 +303,7 @@ public class Federator extends Logic {
    */
   @Override
   protected void onConnectionChangedDelete(ComponentConnectionChanged msg) {
-    logger.debug("");
+    log.debug("");
 
     ComponentConnection curr = msg.curr();
     String networkId = curr.getProperty(
@@ -331,7 +331,7 @@ public class Federator extends Logic {
         break;
 
       default:
-        logger.error("unknown type: " + type);
+        log.error("unknown type: {}", type);
         return;
     }
 
@@ -352,7 +352,7 @@ public class Federator extends Logic {
    */
 
   private RequestParser<IActionCallback> createParser() {
-    logger.debug("");
+    log.debug("");
 
     return new RequestParser<IActionCallback>() {
       {
@@ -491,7 +491,7 @@ public class Federator extends Logic {
 
   @Override
   protected Response onRequest(Request request) {
-    logger.debug("received {}", request.path);
+    log.debug("received {}", request.path);
 
     try {
       RequestParser<IActionCallback>.ParsedRequest parsed =
@@ -510,7 +510,7 @@ public class Federator extends Logic {
       return callback.process(parsed);
 
     } catch (Exception ex) {
-      logger.error("Error unknown request", ex);
+      log.error("Error unknown request", ex);
       return new Response(Response.BAD_REQUEST, "Error unknown request ");
     }
 
@@ -521,7 +521,7 @@ public class Federator extends Logic {
    */
   @Override
   protected void onNodeAdded(String networkId, Node node) {
-    logger.debug("");
+    log.debug("");
 
     String connType = conversionTable().getConnectionType(networkId);
     if (connType.equals(FEDERATED_NETWORK)) {
@@ -550,7 +550,7 @@ public class Federator extends Logic {
    */
   @Override
   protected void onPortAdded(String networkId, Port port) {
-    logger.debug("");
+    log.debug("");
 
     String connType = conversionTable().getConnectionType(networkId);
     if (connType.equals(FEDERATED_NETWORK)) {
@@ -604,7 +604,7 @@ public class Federator extends Logic {
       final Port prev,
       final Port curr,
       final ArrayList<String> attributesList) {
-    logger.debug("");
+    log.debug("");
 
     String fedNwId = getNetworkIdByType(FEDERATED_NETWORK);
     if (fedNwId == null) {
@@ -634,7 +634,7 @@ public class Federator extends Logic {
 
   @Override
   protected void onPortDelete(String networkId, Port port) {
-    logger.debug("");
+    log.debug("");
 
     List<String> delBoundaryIds = new ArrayList<String>();
     // reflect boundary
@@ -665,7 +665,7 @@ public class Federator extends Logic {
    */
   @Override
   protected void onLinkAdded(String networkId, Link link) {
-    logger.debug("");
+    log.debug("");
 
     String connType = conversionTable().getConnectionType(networkId);
     if (connType.equals(FEDERATED_NETWORK)) {
@@ -708,7 +708,7 @@ public class Federator extends Logic {
    */
   @Override
   protected boolean onInPacketAddedPre(String networkId, InPacketAdded msg) {
-    logger.debug("");
+    log.debug("");
 
     NetworkInterface nwIf = networkInterfaces().get(networkId);
     if (nwIf == null) {
@@ -724,7 +724,7 @@ public class Federator extends Logic {
     String portId = inPacket.getPortId();
     if (federatorBoundaryTable.isContainsLink(networkId, nodeId, portId)) {
       // drop packet.
-      logger.debug("Drop Packet.");
+      log.debug("Drop Packet.");
       return false;
     }
     
@@ -736,7 +736,7 @@ public class Federator extends Logic {
    */
   @Override
   protected void onOutPacketAdded(String networkId, OutPacketAdded msg) {
-    logger.debug("");
+    log.debug("");
 
     NetworkInterface nwIf = networkInterfaces().get(networkId);
     if (nwIf == null) {
@@ -745,13 +745,13 @@ public class Federator extends Logic {
 
     OutPacket outPacket = delOutPacket(nwIf, msg.getId());
     if (outPacket == null) {
-      logger.debug("outPacket not found.");
+      log.debug("outPacket not found.");
       return;
     }
 
     String nodeId = outPacket.getNodeId();
     if (nodeId == null) {
-      logger.warn("invalid outPacket.");
+      log.warn("invalid outPacket.");
       return;
     }
 
@@ -763,12 +763,12 @@ public class Federator extends Logic {
 
     String srcNetwork = null;
     if (convPortId.size() == 0) {
-      logger.warn("not found conversion inPort.");
+      log.warn("not found conversion inPort.");
       outPacket.getHeader().setInNode(IN_NODE_PORT_ANY);
       outPacket.getHeader().setInPort(IN_NODE_PORT_ANY);
     } else {
       String[] plist = convPortId.get(0).split("::");
-      logger.debug(String.format("outPacket: inNode(%s), inport(%s)", plist[1], plist[2]));
+      log.debug("outPacket: inNode({}), inport({})", plist[1], plist[2]);
       srcNetwork = plist[0];
       outPacket.getHeader().setInNode(plist[1]);
       outPacket.getHeader().setInPort(plist[2]);
@@ -789,13 +789,13 @@ public class Federator extends Logic {
    */
   @Override
   protected void onFlowAdded(String networkId, Flow flow) {
-    logger.debug("nw:{} flow:{}" , networkId , flow);
+    log.debug("nw:{} flow:{}" , networkId , flow);
 
     try {
       verifyFlow(flow);
       federatorOnFlow.createOriginalFlow((BasicFlow)flow);
     } catch (FederatorException ex) {
-      logger.warn("validate fail: " + ex.getMessage(), ex);
+      log.warn("validate fail: {}", ex.getMessage(), ex);
       return;
     }
   }
@@ -803,12 +803,12 @@ public class Federator extends Logic {
   @Override
   protected boolean onFlowUpdatePre(String networkId, Flow prev, Flow curr,
       ArrayList<String> attributesList) {
-    logger.debug("");
+    log.debug("");
 
     try {
       verifyFlow(curr);
     } catch (FederatorException ex) {
-      logger.warn("validate fail: " + ex.getMessage(), ex);
+      log.warn("validate fail: {}", ex.getMessage(), ex);
       return false;
     }
 
@@ -823,7 +823,7 @@ public class Federator extends Logic {
   protected void onFlowUpdate(String networkId, Flow prev, Flow curr,
       ArrayList<String> attributesList) {
 
-    logger.debug("nw:{} prev:{} curr:{}" , networkId , prev, curr);
+    log.debug("nw:{} prev:{} curr:{}" , networkId , prev, curr);
     if (!onFlowUpdatePre(networkId, prev, curr, attributesList)) {
       return;
     }
@@ -847,7 +847,7 @@ public class Federator extends Logic {
     try {
       verifyFlow(curr);
     } catch (FederatorException ex) {
-      logger.debug("validate: " + ex.getMessage(), ex);
+      log.debug("validate: {}", ex.getMessage(), ex);
       return;
     }
 
@@ -871,7 +871,7 @@ public class Federator extends Logic {
   }
 
   protected void verifyFlow(Flow flow) throws FederatorException {
-    logger.debug("");
+    log.debug("");
 
     if (flow == null) {
       throw new FederatorException("flow is null");
@@ -889,7 +889,7 @@ public class Federator extends Logic {
 
   @Override
   protected void onFlowDelete( final String networkId, final Flow flow) {
-    logger.debug("nw:{} flow:{}" , networkId , flow);
+    log.debug("nw:{} flow:{}" , networkId , flow);
     if (onFlowDeletePre(networkId, flow)) {
       HashMap<String, Response> respList = deleteConversion(networkId, flow);
       onFlowDeletePost(networkId, flow, respList);
@@ -901,7 +901,7 @@ public class Federator extends Logic {
       final String networkId,
       final Flow flow,
       final HashMap<String, Response> respList) {
-    logger.debug("");
+    log.debug("");
     
     String connType = conversionTable().getConnectionType(networkId);
     if (connType.equals(FEDERATED_NETWORK)) {
@@ -916,7 +916,7 @@ public class Federator extends Logic {
    * @return ID for the network.
    */
   protected String getNetworkIdByType(final String connType) {
-    logger.debug("");
+    log.debug("");
 
     if (connType == null) {
       return null;
@@ -935,7 +935,7 @@ public class Federator extends Logic {
    * @return posted Boundary
    */
   protected Response postBoundaries(FederatorBoundary boundary) {
-    logger.debug("");
+    log.debug("");
 
     try {
 
@@ -958,8 +958,8 @@ public class Federator extends Logic {
    * @return posted Boundary
    */
   protected Response putBoundaries(String boundaryId, FederatorBoundary boundary) {
-    if (logger.isDebugEnabled()) {
-      logger.debug("boundaryId: {}", boundaryId);
+    if (log.isDebugEnabled()) {
+      log.debug("boundaryId: {}", boundaryId);
     }
 
     if (StringUtils.isEmpty(boundaryId)) {
@@ -985,7 +985,7 @@ public class Federator extends Logic {
    * @return Response of the boundary delete.
    */
   protected Response delBoundaries(String boundaryId) {
-    logger.debug("");
+    log.debug("");
 
     deleteBoundaryLink(boundaryId);
     doDelAttributeBoundaryPort(federatorBoundaryTable.getEntry(boundaryId));
@@ -1001,7 +1001,7 @@ public class Federator extends Logic {
    * @return Response of the boundary list.
    */
   protected Response getBoundaries() {
-    logger.debug("");
+    log.debug("");
 
     Map<String, FederatorBoundary> boundaries =
         federatorBoundaryTable.getBoundaries();
@@ -1015,7 +1015,7 @@ public class Federator extends Logic {
    * @return Response of the nodes in the network.
    */
   protected Response getNwNode(String connType) {
-    logger.debug("");
+    log.debug("");
     switch (connType) {
       case FEDERATED_NETWORK:
         return new Response(Response.OK, getNwNodesFed());
@@ -1031,7 +1031,7 @@ public class Federator extends Logic {
    * @return Response of the ports in the network.
    */
   protected Response getNwPort(String connType) {
-    logger.debug("");
+    log.debug("");
     switch (connType) {
       case FEDERATED_NETWORK:
         return new Response(Response.OK, getNwPortsFed());
@@ -1047,7 +1047,7 @@ public class Federator extends Logic {
    * @return Response of the links in the network.
    */
   protected Response getNwLink(String connType) {
-    logger.debug("");
+    log.debug("");
     switch (connType) {
       case FEDERATED_NETWORK:
         return new Response(Response.OK, getNwLinksFed());
@@ -1063,7 +1063,7 @@ public class Federator extends Logic {
    * @return Response of the flows in the network.
    */
   protected Response getNwFlow(String connType) {
-    logger.debug("");
+    log.debug("");
     switch (connType) {
       case FEDERATED_NETWORK:
         return new Response(Response.OK, getNwFlowsFed());
@@ -1074,7 +1074,7 @@ public class Federator extends Logic {
   }
 
   protected void subscribeOriginal(final String nwcId) {
-    logger.debug("");
+    log.debug("");
 
     try {
       addEntryEventSubscription(IN_PACKET_ADDED, nwcId);
@@ -1116,12 +1116,12 @@ public class Federator extends Logic {
       applyEventSubscription();
 
     } catch (Exception ex) {
-      logger.error(ex.getMessage(), ex);
+      log.error(ex.getMessage(), ex);
     }
   }
 
   protected void unsubscribeOriginal(final String nwcId) {
-    logger.debug("");
+    log.debug("");
 
     try {
       removeEntryEventSubscription(NODE_CHANGED, nwcId);
@@ -1133,12 +1133,12 @@ public class Federator extends Logic {
       applyEventSubscription();
 
     } catch (Exception ex) {
-      logger.error(ex.getMessage(), ex);
+      log.error(ex.getMessage(), ex);
     }
   }
 
   protected void subscribeFederated(final String nwcId) {
-    logger.debug("");
+    log.debug("");
 
     try {
       addEntryEventSubscription(OUT_PACKET_ADDED, nwcId);
@@ -1179,12 +1179,12 @@ public class Federator extends Logic {
       applyEventSubscription();
 
     } catch (Exception ex) {
-      logger.error(ex.getMessage(), ex);
+      log.error(ex.getMessage(), ex);
     }
   }
 
   protected void unsubscribeFederated(final String nwcId) {
-    logger.debug("");
+    log.debug("");
 
     try {
       removeEntryEventSubscription(FLOW_CHANGED, nwcId);
@@ -1196,7 +1196,7 @@ public class Federator extends Logic {
       applyEventSubscription();
 
     } catch (Exception ex) {
-      logger.error(ex.getMessage(), ex);
+      log.error(ex.getMessage(), ex);
     }
   }
 
@@ -1207,7 +1207,7 @@ public class Federator extends Logic {
   protected void reflectToFederatedFromOriginal(
       final NetworkInterface orgNwIf,
       final NetworkInterface fedNwIf) {
-    logger.debug("");
+    log.debug("");
 
     try {
       Topology orgTopology = orgNwIf.getTopology();
@@ -1237,14 +1237,14 @@ public class Federator extends Logic {
       }
 
     } catch (Exception e) {
-      logger.error("Recieved Message Exception.", e);
+      log.error("Recieved Message Exception.", e);
     }
   }
 
   protected void finalizingOriginalNetwork(
       final String orgNwId,
       final String fedNwId) {
-    logger.debug("");
+    log.debug("");
 
     if (orgNwId == null) {
       return;
@@ -1326,7 +1326,7 @@ public class Federator extends Logic {
   protected void finalizingFederatedNetwork(
       final List<String> orgNwIds,
       final String fedNwId) {
-    logger.debug("");
+    log.debug("");
     if (fedNwId == null) {
       return;
     }
@@ -1355,7 +1355,7 @@ public class Federator extends Logic {
 
   protected void postOutPacketNoBroadcast(
       String networkId, OutPacket outPacket) {
-    logger.debug("");
+    log.debug("");
 
     String nodeId = outPacket.getNodeId();
     List<String> fedPorts = new ArrayList<>(outPacket.getPorts());
@@ -1408,7 +1408,7 @@ public class Federator extends Logic {
 
   protected void postOutPacketBroadcast(
       String networkId, String srcNetworkId, OutPacket outPacket) {
-    logger.debug("");
+    log.debug("");
 
     String nodeId = outPacket.getNodeId();
     List<String> exceptPorts = new ArrayList<>(outPacket.getExceptPorts());
@@ -1473,7 +1473,7 @@ public class Federator extends Logic {
    * @return ID for the federated network.
    */
   protected String getConvNetworkId(final String networkId) {
-    logger.debug("");
+    log.debug("");
 
     if (networkId == null) {
       return null;
@@ -1492,10 +1492,10 @@ public class Federator extends Logic {
    * @return true: Addition succeeded. false: Addition is failed.
    */
   protected boolean addBoundaryLink(FederatorBoundary boundary) {
-    logger.debug("");
+    log.debug("");
 
     if (boundary == null || !boundary.validate()) {
-      logger.warn("invalid boundary.");
+      log.warn("invalid boundary.");
       return false;
     }
     NetworkInterface nwIf1 = networkInterfaces()
@@ -1503,19 +1503,19 @@ public class Federator extends Logic {
     NetworkInterface nwIf2 = networkInterfaces()
         .get(boundary.getNetwork2());
     if (nwIf1 == null || nwIf2 == null) {
-      logger.warn("invalid boundary.");
+      log.warn("invalid boundary.");
       return false;
     }
     Port port1 = nwIf1.getPort(boundary.getNode1(), boundary.getPort1());
     Port port2 = nwIf2.getPort(boundary.getNode2(), boundary.getPort2());
     if (port1 == null || port2 == null) {
-      logger.warn("not exsist boundary's port.");
+      log.warn("not exsist boundary's port.");
       return false;
     }
 
     String fedNwId = getNetworkIdByType(FEDERATED_NETWORK);
     if (fedNwId == null) {
-      logger.warn("is not connected to federated network.");
+      log.warn("is not connected to federated network.");
       return false;
     }
     List<String> fedPorts1 = conversionTable().getPort(
@@ -1526,7 +1526,7 @@ public class Federator extends Logic {
       return false;
     }
 
-    logger.info("update boundary port attributes.");
+    log.info("update boundary port attributes.");
 
     String[] fedPortList1 = fedPorts1.get(0).split(SEPARATOR);
     String[] fedPortList2 = fedPorts2.get(0).split(SEPARATOR);
@@ -1624,11 +1624,11 @@ public class Federator extends Logic {
    * @return true: Delete succeeded. false: Delete is failed .
    */
   protected boolean deleteBoundaryLink(String boundaryId) {
-    logger.debug("");
+    log.debug("");
 
     String fedNwId = getNetworkIdByType(FEDERATED_NETWORK);
     if (fedNwId == null) {
-      logger.warn("is not connected to federated network.");
+      log.warn("is not connected to federated network.");
       return false;
     }
     FederatorBoundary boundary =
@@ -1672,7 +1672,7 @@ public class Federator extends Logic {
    */
   protected boolean deleteBoundaryLink(String networkId, String nodeId,
       String portId) {
-    logger.debug("");
+    log.debug("");
 
     if (networkId == null || nodeId == null || portId == null) {
       return false;
@@ -1693,7 +1693,7 @@ public class Federator extends Logic {
    * @return map of the nodes.
    */
   protected Map<String, String> getNodes(String connType) {
-    logger.debug("");
+    log.debug("");
 
     ArrayList<String> nwcIds =
         conversionTable().getConnectionList(connType);
@@ -1728,7 +1728,7 @@ public class Federator extends Logic {
    */
   protected Map<String, ArrayList<String>> getNwNodesOrigin() {
 
-    logger.debug("");
+    log.debug("");
     ArrayList<String> nwcIds =
         conversionTable().getConnectionList(FEDERATED_NETWORK);
     HashMap<String, ArrayList<String>>
@@ -1755,7 +1755,7 @@ public class Federator extends Logic {
    * }
    */
   protected Map<String, String> getNwNodesFed() {
-    logger.debug("");
+    log.debug("");
     ArrayList<String> nwcIds =
         conversionTable().getConnectionList(ORIGINAL_NETWORK);
     HashMap<String, ArrayList<String>>
@@ -1780,7 +1780,7 @@ public class Federator extends Logic {
    * @return map of the ports.
    */
   protected Map<String, String> getPorts(String connType) {
-    logger.debug("");
+    log.debug("");
 
     ArrayList<String> nwcIds =
         conversionTable().getConnectionList(connType);
@@ -1831,7 +1831,7 @@ public class Federator extends Logic {
    */
   protected Map<String, ArrayList<String>> getNwPortsOrigin() {
 
-    logger.debug("");
+    log.debug("");
     ArrayList<String> nwcIds =
         conversionTable().getConnectionList(FEDERATED_NETWORK);
     HashMap<String, ArrayList<String>>
@@ -1860,7 +1860,7 @@ public class Federator extends Logic {
    * }
    */
   protected Map<String, ArrayList<String>> getNwPortsFed() {
-    logger.debug("");
+    log.debug("");
     ArrayList<String> nwcIds =
         conversionTable().getConnectionList(ORIGINAL_NETWORK);
     HashMap<String, ArrayList<String>>
@@ -1887,7 +1887,7 @@ public class Federator extends Logic {
    * @return Map of links.
    */
   protected Map<String, String> getLinks(String connType) {
-    logger.debug("");
+    log.debug("");
 
     ArrayList<String> nwcIds =
         conversionTable().getConnectionList(connType);
@@ -1918,7 +1918,7 @@ public class Federator extends Logic {
    */
   protected Map<String, ArrayList<String>> getNwLinksOrigin() {
 
-    logger.debug("");
+    log.debug("");
     ArrayList<String> nwcIds =
         conversionTable().getConnectionList(FEDERATED_NETWORK);
     HashMap<String, ArrayList<String>>
@@ -1942,7 +1942,7 @@ public class Federator extends Logic {
    * @return Map of links. {@code dict<original_network_id::original_link_id, federated_link_id>}
    */
   protected Map<String, String> getNwLinksFed() {
-    logger.debug("");
+    log.debug("");
 
     ArrayList<String> nwcIds =
         conversionTable().getConnectionList(ORIGINAL_NETWORK);
@@ -1968,7 +1968,7 @@ public class Federator extends Logic {
    * @return Map of flows.
    */
   protected Map<String, String> getFlows(String connType) {
-    logger.debug("");
+    log.debug("");
 
     ArrayList<String> nwcIds =
         conversionTable().getConnectionList(connType);
@@ -1997,7 +1997,7 @@ public class Federator extends Logic {
    * @return Map of Flows. {@code dict<federated_flow_id, [(original_network_id, original_flow_id)]>}
    */
   protected Map<String, ArrayList<Object>> getNwFlowsOrigin() {
-    logger.debug("");
+    log.debug("");
     ArrayList<String> nwcIds =
         conversionTable().getConnectionList(FEDERATED_NETWORK);
     HashMap<String, ArrayList<String>>
@@ -2026,7 +2026,7 @@ public class Federator extends Logic {
    * @return Map of flows. {@code dict<original_network_id::original_flow_id, federated_flow_id>}
    */
   protected Map<String, String> getNwFlowsFed() {
-    logger.debug("");
+    log.debug("");
     ArrayList<String> nwcIds =
         conversionTable().getConnectionList(ORIGINAL_NETWORK);
     HashMap<String, ArrayList<String>>
@@ -2047,14 +2047,14 @@ public class Federator extends Logic {
 
   protected final boolean doPutAttributeBoundaryPort(
       NetworkInterface nwIf, Port port) {
-    logger.debug("");
+    log.debug("");
 
     if (port == null) {
       return false;
     }
     String isBoudary = port.getAttribute(Logic.AttrElements.IS_BOUNDARY);
     if (isBoudary != null && Boolean.valueOf(isBoudary)) {
-      logger.debug("already updated. port.attributes{'is_boundary':'true'}.");
+      log.debug("already updated. port.attributes{'is_boundary':'true'}.");
       return false;
     }
     port.putAttribute(Logic.AttrElements.IS_BOUNDARY, "true");
@@ -2064,7 +2064,7 @@ public class Federator extends Logic {
 
   protected final void doDelAttributeBoundaryPort(
       FederatorBoundary boundary) {
-    logger.debug("");
+    log.debug("");
 
     // boundary's network1, node1, port1
     NetworkInterface nwIf1 = networkInterfaces().get(boundary.getNetwork1());
@@ -2101,7 +2101,7 @@ public class Federator extends Logic {
   }
 
   protected final void verifyType(String type) throws FederatorException {
-    logger.debug("");
+    log.debug("");
 
     if (!ComponentConnectionLogicAndNetwork.TYPE.equals(type)) {
       throw new FederatorException();
@@ -2109,7 +2109,7 @@ public class Federator extends Logic {
   }
 
   protected final void verifyId(ComponentConnection curr) throws FederatorException {
-    logger.debug("");
+    log.debug("");
 
     String logicId = curr.getProperty(
         ComponentConnectionLogicAndNetwork.LOGIC_ID);

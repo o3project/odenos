@@ -1021,7 +1021,7 @@ public class Slicer extends Logic {
     HashMap<String, ArrayList<String>> connectionsFlow = conversionTable()
         .getFlow();
     for (String flowId : connectionsFlow.keySet()) {
-      log.debug(("####" + flowId + " = " + connectionsFlow.get(flowId)));
+      log.debug("####{} = {}", flowId, connectionsFlow.get(flowId));
 
       Matcher match = pattern.matcher(flowId);
       if (match.find()) {

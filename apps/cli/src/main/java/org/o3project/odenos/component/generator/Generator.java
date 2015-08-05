@@ -88,7 +88,7 @@ public class Generator extends Driver {
   private RequestParser<IActionCallback> createParser() {
     return new RequestParser<IActionCallback>() {
       {
-        log.info(">> " + new Throwable().getStackTrace()[0].getMethodName());
+        log.info(">> {}", new Throwable().getStackTrace()[0].getMethodName());
 
         addRule(Method.PUT, "env/", new IActionCallback() {
           public Response process(RequestParser<IActionCallback>.ParsedRequest parsed)
@@ -214,7 +214,7 @@ public class Generator extends Driver {
 
   @Override
   public Response onRequest(Request request) {
-    log.debug(">> " + new Throwable().getStackTrace()[0].getMethodName());
+    log.debug(">> {}", new Throwable().getStackTrace()[0].getMethodName());
 
     try {
       log.debug("Received request : {}, {} {}", getObjectId(), request.method, request.path);
@@ -231,12 +231,12 @@ public class Generator extends Driver {
   }
 
   private Response createErrorResponse(int code, Object body) {
-    log.debug(">> " + new Throwable().getStackTrace()[0].getMethodName());
+    log.debug(">> {}", new Throwable().getStackTrace()[0].getMethodName());
     return createErrorResponse(code, body, body.toString());
   }
 
   private Response createErrorResponse(int code, Object body, String msg) {
-    log.debug(">> " + new Throwable().getStackTrace()[0].getMethodName());
+    log.debug(">> {}", new Throwable().getStackTrace()[0].getMethodName());
     Response rsp = new Response(code, body);
     log.debug("[{}] {}", code, msg);
     return rsp;
@@ -411,7 +411,7 @@ public class Generator extends Driver {
   protected final void onOutPacketAdded(final String networkId, final OutPacketAdded msg) {
 
     String packetId = msg.getId();
-    // log.info("receive OutPacket: " + packetId);
+    // log.info("receive OutPacket: {}", packetId);
 
     NetworkInterface networkIf = networkInterfaces().get(networkId);
 
@@ -437,7 +437,7 @@ public class Generator extends Driver {
         try {
           Response resp = networkIf.delOutPacket(packetId);
           if (resp.isError("DELETE")) {
-            log.error("invalid DELETE Packet:" + resp.statusCode);
+            log.error("invalid DELETE Packet:{}", resp.statusCode);
           }
         } catch (Exception e) {
           e.printStackTrace();
@@ -569,18 +569,18 @@ public class Generator extends Driver {
               String adjDriver = String.format(driverFormat, adjacency[2]);
               String adjNode = String.format(nodeFormat, adjacency[3]);
               String adjPort = String.format(portFormat, adjacency[4]);
-              log.debug("gwNode:" + gwNode);
-              log.debug("gwPort:" + gwPort);
-              log.debug("inNode:" + inNode);
-              log.debug("inPort:" + inPort);
-              log.debug("adjDriver:" + adjDriver);
-              log.debug("adjNode:" + adjNode);
-              log.debug("adjPort:" + adjPort);
+              log.debug("gwNode:{}", gwNode);
+              log.debug("gwPort:{}", gwPort);
+              log.debug("inNode:{}", inNode);
+              log.debug("inPort:{}", inPort);
+              log.debug("adjDriver:{}", adjDriver);
+              log.debug("adjNode:{}", adjNode);
+              log.debug("adjPort:{}", adjPort);
               if (gwNode.equals(inNode) && gwPort.equals(inPort)) {
                 // skip
               } else if (exceptOutPorts.contains(inPort)) {
                 System.out.println("exceptOutPorts: " + inPort);
-                // log.debug("exceptOutPorts: " + inPort);
+                // log.debug("exceptOutPorts: {}", inPort);
                 // skip
               } else {
                 log.debug("postOutPacket");
@@ -636,7 +636,7 @@ public class Generator extends Driver {
 
   @Override
   protected BasicFlow getFlow(final NetworkInterface nwIf, final String flowId) {
-    log.debug(">> " + new Throwable().getStackTrace()[0].getMethodName());
+    log.debug(">> {}", new Throwable().getStackTrace()[0].getMethodName());
 
     if (nwIf == null || flowId == null) {
       return null;
