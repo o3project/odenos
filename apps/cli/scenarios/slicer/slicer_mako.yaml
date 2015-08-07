@@ -96,7 +96,7 @@ conf = yaml.load(conf)
     type: Node
     version: "0"
     ports: {}
-    attributes: {"admin_status":"UP", "oper_status":"UP", "physical_id":"${physical_id}", "vendor":"VENDOR_A"}
+    attributes: {"oper_status":"UP", "physical_id":"${physical_id}", "vendor":"VENDOR_A"}
 % endfor
 
 - sleep: 1

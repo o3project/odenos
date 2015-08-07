@@ -702,12 +702,6 @@ public class LinkLayerizer extends Logic {
 
       String attrBase = AttrElements.ATTRIBUTES + SEPARATOR + "%s";
 
-      ArrayList<String> nodeAttributes = new ArrayList<String>(
-          Arrays.asList(
-              String.format(attrBase, AttrElements.ADMIN_STATUS)));
-      updateEntryEventSubscription(NODE_CHANGED, layerizedId,
-          nodeAttributes);
-
       ArrayList<String> portAttributes = new ArrayList<String>(
           Arrays.asList(
               String.format(attrBase,

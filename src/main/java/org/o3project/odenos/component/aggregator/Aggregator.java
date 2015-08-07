@@ -374,12 +374,8 @@ public class Aggregator extends Logic {
     addEntryEventSubscription(OUT_PACKET_ADDED, nwcId);
 
     String attrBase = AttrElements.ATTRIBUTES + "::%s";
-    ArrayList<String> nodeAttributes = new ArrayList<String>(Arrays.asList(
-        String.format(attrBase, AttrElements.ADMIN_STATUS)));
-    updateEntryEventSubscription(NODE_CHANGED, nwcId, nodeAttributes);
 
     ArrayList<String> portAttributes = new ArrayList<String>(Arrays.asList(
-        String.format(attrBase, AttrElements.ADMIN_STATUS),
         String.format(attrBase, AttrElements.UNRESERVED_BANDWIDTH),
         String.format(attrBase, AttrElements.IS_BOUNDARY)));
     updateEntryEventSubscription(PORT_CHANGED, nwcId, portAttributes);
