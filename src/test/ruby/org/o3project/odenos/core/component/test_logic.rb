@@ -631,8 +631,7 @@ class TestLogic < MiniTest::Test
     event_obj = Event.new('publisher_id', 'OutPacketAdded', out_packetadded_body)
     @base_logic.expects(:on_out_packet_added).with('publisher_id', anything).raises().once
 
-    assert_equal(true, @base_logic.on_event(event_obj))
- #   assert_raises(RuntimeError) {@base_logic.on_event(event_obj)}
+    assert_equal(nil, @base_logic.on_event(event_obj))
   end
   
   def test_on_event_and_event_type_other
