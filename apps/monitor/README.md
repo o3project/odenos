@@ -16,6 +16,7 @@ Dependencies
 
 This program requires Python 3.4 or higher and the following python packages:
 ```
+$ sudo apt-get install python3-pip
 $ sudo pip3 install msgpack-python
 $ sudo pip3 install pyyaml
 $ sudo pip3 install tornado
@@ -71,30 +72,30 @@ IMPORTANT: you have to uncomment "monitor" in etc/odenos.conf to enable the moni
 
 ```
 Show help:
-$ monitor -h
+$ ./monitor -h
 
 Start monitoring:
-$ monitor resttranslator systemmanager romgr1 network1 ...
+$ ./monitor resttranslator systemmanager romgr1 network1 ...
 
 Start monitoring messages being exchanged among ODENOS RemoteObject instances pre-defined in "default.yaml":
-$ monitor
+$ ./monitor
 
 Start monitoring with additional parameters:
-$ monitor -i 172.0.0.1 -p 6379 -P 8888 resttranslator systemmanager romgr1 network1 ...
+$ ./monitor -i 172.0.0.1 -p 6379 -P 8888 resttranslator systemmanager romgr1 network1 ...
 
 Then open "http://localhost:8888/index.html" with your browser (firefox is recommended).
 
 Start with -I and -P options for the HTTP server:
-$ monitor -I 10.10.10.10 -P 10082
+$ ./monitor -I 10.10.10.10 -P 10082
 
 You can also force the monitor to output the diagram to your console:
-$ monitor -c
+$ ./monitor -c
 
 Start with -d option to print out each message in YAML format:
-$ monitor -c -d
+$ ./monitor -c -d
 
 Start with -d and -j options to print out each message in JSON format:
-$ monitor -c -d -j
+$ ./monitor -c -d -j
 ```
 
 You want your favorite icons?

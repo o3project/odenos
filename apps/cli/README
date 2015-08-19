@@ -7,10 +7,11 @@ Installation
 1. This script requires Python 3.4.
 
 2. You need to have these packages pre-installed: httplib2, pyyaml, mako(optional) and readline.
-$ pip3 install httplib2
-$ pip3 install pyyaml
-$ pip3 install mako
-$ pip3 install readline
+$ sudo apt-get install python3-pip
+$ sudo pip3 install httplib2
+$ sudo pip3 install pyyaml
+$ sudo pip3 install mako
+$ sudo pip3 install readline
 
 3. Build an artifact "generator".
 $ mvn compile
@@ -167,10 +168,10 @@ Sample clio scenarios
 ---------------------
 
 To create a fat tree topology:
-$ clio scenarios/topologies/fat_tree.yaml
+$ ./clio scenarios/topologies/fat_tree.yaml
 
 To create 1000 nodes with a ring topology:
-$ clio scenarios/topologies/1000nodes_ring.yaml
+$ ./clio scenarios/topologies/1000nodes_ring.yaml
 
 
 pipeline-oriented
@@ -287,31 +288,31 @@ clio's default preset file ("preset.yaml") includes the following macros:
 Usage
 -----
 To initiate CLI:
-$ clio
+$ ./clio
 
 To load and execute a scenario "preset.yaml":
-$ clio preset.yaml
+$ ./clio preset.yaml
 
 To initiate CLI with update_schema option:
-$ clio -u
+$ ./clio -u
 
 To initiate CLI with verbose option:
-$ clio -v
+$ ./clio -v
 
 To run a scenario "rest_test.cli" (clio CLI format):
-$ clio -c rest_test.cli
+$ ./clio -c rest_test.cli
 
 To run a scenario "rest_test.yaml" (pure YAML format):
-$ clio rest_test.yaml
+$ ./clio rest_test.yaml
 
 To run the scenario and to show all the output in JSON:
-$ clio -j rest_test.yaml
+$ ./clio -j rest_test.yaml
 
 To run a scenario with Python script embedded (uses Mako):
-$ clio -m rest_aggregator2.yaml
+$ ./clio -m rest_aggregator2.yaml
 
 To show the auto-generated scenario:
-$ clio -M rest_aggregator2.yaml
+$ ./clio -M rest_aggregator2.yaml
 
 To resume a scenario starting from tag 1:
 $ clio -m -t 1 rest_aggregator2.yaml
