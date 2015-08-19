@@ -16,6 +16,7 @@
 
 package org.o3project.odenos.remoteobject.messagingclient;
 
+import org.apache.logging.log4j.LogManager;
 import org.msgpack.MessagePack;
 import org.msgpack.packer.BufferPacker;
 import org.msgpack.unpacker.BufferUnpacker;
@@ -28,8 +29,9 @@ import org.o3project.odenos.remoteobject.message.MessageBodyUnpacker;
 import org.o3project.odenos.remoteobject.message.Request;
 import org.o3project.odenos.remoteobject.message.Response;
 import org.o3project.odenos.remoteobject.messagingclient.Config.MODE;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.o3project.odenos.core.logging.Log;
+
+import org.apache.logging.log4j.Logger;
 
 import java.io.Closeable;
 import java.io.IOException;
@@ -52,7 +54,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * <p>
  * This class provides the following services to remote objects:
  * <ul>
- * <li>asynchronous channel subscription (SUBSCRIBE/UNSUBSCRIBE)
+ * <li>asynchronous channel protectedsubscription (SUBSCRIBE/UNSUBSCRIBE)
  * <li>asynchronous event publication (PUBLISH)
  * <li>synchronous request/response (remote transactions)
  * <li>event dispatch to local objects
@@ -89,7 +91,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public class MessageDispatcher implements Closeable, IMessageListener {
 
-  private static final Logger log = LoggerFactory.getLogger(MessageDispatcher.class);
+  private static final Logger log = LogManager.getLogger(MessageDispatcher.class);
 
   protected static final byte TYPE_REQUEST = 0;
   protected static final byte TYPE_RESPONSE = 1;
@@ -227,7 +229,7 @@ public class MessageDispatcher implements Closeable, IMessageListener {
         // NOP
       }
     } catch (Exception e) {
-      log.error("class load error", e);
+      log.error(Log.errorClassLoad(), e);
     }
 
     // Remote Transactions pool
@@ -471,7 +473,7 @@ public class MessageDispatcher implements Closeable, IMessageListener {
     });
     subscriptionFeeder.start();
 
-    log.info("started");
+    log.info(Log.infoMessageDispatcherStarted());
   }
 
   /**
