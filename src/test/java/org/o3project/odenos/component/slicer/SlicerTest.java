@@ -895,14 +895,8 @@ public class SlicerTest {
     PowerMockito.verifyPrivate(target).invoke("addEntryEventSubscription",
         "IN_PACKET_ADDED", "NwcId");
 
-    ArrayList<String> nodeAttr = new ArrayList<String>(
-        Arrays.asList("attributes::admin_status"));
-    PowerMockito.verifyPrivate(target).invoke(
-        "updateEntryEventSubscription", "NODE_CHANGED", "NwcId",
-        nodeAttr);
     ArrayList<String> portAttr = new ArrayList<String>(Arrays.asList(
-        "attributes::admin_status", "attributes::unreserved_bandwidth",
-        "attributes::is_boundary"));
+        "attributes::unreserved_bandwidth", "attributes::is_boundary"));
     PowerMockito.verifyPrivate(target).invoke(
         "updateEntryEventSubscription", "PORT_CHANGED", "NwcId",
         portAttr);

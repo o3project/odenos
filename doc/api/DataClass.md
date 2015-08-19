@@ -43,20 +43,20 @@
 #### <a name="Topology"> Topology</a>
 **This represent the overall topology of Network.**
 
-**Key**   | **Value** |**Description**                                 | POST      | PUT 
+**Key**   | **Value** |**Description**                                 | POST      | PUT
 ----------|-----------|------------------------------------------------|-----------|----------
-type      | \<String> | type is "Topology"                             | -         | Mandatory  
+type      | \<String> | type is "Topology"                             | -         | Mandatory
 version   | \<String>  | NetworkCompnent will assign valid version in response message when the request is success. | - | Mandatory (*1)
-nodes     | dict<[Node](#Node).id, [Node](#Node)>                      | [Node](#Node) set. | - | Optional 
+nodes     | dict<[Node](#Node).id, [Node](#Node)>                      | [Node](#Node) set. | - | Optional
 links     | dict<[Link](#Link).id, [Link](#Link)>                      | [Link](#Link) set. | - | Optional
 
-  (\*1) version is assigned automatically when creating a new object.  
+  (\*1) version is assigned automatically when creating a new object.
 
 ----
 #### <a name="Node"> Node</a>
 **Switch Node data class.**
 
-**Key**   | **Value**  |**Description**                             | POST      | PUT 
+**Key**   | **Value**  |**Description**                             | POST      | PUT
 ----------|------------|--------------------------------------------|-----------|------------
 type      | \<String>  | type is "Node"                             | Mandatory |  Mandatory
 version   | \<String>  | NetworkCompnent will assign valid version in response message when the request is success. | - (*1) | Mandatory (*1)
@@ -64,14 +64,13 @@ node_id   | \<String>  | Unique node's Identifier in this topology      | - (*2)
 ports     | dict<[Port](#Port).port_id, [Port](#Port)> | Set of ports in this Node.  | Optional | Optional
 attributes|dict{\<String>, \<String>}|See the table attributes.     | Optional | Optional
 
-  (\*1) version is assigned automatically when creating a new object.  
+  (\*1) version is assigned automatically when creating a new object.
   (\*2) node_id is assigned automatically.
 
 
 ##### Attributes
 **Key**      | **Value** |**Description**                                              | init   | Direction of the reflected(*)
 -------------|-----------|-------------------------------------------------------------|--------|---------------
-admin_status | \<String> | "UP" : normal operation. <br> "DOWN" : failure operation.   | "UP"   | Upper -> Lower 
 oper_status  | \<String> | "UP" : Physical device normal. <br> "DOWN" : Physical device failure.    | "UP"    | Lower -> Upper
 physical_id  | \<String> |ID of the physical device. Numbering in the driver.<br> For example, openflow driver to set the "dpid" | any         |   Lower  ->  Upper
 vendor        | \<String>  |Vendor name is set.<br> For example, It is used for the GUI system. | any | Lower -> Upper
@@ -83,31 +82,30 @@ vendor        | \<String>  |Vendor name is set.<br> For example, It is used for 
 #### <a name="Port"> Port</a>
 **Switch Port data class.**
 
-**Key**   | **Value** |**Description**                          | POST      | PUT 
+**Key**   | **Value** |**Description**                          | POST      | PUT
 ----------|-----------|-----------------------------------------|-----------|------------
-type      | \<String> |type is "Port"                           | Mandatory | Mandatory     
+type      | \<String> |type is "Port"                           | Mandatory | Mandatory
 version   | \<String> | NetworkCompnent will assign valid version in response message when the request is success. | -(*1) | Mandatory(*1)
 port_id   | \<String> | Unique port's Identifier in this node   | -(*2)     | Mandatory
-node_id   | \<String> | Owner of this port                      | Mandatory | Mandatory     
+node_id   | \<String> | Owner of this port                      | Mandatory | Mandatory
 out_link  | \<String> | source  [Link](#Link).id                | -(*3)     | -(*3)
 in_link   | \<String> | destination [Link](#Link).id            | -(*3)     | -(*3)
-attributes|dict{\<String>, \<String>}|See the table attributes. | Optional  | Optional 
+attributes|dict{\<String>, \<String>}|See the table attributes. | Optional  | Optional
 
-  (\*1) version is assigned automatically when creating a new object.  
-  (\*2) port_id is assigned automatically.  
+  (\*1) version is assigned automatically when creating a new object.
+  (\*2) port_id is assigned automatically.
   (\*3) Setting not required because it is set automatically by the Link Configuration
 
 
 ##### Attributes
 **Key**       | **Value**  |**Description**                                              | init   | Direction of the reflected(*)
 --------------|------------|-------------------------------------------------------------|--------|-----------------
-admin_status  | \<String>  | "UP" : normal operation. <br> "DOWN" : failure operation.   | "UP"   | Upper -> Lower 
 oper_status   | \<String>  | "UP" : Physical device normal. <br> "DOWN" : Physical device failure.| "UP"    | Lower -> Upper
 max_bandwidth | \<Number>  | Unit is Mbps. maximum bandwidth of the port.<br> Driver to set the value.| any    | Lower -> Upper
-unreserved_bandwidth | \<Number>  | Unit is Mbps. Current bandwidth of the port.<br > Driver to set the initial value. |max_bandwidth   | Upper -> Lower 
+unreserved_bandwidth | \<Number>  | Unit is Mbps. Current bandwidth of the port.<br > Driver to set the initial value. |max_bandwidth   | Upper -> Lower
 physical_id   | \<String>  |ID of the physical device. Driver may assign this ID.<br> For example, openflow driver will assign like "port_no@dpid" | any         |   Lower  ->  Upper
 vendor        | \<String>  |Vendor name is set.<br> For example, It is used for the GUI system. | any | Lower -> Upper
-is_boundary   | "true" or "false" |[Boundary](#Boundary) setting is the "true" when enabled. <br> For example, It is used for the GUI system. | "false" |  Upper -> Lower 
+is_boundary   | "true" or "false" |[Boundary](#Boundary) setting is the "true" when enabled. <br> For example, It is used for the GUI system. | "false" |  Upper -> Lower
 
 (\*) **Lower** : Driver side. **Upper** : Controller side.
 
@@ -115,7 +113,7 @@ is_boundary   | "true" or "false" |[Boundary](#Boundary) setting is the "true" w
 ----
 #### <a name="Link"> Link</a>
 
-**Key**   | **Value** |**Description**                            | POST      | PUT 
+**Key**   | **Value** |**Description**                            | POST      | PUT
 ----------|-----------|-------------------------------------------|-----------|------------
 type      | \<String> |type is "Link"                             | Mandatory | Mandatory
 version   | \<String> |NetworkCompnent will assign valid version in response message when the request is success. | -(*1) | Mandatory (*1)
@@ -124,32 +122,32 @@ src_node  | \<String> |source [Node](#Node).id                    | Mandatory | 
 src_port  | \<String> |source [Port](#Port).id                     | Mandatory | Mandatory
 dst_node  | \<String> |destination [Node](#Node).id               | Mandatory | Mandatory
 dst_port  | \<String> |destination [Port](#Port).id                | Mandatory | Mandatory
-attributes|dict{\<String>, \<String>}|See the table attributes.   | Optional  | Optional 
+attributes|dict{\<String>, \<String>}|See the table attributes.   | Optional  | Optional
 
-  (\*1) version is assigned automatically when creating a new object.  
-  (\*2) link_id is assigned automatically.  
+  (\*1) version is assigned automatically when creating a new object.
+  (\*2) link_id is assigned automatically.
 
 
 ##### Attributes
 **Key**              | **Value** |**Description**                                                                      | init  | Direction of the reflected(*)
 ---------------------|-----------|-------------------------------------------------------------------------------------|-------|-----------------
 oper_status          | \<String> | "UP" : Link is in a state ready to forward traffic. <br> "DOWN" : Link is in a state not ready to forward traffic.               | "UP"   | Lower -> Upper
-cost                 | \<Number> | link cost.                                                                          | 1     | Upper -> Lower              
+cost                 | \<Number> | link cost.                                                                          | 1     | Upper -> Lower
 req_latency          | \<Number> | Unit is msec. Request latency. (There may be different from the actual latency.）   | any   | Upper -> Lower
-latency              | \<Number> | Unit is  msec.                                                                      | any   | Lower -> Upper                 
+latency              | \<Number> | Unit is  msec.                                                                      | any   | Lower -> Upper
 req_bandwidth        | \<Number> | Unit is Mbps. Request bandwidth.(There may be different from the actual bandwidth.) | any   | Upper -> Lower
 max_bandwidth        | \<Number> | Unit is Mbps. maximum bandwidth of the port.<br> Driver to set the value.           | any   | Lower -> Upper
-unreserved_bandwidth | \<Number> | Unit is Mbps. Current bandwidth of the port.<br > Driver to set the initial value.  |max_bandwidth   | Upper -> Lower 
+unreserved_bandwidth | \<Number> | Unit is Mbps. Current bandwidth of the port.<br > Driver to set the initial value.  |max_bandwidth   | Upper -> Lower
 establishment_status | \<string> |Use LinkLayerizer Only. Link that was generated from Flow. <br> "establishing" :  <br>   "established" :  <br> If it is a "establishing", oper_status is "DOWN" | any    | -
 
 (\*) **Lower** : Driver side. **Upper** : Controller side.
 
 
 ----
-#### <a name="Flow"> Flow</a>  
-Flow is abstract class.  
+#### <a name="Flow"> Flow</a>
+Flow is abstract class.
 
-**Key**    | **Value**  |**Description**                                             | POST      | PUT 
+**Key**    | **Value**  |**Description**                                             | POST      | PUT
 -----------|------------|------------------------------------------------------------|-----------|------------
 type       | \<string>  |FlowType (see below)                                        | Mandatory |  Mandatory
 version    | \<String>  |NetworkCompnent will assign valid version in response message when the request is success. | -(*1) | Mandatory (*1)
@@ -158,15 +156,15 @@ owner      | \<string>  |Author of flow.                                        
 enabled    | \<boolean> |The value the owner is usually set.  "True":flow is activation.  "False":flow is invalidation. | Mandatory |  Mandatory
 priority   | \<number>  |value:0-65535(max priority). It is to be 32768 if not set. | Mandatory |  Mandatory
 status     | \<string>  |see <State Transition Table> Flow status, Lower Layer Component(usually, Driver Component) makes a state transition.  | Optional(*3) |  Mandatory
-attributes |dict{\<String>, \<String>}|See the table attributes.                     | Optional  |  Optional  
+attributes |dict{\<String>, \<String>}|See the table attributes.                     | Optional  |  Optional
 
 
-  (\*1)version is assigned automatically when creating a new object.  
-  (\*2)flow_id is assigned automatically.  
+  (\*1)version is assigned automatically when creating a new object.
+  (\*2)flow_id is assigned automatically.
   (\*3)If you do not set the state,state set  "none"
 
 
-  
+
 
 ##### type
 
@@ -181,8 +179,8 @@ attributes |dict{\<String>, \<String>}|See the table attributes.                
 -------------|------------|-------------------|--------|------------------
 req_bandwidth| \<Number>  | Unit is Mbps. Request bandwidth.(There may be different from the actual bandwidth.) | any    | Upper -> Lower
 req_latency  | \<Number>  | Unit is msec. Request latency. (There may be different from the actual latency.） | any    | Upper -> Lower
-bandwidth    | \<Number>  | Unit is Mbps.     | any    | Lower  ->  Upper    
-latency      | \<Number>  | Unit is msec.     | any    | Lower  ->  Upper    
+bandwidth    | \<Number>  | Unit is Mbps.     | any    | Lower  ->  Upper
+latency      | \<Number>  | Unit is msec.     | any    | Lower  ->  Upper
 
 #### State Transition Table
 
@@ -192,13 +190,13 @@ latency      | \<Number>  | Unit is msec.     | any    | Lower  ->  Upper
  * **teardown**: The removal process during the flow of the physical layer by the driver.
  * **failed**: failure to flow.
 
-**State Current ↓ Next→**| **none** | **establishing** | **established** | **teardown** | **failed** | **(none Flow)**  
+**State Current ↓ Next→**| **none** | **establishing** | **established** | **teardown** | **failed** | **(none Flow)**
 ---------------------------|----------|------------------|-----------------|--------------|------------|----------------
-**none**                   |-         |Creating or Updating Flow     |-                |-             |-           |Deleted Flow       
-**establishing**           |-         |                  |Created/Updated Flow |Deleting Flow|failure     |-            
-**established**            |-         |Updating Flow     |-                |Deleting Flow or Invaliding Flow |failure     |-             
+**none**                   |-         |Creating or Updating Flow     |-                |-             |-           |Deleted Flow
+**establishing**           |-         |                  |Created/Updated Flow |Deleting Flow|failure     |-
+**established**            |-         |Updating Flow     |-                |Deleting Flow or Invaliding Flow |failure     |-
 **teardown**               |Deleted or Invalided Flow |-              |-             |-             |failure    |
-**failed**                 |-         |Updating Flow       |-             |Deleting Flow |-           |-             
+**failed**                 |-         |Updating Flow       |-             |Deleting Flow |-           |-
 
 ### Sequence
 ----
@@ -224,7 +222,7 @@ latency      | \<Number>  | Unit is msec.     | any    | Lower  ->  Upper
          |                            | PUT flow(stats:established)
          |                            |&lt;-----------|
          |  [enabled:true, status:established]     |
-         |       FlowChanged(UPDATE)  |            | 
+         |       FlowChanged(UPDATE)  |            |
          |&lt;---------------------------| FlowChanged(UPDATE)
          |                            |----------->|
          |                            |            |
@@ -240,7 +238,7 @@ latency      | \<Number>  | Unit is msec.     | any    | Lower  ->  Upper
          |                            |            |
          |DELETE flow                 |            |
          |--------------------------->|            |
-         |         FlowChanged(DELETE)|            | 
+         |         FlowChanged(DELETE)|            |
          |&lt;---------------------------|            |
          |                            |FlowChanged(DELETE)
          |                            |----------->|
@@ -264,7 +262,7 @@ latency      | \<Number>  | Unit is msec.     | any    | Lower  ->  Upper
          |                     (Flow Deleted)      |
          |                            | x[FlowChanged(DELETE)](*)
          |                            |-->x        |
-         |  x[FlowChanged(DELETE)](*) |            | 
+         |  x[FlowChanged(DELETE)](*) |            |
          |                        x---|            |
 
 (*) Event notification None.
@@ -284,7 +282,7 @@ latency      | \<Number>  | Unit is msec.     | any    | Lower  ->  Upper
          |                            |            |
          |                            |FlowChanged(UPDATE)
          |                            |----------->|
-         |        FlowChanged(UPDATE) |            | 
+         |        FlowChanged(UPDATE) |            |
          |&lt;---------------------------|            |
          |                            |            |
          |                            | PUT flow(stats:teardown)
@@ -300,8 +298,8 @@ latency      | \<Number>  | Unit is msec.     | any    | Lower  ->  Upper
          |                            |&lt;-----------|
          |       [enabled:false, status:none]      |
          |                            |            |
-         |        FlowChanged(UPDATE) |            | 
-         |&lt;---------------------------|FlowChanged(UPDATE) 
+         |        FlowChanged(UPDATE) |            |
+         |&lt;---------------------------|FlowChanged(UPDATE)
          |                            |----------->|
          |                            |            |
 
@@ -316,8 +314,8 @@ latency      | \<Number>  | Unit is msec.     | any    | Lower  ->  Upper
          |PUT flow(enabled:true)      |            |
          |--------------------------->|            |
          |       [enabled:true, status:none]       |
-         |        FlowChanged(UPDATE) |            | 
-         |&lt;---------------------------|FlowChanged(UPDATE) 
+         |        FlowChanged(UPDATE) |            |
+         |&lt;---------------------------|FlowChanged(UPDATE)
          |                            |----------->|
          |                            |            |
          |                            | PUT flow(stats:establishing)
@@ -333,7 +331,7 @@ latency      | \<Number>  | Unit is msec.     | any    | Lower  ->  Upper
          |                            |&lt;-----------|
          |  [enabled:true, status:established]     |
          |                            |            |
-         |       FlowChanged(UPDATE)  |            | 
+         |       FlowChanged(UPDATE)  |            |
          |&lt;---------------------------| FlowChanged(UPDATE)
          |                            |----------->|
          |                            |            |
@@ -353,7 +351,7 @@ latency      | \<Number>  | Unit is msec.     | any    | Lower  ->  Upper
          |                            |&lt;-----------|
          |       [enabled:true, status:failed]     |
          |                            |            |
-         |       FlowChanged(UPDATE)  |            | 
+         |       FlowChanged(UPDATE)  |            |
          |&lt;---------------------------| FlowChanged(UPDATE)
          |                            |----------->|
 
@@ -369,7 +367,7 @@ latency      | \<Number>  | Unit is msec.     | any    | Lower  ->  Upper
          |                            |&lt;-----------|
          |       [enabled:true, status:failed]     |
          |                            |            |
-         |       FlowChanged(UPDATE)  |            | 
+         |       FlowChanged(UPDATE)  |            |
          |&lt;---------------------------| FlowChanged(UPDATE)
          |                            |----------->|
 
@@ -377,9 +375,9 @@ latency      | \<Number>  | Unit is msec.     | any    | Lower  ->  Upper
 
 </pre>
 ----
-#### <a name="BasicFlow"> BasicFlow</a>  
+#### <a name="BasicFlow"> BasicFlow</a>
 
-**Key**      | **Value**   |**Description**            | POST      | PUT 
+**Key**      | **Value**   |**Description**            | POST      | PUT
 -------------|-------------|---------------------------|-----------|------------
 type         | \<String>   | type is "BasicFlow"       | Mandatory |  Mandatory
 matches      | list[[BasicFlowMatch](#BasicFlowMatch)] | One or more of the match conditions | Mandatory |  Mandatory
@@ -395,141 +393,141 @@ edge_actions | dict<[Node](#Node).node_id, list[[FlowAction](#FlowAction)]> |Act
     "owner": "XXXXXXXXXXXX",
     "enabled": true,
     "status": "none",
-    "matches": [ {...(BasicFlowMatch)...} ]
-    "path": ["LINK_ID1", "LINK_ID2"]
+    "matches": [ {...(BasicFlowMatch)...} ],
+    "path": ["LINK_ID1", "LINK_ID2"],
         "edge_actions": {
             "NODE_ID_1": [
                 {...(BasicFlowAction)...},
-                {...(BasicFlowAction)...},]    
-        }    
+                {...(BasicFlowAction)...}, ...]
+        }
     }
 
 
 
 ----
-#### <a name="OFPFlow"> OFPFlow</a>  
+#### <a name="OFPFlow"> OFPFlow</a>
 
-**Key**      | **Value**    |**Description**                             | POST      | PUT 
+**Key**      | **Value**    |**Description**                             | POST      | PUT
 -------------|--------------|--------------------------------------------|-----------|------------
 type         | \<String>    | type is "OFPFlow"                          | Mandatory |  Mandatory
 matches      | list[[OFPFlowMatch](#OFPFlowMatch)] | One or more of the match conditions | Mandatory |  Mandatory
-idle_timeout | \<number>    | Units sec. Is regarded as 0 specified if it is omitted. | Optional  |  Optional  
-hard_timeout | \<number>    | Units sec. Is regarded as 0 specified if it is omitted. | Optional  |  Optional  
+idle_timeout | \<number>    | Units sec. Is regarded as 0 specified if it is omitted. | Optional  |  Optional
+hard_timeout | \<number>    | Units sec. Is regarded as 0 specified if it is omitted. | Optional  |  Optional
 path         | list[[Link](#Link).link_id ] | list of [Link](#Link) that [Flow](#Flow) goes through. there is a need for a connected acyclic graph. | Mandatory |  Mandatory
 edge_actions | dict<[Node](#Node).node_id, list[[OFPFlowAction](#OFPFlowAction)]> |Action of edge node.  | Mandatory |  Mandatory
 
 
 ----
-#### <a name="BasicFlowMatch"> BasicFlowMatch</a> 
-represent the flow match of BasicFlow  
+#### <a name="BasicFlowMatch"> BasicFlowMatch</a>
+represent the flow match of BasicFlow
 
 **Key**     | **Value**    |**Description**
 ------------|--------------|----------------
-type        | \<string>    |"BasicFlowMatch"                       
-in_node     | \<string>    | [Node](#Node).node_id.  **Required**      
-in_port     | \<string>    | [Port](#Port).port_id.  optional (if key is not, Treat as ANY.) 
+type        | \<string>    |"BasicFlowMatch"
+in_node     | \<string>    | [Node](#Node).node_id.  **Required**
+in_port     | \<string>    | [Port](#Port).port_id.  optional (if key is not, Treat as ANY.)
 
 
 ----
-#### <a name="OFPFlowMatch"> OFPFlowMatch</a>  
-represent the flow match of OpenFlow 1.3  
-if key is not, Treat as ANY.  
+#### <a name="OFPFlowMatch"> OFPFlowMatch</a>
+represent the flow match of OpenFlow 1.3
+if key is not, Treat as ANY.
 
 **Key**          | **Value**  |**Description**
 -----------------|------------|----------------
-type             | \<string>  | "OFPFlowMatch"                                
-in_node          | \<string>  | [Node](#Node).node_id.  **Required**      
-in_port          | \<string>  | [Port](#Port).port_id.  Ingress port. This may be a physical or switch-defined logical port.(required support in the OpenFlow 1.3)                                
+type             | \<string>  | "OFPFlowMatch"
+in_node          | \<string>  | [Node](#Node).node_id.  **Required**
+in_port          | \<string>  | [Port](#Port).port_id.  Ingress port. This may be a physical or switch-defined logical port.(required support in the OpenFlow 1.3)
 in_phy_port      | \<integer> |
-metadata         | \<string>  | Metadata passed between tables.                
-metadata_mask    | \<string>  | Metadata mask                                  
+metadata         | \<string>  | Metadata passed between tables.
+metadata_mask    | \<string>  | Metadata mask
 eth_src          | \<string>  | Ethernet source address. format:"XX:XX:XX:XX:XX:XX" (required support in the OpenFlow 1.3)
-eth_src_mask     | \<string>  | Ethernet source address mask.             
+eth_src_mask     | \<string>  | Ethernet source address mask.
 eth_dst          | \<string>  | Ethernet destination address. format:"XX:XX:XX:XX:XX:XX" (required support in the OpenFlow 1.3)
-eth_dst_mask     | \<string>  | Ethernet destination address mask.             
-eth_type         | \<integer> | Ethernet frame type.  (required support in the OpenFlow 1.3)                         
+eth_dst_mask     | \<string>  | Ethernet destination address mask.
+eth_type         | \<integer> | Ethernet frame type.  (required support in the OpenFlow 1.3)
 vlan_vid         | \<integer> | VLAN id
-vlan_vid_mask    | \<integer> | VLAN id mask.                                
-vlan_pcp         | \<integer> | VLAN priority.                                 
-ip_dscp          | \<integer> | IP DSCP (6 bits in ToS field).                 
-ip_ecn           | \<integer> | IP ECN (2 bits in ToS field).                  
-ip_proto         | \<integer> | IP protocol.  (required support in the OpenFlow 1.3)                                   
-ipv4_src         | \<string>  | IPv4 source address. format : "D.D.D.D"   (required support in the OpenFlow 1.3)      
-ipv4_src_mask    | \<string>  | IPv4 source address mask.                      
+vlan_vid_mask    | \<integer> | VLAN id mask.
+vlan_pcp         | \<integer> | VLAN priority.
+ip_dscp          | \<integer> | IP DSCP (6 bits in ToS field).
+ip_ecn           | \<integer> | IP ECN (2 bits in ToS field).
+ip_proto         | \<integer> | IP protocol.  (required support in the OpenFlow 1.3)
+ipv4_src         | \<string>  | IPv4 source address. format : "D.D.D.D"   (required support in the OpenFlow 1.3)
+ipv4_src_mask    | \<string>  | IPv4 source address mask.
 ipv4_dst         | \<string>  | IPv4 destination address. format : "D.D.D.D"    (required support in the OpenFlow 1.3)
-ipv4_dst_mask    | \<string>  | IPv4 destination address mask.                 
-tcp_src          | \<integer> | TCP source port.   (required support in the OpenFlow 1.3)                              
-tcp_dst          | \<integer> | TCP destination port.    (required support in the OpenFlow 1.3)                       
-udp_src          | \<integer> | UDP source port.   (required support in the OpenFlow 1.3)                             
-udp_dst          | \<integer> | UDP destination port.  (required support in the OpenFlow 1.3)                         
-sctp_src         | \<integer> | SCTP source port.                              
-sctp_dst         | \<integer> | SCTP destination port.                         
-icmpv4_type      | \<integer> | ICMP type.                                     
-icmpv4_code      | \<integer> | ICMP code.                                     
-arp_op           | \<integer> | ARP opcode.                                    
-arp_spa          | \<string>  | ARP source IPv4 address.                       
-arp_spa_mask     | \<string>  | ARP source IPv4 address mask.                  
-arp_tpa          | \<string>  | ARP target IPv4 address.                       
-arp_tpa_mask     | \<string>  | ARP target IPv4 address mask.                  
-arp_sha          | \<string>  | ARP source hardware address.                   
-arp_sha_mask     | \<string>  | ARP source hardware address mask.                   
-arp_tha          | \<string>  | ARP target hardware address.                                
-arp_tha_mask     | \<string>  | ARP target hardware address mask.                      
-ipv6_src         | \<string>  | IPv6 source address.  (required support in the OpenFlow 1.3)                          
-ipv6_src_mask    | \<string>  | IPv6 source address mask.                      
-ipv6_dst         | \<string>  | IPv6 destination address.  (required support in the OpenFlow 1.3)                     
-ipv6_dst_mask    | \<string>  | IPv6 destination address mask.                 
-ipv6_flabel      | \<integer> | IPv6 Flow Label.                               
-ipv6_flabel_mask | \<integer> | IPv6 Flow Label mask.                          
-icmpv6_type      | \<integer> | ICMPv6 type.                                   
-icmpv6_code      | \<integer> | ICMPv6 code.                                   
-ipv6_nd_target   | \<string>  | Target address for ND.                         
-ipv6_nd_sll      | \<string>  | Source link-layer for ND.                      
-ipv6_nd_tll      | \<string>  | Target link-layer for ND.                      
-mpls_label       | \<integer> | MPLS label.                                    
-mpls_tc          | \<integer> | MPLS TC.                                       
-mpls_bos         | \<integer> | MPLS BoS bit.                                  
-pbb_isid         | \<integer> | PBB I-SID.                                     
-pbb_isid_mask    | \<integer> | PBB I-SID mask.                                               
-tunnel_id        | \<string>  | Logical Port Metadata.                         
-tunnel_id_mask   | \<string>  | Logical Port Metadata mask.                    
-ipv6_exthdr      | \<integer> | IPv6 Extension Header pseudo-field             
-ipv6_exthdr_mask | \<integer> | IPv6 Extension Header pseudo-field mask        
+ipv4_dst_mask    | \<string>  | IPv4 destination address mask.
+tcp_src          | \<integer> | TCP source port.   (required support in the OpenFlow 1.3)
+tcp_dst          | \<integer> | TCP destination port.    (required support in the OpenFlow 1.3)
+udp_src          | \<integer> | UDP source port.   (required support in the OpenFlow 1.3)
+udp_dst          | \<integer> | UDP destination port.  (required support in the OpenFlow 1.3)
+sctp_src         | \<integer> | SCTP source port.
+sctp_dst         | \<integer> | SCTP destination port.
+icmpv4_type      | \<integer> | ICMP type.
+icmpv4_code      | \<integer> | ICMP code.
+arp_op           | \<integer> | ARP opcode.
+arp_spa          | \<string>  | ARP source IPv4 address.
+arp_spa_mask     | \<string>  | ARP source IPv4 address mask.
+arp_tpa          | \<string>  | ARP target IPv4 address.
+arp_tpa_mask     | \<string>  | ARP target IPv4 address mask.
+arp_sha          | \<string>  | ARP source hardware address.
+arp_sha_mask     | \<string>  | ARP source hardware address mask.
+arp_tha          | \<string>  | ARP target hardware address.
+arp_tha_mask     | \<string>  | ARP target hardware address mask.
+ipv6_src         | \<string>  | IPv6 source address.  (required support in the OpenFlow 1.3)
+ipv6_src_mask    | \<string>  | IPv6 source address mask.
+ipv6_dst         | \<string>  | IPv6 destination address.  (required support in the OpenFlow 1.3)
+ipv6_dst_mask    | \<string>  | IPv6 destination address mask.
+ipv6_flabel      | \<integer> | IPv6 Flow Label.
+ipv6_flabel_mask | \<integer> | IPv6 Flow Label mask.
+icmpv6_type      | \<integer> | ICMPv6 type.
+icmpv6_code      | \<integer> | ICMPv6 code.
+ipv6_nd_target   | \<string>  | Target address for ND.
+ipv6_nd_sll      | \<string>  | Source link-layer for ND.
+ipv6_nd_tll      | \<string>  | Target link-layer for ND.
+mpls_label       | \<integer> | MPLS label.
+mpls_tc          | \<integer> | MPLS TC.
+mpls_bos         | \<integer> | MPLS BoS bit.
+pbb_isid         | \<integer> | PBB I-SID.
+pbb_isid_mask    | \<integer> | PBB I-SID mask.
+tunnel_id        | \<string>  | Logical Port Metadata.
+tunnel_id_mask   | \<string>  | Logical Port Metadata mask.
+ipv6_exthdr      | \<integer> | IPv6 Extension Header pseudo-field
+ipv6_exthdr_mask | \<integer> | IPv6 Extension Header pseudo-field mask
 
 ----
-#### <a name="FlowAction"> FlowAction</a>  
-Action of edge node.(BasicFlow)  
+#### <a name="FlowAction"> FlowAction</a>
+Action of edge node.(BasicFlow)
 
 * [FlowActionOutput]
 
 **Key**     | **Value**        |**Description**
 ------------|------------------|----------------
-type        |"FlowActionOutput"| 
+type        |"FlowActionOutput"|
 output      |Port.port_id      |
 
 ----
 #### <a name="OFPFlowAction"> OFPFlowAction</a>
 
-Action of edge node.(OpenFlow 1.3)  
+Action of edge node.(OpenFlow 1.3)
 
 * [OFPFlowActionCopyTtlOut]
 
 **Key** | **Value**             |**Description**
 --------|-----------------------|----------------
-type    |"OFPFlowActionCopyTtlOut" | Copy TTL "outwards" -- from next-to-outermost		
+type    |"OFPFlowActionCopyTtlOut" | Copy TTL "outwards" -- from next-to-outermost
 
 
 * [OFPFlowActionCopyTtlIn]
 
 **Key** | **Value**            |**Description**
 --------|----------------------|----------------
-type    |"OFPFlowActionCopyTtlIn" | Copy TTL "inwards" -- from outermost to	
+type    |"OFPFlowActionCopyTtlIn" | Copy TTL "inwards" -- from outermost to
 
 * [OFPFlowActionSetMPLSTTL]
 
 **Key** | **Value**             |**Description**
 --------|-----------------------|----------------
-type    |"OFPFlowActionSetMPLSTTL" | MPLS TTL		
+type    |"OFPFlowActionSetMPLSTTL" | MPLS TTL
 mpls_ttl  | \<Integer>            | The mpls_ttl field is the MPLS TTL to set.
 
 
@@ -537,14 +535,14 @@ mpls_ttl  | \<Integer>            | The mpls_ttl field is the MPLS TTL to set.
 
 **Key** | **Value**             |**Description**
 --------|-----------------------|----------------
-type    |"OFPFlowActionDecMPLSTTL" | Decrement MPLS TTL		
+type    |"OFPFlowActionDecMPLSTTL" | Decrement MPLS TTL
 
 
 * [OFPFlowActionPushVLAN]
 
 **Key**   | **Value**           |**Description**
 ----------|---------------------|----------------
-type      |"OFPFlowActionPushVLAN" | Push a new VLAN tag		
+type      |"OFPFlowActionPushVLAN" | Push a new VLAN tag
 ethertype | \<Integer>          | VLAN ID
 
 
@@ -552,13 +550,13 @@ ethertype | \<Integer>          | VLAN ID
 
 **Key**   | **Value**           |**Description**
 ----------|---------------------|----------------
-type      |"OFPFlowActionPopVLAN"  | Pop the outer VLAN tag		
+type      |"OFPFlowActionPopVLAN"  | Pop the outer VLAN tag
 
 * [OFPFlowActionPushMPLS]
 
 **Key**   | **Value**           |**Description**
 ----------|---------------------|----------------
-type      |"OFPFlowActionPushMPLS" | Push a new MPLS tag		
+type      |"OFPFlowActionPushMPLS" | Push a new MPLS tag
 ethertype | \<Integer>          |
 
 
@@ -566,7 +564,7 @@ ethertype | \<Integer>          |
 
 **Key**   | **Value**          |**Description**
 ----------|--------------------|----------------
-type      |"OFPFlowActionPopMPLS" | Pop the outer MPLS tag		
+type      |"OFPFlowActionPopMPLS" | Pop the outer MPLS tag
 ethertype | \<Integer>         | Ethertype
 
 
@@ -574,7 +572,7 @@ ethertype | \<Integer>         | Ethertype
 
 **Key** | **Value**           |**Description**
 --------|---------------------|----------------
-type    |"OFPFlowActionSetQueue" | Set queue id when outputting to a port		
+type    |"OFPFlowActionSetQueue" | Set queue id when outputting to a port
 queue_id | \<Integer>         | Queue ID
 
 
@@ -582,15 +580,15 @@ queue_id | \<Integer>         | Queue ID
 
 **Key**  | **Value**          |**Description**
 ---------|--------------------|----------------
-type     |"OFPFlowActionGroup"   | Apply group.		
-group_id | \<Integer>         | The group_id indicates the group used to process this packet.  
+type     |"OFPFlowActionGroup"   | Apply group.
+group_id | \<Integer>         | The group_id indicates the group used to process this packet.
 
 
 * [OFPFlowActionSetNwTTL]
 
 **Key** | **Value**           |**Description**
 --------|---------------------|----------------
-type    |"OFPFlowActionSetNwTTL" | IP TTL.		
+type    |"OFPFlowActionSetNwTTL" | IP TTL.
 ip_ttl  | \<Integer>          |  The nw_ttl field is the TTL address to set in the IP header.
 
 
@@ -598,14 +596,14 @@ ip_ttl  | \<Integer>          |  The nw_ttl field is the TTL address to set in t
 
 **Key** | **Value**           |**Description**
 --------|---------------------|----------------
-type    |"OFPFlowActionDecNwTTL" | Decrement IP TTL.		
+type    |"OFPFlowActionDecNwTTL" | Decrement IP TTL.
 
 
 * [OFPFlowActionSetField]
 
 **Key** | **Value**           |**Description**
 --------|---------------------|----------------
-type    |"OFPFlowActionSetField" | Set a header field using OXM TLV format.		
+type    |"OFPFlowActionSetField" | Set a header field using OXM TLV format.
 field   | \<String>           | T.B.D.
 
 
@@ -613,15 +611,15 @@ field   | \<String>           | T.B.D.
 
 **Key**    | **Value**           |**Description**
 -----------|---------------------|----------------
-type       |"OFPFlowActionPushPBB"  | Push a new PBB service tag (I-TAG)		
-ethertype  | \<Integer>          |   
+type       |"OFPFlowActionPushPBB"  | Push a new PBB service tag (I-TAG)
+ethertype  | \<Integer>          |
 
 
 * [OFPFlowActionPopPBB]
 
 **Key** | **Value**             |**Description**
 --------|-----------------------|----------------
-type    |"OFPFlowActionPopPBB"     | Pop the outer PBB service tag (I-TAG)		
+type    |"OFPFlowActionPopPBB"     | Pop the outer PBB service tag (I-TAG)
 
 
 
@@ -629,7 +627,7 @@ type    |"OFPFlowActionPopPBB"     | Pop the outer PBB service tag (I-TAG)
 
 **Key** | **Value**               |**Description**
 --------|-------------------------|----------------
-type    |"OFPFlowActionExperimenter" | 
+type    |"OFPFlowActionExperimenter" |
 experimenter |\<Integer>          |Experimenter ID which takes the same form as in struct ofp_experimenter_header
 body    | \<Integer>              | Experimenter defined Experimenter-defined arbitrary additional data.
 
@@ -637,7 +635,7 @@ body    | \<Integer>              | Experimenter defined Experimenter-defined ar
 #### <a name="Packet"> Packet</a>
 Packet of abstract class.
 
-**Key**   | **Value**    |**Description**                               | POST      | PUT 
+**Key**   | **Value**    |**Description**                               | POST      | PUT
 ----------|--------------|----------------------------------------------|-----------|------------
 packet_id | \<String>    |Unique packet's Identifier in this network.   |   -       |  -
 type      | \<String>    |Packet Type. see blow.                         | Mandatory |  -
@@ -648,16 +646,16 @@ attributes|dict{\<String>, \<String>}|                                  | Option
 
 **type**                     |  **description**
 -----------------------------|-----------------
-[InPacket](#InPacket)        | Packet_in of BasicFlow.  
-[OutPacket](#OutPacket)      | Packet_out of BasicFlow.  
-[OFPInPacket](#OFPInPacket)  | Packet_in of OFPFlow.  
-[OFPOutPacket](#OFPOutPacket)| Packet_out of OFPFlow.  
+[InPacket](#InPacket)        | Packet_in of BasicFlow.
+[OutPacket](#OutPacket)      | Packet_out of BasicFlow.
+[OFPInPacket](#OFPInPacket)  | Packet_in of OFPFlow.
+[OFPOutPacket](#OFPOutPacket)| Packet_out of OFPFlow.
 
 ----
 #### <a name="InPacket"> InPacket</a>
-represents Packet_in of BasicFlow.  
+represents Packet_in of BasicFlow.
 
-**Key**   | **Value**    |**Description**                             | POST      | PUT 
+**Key**   | **Value**    |**Description**                             | POST      | PUT
 ----------|--------------|--------------------------------------------|-----------|----------
 packet_id | \<String>    |Unique packet's Identifier in this network. |    -      |  -
 type      | \<String>    |Type is "InPacket"                          | Mandatory |  -
@@ -669,25 +667,25 @@ attributes|dict{\<String>, \<String>}|                                | Optional
 
 
 ----
-#### <a name="OFPInPacket"> OFPInPacket</a>  
-represents Packet_in of OFPFlow.  
+#### <a name="OFPInPacket"> OFPInPacket</a>
+represents Packet_in of OFPFlow.
 
-**Key**   | **Value**    |**Description**                             | POST      | PUT 
+**Key**   | **Value**    |**Description**                             | POST      | PUT
 ----------|--------------|--------------------------------------------|-----------|----------
 packet_id | \<String>    |Unique packet's Identifier in this network. | - (*1)    |  -
 type      | \<String>    |"OFPInPacket"                               | Mandatory |  -
 node      | [Port](#Port).node_id |node_id to input the packet        | Mandatory |  -
-port      | [Port](#Port).nort_id |port_id to input the packet        | Mandatory |  -  
+port      | [Port](#Port).nort_id |port_id to input the packet        | Mandatory |  -
 header    | [OFPFlowMatch](#OFPFlowMatch) |header info.               | Mandatory |  -
 data      | \<Binary>    |payload                                     | Mandatory |  -
 attributes|dict{\<String>, \<String>}|                                | Optional  |  -
 
 
 ----
-#### <a name="OutPacket"> OutPacket</a>  
-represents Packet_out of BasicFlow.  
+#### <a name="OutPacket"> OutPacket</a>
+represents Packet_out of BasicFlow.
 
-**Key**      | **Value**    |**Description**                             | POST      | PUT 
+**Key**      | **Value**    |**Description**                             | POST      | PUT
 -------------|--------------|--------------------------------------------|-----------|----------
 packet_id    | \<String>    |Unique packet's Identifier in this network. | -         |  -
 type         | \<String>    |Type is "OutPacket"                         | Mandatory |  -
@@ -700,10 +698,10 @@ attributes   |dict{\<String>, \<String>}|                                | Optio
 
 
 ----
-#### <a name="OFPOutPacket"> OFPOutPacket</a>  
-represents Packet_out of OFPFlow.  
+#### <a name="OFPOutPacket"> OFPOutPacket</a>
+represents Packet_out of OFPFlow.
 
-**Key**      | **Value**    |**Description**                             | POST      | PUT 
+**Key**      | **Value**    |**Description**                             | POST      | PUT
 -------------|--------------|--------------------------------------------|-----------|----------
 packet_id    | \<String>    |Unique packet's Identifier in this network. | -         |  -
 type         | \<String>    |Type is "OutPacket"                         | Mandatory |  -
@@ -716,8 +714,8 @@ attributes   |dict{\<String>, \<String>}|                                | Optio
 
 
 ----
-#### <a name="PacketStatus"> PacketStatus</a>  
-Stats of network's packet information.  
+#### <a name="PacketStatus"> PacketStatus</a>
+Stats of network's packet information.
 
 **Key**                | **Value**      |**Description**
 -----------------------|----------------|----------------
@@ -733,39 +731,39 @@ out_packets            |list[\<string>] |OutPacket list  of  [OutPacket](#OutPac
 
 
 ----
-#### <a name="ObjectProperty"> ObjectProperty</a>  
-RemoteObject class and RemoteObject subclass property.  
+#### <a name="ObjectProperty"> ObjectProperty</a>
+RemoteObject class and RemoteObject subclass property.
 
-**Key**         | **Value** |**Description**                           | POST      | PUT 
+**Key**         | **Value** |**Description**                           | POST      | PUT
 ----------------|-----------|------------------------------------------|-----------|------------
-id              | \<String> |Unique Identifier in ODENOS.              | -(*1)     | Mandatory 
-type            | \<String> |ObjectType (example:ComponentManager,Network,Slicer,,,) | Mandatory | Mandatory 
+id              | \<String> |Unique Identifier in ODENOS.              | -(*1)     | Mandatory
+type            | \<String> |ObjectType (example:ComponentManager,Network,Slicer,,,) | Mandatory | Mandatory
 state           | \<String> |see  "State Transition Table"             | -         | -
 description     | \<String> |Object Description simple.                | -         | -
 super_type      | \<String> |Component Only. super class ObjectType. (example:ComponentManager,NetworkComponent,Slicer,,,)   | - | -
-component_types | \<String> |ComponentManager Only. List of instances that can be generated conponet.         | -     | - 
-connection_types | list[\<String>] |Component Only. List of [ComponentConnection](#ComponentConnection).connection_type | -     | - 
+component_types | \<String> |ComponentManager Only. List of instances that can be generated conponet.         | -     | -
+connection_types | list[\<String>] |Component Only. List of [ComponentConnection](#ComponentConnection).connection_type | -     | -
 
-  (\*1)id is automatically assigned.  
+  (\*1)id is automatically assigned.
 
 
 ##### example(JSON)
 
-    {    
-    "id": "network1",   
-    "super_type" : "Network",   
-    "type": "Network",   
-    "state": "running",   
-    "description" : "NetworkComponent is network topology abstract class"   
-    }    
+    {
+    "id": "network1",
+    "super_type" : "Network",
+    "type": "Network",
+    "state": "running",
+    "description" : "NetworkComponent is network topology abstract class"
+    }
 
 #### State Transition Table
 
-**State Current ↓**  **Next→**  | **initializing** | **running** | **finalizing** | **error** 
+**State Current ↓**  **Next→**  | **initializing** | **running** | **finalizing** | **error**
 ----------------------------------|------------------|-------------|----------------|----------
 **initializing**                  |-                 |init completion |-            |failure initial
 **running**                       |-                 |-            |request Delete  |connection error
-**finalizing**                    |-                 |-            |-               |- 
+**finalizing**                    |-                 |-            |-               |-
 **error**                         |PUT state         |PUT state    |PUT state       |-
 
 
@@ -775,7 +773,7 @@ connection_types | list[\<String>] |Component Only. List of [ComponentConnection
 
 **Key**   | **Value** |**Description**
 ----------|-----------|----------------
-(any)     | \<String> | any key & value 
+(any)     | \<String> | any key & value
 
 
 
@@ -783,14 +781,14 @@ connection_types | list[\<String>] |Component Only. List of [ComponentConnection
 #### <a name="ComponentConnection"> ComponentConnection</a>
 Connection information between OperatorComponent and NetworkComponent
 
-**key**          | **value** | **description**                                                | POST         | PUT 
+**key**          | **value** | **description**                                                | POST         | PUT
 -----------------|-----------|----------------------------------------------------------------|--------------|-----------
-id               | \<String> |Unique Identifier in ODENOS.                                    | -(*1)        | Mandatory 
+id               | \<String> |Unique Identifier in ODENOS.                                    | -(*1)        | Mandatory
 type 　　 　     | \<String> |ObjectType                                                      | Mandatory    | Mandatory
 connection_type  | \<String> |Component can be set at any(original, aggregate, sliver, ... )  | Optional     | Optional
 state            | \<String> |see  "State Transition Table"                                   | Optional(*2) | Mandatory
 
-  (\*1)id is automatically assigned.  
+  (\*1)id is automatically assigned.
   (\*2)If you do not set the state,state set  "initializing"
 
 ##### type
@@ -801,11 +799,11 @@ state            | \<String> |see  "State Transition Table"                     
 
 #### State Transition Table
 
-**State Current ↓**  **Next→**  | **initializing** | **running** | **finalizing** | **error** 
+**State Current ↓**  **Next→**  | **initializing** | **running** | **finalizing** | **error**
 ----------------------------------|------------------|-------------|----------------|----------
 **initializing**                  |-                 |init completion |-            |failure initial
 **running**                       |-                 |-            |request Delete  |connection error
-**finalizing**                    |-                 |-            |-               |- 
+**finalizing**                    |-                 |-            |-               |-
 **error**                         |PUT state         |PUT state    |PUT state       |-
 
 ### Sequence
@@ -898,41 +896,41 @@ state            | \<String> |see  "State Transition Table"                     
 </pre>
 
 ----
-#### <a name="ConnectLogicAndNetwork"> ConnectLogicAndNetwork</a>  
-Connection information between Logic Component and Network Component.    
+#### <a name="ConnectLogicAndNetwork"> ConnectLogicAndNetwork</a>
+Connection information between Logic Component and Network Component.
 
-**key**          | **value** | **description**                                  | POST         | PUT 
+**key**          | **value** | **description**                                  | POST         | PUT
 -----------------|-----------|--------------------------------------------------|--------------|------
-id               | \<String> |see [ComponentConnection](#ComponentConnection)   | -(*1)        | Mandatory 
+id               | \<String> |see [ComponentConnection](#ComponentConnection)   | -(*1)        | Mandatory
 type 　　 　     | \<String> |type is "LogicAndNetwork"                         | Mandatory    | Mandatory
 connection_type  | \<String> |see [ComponentConnection](#ComponentConnection)   | Optional     | Optional
 state            | \<String> |see [ComponentConnection](#ComponentConnection)   | Optional(*2) | Mandatory
 logic_id         | \<String> |LogicComponent ID                                 | Mandatory    | Mandatory
 network_id       | \<String> |NetworkComponent ID                               | Mandatory    | Mandatory
 
-  (\*1)id is automatically assigned.  
-  (\*2)If you do not set the state,state set  "initializing"  
+  (\*1)id is automatically assigned.
+  (\*2)If you do not set the state,state set  "initializing"
 
 ##### example(JSON)
 
-    {    
+    {
     "id": "slicer1_network1"
     "type": "LogicAndNetwork"
     "connection_type": "original"
     "state": "running"
     "logic_id": "slicer1",
-    "network_id": "network1",						
-    }    
+    "network_id": "network1"
+    }
 
 
 ----
-#### <a name="Boundary"> Boundary</a>  
-Boundary abstract class.  
+#### <a name="Boundary"> Boundary</a>
+Boundary abstract class.
 Connection rule between heterogeneous networks.
 
-**key**  | **value** | **description**             | POST         | PUT 
+**key**  | **value** | **description**             | POST         | PUT
 ---------|-----------|-----------------------------|--------------|-----------
-id       | \<String> |Unique Identifier in ODENOS. | -(*1)        | Mandatory 
+id       | \<String> |Unique Identifier in ODENOS. | -(*1)        | Mandatory
 type     | \<String> |Boundary Type                | Mandatory    | Mandatory
 
   (\*1)id is automatically assigned.
@@ -943,11 +941,11 @@ type     | \<String> |Boundary Type                | Mandatory    | Mandatory
  *  [LinkLayerizerBoundary](#LinkLayerizerBoundary)
 
 ----
-#### <a name="FederatorBoundary"> FederatorBoundary</a>  
-Federator Boundary class.  
-Connection rule between heterogeneous networks.  
+#### <a name="FederatorBoundary"> FederatorBoundary</a>
+Federator Boundary class.
+Connection rule between heterogeneous networks.
 
-**key**  | **value** | **description**                         | POST        | PUT 
+**key**  | **value** | **description**                         | POST        | PUT
 ---------|-----------|-----------------------------------------|-------------|-----------
 id       | \<String> | Unique Identifier in ODENOS.            | -(*1)       | Mandatory
 type     | \<String> | Boundary Type is "Federator"            | Mandatory   | Mandatory
@@ -962,7 +960,7 @@ port2    | \<String> | Connection [Port](#Port).id             | Mandatory   | M
 
 ##### example(JSON)
 <pre>
-  {    
+  {
     "id"      : "federator1_boundary1",
     "type"    : "Federator",
     "network1": "original_network1",
@@ -970,18 +968,18 @@ port2    | \<String> | Connection [Port](#Port).id             | Mandatory   | M
     "node1"   : "original_network1_node1",
     "node2"   : "original_network2_node1",
     "port1"   : "original_network1_port1",
-    "port2"   : "original_network2_port1",
-  }    
+    "port2"   : "original_network2_port1"
+  }
 </pre>
 
 
 
 ----
-#### <a name="LinkLayerizerBoundary"> LinkLayerizerBoundary</a>  
-LinkLayerizer Boundary class.  
-Connection rule between heterogeneous networks.  
+#### <a name="LinkLayerizerBoundary"> LinkLayerizerBoundary</a>
+LinkLayerizer Boundary class.
+Connection rule between heterogeneous networks.
 
-**key**        | **value** | **description**                         | POST        | PUT 
+**key**        | **value** | **description**                         | POST        | PUT
 ---------------|-----------|-----------------------------------------|-------------|-----------
 id             | \<String> | Unique Identifier in ODENOS.            | -(*1)       | Mandatory
 type           | \<String> | Boundary Type is "LinkLayerizer"        | Mandatory   | Mandatory
@@ -996,7 +994,7 @@ upper_nw_port  | \<String> | Connection [Port](#Port).id             | Mandatory
 
 ##### example(JSON)
 <pre>
-  {    
+  {
     "id"           : "linklayerizer1_boundary1",
     "type"         : "LinkLayerizer",
     "lower_nw"     : "lower_nw1",
@@ -1004,8 +1002,8 @@ upper_nw_port  | \<String> | Connection [Port](#Port).id             | Mandatory
     "lower_nw_node": "lower_nw_node1",
     "upper_nw_node": "upper_nw_node1",
     "lower_nw_port": "lower_nw_port1",
-    "upper_nw_port": "upper_nw_port1",
-  }    
+    "upper_nw_port": "upper_nw_port1"
+  }
 </pre>
 
 ----
@@ -1023,7 +1021,7 @@ event_filters  | dict<ObjectProperty.id, list [EventType.event_type] | 	Subscrib
 **key**      | **value** | **description**
 -------------|-----------|-----------------
 publisher_id | \<String> |event publishing Object's Id.
-event_type   | \<String> |event type 
+event_type   | \<String> |event type
 body         |    -      |Different value for each event.
 
 

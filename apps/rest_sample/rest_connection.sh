@@ -39,9 +39,9 @@ curl http://$ADDRESS:10080/systemmanager/components | python -mjson.tool
 
 echo "---------------- Create Topology -------------------"
 sleep 1
-curl -w "$FORMAT" http://$ADDRESS:10080/network0/topology/nodes/node001 -X PUT -d '{"node_id": "node001", "type": "Node", "version": "0", "ports": {}, "attributes": {"admin_status":"UP", "oper_status":"UP", "physical_id":"001", "vendor":"VENDOR_A"}}'
-curl -w "$FORMAT" http://$ADDRESS:10080/network0/topology/nodes/node002 -X PUT -d '{"node_id": "node002", "type": "Node", "version": "0", "ports": {}, "attributes": {"admin_status":"UP", "oper_status":"UP", "physical_id":"002", "vendor":"VENDOR_A"}}'
-curl -w "$FORMAT" http://$ADDRESS:10080/network0/topology/nodes/node003 -X PUT -d '{"node_id": "node003", "type": "Node", "version": "0", "ports": {}, "attributes": {"admin_status":"UP", "oper_status":"UP", "physical_id":"003", "vendor":"VENDOR_A"}}'
+curl -w "$FORMAT" http://$ADDRESS:10080/network0/topology/nodes/node001 -X PUT -d '{"node_id": "node001", "type": "Node", "version": "0", "ports": {}, "attributes": {"oper_status":"UP", "physical_id":"001", "vendor":"VENDOR_A"}}'
+curl -w "$FORMAT" http://$ADDRESS:10080/network0/topology/nodes/node002 -X PUT -d '{"node_id": "node002", "type": "Node", "version": "0", "ports": {}, "attributes": {"oper_status":"UP", "physical_id":"002", "vendor":"VENDOR_A"}}'
+curl -w "$FORMAT" http://$ADDRESS:10080/network0/topology/nodes/node003 -X PUT -d '{"node_id": "node003", "type": "Node", "version": "0", "ports": {}, "attributes": {"oper_status":"UP", "physical_id":"003", "vendor":"VENDOR_A"}}'
 sleep 1
 curl -w "$FORMAT" http://$ADDRESS:10080/network0/topology/nodes/node001/ports/port0011 -X PUT -d '{"type": "Port", "version": "0", "node_id": "node001", "port_id": "port0011", "out_link": null, "in_link": null, "attributes": {"physical_id":"0011@001"}}'
 curl -w "$FORMAT" http://$ADDRESS:10080/network0/topology/nodes/node001/ports/port0012 -X PUT -d '{"type": "Port", "version": "0", "node_id": "node001", "port_id": "port0012", "out_link": null, "in_link": null, "attributes": {"physical_id":"0012@001"}}'

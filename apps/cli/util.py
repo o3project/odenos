@@ -197,7 +197,6 @@ if __name__ == '__main__':
     json_data = """
     node001:
       attributes:
-        admin_status: UP
         oper_status: UP
         physical_id: '001'
         vendor: VENDOR_A
@@ -234,7 +233,6 @@ if __name__ == '__main__':
       version: '1'
     node002:
       attributes:
-        admin_status: UP
         oper_status: UP
         physical_id: '002'
         vendor: VENDOR_A
@@ -280,7 +278,6 @@ if __name__ == '__main__':
       version: '1'
     node003:
       attributes:
-        admin_status: UP
         oper_status: UP
         physical_id: '003'
         vendor: VENDOR_A

@@ -58,9 +58,9 @@ sleep 1
 #
 
 ## upper-nw's Topology
-curl -w "$FORMAT" http://$ADDRESS:10080/upper-nw/topology/nodes/node001 -X PUT -d '{"node_id": "node001", "type": "Node", "version": "0", "ports": {}, "attributes": {"admin_status":"UP", "oper_status":"UP", "physical_id":"001", "vendor":"VENDOR_A"}}'
-curl -w "$FORMAT" http://$ADDRESS:10080/upper-nw/topology/nodes/node002 -X PUT -d '{"node_id": "node002", "type": "Node", "version": "0", "ports": {}, "attributes": {"admin_status":"UP", "oper_status":"UP", "physical_id":"002", "vendor":"VENDOR_A"}}'
-curl -w "$FORMAT" http://$ADDRESS:10080/upper-nw/topology/nodes/node003 -X PUT -d '{"node_id": "node003", "type": "Node", "version": "0", "ports": {}, "attributes": {"admin_status":"UP", "oper_status":"UP", "physical_id":"003", "vendor":"VENDOR_A"}}'
+curl -w "$FORMAT" http://$ADDRESS:10080/upper-nw/topology/nodes/node001 -X PUT -d '{"node_id": "node001", "type": "Node", "version": "0", "ports": {}, "attributes": {"oper_status":"UP", "physical_id":"001", "vendor":"VENDOR_A"}}'
+curl -w "$FORMAT" http://$ADDRESS:10080/upper-nw/topology/nodes/node002 -X PUT -d '{"node_id": "node002", "type": "Node", "version": "0", "ports": {}, "attributes": {"oper_status":"UP", "physical_id":"002", "vendor":"VENDOR_A"}}'
+curl -w "$FORMAT" http://$ADDRESS:10080/upper-nw/topology/nodes/node003 -X PUT -d '{"node_id": "node003", "type": "Node", "version": "0", "ports": {}, "attributes": {"oper_status":"UP", "physical_id":"003", "vendor":"VENDOR_A"}}'
 sleep 1
 curl -w "$FORMAT" http://$ADDRESS:10080/upper-nw/topology/nodes/node001/ports/port0011 -X PUT -d '{"type": "Port", "version": "0", "node_id": "node001", "port_id": "port0011", "out_link": null, "in_link": null, "attributes": {"physical_id":"0011@001"}}'
 curl -w "$FORMAT" http://$ADDRESS:10080/upper-nw/topology/nodes/node001/ports/port0012 -X PUT -d '{"type": "Port", "version": "0", "node_id": "node001", "port_id": "port0012", "out_link": null, "in_link": null, "attributes": {"physical_id":"0012@001"}}'
@@ -82,8 +82,8 @@ sleep 1
 
 ## lower-nw's Topology
 
-curl -w "$FORMAT" http://$ADDRESS:10080/lower-nw/topology/nodes/node011 -X PUT -d '{"node_id": "node011", "type": "Node", "version": "0", "ports": {}, "attributes": {"admin_status":"UP", "oper_status":"UP", "physical_id":"011", "vendor":"VENDOR_A"}}'
-curl -w "$FORMAT" http://$ADDRESS:10080/lower-nw/topology/nodes/node012 -X PUT -d '{"node_id": "node012", "type": "Node", "version": "0", "ports": {}, "attributes": {"admin_status":"UP", "oper_status":"UP", "physical_id":"012", "vendor":"VENDOR_A"}}'
+curl -w "$FORMAT" http://$ADDRESS:10080/lower-nw/topology/nodes/node011 -X PUT -d '{"node_id": "node011", "type": "Node", "version": "0", "ports": {}, "attributes": {"oper_status":"UP", "physical_id":"011", "vendor":"VENDOR_A"}}'
+curl -w "$FORMAT" http://$ADDRESS:10080/lower-nw/topology/nodes/node012 -X PUT -d '{"node_id": "node012", "type": "Node", "version": "0", "ports": {}, "attributes": {"oper_status":"UP", "physical_id":"012", "vendor":"VENDOR_A"}}'
 
 curl -w "$FORMAT" http://$ADDRESS:10080/lower-nw/topology/nodes/node011/ports/port0111 -X PUT -d '{"type": "Port", "version": "0", "node_id": "node011", "port_id": "port0111", "out_link": null, "in_link": null, "attributes": {"physical_id":"0111@011"}}'
 curl -w "$FORMAT" http://$ADDRESS:10080/lower-nw/topology/nodes/node011/ports/port0112 -X PUT -d '{"type": "Port", "version": "0", "node_id": "node011", "port_id": "port0112", "out_link": null, "in_link": null, "attributes": {"physical_id":"0112@011"}}'
