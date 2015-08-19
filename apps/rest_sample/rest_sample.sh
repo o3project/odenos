@@ -18,7 +18,7 @@
 unset http_proxy
 
 FORMAT="\n%{url_effective}, %{response_code}\n\n"
-ADDRESS=0.0.0.0
+ADDRESS=127.0.0.1
 
 
 # create NetworkComponent and LinkLayerizer

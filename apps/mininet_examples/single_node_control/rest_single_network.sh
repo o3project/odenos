@@ -17,7 +17,7 @@
 ## remove proxy
 unset http_proxy
 FORMAT="\n%{url_effective}, %{response_code}\n\n"
-ADDRESS=0.0.0.0
+ADDRESS=127.0.0.1
 
 curl http://$ADDRESS:10080/systemmanager/component_managers | python -mjson.tool
 # create NetworkComponent and Logic
