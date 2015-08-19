@@ -10,17 +10,16 @@ import java.util.TreeMap;
 import java.util.UUID;
 
 import com.datastax.driver.core.*;
-import org.apache.log4j.AppenderSkeleton;
-import org.apache.log4j.Level;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.helpers.LogLog;
-import org.apache.log4j.spi.LocationInfo;
-import org.apache.log4j.spi.LoggingEvent;
 
+import org.apache.logging.log4j.core.appender.AbstractAppender;
+import org.apache.logging.log4j.core.config.plugins.Plugin;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.status.StatusLogger;
+import org.apache.logging.log4j.core.LogEvent;
 import org.codehaus.jackson.map.ObjectMapper;
 
 import com.datastax.driver.core.policies.RoundRobinPolicy;
-
 import com.google.common.base.Joiner;
 
 import javax.net.ssl.KeyManagerFactory;
@@ -31,7 +30,8 @@ import javax.net.ssl.TrustManagerFactory;
  * Main class that uses Cassandra to store log entries into.
  * 
  */
-public class CassandraAppender extends AppenderSkeleton
+@Plugin(name="CassandraAppender", category="Core", elementType="appender")
+public class CassandraAppender extends AbstractAppender 
 {
     // Cassandra configuration
     private String hosts = "localhost";
@@ -80,14 +80,14 @@ public class CassandraAppender extends AppenderSkeleton
 
     public CassandraAppender()
     {
-		LogLog.debug("Creating CassandraAppender");
+		StatusLogger.debug("Creating CassandraAppender");
 	}
 
     /**
      * {@inheritDoc}
      */
     @Override
-    protected void append(LoggingEvent event)
+    protected void append(LogEvent event)
     {
         // We have to defer initialization of the client because TTransportFactory
         // references some Hadoop classes which can't safely be used until the logging
@@ -112,8 +112,9 @@ public class CassandraAppender extends AppenderSkeleton
 
 		// Just while we initialise the client, we must temporarily
 		// disable all logging or else we get into an infinite loop
-		Level globalThreshold = LogManager.getLoggerRepository().getThreshold();
-		LogManager.getLoggerRepository().setThreshold(Level.OFF);
+    // TODO: log4j2 does not seem to support "getLoggerRepository"
+		// Level globalThreshold = LogManager.getLoggerRepository().getThreshold();
+		/// LogManager.getLoggerRepository().setThreshold(Level.OFF);
 
 		try
         {
@@ -144,7 +145,7 @@ public class CassandraAppender extends AppenderSkeleton
 		}
         catch (Exception e)
         {
-		    LogLog.error("Error ", e);
+		    StatusLogger.error("Error ", e);
 			errorHandler.error("Error setting up cassandra logging schema: " + e);
 
             //If the user misconfigures the port or something, don't keep failing.
@@ -153,7 +154,10 @@ public class CassandraAppender extends AppenderSkeleton
         finally
         {
             //Always reenable logging
-            LogManager.getLoggerRepository().setThreshold(globalThreshold);
+          
+          
+            //TODO: log4j2 does not seem to support"getLoggerRepository()"
+            //LogManager.getLoggerRepository().setThreshold(globalThreshold);
             initialized = true;
 		}
 	}
@@ -201,7 +205,7 @@ public class CassandraAppender extends AppenderSkeleton
      * Send one logging event to Cassandra.  We just bind the new values into the preprocessed query
      * built by setupStatement
      */
-    private void createAndExecuteQuery(LoggingEvent event)
+    private void createAndExecuteQuery(LogEvent event)
     {
 		BoundStatement bound = new BoundStatement(statement);
 
@@ -215,23 +219,26 @@ public class CassandraAppender extends AppenderSkeleton
         bound.setString(4, event.getLoggerName());
         bound.setString(5, event.getLevel().toString());
 
-        LocationInfo locInfo = event.getLocationInformation();
+        StackTraceElement locInfo = event.getSource();
         if (locInfo != null) {
             bound.setString(6, locInfo.getClassName());
             bound.setString(7, locInfo.getFileName());
-            bound.setString(8, locInfo.getLineNumber());
+            bound.setString(8, String.valueOf(locInfo.getLineNumber()));
             bound.setString(9, locInfo.getMethodName());
         }
 
-        bound.setString(10, event.getRenderedMessage());
-        bound.setString(11, event.getNDC());
-        bound.setLong(12, new Long(LoggingEvent.getStartTime()));
+        bound.setString(10, event.getMessage().getFormattedMessage());
+        bound.setString(11, event.getContextStack().toString());
+        // TODO: this should be equivalent to log4j's "getStartTime()"
+        bound.setLong(12, event.getTimeMillis());
         bound.setString(13, event.getThreadName());
 
-        String[] throwableStrs = event.getThrowableStrRep();
-        bound.setString(14, throwableStrs == null ? null : Joiner.on(", ").join(throwableStrs));
+        //String[] throwableStrs = event.getThrowableStrRep();
+        //bound.setString(14, throwableStrs == null ? null : Joiner.on(", ").join(throwableStrs));
+        bound.setString(14, event.getThrown().toString());
 
-        bound.setLong(15, new Long(event.getTimeStamp()));
+        //bound.setLong(15, new Long(event.getTimeStamp()));
+        bound.setLong(15, event.getTimeMillis());
         session.execute(bound);
     }
 
@@ -482,5 +489,6 @@ public class CassandraAppender extends AppenderSkeleton
         else
             return (AuthProvider)dap.newInstance();
     }
+
 }
 
