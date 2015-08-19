@@ -70,7 +70,6 @@ public abstract class Component extends RemoteObject {
    */
   public class AttrElements {
     public static final String ATTRIBUTES = "attributes";
-    public static final String ADMIN_STATUS = "admin_status";
     public static final String OPER_STATUS = "oper_status";
     public static final String PHYSICAL_ID = "physical_id";
     public static final String VENDOR = "vendor";

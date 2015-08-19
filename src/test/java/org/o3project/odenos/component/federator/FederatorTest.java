@@ -1525,18 +1525,8 @@ public class FederatorTest {
     PowerMockito.verifyPrivate(target).invoke("addEntryEventSubscription",
         Federator.FLOW_CHANGED, "NetworkId");
 
-    PowerMockito.verifyPrivate(target, times(4)).invoke(
-        "updateEntryEventSubscription", anyString(), anyString(),
-        (ArrayList<String>) anyObject());
-    ArrayList<String> expectedNodeAttributes = new ArrayList<String>(
-        Arrays.asList("attributes::admin_status"));
-    PowerMockito.verifyPrivate(target).invoke(
-        "updateEntryEventSubscription", Federator.NODE_CHANGED,
-        "NetworkId", expectedNodeAttributes);
-
     ArrayList<String> expectedPortAttributes = new ArrayList<String>(
-        Arrays.asList("attributes::admin_status",
-            "attributes::unreserved_bandwidth",
+        Arrays.asList("attributes::unreserved_bandwidth",
             "attributes::vendor"));
     PowerMockito.verifyPrivate(target).invoke(
         "updateEntryEventSubscription", Federator.PORT_CHANGED,

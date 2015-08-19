@@ -1745,7 +1745,6 @@ module Odenos
           #
           def _set_node_attributes(node, dpid)
             info "_set_node_attributes( #{node.inspect}, #{'%#x' % dpid})"
-            node.attributes[Node::ATTR_KEY_ADMIN_STATUS] = 'UP'
             node.attributes[Node::ATTR_KEY_OPER_STATUS] = 'UP'
             node.attributes[Node::ATTR_KEY_PHYSICAL_ID] = '%#x' % dpid
             node.attributes[Node::ATTR_KEY_VENDOR_ID] = @vendor_id
@@ -1761,11 +1760,6 @@ module Odenos
             msg = format('[port:%s, dpid:%#x, of_port]', port.inspect, dpid, of_port.inspect)
             info "_set_port_attributes #{msg}"
 
-            if _is_port_up(of_port)
-              port.attributes[Port::ATTR_KEY_ADMIN_STATUS] = 'UP'
-            else
-              port.attributes[Port::ATTR_KEY_ADMIN_STATUS] = 'DOWN'
-            end
             if _is_port_up(of_port) && _is_link_up(of_port)
               port.attributes[Port::ATTR_KEY_OPER_STATUS] = 'UP'
             else

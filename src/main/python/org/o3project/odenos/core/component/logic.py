@@ -845,8 +845,8 @@ class Logic(Component):
     keys_flow = ["type", "version", "flow_id", "owner",
                  "enabled", "priority", "status"]
 
-    attributes_node = ["admin_status", "oper_status", "physical_id", "vendor"]
-    attributes_port = ["admin_status", "oper_status", "physical_id", "vendor",
+    attributes_node = ["oper_status", "physical_id", "vendor"]
+    attributes_port = ["oper_status", "physical_id", "vendor",
                        "max_bandwidth", "unreserved_bandwidth", "is_boundary"]
     attributes_link = ["oper_status", "cost", "latency", "req_latency",
                        "max_bandwidth", "unreserved_bandwidth",

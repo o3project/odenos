@@ -32,10 +32,9 @@ class TestNetworkInterface < MiniTest::Test
   
   def setup
     @Portattributes = {
-      'admin_status'=> 'UP', 'oper_status'=> 'UP',
-      'max_bandwidth'=> 128, 'unreserved_bandwidth'=> 129,
-      'physical_id'=> 'PhysicalId1', 'vendor'=> 'Vendor1',
-      'is_boundary'=> "True"}
+      'oper_status'=> 'UP', 'max_bandwidth'=> 128,
+      'unreserved_bandwidth'=> 129, 'physical_id'=> 'PhysicalId1',
+      'vendor'=> 'Vendor1', 'is_boundary'=> "True"}
         
     @port_body = {
       'type'=> 'Port', 'version'=> '1',
@@ -82,16 +81,16 @@ class TestNetworkInterface < MiniTest::Test
       'PortId4' => @port4_obj}
                
     @NodeAttributes1 = {
-      'admin_status'=> 'UP', 'oper_status'=> 'UP',
-      'physical_id'=> 'Physicalid1', 'vendor'=> 'Vendor1'}
+      'oper_status'=> 'UP', 'physical_id'=> 'Physicalid1',
+      'vendor'=> 'Vendor1'}
 
     @NodeAttributes2 = {
-      'admin_status'=> 'UP', 'oper_status'=> 'Down',
-      'physical_id'=> 'Physicalid2', 'vendor'=> 'Vendor1'}
+      'oper_status'=> 'Down', 'physical_id'=> 'Physicalid2',
+      'vendor'=> 'Vendor1'}
         
     @NodeAttributes3 = {
-      'admin_status'=> 'Down', 'oper_status'=> 'Down',
-      'physical_id'=> 'Physicalid3', 'vendor'=> 'Vendor1'}
+      'oper_status'=> 'Down', 'physical_id'=> 'Physicalid3',
+      'vendor'=> 'Vendor1'}
         
     @node_body = {
       'type'=> 'Node', 'version'=> 'v03',
