@@ -68,7 +68,7 @@ class OdenosConfigurator(object):
     CM1 = "romgr1"
     CM2 = "romgr2"
     CM3 = "romgr3"
-    DEF_ATTR = {"oper_status": "UP", "admin_status": "UP"}
+    DEF_ATTR = {"oper_status": "UP"}
     DEF_VENDOR = "VENDOR1"
 
     def __init__(self):

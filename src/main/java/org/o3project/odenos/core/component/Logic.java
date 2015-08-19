@@ -74,16 +74,15 @@ public abstract class Logic extends Component {
    */
   public static final ArrayList<String> attributesNode = new ArrayList<String>(
       Arrays.asList(
-          AttrElements.ADMIN_STATUS, AttrElements.OPER_STATUS,
-          AttrElements.PHYSICAL_ID, AttrElements.VENDOR));
+          AttrElements.OPER_STATUS, AttrElements.PHYSICAL_ID,
+          AttrElements.VENDOR));
   /**
    * port's default attribute keys.
    */
   public static ArrayList<String> attributesPort = new ArrayList<String>(
       Arrays.asList(
-          AttrElements.ADMIN_STATUS, AttrElements.OPER_STATUS,
-          AttrElements.PHYSICAL_ID, AttrElements.VENDOR,
-          AttrElements.MAX_BANDWIDTH,
+          AttrElements.OPER_STATUS, AttrElements.PHYSICAL_ID,
+          AttrElements.VENDOR, AttrElements.MAX_BANDWIDTH,
           AttrElements.UNRESERVED_BANDWIDTH,
           AttrElements.IS_BOUNDARY));
   /**
@@ -244,7 +243,7 @@ public abstract class Logic extends Component {
   // Event Hash Table
   // event::[action(update)]::networkComponentId => update copy attribute
   // ex) NODE_CHANGED::network1 =>
-  // [admin_status, oper_status, physical_id, vendor]
+  // [oper_status, physical_id, vendor]
   private HashMap<String, ArrayList<String>> subscriptionTable =
       new HashMap<String, ArrayList<String>>();
 

@@ -52,7 +52,6 @@ public class Port extends BaseObject implements Cloneable {
   public static final String ATTRIBUTES = "attributes";
 
   /* AttrbuteElements */
-  public static final String ADMIN_STATUS = "admin_status";
   public static final String OPER_STATUS = "oper_status";
   public static final String MAX_BANDWIDTH = "max_bandwidth";
   public static final String UNRESERVED_BANDWIDTH = "unreserved_bandwidth";
@@ -122,9 +121,6 @@ public class Port extends BaseObject implements Cloneable {
 
     if(attributes != null) {
       this.putAttributes(attributes);
-    }
-    if(!this.isAttribute(ADMIN_STATUS)) {
-      this.putAttribute(ADMIN_STATUS, STATUS_UP);
     }
     if(!this.isAttribute(OPER_STATUS)) {
       this.putAttribute(OPER_STATUS, STATUS_UP);
