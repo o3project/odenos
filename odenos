@@ -263,6 +263,9 @@ start() {
     cp $ODENOS_CONF_FILE $ODENOS_CONF_FILE_TMP
     read_config_file
 
+    if [ ! -d "${ODENOS_LOG}" ] ;then
+        mkdir -p "${ODENOS_LOG}"
+    fi
     if [ -n "${MANAGER_ENABLED}" ]; then
         start_system
     fi
