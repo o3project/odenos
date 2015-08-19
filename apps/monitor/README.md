@@ -80,7 +80,7 @@ Start monitoring messages being exchanged among ODENOS RemoteObject instances pr
 $ monitor
 
 Start monitoring with additional parameters:
-$ monitor -i 172.0.0.1 -p 6379 -w 8888 resttranslator systemmanager romgr1 network1 ...
+$ monitor -i 172.0.0.1 -p 6379 -P 8888 resttranslator systemmanager romgr1 network1 ...
 
 Then open "http://localhost:8888/index.html" with your browser (firefox is recommended).
 
