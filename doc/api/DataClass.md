@@ -196,7 +196,7 @@ latency      | \<Number>  | Unit is msec.     | any    | Lower  ->  Upper
 **establishing**           |-         |                  |Created/Updated Flow |Deleting Flow|failure     |-
 **established**            |-         |Updating Flow     |-                |Deleting Flow or Invaliding Flow |failure     |-
 **teardown**               |Deleted or Invalided Flow |-              |-             |-             |failure    |
-**failed**                 |-         |Updating Flow       |-             |Deleting Flow |-           |-
+**failed**                 |-         |Updating Flow       |Updated Flow |Deleting Flow |-           |-
 
 ### Sequence
 ----
