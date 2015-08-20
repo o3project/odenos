@@ -175,13 +175,11 @@
       <artifactId>zookeeper</artifactId>
       <version>3.4.6</version>
     </dependency>
-    <!--
     <dependency>
       <groupId>com.datastax.logging</groupId>
       <artifactId>cassandra-log4j-appender</artifactId>
       <version>3.1.0</version>
     </dependency>
-    -->
   </dependencies> 
 
   <build>
