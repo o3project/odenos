@@ -1,8 +1,9 @@
 package com.datastax.logging.appender;
 
+
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.Serializable;
+import java.lang.management.ManagementFactory;
 import java.net.InetAddress;
 import java.security.KeyStore;
 import java.security.SecureRandom;
@@ -13,6 +14,7 @@ import java.util.UUID;
 import com.datastax.driver.core.*;
 
 import org.apache.logging.log4j.core.appender.AbstractAppender;
+import org.apache.logging.log4j.core.config.LoggerConfig;
 import org.apache.logging.log4j.core.config.plugins.Plugin;
 import org.apache.logging.log4j.core.config.plugins.PluginAttribute;
 import org.apache.logging.log4j.core.config.plugins.PluginElement;
@@ -20,10 +22,10 @@ import org.apache.logging.log4j.core.config.plugins.PluginFactory;
 import org.apache.logging.log4j.core.layout.PatternLayout;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.status.StatusLogger;
 import org.apache.logging.log4j.core.Filter;
 import org.apache.logging.log4j.core.Layout;
 import org.apache.logging.log4j.core.LogEvent;
+import org.apache.logging.log4j.core.LoggerContext;
 import org.codehaus.jackson.map.ObjectMapper;
 
 import com.datastax.driver.core.policies.RoundRobinPolicy;
@@ -37,10 +39,10 @@ import javax.net.ssl.TrustManagerFactory;
  * Main class that uses Cassandra to store log entries into.
  * 
  */
-@Plugin(name = "CassandraAppender", category = "Core", elementType = "appender")
+@Plugin(name = "CassandraAppender", category = "Core", elementType = "appender", printObject = true)
 public class CassandraAppender extends AbstractAppender
 {
-  private static final long serialVersionUID = -4365590840566463816L;
+  private static final long serialVersionUID = -9152033922423544771L;
 
   // Cassandra configuration
   private String hosts = "localhost";
@@ -86,30 +88,28 @@ public class CassandraAppender extends AbstractAppender
   private volatile boolean initializationFailed = false;
   private Cluster cluster;
   private Session session;
+  private long appStartTime = ManagementFactory.getRuntimeMXBean().getStartTime();
 
-  // StatusLogger
-  private static final StatusLogger statusLogger = StatusLogger.getLogger();
-
-  protected CassandraAppender(String name, Filter filter,
-      Layout<? extends Serializable> layout, final boolean ignoreExceptions) {
-    super(name, filter, layout, ignoreExceptions);
-    statusLogger.debug("Creating CassandraAppender");
+  protected CassandraAppender(String name, Filter filter, Layout<?> layout, boolean ignoreException) {
+    super(name, filter, layout, false);
   }
 
   @PluginFactory
   public static CassandraAppender createAppender(
       @PluginAttribute("name") String name,
-      @PluginElement("Layout") Layout<? extends Serializable> layout,
-      @PluginElement("Filter") final Filter filter,
-      @PluginAttribute("otherAttribute") String otherAttribute) {
+      @PluginAttribute("ignoreExceptions") boolean ignoreException,
+      @PluginElement("Layout") Layout<?> layout,
+      @PluginElement("Filters") Filter filter) {
+
     if (name == null) {
       LOGGER.error("No name provided for CassandraAppender");
       return null;
     }
+    
     if (layout == null) {
       layout = PatternLayout.createDefaultLayout();
     }
-    return new CassandraAppender(name, filter, layout, true);
+    return new CassandraAppender(name, filter, layout, ignoreException);
   }
 
   /**
@@ -141,10 +141,12 @@ public class CassandraAppender extends AbstractAppender
 
     // Just while we initialise the client, we must temporarily
     // disable all logging or else we get into an infinite loop
-
-    // TODO: log4j2 does not seem to support "getLoggerRepository"
-    // Level globalThreshold = LogManager.getLoggerRepository().getThreshold();
-    /// LogManager.getLoggerRepository().setThreshold(Level.OFF);
+    LoggerContext ctx = (LoggerContext) LogManager.getContext(false);
+    org.apache.logging.log4j.core.config.Configuration config = ctx.getConfiguration();
+    LoggerConfig loggerConfig = config.getLoggerConfig(LogManager.ROOT_LOGGER_NAME); 
+    Level globalThreshold = loggerConfig.getLevel();
+    loggerConfig.setLevel(Level.OFF);
+    ctx.updateLoggers();  
 
     try
     {
@@ -175,16 +177,16 @@ public class CassandraAppender extends AbstractAppender
       setupStatement();
     } catch (Exception e)
     {
-      statusLogger.error("Error ", e);
+      LOGGER.error("Error ", e);
 
       //If the user misconfigures the port or something, don't keep failing.
       initializationFailed = true;
     } finally
     {
       //Always reenable logging
+      loggerConfig.setLevel(globalThreshold);
+      ctx.updateLoggers();
 
-      //TODO: log4j2 does not seem to support"getLoggerRepository()"
-      //LogManager.getLoggerRepository().setThreshold(globalThreshold);
       initialized = true;
     }
   }
@@ -256,15 +258,10 @@ public class CassandraAppender extends AbstractAppender
 
     bound.setString(10, event.getMessage().getFormattedMessage());
     bound.setString(11, event.getContextStack().toString());
-    // TODO: this should be equivalent to log4j's "getStartTime()"
-    bound.setLong(12, event.getTimeMillis());
+    bound.setLong(12, appStartTime);
     bound.setString(13, event.getThreadName());
-
-    //String[] throwableStrs = event.getThrowableStrRep();
-    //bound.setString(14, throwableStrs == null ? null : Joiner.on(", ").join(throwableStrs));
-    bound.setString(14, event.getThrown().toString());
-
-    //bound.setLong(15, new Long(event.getTimeStamp()));
+    Throwable throwable = event.getThrown();
+    bound.setString(14, throwable == null ? null : throwable.toString());
     bound.setLong(15, event.getTimeMillis());
     session.execute(bound);
   }
