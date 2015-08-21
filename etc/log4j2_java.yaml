@@ -1,26 +1,29 @@
-Configuration:
-  status: warn
+configuration:
+
+  status: info 
+  name: Odenos Logging
   packages: com.datastax.logging.appender
 
-  Appenders:
+  ThresholdFilter:
+    level: info 
+
+  appenders:
     Console:
-      name: Console
-      target: SYSTEM_OUT
+      name: Console 
       PatternLayout:
 #       Pattern: "%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"
-        Pattern: "%d{HH:mm:ss.SSS} %msg%n"
+        pattern: "%d{HH:mm:ss.SSS} %msg%n"
     CassandraAppender:
-      name: CassandraAppender
-      PatternLayout:
-        Pattern: "%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"
-  Loggers:
-    Root:
+       name: CassandraAppender
+       PatternLayout:
+         pattern: "%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"
+       ThresholdFilter:
+         level: info
+
+  loggers:
+    root:
       level: info 
       AppenderRef:
-        ref: Console
-    logger:
-      name: NOSQL 
-      level: info
-      AppenderRef:
-        ref: CassandraAppender
+        - ref: Console
+        - ref: CassandraAppender
 
