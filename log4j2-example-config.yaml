@@ -1,0 +1,26 @@
+configuration:
+
+  status: warn
+  name: log4j2 appender for Cassandra
+  packages: com.datastax.logging.appender
+
+  ThresholdFilter:
+    level: info
+
+  appenders:
+    Console:
+      name: Console
+      PatternLayout:
+        Pattern: "%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"
+    CassandraAppender:
+       name: CassandraAppender
+       ThresholdFilter:
+         level: info
+
+  loggers:
+    root:
+      level: info
+      AppenderRef:
+        - ref: Console
+        - ref: CassandraAppender
+

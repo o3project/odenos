@@ -1,4 +1,12 @@
-Cassandra appender for Log4j.
+## Cassandra appender for Log4j2
+
+This is a folk of [cassandra-log4j-appender](https://github.com/datastax/cassandra-log4j-appender).
+
+I made some modifications to support log4j2:
+- log4j APIs replaced with log4j2 APIs
+- log4j2 sample config in yaml: "log4j2-example-config.yaml"
+
+The original README is as follows:
 
 Motivation and usage.
 ----------------------
