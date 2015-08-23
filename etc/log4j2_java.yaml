@@ -1,6 +1,6 @@
 configuration:
 
-  status: info 
+  status: warn 
   name: Odenos Logging
   packages: com.datastax.logging.appender
 
@@ -18,10 +18,10 @@ configuration:
       fileName: "${sys:log4j2_app.log}"
       PatternLayout:
         Pattern: "%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"
-    CassandraAppender:
-       name: CassandraAppender
-       ThresholdFilter:
-         level: info
+#   CassandraAppender:
+#      name: CassandraAppender
+#      ThresholdFilter:
+#        level: info 
 
   loggers:
     root:
@@ -29,5 +29,5 @@ configuration:
       AppenderRef:
         - ref: Console
         - ref: File
-        - ref: CassandraAppender
+#       - ref: CassandraAppender
 
