@@ -54,6 +54,11 @@ show_help()
     echo >&2 "  -r unittest and coverage for ruby"
 }
 
+# check log output directory
+if [ ! -e ${PROJECT_DIR}/var/log ]; then
+    mkdir -p ${PROJECT_DIR}/var/log
+fi
+
 # check command args
 if [ $# -lt 1 ]; then
     run_javaut
