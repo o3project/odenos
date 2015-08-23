@@ -13,6 +13,11 @@ configuration:
       PatternLayout:
 #       Pattern: "%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"
         pattern: "%d{HH:mm:ss.SSS} %msg%n"
+    File:
+      name: File
+      fileName: "${sys:log4j2_app.log}"
+      PatternLayout:
+        Pattern: "%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"
     CassandraAppender:
        name: CassandraAppender
        PatternLayout:
@@ -25,5 +30,6 @@ configuration:
       level: info 
       AppenderRef:
         - ref: Console
+        - ref: File
         - ref: CassandraAppender
 
