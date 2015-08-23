@@ -20,8 +20,6 @@ configuration:
         Pattern: "%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"
     CassandraAppender:
        name: CassandraAppender
-       PatternLayout:
-         pattern: "%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"
        ThresholdFilter:
          level: info
 
