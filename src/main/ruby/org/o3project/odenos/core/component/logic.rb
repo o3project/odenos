@@ -198,6 +198,7 @@ module Odenos
         rescue => ex
           error 'Exception: Receive Invalid Event Message'
           error "#{ex.message} #{ex.backtrace}"
+          return
         end
       end
 
