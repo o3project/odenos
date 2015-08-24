@@ -20,8 +20,8 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.o3project.odenos.core.component.ConversionTable;
 import org.o3project.odenos.core.component.Logic;
-import org.o3project.odenos.core.component.Logic.AttrElements;
-import org.o3project.odenos.core.component.Logic.NetworkElements;
+import org.o3project.odenos.core.component.Component.AttrElements;
+import org.o3project.odenos.core.component.Component.NetworkElements;
 import org.o3project.odenos.core.component.NetworkInterface;
 import org.o3project.odenos.core.component.network.flow.Flow;
 import org.o3project.odenos.core.component.network.flow.FlowObject.FlowStatus;
@@ -48,7 +48,7 @@ import java.util.regex.Pattern;
  */
 public class LinkLayerizerOnFlow {
   /** logger. */
-  private static final Logger logger = LoggerFactory.getLogger(LinkLayerizerOnFlow.class);
+  private static final Logger log = LoggerFactory.getLogger(LinkLayerizerOnFlow.class);
 
   /** Conversion Table instance. */
   protected ConversionTable conversionTable;
@@ -118,7 +118,7 @@ public class LinkLayerizerOnFlow {
    */
   public void flowAddedLayerizedNwExistPath(
       String networkId, BasicFlow basicFlow) {
-    logger.debug("");
+    log.debug("");
 
     String upperNwId = getNetworkIdByType(LinkLayerizer.UPPER_NETWORK);
     if (!checkParam(networkId, basicFlow) || upperNwId == null) {
@@ -144,7 +144,7 @@ public class LinkLayerizerOnFlow {
               layLink.getSrcNode(), layLink.getSrcPort(),
               layLink.getDstNode(), layLink.getDstPort());
           if (compLink.equals(upperLink)) {
-            logger.debug("replace flow's path.");
+            log.debug("replace flow's path.");
             int index = upperFlow.getPath().indexOf(layerizedLinkId);
             upperFlow.getPath().set(index, upperLinkId);
             notExistPath = false;
@@ -152,7 +152,7 @@ public class LinkLayerizerOnFlow {
           }
         }
         if (notExistPath) {
-          logger.debug("not exist path's link_id to upper_nw.");
+          log.debug("not exist path's link_id to upper_nw.");
           return;
         }
       }
@@ -170,7 +170,7 @@ public class LinkLayerizerOnFlow {
   public void flowAddedLowerNw(
       String networkId,
       BasicFlow basicFlow) {
-    logger.debug("");
+    log.debug("");
 
     if (!checkParam(networkId, basicFlow)) {
       return;
@@ -180,8 +180,7 @@ public class LinkLayerizerOnFlow {
     boolean enable = basicFlow.getEnabled();
 
     if (!(FlowStatus.ESTABLISHING.toString().equals(status) && enable)) {
-      logger.info(String.format(
-          "invalid lower flow. [status: %s, enable: %s].", status, enable));
+      log.info("invalid lower flow. [status: {}, enable: {}].", status, enable);
       return;
     }
 
@@ -198,7 +197,7 @@ public class LinkLayerizerOnFlow {
       String networkId,
       BasicFlow basicFlow,
       List<String> attr) {
-    logger.debug("");
+    log.debug("");
 
     if (!checkParam(networkId, basicFlow)) {
       return;
@@ -251,7 +250,7 @@ public class LinkLayerizerOnFlow {
       String networkId,
       BasicFlow basicFlow,
       List<String> attr) {
-    logger.debug("");
+    log.debug("");
 
     String status = basicFlow.getStatus();
     boolean enable = basicFlow.getEnabled();
@@ -262,6 +261,12 @@ public class LinkLayerizerOnFlow {
 
     String flowId = basicFlow.getFlowId();
     String linkId = layerizedLinks.get(flowId);
+
+    if ((FlowStatus.ESTABLISHED.toString().equals(status) && enable)
+        && (linkId == null)) {
+      addLayerizedLinkbyLowerFlow(networkId, basicFlow);
+      return;
+    }
 
     String layerizedId =
         getNetworkIdByType(LinkLayerizer.LAYERIZED_NETWORK);
@@ -313,7 +318,7 @@ public class LinkLayerizerOnFlow {
   public void flowDeleteLowerNw(
       String networkId,
       BasicFlow basicFlow) {
-    logger.debug("");
+    log.debug("");
 
     if (!checkParam(networkId, basicFlow)) {
       return;
@@ -348,7 +353,7 @@ public class LinkLayerizerOnFlow {
       String dstFlowId,
       BasicFlow srcFlow,
       List<String> attributesList) {
-    logger.debug("");
+    log.debug("");
 
     if (StringUtils.isEmpty(nwId) || StringUtils.isEmpty(dstFlowId)
         || srcFlow == null || attributesList == null) {
@@ -405,7 +410,7 @@ public class LinkLayerizerOnFlow {
   }
 
   protected void registerUpperFlows(BasicFlow upperFlow) {
-    logger.debug("");
+    log.debug("");
 
     String layerizedNwId = getNetworkIdByType(LinkLayerizer.LAYERIZED_NETWORK);
     String upperNwId = getNetworkIdByType(LinkLayerizer.UPPER_NETWORK);
@@ -424,20 +429,27 @@ public class LinkLayerizerOnFlow {
   protected void addLayerizedLinkbyLowerFlow(
       String networkId,
       BasicFlow basicFlow) {
-    logger.debug("");
+    log.debug("");
     checkParam(networkId, basicFlow);
 
     String status = basicFlow.getStatus();
     boolean enable = basicFlow.getEnabled();
 
-    if (!(FlowStatus.ESTABLISHING.toString().equals(status) && enable)) {
-      logger.warn("invalid flow's status & enable.");
+    if ((FlowStatus.NONE.toString().equals(status))
+      ||(FlowStatus.TEARDOWN.toString().equals(status))
+      ||(FlowStatus.FAILED.toString().equals(status))) {
+        log.warn("invalid flow's status.");
+        return;
+    }
+
+    if (!enable) {
+      log.warn("invalid flow's disable.");
       return;
     }
 
     String lowerNwId = getNetworkIdByType(LinkLayerizer.LOWER_NETWORK);
     if (lowerNwId == null) {
-      logger.warn("lower_nw not exist.");
+      log.warn("lower_nw not exist.");
       return;
     }
 
@@ -446,7 +458,7 @@ public class LinkLayerizerOnFlow {
     LinkLayerizerBoundary dstBoundary =
         getBoundaryByActions(lowerNwId, basicFlow.getEdgeActions());
     if (srcBoundary == null || dstBoundary == null) {
-      logger.warn("invalid lowerFlow.");
+      log.warn("invalid lowerFlow.");
       return;
     }
 
@@ -463,13 +475,13 @@ public class LinkLayerizerOnFlow {
     String layerizedId =
         getNetworkIdByType(LinkLayerizer.LAYERIZED_NETWORK);
     if (layerizedId == null) {
-      logger.warn("laerized_nw not exist.");
+      log.warn("laerized_nw not exist.");
       return;
     }
 
     Response resp = networkInterfaces.get(layerizedId).putLink(link);
     if (resp.isError("PUT")) {
-      logger.warn(String.format("failed PUT Link. response: %s", resp.getBodyValue()));
+      log.warn("failed PUT Link. response: {}", resp.getBodyValue());
       return;
     }
 
@@ -494,10 +506,10 @@ public class LinkLayerizerOnFlow {
    * @return true: success. false: failed.
    */
   protected boolean setLayerizedLinkStatus(Link link, Flow flow) {
-    logger.debug("");
+    log.debug("");
 
     if ((link == null) || (flow == null)) {
-      logger.warn("parameter is null");
+      log.warn("parameter is null");
       return false;
     }
 
@@ -550,7 +562,7 @@ public class LinkLayerizerOnFlow {
         break;
 
       default:
-        logger.warn("unknown status: " + status);
+        log.warn("unknown status: {}", status);
         return false;
     }
 
@@ -565,18 +577,17 @@ public class LinkLayerizerOnFlow {
    */
   protected LinkLayerizerBoundary getBoundaryByMatches(
       String lowerNwId, List<BasicFlowMatch> matches) {
-    logger.debug("");
+    log.debug("");
 
     if (StringUtils.isEmpty(lowerNwId)
         || matches == null || matches.size() == 0) {
-      logger.warn("invalid parameter");
+      log.warn("invalid parameter");
       return null;
     }
     String inNode = matches.get(0).getInNode();
     String inPort = matches.get(0).getInPort();
-    logger.debug(String.format(
-        "nwId : %s, inNode : %s, inPort : %s.",
-        lowerNwId, inNode, inPort));
+    log.debug("nwId : {}, inNode : {}, inPort : {}.",
+        lowerNwId, inNode, inPort);
 
     return boundaryTable.getBoundary(
         lowerNwId, inNode, inPort);
@@ -590,10 +601,10 @@ public class LinkLayerizerOnFlow {
    */
   protected LinkLayerizerBoundary getBoundaryByActions(
       String lowerNwId, Map<String, List<FlowAction>> edgeActions) {
-    logger.debug("");
+    log.debug("");
 
     if (StringUtils.isEmpty(lowerNwId) || edgeActions == null) {
-      logger.warn("invalid parameter");
+      log.warn("invalid parameter");
       return null;
     }
     String outNode = null;
@@ -610,11 +621,10 @@ public class LinkLayerizerOnFlow {
         }
       }
     }
-    logger.debug(String.format(
-        "nwId : %s, outNode : %s, outPort : %s.",
-        lowerNwId, outNode, outPort));
+    log.debug("nwId : {}, outNode : {}, outPort : {}.",
+        lowerNwId, outNode, outPort);
     if (outNode == null || outPort == null) {
-      logger.warn("invalid lowerFlow's actions.");
+      log.warn("invalid lowerFlow's actions.");
       return null;
     }
 
@@ -628,7 +638,7 @@ public class LinkLayerizerOnFlow {
    * @return ID for the network.
    */
   protected final String getNetworkIdByType(final String connType) {
-    logger.debug("");
+    log.debug("");
 
     if (connType == null) {
       return null;
@@ -667,7 +677,7 @@ public class LinkLayerizerOnFlow {
         ignorekeys.remove(updatekey);
       }
     }
-    logger.debug("ignore key_list:: " + ignorekeys);
+    log.debug("ignore key_list:: {}", ignorekeys);
     return ignorekeys;
   }
 
@@ -678,17 +688,17 @@ public class LinkLayerizerOnFlow {
    * @return true: Right parameter. false: Wrong parameter.
    */
   protected final boolean checkParam(String networkId, BasicFlow flow) {
-    logger.debug("");
+    log.debug("");
 
     if (StringUtils.isEmpty(networkId) || flow == null) {
-      logger.warn("invalid parameter");
+      log.warn("invalid parameter");
       return false;
     }
     return true;
   }
 
   protected final String createLinkId(String srcBoundaryId, String dstBoundaryId) {
-    logger.debug("");
+    log.debug("");
 
     String id = String.format("%s_%s", srcBoundaryId, dstBoundaryId);
     return id;

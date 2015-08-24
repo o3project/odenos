@@ -109,6 +109,7 @@ module Odenos
         @@logger.debug(progname) { log_msg }
         log_msg = "DEBUG #{progname} - #{log_msg}"
         @@syslogger.debug(log_msg)
+        return nil
       end
 
       def info(msg = nil, &msg_block)
@@ -125,6 +126,7 @@ module Odenos
         @@logger.info(progname) { log_msg }
         log_msg = "INFO #{progname} - #{log_msg}"
         @@syslogger.info(log_msg)
+        return nil
       end
 
       def warn(msg = nil, &msg_block)
@@ -141,6 +143,7 @@ module Odenos
         @@logger.warn(progname) { log_msg }
         log_msg = "WARN #{progname} - #{log_msg}"
         @@syslogger.warn(log_msg)
+        return nil
       end
 
       def error(msg = nil, &msg_block)
@@ -157,6 +160,7 @@ module Odenos
         @@logger.error(progname) { log_msg }
         log_msg = "ERROR #{progname} - #{log_msg}"
         @@syslogger.error(log_msg)
+        return nil
       end
 
       def fatal(msg = nil, &msg_block)
@@ -169,6 +173,7 @@ module Odenos
         @@logger.fatal(progname) { msg }
         log_msg = "FATAL #{progname} - #{log_msg}"
         @@syslogger.fatal(log_msg)
+        return nil
       end
     end
   end

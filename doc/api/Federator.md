@@ -14,7 +14,7 @@ Federater provide the ability to create a fedreted network to integrate original
  * **Topology**  
  Federated network to create by integrating the original network.  
  Link in Federated network the original network It represent in baundarys.  
- Update topology in the original network is reflected in the sliver network.  
+ Update topology in the original network is reflected in the federated network.  
 
  * **Flows**  
  If you set the Flow to federated network, the Flow is reflected in original networks by Federator.original flow is split in consideration of the baundary.

@@ -3178,7 +3178,11 @@ class TestOpenFlowController < MiniTest::Test
     match_obj = OFPFlowMatch.new(match_body)
     
     actions = []
+    actions << FlowActionOutput.new(output: "port01")
     actions << OFPFlowActionSetField.new(match: match_obj)
+
+    @base_controller.expects(:get_of_port_no).
+      with("node01", "port01").returns(0x001).once
 
     of_actions = @base_controller.send(
       :_edge_actions_to_trema_actions, "node01", actions)

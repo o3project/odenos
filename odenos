@@ -14,6 +14,7 @@
 # See the License for the specific language governing permissions and      #
 # limitations under the License.                                           #
 
+unset http_proxy
 
 if [ -z "${JAVA_HOME}" ]; then
     echo "set JAVA_HOME."
@@ -34,10 +35,24 @@ ODENOS_CONF_FILE_TMP=$ODENOS_CONF/odenos.conf.tmp
 ODENOS_LIB=$ODENOS_ROOT/lib
 ODENOS_LOG=var/log
 ODENOS_TMP=/tmp
+REST_PORT=10080
+REST_ROOT=.
 
 ODENOS_OPT="-Xms512m -Xmx512m -server"
 ODENOS_MAIN=org.o3project.odenos.core.Odenos
 FILE_ODENOS_SYSTEM_PID=$ODENOS_TMP/odenos_system.pid
+
+SYSTEM_MANAGER_ID=systemmanager
+MANAGER=$SYSTEM_MANAGER_ID
+MANAGER_ENABLED=true
+HOST=localhost
+PORT=6379
+HOST_B=null
+PORT_B=0
+MONITOR=false
+MONITOR_LOGGING=""
+ZOOKEEPER_HOST=""
+ZOOKEEPER_EMBED=""
 
 ##########################################################################
 # common functions                                                       #
@@ -57,14 +72,58 @@ read_config_file() {
 
     count=0
     while read line; do
-	KEY=`echo $line | cut -d " " -f 1 | tr -d " "`
-	if [ "$KEY" = "PROCESS" ]; then
-	    VAL=`echo $line | cut -d " " -f 2 | tr -d " "`
-	    odenos_process=(${odenos_process[@]} $VAL)
-	    count=`expr $count + 1`
-	fi
-    done < $ODENOS_CONF_FILE_TMP
-    
+        KEY=`echo $line | cut -d " " -f 1 | tr -d " "`
+        case "$KEY" in
+            "PROCESS")
+                #VAL=`echo $line | cut -d " " -f 2 | tr -d " "`
+                VAL=`echo $line | awk '{print $2}'`
+                odenos_process=(${odenos_process[@]} $VAL)
+                count=`expr $count + 1`
+                ;;
+            "MANAGER")
+                MANAGER=`echo $line | awk '{print $2}'` 
+                if [ -z "${MANAGER}" ]; then
+                    MANAGER=$SYSTEM_MANAGER_ID
+                fi
+                ;;
+            "manager.disabled")
+                unset MANAGER_ENABLED
+                ;;
+            "pubsub.server.host")
+                HOST=`echo $line | awk '{print $2}'`
+                ;;
+            "pubsub.server.port")
+                PORT=`echo $line | awk '{print $2}'`
+                ;;
+            "pubsub.server.host.backup")
+                HOST_B=`echo $line | awk '{print $2}'`
+                ;;
+            "pubsub.server.port.backup")
+                PORT_B=`echo $line | awk '{print $2}'`
+                ;;
+            "rest.port")
+                REST_PORT=`echo $line | awk '{print $2}'`
+                ;;
+            "rest.root")
+                REST_ROOT=`echo $line | awk '{print $2}'`
+                ;;
+            "monitor")
+                MONITOR=true
+                ;;
+	    "monitor.logging")
+                MONITOR_LOGGING="-l "`echo $line | awk '{print $2}'`
+		;;
+	    "zookeeper.host")
+                ZOOKEEPER_HOST="-z "`echo $line | awk '{print $2}'`
+		;;
+	    "zookeeper.embed")
+                ZOOKEEPER_EMBED="-e"
+		;;
+            *)
+                ;;
+        esac
+    done < <(cat $ODENOS_CONF_FILE_TMP | grep -vE "^\s*(#|$)") 
+
     for proc in ${odenos_process[@]}
     do
 	PROC_NAME=`echo $proc | cut -d "," -f 1 | tr -d " "`
@@ -90,7 +149,9 @@ start_system() {
     $JAVA -classpath $CLASSPATH:. ${ODENOS_OPT} \
 	-Dlog4j.configuration=file:${ODENOS_CONF}/log_java.conf \
 	-Dapp.log=${ODENOS_LOG}/odenos_system.log \
-	$ODENOS_MAIN -s &
+	$ODENOS_MAIN -s -S $MANAGER -o ${REST_PORT} -h ${REST_ROOT} \
+	-i $HOST -p $PORT -I $HOST_B -P $PORT_B \
+	-m $MONITOR $MONITOR_LOGGING $ZOOKEEPER_HOST $ZOOKEEPER_EMBED &
     echo $! > $FILE_ODENOS_SYSTEM_PID
 }
 
@@ -124,7 +185,9 @@ start_process() {
 	    $JAVA -classpath $CLASSPATH:. ${ODENOS_OPT} \
 		-Dlog4j.configuration=file:${ODENOS_CONF}/log_java.conf \
 		-Dapp.log=${ODENOS_LOG}/odenos_${PROC_NAME}.log \
-		$ODENOS_MAIN -r ${PROC_NAME} -d ${PROC_DIR} &
+		$ODENOS_MAIN -r ${PROC_NAME} -d ${PROC_DIR} \
+		-S $MANAGER -i $HOST -p $PORT -I $HOST_B -P $PORT_B \
+		-m $MONITOR $MONITOR_LOGGING $ZOOKEEPER_HOST &
 
 	    echo $! > $ODENOS_TMP/odenos_${PROC_NAME}.pid
 
@@ -134,17 +197,37 @@ start_process() {
 		LOGGING_CONF=${ODENOS_CONF}/log_python.conf \
 		APP_LOG=${ODENOS_LOG}/odenos_${PROC_NAME}.log \
 		$PYTHON ${ODENOS_LIB}/python/org/o3project/odenos/core/odenos.py \
-		-r ${PROC_NAME} -d ${PROC_DIR} &
+		-r ${PROC_NAME} -d ${PROC_DIR} -S $MANAGER -i $HOST -p $PORT -m \
+	       	$MONITOR $ZOOKEEPER_HOST &
 
 	    echo $! > $ODENOS_TMP/odenos_${PROC_NAME}.pid
 
 	elif [ $PROC_TYPE = "ruby" ]; then
 	    # start ruby RemoteObjectManager
 	    echo $PROC_NAME, $PROC_TYPE, $PROC_DIR
+	    sleep 3
             $TREMA run -d "./src/main/ruby/org/o3project/odenos/core/odenos.rb --cmpmgr=$PROC_NAME"
 	fi
-	
+
+        while :
+        do
+          if check_start $PROC_NAME; then
+            break
+          fi
+        done
     done
+}
+
+check_start() {
+    COMPMGR=`curl http://localhost:10080/systemmanager/component_managers/$1 -w "\n%{response_code}\n" 2>/dev/null |grep 200`
+    if [ $(echo ${COMPMGR} | grep -e "200") ]; then
+        #echo "Start Compnent Manager :: "$1
+        return 0
+    else
+        echo "Starting ODENOS Plase wait ..."
+        sleep 1
+        return -1
+    fi
 }
 
 stop_process() {
@@ -168,22 +251,38 @@ stop_process() {
 }
 
 start() {
+    echo "--  ----------------------------------> "
+    echo "--   o-o  o-o   o--o o   o  o-o   o-o   "
+    echo "--  o   o |  \  |    |\  | o   o |      "
+    echo "--  |   | |   O O-o  | \ | |   |  o-o   "
+    echo "--  o   o |  /  |    |  \| o   o     |  "
+    echo "--   o-o  o-o   o--o o   o  o-o  o--o   "
+    echo "--                                      "
+    echo ""
     echo "starting ODENOS"
     cp $ODENOS_CONF_FILE $ODENOS_CONF_FILE_TMP
     read_config_file
 
-    start_system
-    sleep 3
+    if [ ! -d "${ODENOS_LOG}" ] ;then
+        mkdir -p "${ODENOS_LOG}"
+    fi
+    if [ -n "${MANAGER_ENABLED}" ]; then
+        start_system
+    fi
     start_process
+    echo "ODENOS Start-up completion."
 }
 
 stop() {
     echo "stop ODENOS"
     read_config_file
     rm $ODENOS_CONF_FILE_TMP > /dev/null 2>&1
+
     stop_process
-    sleep 1
-    stop_system
+    if [ -n "${MANAGER_ENABLED}" ]; then 
+        sleep 1
+        stop_system
+    fi
 }
 
 status() {
@@ -213,7 +312,7 @@ set_conf() {
   if [ $# = 3 ]; then
     case "$2" in
     -c)
-      echo Read confing files :: $3
+      echo Read config files :: $3
       ODENOS_CONF_FILE=$3
     esac
   fi
@@ -222,7 +321,7 @@ set_conf() {
 show_help() {
     echo >&2 "usage : $0 [start|stop|restart|status]"
     echo >&2 ">$0 start     (./etc/odenos.conf is loaded by default.)"
-    echo >&2 ">$0 start -c [FILE]     (loaded original confing flie.)"
+    echo >&2 ">$0 start -c [FILE]     (loaded original config file.)"
 }
 
 case "$1" in

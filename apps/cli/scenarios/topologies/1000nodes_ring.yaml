@@ -14,13 +14,13 @@
 
 - macro: verbose_off
   scenario:
-   - update: /network1/settings/verbose_event/port
+   - put: /network1/settings/verbose_event/port
      body: 'false'
-   - update: /network0/settings/verbose_event/port
+   - put: /network0/settings/verbose_event/port
      body: 'false'
-   - update: /network1/settings/verbose_event/link
+   - put: /network1/settings/verbose_event/link
      body: 'false'
-   - update: /network0/settings/verbose_event/link
+   - put: /network0/settings/verbose_event/link
      body: 'false'
 
 

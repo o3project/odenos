@@ -235,7 +235,7 @@ public class SubscriberClient extends RedisClient {
         List<Object> reply = readObjectListFromInputStream(); // blocking here
         final Object firstObj = reply.get(0);
         if (!(firstObj instanceof byte[])) {
-          log.warn("Unknown message type: " + firstObj);
+          log.warn("Unknown message type: {}", firstObj);
         }
         final byte[] response = (byte[]) firstObj;
         if (Arrays.equals(SUBSCRIBE.raw, response)) {
@@ -264,7 +264,7 @@ public class SubscriberClient extends RedisClient {
           final byte[] pattern = (byte[]) reply.get(1);
           onPunsubscribe(pattern, channelCount);
         } else {
-          log.warn("Unsupported message type: " + firstObj);
+          log.warn("Unsupported message type: {}", firstObj);
         }
       } catch (JedisConnectionException e) {
         waitingReconnect = true;

@@ -19,8 +19,10 @@ package org.o3project.odenos.remoteobject.messagingclient;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.CopyOnWriteArraySet;
 
 import org.junit.After;
 import org.junit.Before;
@@ -31,7 +33,7 @@ public class SubscribersMapTest {
   
   
   SubscribersMap target = null;
-  private ConcurrentHashMap<String, CopyOnWriteArrayList<String>> subscribersMap;
+  private ConcurrentHashMap<String, CopyOnWriteArraySet<String>> subscribersMap;
   
   @Before
   public void setUp() {
@@ -48,16 +50,16 @@ public class SubscribersMapTest {
   public void testSetSubscription() {
     target.setSubscription("tokyo", "subscriber1");
     subscribersMap =
-        (ConcurrentHashMap<String, CopyOnWriteArrayList<String>>)
+        (ConcurrentHashMap<String, CopyOnWriteArraySet<String>>)
         Whitebox.getInternalState(target, "subscribersMap");
-    CopyOnWriteArrayList<String> subscribers = subscribersMap.get("tokyo");
-    assertThat(subscribers.get(0), is("subscriber1"));
+    CopyOnWriteArraySet<String> subscribers = subscribersMap.get("tokyo");
+    assertTrue(subscribers.contains("subscriber1"));
   }
   
   @Test
   public void testRemoveSubscription() {
     subscribersMap = new ConcurrentHashMap<>();
-    CopyOnWriteArrayList<String> subscribers = new CopyOnWriteArrayList<>();
+    CopyOnWriteArraySet<String> subscribers = new CopyOnWriteArraySet<>();
     subscribers.add("subscriber1");
     subscribers.add("subscriber2");
     subscribersMap.put("tokyo", subscribers);
@@ -71,7 +73,7 @@ public class SubscribersMapTest {
   @Test
   public void testRemoveSubscriber() {
     subscribersMap = new ConcurrentHashMap<>();
-    CopyOnWriteArrayList<String> subscribers = new CopyOnWriteArrayList<>();
+    CopyOnWriteArraySet<String> subscribers = new CopyOnWriteArraySet<>();
     subscribers.add("subscriber1");
     subscribers.add("subscriber2");
     subscribersMap.put("tokyo", subscribers);
@@ -80,6 +82,41 @@ public class SubscribersMapTest {
     assertFalse(subscribersMap.isEmpty());
     target.removeSubscriber("subscriber2");
     assertTrue(subscribersMap.isEmpty());
+  }
+  
+  @Test
+  public void filterChannels() {
+    subscribersMap = new ConcurrentHashMap<>();
+    CopyOnWriteArraySet<String> subscribers = new CopyOnWriteArraySet<>();
+    subscribers.add("subscriber1");
+    subscribers.add("subscriber2");
+    subscribersMap.put("tokyo", subscribers);
+    subscribersMap.put("tokyo:tokyoTower", subscribers);
+    subscribersMap.put("tokyo:skyTree", subscribers);
+    subscribersMap.put("berlin:fernsehturm", subscribers);
+    Whitebox.setInternalState(target, "subscribersMap", subscribersMap);
+    Set<String> channels = target.filterChannels("tokyo");
+    assertThat(channels.size(), is(2));
+    assertTrue(channels.contains("tokyo:tokyoTower"));
+    assertTrue(channels.contains("tokyo:skyTree"));
+  }
+
+  @Test
+  public void filterUnmatchedChannels() {
+    subscribersMap = new ConcurrentHashMap<>();
+    CopyOnWriteArraySet<String> subscribers = new CopyOnWriteArraySet<>();
+    subscribers.add("subscriber1");
+    subscribers.add("subscriber2");
+    subscribersMap.put("tokyo", subscribers);
+    subscribersMap.put("tokyo:tokyoTower", subscribers);
+    subscribersMap.put("tokyo:skyTree", subscribers);
+    subscribersMap.put("berlin:fernsehturm", subscribers);
+    Whitebox.setInternalState(target, "subscribersMap", subscribersMap);
+    ArrayList<String> objectIds = new ArrayList<>();
+    objectIds.add("tokyo");
+    Set<String> channels = target.filterUnmatchedChannels(objectIds);
+    assertThat(channels.size(), is(1));
+    assertTrue(channels.contains("berlin:fernsehturm"));
   }
 
 }

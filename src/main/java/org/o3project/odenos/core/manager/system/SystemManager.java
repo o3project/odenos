@@ -108,6 +108,7 @@ public class SystemManager extends RemoteObject {
     this.parser = this.createParser();
   }
 
+
   // When closed, componentManager will be deleted. (Expect when
   // componentManager is finalized, the components created by it automatically
   // deleted.)
@@ -120,7 +121,7 @@ public class SystemManager extends RemoteObject {
 
   @Override
   protected void onEvent(Event event) {
-    log.debug("onEvent: " + event.eventType);
+    log.debug("onEvent: {}", event.eventType);
     if (event.eventType.equals(ObjectPropertyChanged.TYPE)) {
       ObjectPropertyChanged message = event.getBody2(ObjectPropertyChanged.class);
       if (isComponentChanged(message)) {
@@ -132,9 +133,9 @@ public class SystemManager extends RemoteObject {
   }
 
   private void onComponentManagerChanged(ObjectPropertyChanged msg) {
-    if (msg.action() == ObjectPropertyChanged.Action.add.name()
-        || msg.action() == ObjectPropertyChanged.Action.update.name()) {
-      log.debug("onRemoteObjectManaagerChanged: " + msg.action());
+    if (ObjectPropertyChanged.Action.valueOf(msg.action()) == ObjectPropertyChanged.Action.add
+        || ObjectPropertyChanged.Action.valueOf(msg.action()) == ObjectPropertyChanged.Action.update) {
+      log.debug("onRemoteObjectManaagerChanged: {}", msg.action());
       this.updateComponentManager(msg.curr().getObjectId(), msg.curr());
     }
   }
@@ -168,8 +169,8 @@ public class SystemManager extends RemoteObject {
     ObjectProperty curr = message.curr();
     ObjectProperty prev = message.prev();
 
-    log.debug("Recieved ComponentChangedMessag [" + message.action() + "]id:" + compId);
-    log.info("Recieved ComponentChangedMessag [" + message.action() + "]id:" + compId);
+    log.debug("Recieved ComponentChangedMessag [{}]id:{}", message.action(), compId);
+    log.info("Recieved ComponentChangedMessag [{}]id:{}", message.action(), compId);
 
     switch (message.action()) {
       case "add":
@@ -324,7 +325,7 @@ public class SystemManager extends RemoteObject {
 
   @Override
   protected Response onRequest(final Request req) {
-    log.debug("onRequest: " + req.method + ", " + req.path);
+    log.debug("onRequest: {}, {}", req.method, req.path);
 
     RequestParser<IActionCallback>.ParsedRequest parsed = parser.parse(req);
     if (parsed == null) {
@@ -348,7 +349,7 @@ public class SystemManager extends RemoteObject {
       }
       response = callback.process(parsed);
     } catch (Exception e) {
-      log.error("Exception Request: " + req.method + ", " + req.path, e);
+      log.error("Exception Request: {}, {}", req.method, req.path, e);
       response = new Response(Response.BAD_REQUEST, null);
     }
     if (response == null) {
@@ -799,7 +800,7 @@ public class SystemManager extends RemoteObject {
     try {
       Response resp = request(compmgrId, Method.GET, "component_types", null);
       if (resp.isError("GET")) {
-        log.warn("invalid GET:" + resp.statusCode);
+        log.warn("invalid GET:{}", resp.statusCode);
         return resp;
       }
       ComponentTypesHash types = resp.getBody(ComponentTypesHash.class);
@@ -822,7 +823,7 @@ public class SystemManager extends RemoteObject {
     for (String compMgrId : componentMgrsSet) {
       Response resp = getComponentTypes(compMgrId);
       if (resp.isError("GET")) {
-        log.warn("invalid GET:" + resp.statusCode);
+        log.warn("invalid GET:{}", resp.statusCode);
         return resp;
       }
       try {
@@ -1187,14 +1188,12 @@ public class SystemManager extends RemoteObject {
       resp = request(compMgrId, Method.DELETE, "components/" + compId,
           null);
       if (!resp.statusCode.equals(Response.OK)) {
-        log.warn("Failed to delete component from"
-            + " ComponentManager:{} ComponentID:{} StatusCode:{}",
+        log.warn("Failed to delete component from ComponentManager:{} ComponentID:{} StatusCode:{}",
             compMgrId, compId, resp.statusCode);
         return resp;
       }
     } catch (Exception e) {
-      log.error("Exception to delete component from"
-          + " ComponentManager:{} ComponentID:{}",
+      log.error("Exception to delete component from ComponentManager:{} ComponentID:{}",
           compMgrId, compId, e);
       return new Response(Response.INTERNAL_SERVER_ERROR, null);
     }
@@ -1256,8 +1255,7 @@ public class SystemManager extends RemoteObject {
 
     if (!mapCompAndCompMgr.containsKey(logicId)
         || !mapCompAndCompMgr.containsKey(networkId)) {
-      log.warn("Failed to create Connection "
-          + "Logic:{} Network:{} Cause:Not Exsists Component",
+      log.warn("Failed to create Connection Logic:{} Network:{} Cause:Not Exsists Component",
           logicId, networkId);
       return new Response(
           Response.BAD_REQUEST, "Not Exsists Component");
@@ -1269,8 +1267,7 @@ public class SystemManager extends RemoteObject {
           connId, body.getConnectionType(),
           body.getObjectState(), logicId, networkId);
     } else {
-      log.warn("Failed to create Connection "
-          + "Logic:{} Network:{} Cause:Unexpected ConnectionType:{}",
+      log.warn("Failed to create Connection Logic:{} Network:{} Cause:Unexpected ConnectionType:{}",
           body.getObjectType());
       return new Response(
           Response.BAD_REQUEST, "Unexpected ConnectionType");
@@ -1310,8 +1307,7 @@ public class SystemManager extends RemoteObject {
           connId, body.getConnectionType(), body.getObjectState(),
           logicId, networkId);
     } else {
-      log.warn("Failed to update Connection "
-          + "Logic:{} Network:{} : Unexpected ConnectionType:{}",
+      log.warn("Failed to update Connection Logic:{} Network:{} : Unexpected ConnectionType:{}",
           body.getObjectType());
       return new Response(
           Response.BAD_REQUEST, "Unexpected ConnectionType.");

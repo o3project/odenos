@@ -110,11 +110,6 @@ public class PubSubDriverMock implements IPubSubDriver, IMessageListener {
   }
 
   @Override
-  public void systemManagerAttached() {
-    // NOP
-  }
-
-  @Override
   public <K, V> IMultiMap<K, V> getMultiMap(String name) {
     return null;
   }

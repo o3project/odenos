@@ -55,6 +55,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Map;
+import java.util.HashMap;
 
 /**
  * NetworkComponent manages network topology and flows in accordance with
@@ -75,6 +76,7 @@ public class Network extends Component {
 
   private Topology topology;
   private FlowSet flowset;
+  private Map<String,String> deletingFlow = new HashMap<>();
   private PacketQueueSet packetQueue;
 
   public static final String PROPERTY_KEY_FLOW_TYPE = "flow_type";
@@ -354,6 +356,10 @@ public class Network extends Component {
           "not compatible object");
     }
 
+    if(!node.isAttribute(AttrElements.OPER_STATUS)) {
+      node.putAttribute(AttrElements.OPER_STATUS, STATUS_UP);
+    }
+
     notifyNodeChanged(null, node, NodeChanged.Action.add);
 
     return new Response(Response.OK, node);
@@ -407,6 +413,9 @@ public class Network extends Component {
     if (node == null) {
       nodeOld = null;
       node = topology.createNode(msg);
+      if(!node.isAttribute(AttrElements.OPER_STATUS)) {
+        node.putAttribute(AttrElements.OPER_STATUS, STATUS_UP);
+      }
       action = NodeChanged.Action.add;
       returnCode = Response.CREATED;
     } else {
@@ -477,6 +486,9 @@ public class Network extends Component {
       msg.setId(null);
     }
     Port port = node.createPort(msg);
+    if(!port.isAttribute(AttrElements.OPER_STATUS)) {
+       port.putAttribute(AttrElements.OPER_STATUS, STATUS_UP);
+    }
 
     if (port == null) {
       return createErrorResponse(Response.BAD_REQUEST,
@@ -556,6 +568,9 @@ public class Network extends Component {
     if (port == null) {
       portOld = null;
       port = node.createPort(msg);
+      if(!port.isAttribute(AttrElements.OPER_STATUS)) {
+        port.putAttribute(AttrElements.OPER_STATUS, STATUS_UP);
+      }
       action = PortChanged.Action.add;
       returnCode = Response.CREATED;
     } else {
@@ -712,10 +727,10 @@ public class Network extends Component {
       return createErrorResponse(Response.BAD_REQUEST, null, err);
     }
 
-    Port srcPrev = topology.getPort(msg.getSrcNode(), msg.getSrcPort())
-        .clone();
-    Port dstPrev = topology.getPort(msg.getDstNode(), msg.getDstPort())
-        .clone();
+    Node srcNodePrev = topology.getNode(msg.getSrcNode()).clone();
+    Node dstNodePrev = topology.getNode(msg.getDstNode()).clone();
+    Port srcPortPrev = topology.getPort(msg.getSrcNode(), msg.getSrcPort()).clone();
+    Port dstPortPrev = topology.getPort(msg.getDstNode(), msg.getDstPort()).clone();
 
     // forced to auto-number
     msg.setId(null);
@@ -725,25 +740,33 @@ public class Network extends Component {
           "not compatible object");
     }
 
-    notifyLinkChanged(null, link, LinkChanged.Action.add);
-
-    String nodeId;
-    String portId;
-
-    nodeId = link.getSrcNode();
-    portId = link.getSrcPort();
-    Port srcCurr = topology.getNodeMap().get(nodeId).getPort(portId);
-    if (isNeededVerbosePortEvent()) {
-      notifyPortChanged(srcPrev.clone(), srcCurr.clone(),
-          PortChanged.Action.update);
+    if(!link.isAttribute(AttrElements.OPER_STATUS)) {
+      if(STATUS_DOWN.equals(srcPortPrev.getAttribute(AttrElements.OPER_STATUS))
+      || STATUS_DOWN.equals(dstPortPrev.getAttribute(AttrElements.OPER_STATUS))) {
+         link.putAttribute(AttrElements.OPER_STATUS, STATUS_DOWN);
+       } else {
+         link.putAttribute(AttrElements.OPER_STATUS, STATUS_UP);
+       }
     }
 
-    nodeId = link.getDstNode();
-    portId = link.getDstPort();
-    Port dstCurr = topology.getNodeMap().get(nodeId).getPort(portId);
+    notifyLinkChanged(null, link, LinkChanged.Action.add);
+
+    String srcNodeId = link.getSrcNode();
+    String dstNodeId = link.getDstNode();
+    if (isNeededVerboseNodeEvent()) {
+      Node srcNodeCurr = topology.getNode(srcNodeId).clone();
+      Node dstNodeCurr = topology.getNode(dstNodeId).clone();
+      notifyNodeChanged(srcNodePrev, srcNodeCurr, NodeChanged.Action.update);
+      notifyNodeChanged(dstNodePrev, dstNodeCurr, NodeChanged.Action.update);
+    }
+
     if (isNeededVerbosePortEvent()) {
-      notifyPortChanged(dstPrev.clone(), dstCurr.clone(),
-          PortChanged.Action.update);
+      String srcPortId = link.getSrcPort();
+      String dstPortId = link.getDstPort();
+      Port srcPortCurr = topology.getPort(srcNodeId, srcPortId).clone();
+      Port dstPortCurr = topology.getPort(dstNodeId, dstPortId).clone();
+      notifyPortChanged(srcPortPrev, srcPortCurr, PortChanged.Action.update);
+      notifyPortChanged(dstPortPrev, dstPortCurr, PortChanged.Action.update);
     }
 
     return new Response(Response.OK, link);
@@ -785,11 +808,12 @@ public class Network extends Component {
       return createErrorResponse(Response.BAD_REQUEST, "invalid linkId");
     }
 
+    Node srcNodePrev = topology.getNode(msg.getSrcNode()).clone();
+    Node dstNodePrev = topology.getNode(msg.getDstNode()).clone();
+    Port srcPortPrev = topology.getPort(msg.getSrcNode(), msg.getSrcPort()).clone();
+    Port dstPortPrev = topology.getPort(msg.getDstNode(), msg.getDstPort()).clone();
+
     Link linkOld;
-
-    Port srcPrev = null;
-    Port dstPrev = null;
-
     Link link = topology.getLink(linkId);
 
     LinkChanged.Action action;
@@ -800,14 +824,20 @@ public class Network extends Component {
       if (err != null) {
         return createErrorResponse(Response.BAD_REQUEST, null, err);
       }
+
       link = topology.createLink(msg);
       linkOld = null;
       action = LinkChanged.Action.add;
       returnCode = Response.CREATED;
-      srcPrev = topology.getPort(msg.getSrcNode(), msg.getSrcPort())
-          .clone();
-      dstPrev = topology.getPort(msg.getDstNode(), msg.getDstPort())
-          .clone();
+
+      if(!link.isAttribute(AttrElements.OPER_STATUS)) {
+         if(STATUS_DOWN.equals(srcPortPrev.getAttribute(AttrElements.OPER_STATUS))
+         || STATUS_DOWN.equals(dstPortPrev.getAttribute(AttrElements.OPER_STATUS))) {
+           link.putAttribute(AttrElements.OPER_STATUS, STATUS_DOWN);
+         } else {
+           link.putAttribute(AttrElements.OPER_STATUS, STATUS_UP);
+         }
+      }
     } else {
       // version conflict
       if (msg.getVersion() != null
@@ -855,15 +885,21 @@ public class Network extends Component {
     notifyLinkChanged(linkOld, link.clone(), action);
 
     if (action.equals(LinkChanged.Action.add)) {
+      String srcNodeId = link.getSrcNode();
+      String dstNodeId = link.getDstNode();
+      if (isNeededVerboseNodeEvent()) {
+        Node srcNodeCurr = topology.getNode(srcNodeId).clone();
+        Node dstNodeCurr = topology.getNode(dstNodeId).clone();
+        notifyNodeChanged(srcNodePrev, srcNodeCurr, NodeChanged.Action.update);
+        notifyNodeChanged(dstNodePrev, dstNodeCurr, NodeChanged.Action.update);
+      }
       if (isNeededVerbosePortEvent()) {
-        notifyPortChanged(srcPrev,
-            topology.getPort(msg.getSrcNode(), msg.getSrcPort())
-                .clone(),
-            PortChanged.Action.update);
-        notifyPortChanged(dstPrev,
-            topology.getPort(msg.getDstNode(), msg.getDstPort())
-                .clone(),
-            PortChanged.Action.update);
+        String srcPortId = link.getSrcPort();
+        String dstPortId = link.getDstPort();
+        Port srcPortCurr = topology.getPort(srcNodeId, srcPortId).clone();
+        Port dstPortCurr = topology.getPort(dstNodeId, dstPortId).clone();
+        notifyPortChanged(srcPortPrev, srcPortCurr, PortChanged.Action.update);
+        notifyPortChanged(dstPortPrev, dstPortCurr, PortChanged.Action.update);
       }
     }
 
@@ -924,63 +960,32 @@ public class Network extends Component {
 
   // ******************* Actions about flow *******************
   private enum FlowRequestAction {
-    CREATE_WITH_EVENT,
-    DELETE_WITH_EVENT,
     DELETE_WITHOUT_EVENT,
     UPDATE_WITH_EVENT,
     UPDATE_WITHOUT_EVENT,
-    DELETE_EVENT_ONLY,
-    INVALID
   }
 
-  private FlowRequestAction checkFlowSequence(Method method,
-      Boolean preEnabled,
-      FlowStatus preStatus, Boolean postEnabled, FlowStatus postStatus) {
-    FlowRequestAction ret = FlowRequestAction.INVALID;
-    switch (method) {
-      case POST:
-        if (postEnabled == null || postStatus == null) {
-          break;
-        } else {
-          ret = FlowRequestAction.CREATE_WITH_EVENT;
-          break;
-        }
-      case PUT:
-        if (postEnabled == null || postStatus == null) {
-          break;
-        } else if (preEnabled == null && preStatus == null) {
-          ret = FlowRequestAction.CREATE_WITH_EVENT;
-        } else if (preEnabled == null || preStatus == null) {
-          break;
-        } else if (preEnabled == true && preStatus == FlowStatus.ESTABLISHED
-            && postEnabled == true && postStatus == FlowStatus.TEARDOWN) {
-          ret = FlowRequestAction.UPDATE_WITHOUT_EVENT;
-        } else if (preEnabled == true && preStatus == FlowStatus.TEARDOWN
-            && postEnabled == true && postStatus == FlowStatus.NONE) {
-          ret = FlowRequestAction.DELETE_WITHOUT_EVENT;
-        } else if (preEnabled == true && preStatus == FlowStatus.FAILED
-            && postEnabled == true && postStatus == FlowStatus.NONE) {
-          ret = FlowRequestAction.DELETE_WITHOUT_EVENT;
-        } else {
-          ret = FlowRequestAction.UPDATE_WITH_EVENT;
-        }
-        break;
-      case DELETE:
-        ret = FlowRequestAction.DELETE_EVENT_ONLY;
-        break;
-      default:
-        break;
+  private FlowRequestAction checkFlowSequence(Flow flow) {
+
+    if( deletingFlow.containsKey(flow.getFlowId())
+        && flow.getStatusValue() == FlowStatus.TEARDOWN) {
+      return FlowRequestAction.UPDATE_WITHOUT_EVENT;
     }
 
-    return ret;
+    if( deletingFlow.containsKey(flow.getFlowId())
+         && flow.getStatusValue() == FlowStatus.NONE) {
+      return FlowRequestAction.DELETE_WITHOUT_EVENT;
+    }
+
+    return  FlowRequestAction.UPDATE_WITH_EVENT;
   }
 
   protected Response postFlow(Flow msg) throws Exception {
+
     if (msg == null) {
       return createErrorResponse(
           Response.BAD_REQUEST, "Bad format: Flow is expected");
     }
-
     if (!msg.validate()) {
       return createErrorResponse(
           Response.BAD_REQUEST, "Bad format: Flow object was invalid");
@@ -989,17 +994,10 @@ public class Network extends Component {
     if (msg.getStatus() == null) {
       msg.setStatus(FlowStatus.NONE.toString());
     }
-    if (checkFlowSequence(Method.POST, null, null,
-        msg.getEnabled(), msg.getStatusValue()) != FlowRequestAction.CREATE_WITH_EVENT) {
-      return createErrorResponse(
-          Response.BAD_REQUEST, "Bad Sequence");
-    }
 
-    Flow flow;
-    flow = flowset.createFlow(msg);
+    Flow flow = flowset.createFlow(msg);
     if (flow == null) {
-      return createErrorResponse(
-          Response.BAD_REQUEST, "Invalid flow type");
+      return createErrorResponse(Response.BAD_REQUEST, "Invalid flow type");
     }
     notifyFlowChanged(null, flow, FlowChanged.Action.add);
 
@@ -1057,11 +1055,7 @@ public class Network extends Component {
       if (msg.getStatus() == null) {
         msg.setStatus(FlowObject.FlowStatus.NONE.toString());
       }
-      if (checkFlowSequence(Method.PUT, null, null, msg.getEnabled(),
-          msg.getStatusValue()) != FlowRequestAction.CREATE_WITH_EVENT) {
-        return createErrorResponse(
-            Response.BAD_REQUEST, "Bad Sequence");
-      }
+
       flowOld = null;
       flow = flowset.createFlow(flowId, msg, Flow.INITIAL_VERSION);
       action = FlowChanged.Action.add;
@@ -1080,38 +1074,33 @@ public class Network extends Component {
       }
 
       FlowRequestAction flowAction;
-      flowAction = checkFlowSequence(Method.PUT, flowOld.getEnabled(),
-          flowOld.getStatusValue(), msg.getEnabled(),
-          msg.getStatusValue());
+      flowAction = checkFlowSequence(msg);
 
       switch (flowAction) {
         case DELETE_WITHOUT_EVENT:
           flowset.deleteFlow(flowOld);
+          deletingFlow.remove(flow.getFlowId());
           return new Response(Response.OK, flow);
+        case UPDATE_WITHOUT_EVENT:
+          flow = flowset.createFlow(flowId, msg, msg.getVersion());
+          returnCode = Response.OK;
+          break;
         case UPDATE_WITH_EVENT:
           flow = flowset.createFlow(flowId, msg, msg.getVersion());
           action = FlowChanged.Action.update;
           returnCode = Response.OK;
           break;
-        case UPDATE_WITHOUT_EVENT:
-          flow = flowset.createFlow(flowId, msg, msg.getVersion());
-          returnCode = Response.OK;
-          break;
         default:
-          return createErrorResponse(
-              Response.BAD_REQUEST, "Bad Sequence");
+          return createErrorResponse(Response.BAD_REQUEST, "Bad Sequence");
       }
     }
 
     if (flow == null) {
-      return createErrorResponse(Response.BAD_REQUEST,
-          "Not compatible object");
+      return createErrorResponse(Response.BAD_REQUEST, "Not compatible object");
     }
-
     if (action != null) {
       notifyFlowChanged(flowOld, flow.clone(), action);
     }
-
     return new Response(returnCode, flow);
   }
 
@@ -1119,13 +1108,19 @@ public class Network extends Component {
     log.debug("");
     Flow flow = flowset.getFlow(flowId);
     if (flow == null) {
-      return createErrorResponse(Response.NOT_FOUND, null,
-          "flow_id not found");
+      return createErrorResponse(Response.NOT_FOUND, null, "flow_id not found");
     }
 
     if (msg != null && !flow.getVersion().equals(msg.getVersion())) {
       return createErrorResponse(Response.CONFLICT, null,
           "version conflicted.");
+    }
+
+    if (flow.getStatus().equals(FlowStatus.NONE.toString())) {
+      flowset.deleteFlow(flow);
+      deletingFlow.remove(flow.getFlowId());
+    } else {
+      deletingFlow.put(flow.getFlowId(), "");
     }
 
     // DELETE_EVENT_ONLY

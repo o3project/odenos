@@ -1167,38 +1167,27 @@ public class AggregatorTest {
   @Test
   public final void testOnNodeAddedNodeIdNotNUll() throws Exception {
     String networkId = ORIGINAL_NW_ID;
-    Map<String, Port> ports1 = new HashMap<String, Port>();
-    Node nodeMessage = new Node("0", "ORIGINAL_NW_ID", ports1,
-        new HashMap<String, String>());
+    Map<String, Port> ports1 = new HashMap<>();
+    Node nodeMessage = new Node("0", "ORIGINAL_NW_ID", ports1, new HashMap<String, String>());
     nodeMessage.setId("ORIGINAL_NW_ID");
 
-    ConversionTable conversionTable = PowerMockito
-        .spy(new ConversionTable());
-    PowerMockito.doReturn("original").when(conversionTable,
-        "getConnectionType", networkId);
-    PowerMockito.doReturn(conversionTable).when(target, "conversionTable");
+    ConversionTable conversionTable = PowerMockito.spy(new ConversionTable());
+    conversionTable = PowerMockito.spy(new ConversionTable());
 
-    PowerMockito.doReturn("network2").when(target, "getNetworkIdByType",
-        "aggregated");
-
-    Map<String, NetworkInterface> nwifs = new HashMap<String, NetworkInterface>();
-    NetworkInterface originalNwInterface =
-        new NetworkInterface(dispatcher, ORIGINAL_NW_ID);
-    nwifs.put("network2", originalNwInterface);
-
-    PowerMockito.doReturn(AGGREGATED_NW_ID).when(target, "getConvNodeId",
-        ORIGINAL_NW_ID,
-        nodeMessage.getId());
+    //PowerMockito.doReturn("original").when(conversionTable, "getConnectionType", networkId);
+    PowerMockito.doReturn(AGGREGATED_NW_ID).when(target, "getNetworkIdByType", "aggregated");
+    
+    Map<String, NetworkInterface> nwifs = new HashMap<>();
+    NetworkInterface nwIf = new NetworkInterface(
+        dispatcher, AGGREGATED_NW_ID, AggregatorTest.class.getSimpleName());
+    nwifs.put(AGGREGATED_NW_ID, nwIf);
     PowerMockito.doReturn(nwifs).when(target, "networkInterfaces");
+    PowerMockito.doReturn(ORIGINAL_NW_ID).when(
+        target, "getConvNodeId", AGGREGATED_NW_ID, "objectId");
 
     target.onNodeAdded(networkId, nodeMessage);
 
-    PowerMockito.verifyPrivate(target).invoke("getConvNodeId", networkId,
-        nodeMessage.getId());
-    PowerMockito.verifyPrivate(conversionTable).invoke("addEntryNode",
-        anyString(),
-        anyString(), anyString(), anyString());
-
+    PowerMockito.verifyPrivate(target).invoke("getConvNodeId", AGGREGATED_NW_ID, "objectId");
   }
 
   /**
@@ -2361,8 +2350,6 @@ public class AggregatorTest {
 
     PowerMockito.verifyPrivate(dstFlow, times(1)).invoke("setEnabled",
         eq(true));
-    PowerMockito.verifyPrivate(dstFlow, times(1)).invoke("setStatus",
-        eq("status"));
     PowerMockito.verifyPrivate(dstFlow, times(1)).invoke("setPriority",
         eq("priority"));
   }
@@ -2784,31 +2771,6 @@ public class AggregatorTest {
    * @throws Exception
    */
   @Test
-  public final void testUpdateFlow() throws Exception {
-    NetworkInterface orgIf = new NetworkInterface(dispatcher,
-        ORIGINAL_NW_ID);
-    NetworkInterface aggIf = new NetworkInterface(dispatcher,
-        AGGREGATED_NW_ID);
-    BasicFlow orgFlow = new BasicFlow();
-    BasicFlow aggFlow = PowerMockito.spy(new BasicFlow());
-
-    List<String> path = new ArrayList<String>();
-    PowerMockito.doReturn(path).when(target, "createOriginalFlowPath",
-        anyString(), anyList());
-    PowerMockito.doReturn(true).when(target, "setMatch", anyList(),
-        anyString());
-
-    assertThat(target.updateFlow(orgIf, aggIf, orgFlow, aggFlow), is(true));
-
-  }
-
-  /**
-   * Test method for
-   * {@link org.o3project.odenos.component.aggregator.Aggregator#updateFlow(org.o3project.odenos.component.networkinterface, org.o3project.odenos.component.networkinterface, org.o3project.odenos.core.component.network.flow.basic.BasicFlow, org.o3project.odenos.core.component.network.flow.basic.BasicFlow)}
-   * .
-   * @throws Exception
-   */
-  @Test
   public final void testUpdateFlowWithFalse() throws Exception {
     NetworkInterface orgIf = null;
     NetworkInterface aggIf = null;
@@ -2881,7 +2843,7 @@ public class AggregatorTest {
 
   /**
    * Test method for
-   * {@literal org.o3project.odenos.component.aggregator.Aggregator#createOriginalFlowPath(java.lang.String, java.util.List<String>)}
+   * {@literal org.o3project.odenos.component.aggregator.Aggregator#createOriginalFlowPath(java.lang.String, java.util.List<String>, PathCalculator)}
    * .
    * @throws Exception
    */
@@ -2890,40 +2852,11 @@ public class AggregatorTest {
     String srcNode = "node01";
     List<String> dstNodes = new ArrayList<String>();
 
-    assertThat(Whitebox.invokeMethod(target, "createOriginalFlowPath",
-        srcNode, dstNodes), is(notNullValue()));
-
-  }
-
-  /**
-   * Test method for
-   * {@literal org.o3project.odenos.component.aggregator.Aggregator#createOriginalFlowPath(java.lang.String, java.util.List<String>)}
-   * .
-   * @throws Exception
-   */
-  @Test
-  public final void testCreateOriginalFlowPathSrtNodeNull() throws Exception {
-    String srcNode = null;
-    List<String> dstNodes = new ArrayList<String>();
+    PathCalculator mockCal = Mockito.mock(PathCalculator.class);
+    Whitebox.setInternalState(target, "pathCalculator", mockCal);
 
     assertThat(Whitebox.invokeMethod(target, "createOriginalFlowPath",
-        srcNode, dstNodes), is(nullValue()));
-
-  }
-
-  /**
-   * Test method for
-   * {@literal org.o3project.odenos.component.aggregator.Aggregator#createOriginalFlowPath(java.lang.String, java.util.List<String>)}
-   * .
-   * @throws Exception
-   */
-  @Test
-  public final void testCreateOriginalFlowPathDstNodesNull() throws Exception {
-    String srcNode = "node01";
-    List<String> dstNodes = null;
-
-    assertThat(Whitebox.invokeMethod(target, "createOriginalFlowPath",
-        srcNode, dstNodes), is(nullValue()));
+        srcNode, dstNodes, mockCal), is(notNullValue()));
 
   }
 

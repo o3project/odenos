@@ -54,7 +54,7 @@ public class FederatorBoundary extends Boundary {
 
   /** logger. */
   @Ignore
-  private static final Logger logger = LoggerFactory.getLogger(FederatorBoundary.class);
+  private static final Logger log = LoggerFactory.getLogger(FederatorBoundary.class);
 
   /** ID that is unique in the ODENOS. */
   @NotNullable
@@ -77,7 +77,7 @@ public class FederatorBoundary extends Boundary {
 
   /**
    * Constructor.
-   * @deprecated @see #FederatorBoundary(String, String, String, String, String, String, String, String);
+   * @deprecated @see #FederatorBoundary(String, String, String, String, String, String, String, String)
    */
   @Deprecated
   public FederatorBoundary() {
@@ -154,6 +154,7 @@ public class FederatorBoundary extends Boundary {
    * Get a parameter of id.
    * @return ID for boundary.
    */
+  @Override
   public String getId() {
     return id;
   }
@@ -162,6 +163,7 @@ public class FederatorBoundary extends Boundary {
    * Set a parameter of id.
    * @param id parameter of id
    */
+  @Override
   public void setId(String id) {
     this.id = id;
   }
@@ -170,6 +172,7 @@ public class FederatorBoundary extends Boundary {
    * Get a parameter of type.
    * @return Type of Object.
    */
+  @Override
   public String getType() {
     return type;
   }
@@ -178,6 +181,7 @@ public class FederatorBoundary extends Boundary {
    * Set a parameter of type.
    * @param type parameter of type
    */
+  @Override
   public void setType(String type) {
     this.type = type;
   }
@@ -304,56 +308,56 @@ public class FederatorBoundary extends Boundary {
 
     Value idValue = map.get(ValueFactory.createRawValue("id"));
     if (idValue == null || idValue.isNilValue()) {
-      logger.error("invalid value: id");
+      log.error("invalid value: id");
       return false;
     }
     setId(idValue.asRawValue().getString());
 
     Value typeValue = map.get(ValueFactory.createRawValue("type"));
     if (typeValue == null || typeValue.isNilValue()) {
-      logger.error("invalid value: type");
+      log.error("invalid value: type");
       return false;
     }
     setType(typeValue.asRawValue().getString());
 
     Value network1Value = map.get(ValueFactory.createRawValue("network1"));
     if (network1Value == null || network1Value.isNilValue()) {
-      logger.error("invalid value: network1");
+      log.error("invalid value: network1");
       return false;
     }
     setNetwork1(network1Value.asRawValue().getString());
 
     Value node1Value = map.get(ValueFactory.createRawValue("node1"));
     if (node1Value == null || node1Value.isNilValue()) {
-      logger.error("invalid value: node1");
+      log.error("invalid value: node1");
       return false;
     }
     setNode1(node1Value.asRawValue().getString());
 
     Value port1Value = map.get(ValueFactory.createRawValue("port1"));
     if (port1Value == null || port1Value.isNilValue()) {
-      logger.error("invalid value: port1");
+      log.error("invalid value: port1");
       return false;
     }
     setPort1(port1Value.asRawValue().getString());
 
     Value network2Value = map.get(ValueFactory.createRawValue("network2"));
     if (network2Value == null || network2Value.isNilValue()) {
-      logger.error("invalid value: network2");
+      log.error("invalid value: network2");
       return false;
     }
     setNetwork2(network2Value.asRawValue().getString());
 
     Value node2Value = map.get(ValueFactory.createRawValue("node2"));
     if (node2Value == null || node2Value.isNilValue()) {
-      logger.error("invalid value: node2");
+      log.error("invalid value: node2");
       return false;
     }
     setNode2(node2Value.asRawValue().getString());
 
     Value port2Value = map.get(ValueFactory.createRawValue("port2"));
     if (port2Value == null || port2Value.isNilValue()) {
-      logger.error("invalid value: port2");
+      log.error("invalid value: port2");
       return false;
     }
     setPort2(port2Value.asRawValue().getString());
@@ -367,7 +371,7 @@ public class FederatorBoundary extends Boundary {
   @Override
   public boolean writeValueSub(Map<String, Value> values) {
     if (values == null) {
-      logger.error("values is null");
+      log.error("values is null");
       throw new IllegalArgumentException("values is null");
     }
 

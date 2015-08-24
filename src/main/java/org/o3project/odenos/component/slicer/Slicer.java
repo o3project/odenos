@@ -62,7 +62,7 @@ public class Slicer extends Logic {
   protected static final String ORIGINAL = "original";
   protected static final String SLIVER = "sliver";
 
-  protected final RequestParser<IActionCallback> parser;
+  protected RequestParser<IActionCallback> parser;
 
   protected final SliceConditionTable getConditionTable() {
     return this.conditionTable;
@@ -365,12 +365,8 @@ public class Slicer extends Logic {
     addEntryEventSubscription(IN_PACKET_ADDED, nwcId);
 
     String attrBase = AttrElements.ATTRIBUTES + "::%s";
-    ArrayList<String> nodeAttributes = new ArrayList<String>(Arrays.asList(
-        String.format(attrBase, AttrElements.ADMIN_STATUS)));
-    updateEntryEventSubscription(NODE_CHANGED, nwcId, nodeAttributes);
 
     ArrayList<String> portAttributes = new ArrayList<String>(Arrays.asList(
-        String.format(attrBase, AttrElements.ADMIN_STATUS),
         String.format(attrBase, AttrElements.UNRESERVED_BANDWIDTH),
         String.format(attrBase, AttrElements.IS_BOUNDARY)));
     updateEntryEventSubscription(PORT_CHANGED, nwcId, portAttributes);
@@ -1021,7 +1017,7 @@ public class Slicer extends Logic {
     HashMap<String, ArrayList<String>> connectionsFlow = conversionTable()
         .getFlow();
     for (String flowId : connectionsFlow.keySet()) {
-      log.debug(("####" + flowId + " = " + connectionsFlow.get(flowId)));
+      log.debug("####{} = {}", flowId, connectionsFlow.get(flowId));
 
       Matcher match = pattern.matcher(flowId);
       if (match.find()) {

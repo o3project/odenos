@@ -18,9 +18,12 @@ package org.o3project.odenos.core.util;
 
 import org.apache.commons.io.FilenameUtils;
 import org.o3project.odenos.remoteobject.RemoteObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Modifier;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
@@ -28,6 +31,8 @@ import java.util.List;
 
 public final class ComponentLoader {
   private static ClassLoader classLoader;
+
+  private final static Logger log = LoggerFactory.getLogger(ComponentLoader.class);
 
   /**
    * create Class Loader.
@@ -92,8 +97,9 @@ public final class ComponentLoader {
         String filename = entry.getName();
         String className = packageName + FilenameUtils.removeExtension(filename);
         Class<?> clazz = classLoader.loadClass(className);
-        if (RemoteObject.class.isAssignableFrom(clazz)) {
-          System.out.println("Loading... " + className);
+        if (RemoteObject.class.isAssignableFrom(clazz) &&
+            !Modifier.isAbstract(clazz.getModifiers())) {
+          log.info("Loading... {}", className); 
           result.add((Class<? extends RemoteObject>) clazz);
         }
       }

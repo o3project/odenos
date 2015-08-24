@@ -53,7 +53,6 @@ module Odenos
           IPPROTO_TCP = 6
           IPPROTO_UDP = 17
 
-          PORT_ATTR_KEY_LINK_STATUS = 'link_status'
           PORT_ATTR_KEY_HW_ADDR = 'hw_addr'
 
           public
@@ -252,7 +251,7 @@ module Odenos
                 end
               end
 
-              info format(' packet_in [%s]', message.inspect)
+              debug format(' packet_in [%s]', message.inspect)
 
               # convert match
               # OFPFlowMacth for OpenFlow1.3
@@ -339,7 +338,7 @@ module Odenos
             # TODO
             # currently, block ipv6 packet
             if message.ipv6?
-              info 'drop ipv6 packet'
+              debug 'drop ipv6 packet'
               return
             end
             if message.udp?
@@ -516,7 +515,7 @@ module Odenos
             debug ">> #{__method__}"
 
             begin
-              info "on_out_packet_added( #{out_packet.inspect} )"
+              debug "on_out_packet_added( #{out_packet.inspect} )"
               match = OFPFlowMatch.new(out_packet.header)
               message = Marshal.load(out_packet.data)
 
@@ -545,7 +544,7 @@ module Odenos
 
               dpid = get_dpid out_packet.node
               # Use ports
-              info ">> out_packet info: #{out_packet.inspect}"
+              debug ">> out_packet info: #{out_packet.inspect}"
               out_packet.ports.each do|portid|
                 actions << Trema::Actions::SendOutPort.new(
                 port_number: get_of_port_no(out_packet.node, portid))
@@ -581,6 +580,19 @@ module Odenos
                 return
               end
 
+              # flow status NONE -> ESTABLISHING
+              begin
+                _flow = getFlow(flow.flow_id, _nw_if)
+                _flow.status = Flow::ESTABLISHING
+                # PUT flow (update)
+                updated_flow = putFlow(_flow, _nw_if)
+                unless updated_flow.nil?
+                  _flow.version = updated_flow.version
+                end
+              rescue RequestError => e
+                error "PUT Flow failed: #{e.backtrace}"
+              end
+
               # registered flowentries with new list
               new_flowentries = flow_to_flowentries(flow)
 
@@ -589,18 +601,6 @@ module Odenos
 
               unless new_flowentries.empty?
                 setup_flowentries(flow, new_flowentries)
-              end
-
-              begin
-                flow = getFlow(flow.flow_id, _nw_if)
-                flow.status = Flow::ESTABLISHING
-                # PUT flow (update)
-                updated_flow = putFlow(flow, _nw_if)
-                unless updated_flow.nil?
-                  flow.version = updated_flow.version
-                end
-              rescue RequestError => e
-                error "PUT Flow failed: #{e.backtrace}"
               end
 
             rescue => ex
@@ -1400,7 +1400,7 @@ module Odenos
             end
               # Whole Flow setup complete
               case flow.status
-              when Flow::ESTABLISHING
+              when Flow::ESTABLISHING, Flow::NONE
                 begin
                   flow = getFlow(flow.flow_id, _nw_if)
                   flow.status = Flow::ESTABLISHED
@@ -1512,17 +1512,29 @@ module Odenos
               @transactions.add_transaction txid, txinfo
 
               info ">> send_flow_mod_add. #{flowentry.inspect}"
-              inst = Instructions::ApplyAction.new(actions: flowentry.actions)
-
-              send_flow_mod_add(flowentry.dpid,
-                                match: flowentry.match,
-                                idle_timeout: idle_timeout,
-                                hard_timeout: hard_timeout,
-                                priority: priority,
-                                transaction_id: txid,
-                                buffer_id: OFP_NO_BUFFER,
-                                flags: OFPFF_SEND_FLOW_REM,
-                                instructions: [inst])
+              if flowentry.actions.nil?
+                # Drop
+                send_flow_mod_add(flowentry.dpid,
+                                  match: flowentry.match,
+                                  idle_timeout: idle_timeout,
+                                  hard_timeout: hard_timeout,
+                                  priority: priority,
+                                  transaction_id: txid,
+                                  buffer_id: OFP_NO_BUFFER,
+                                  flags: OFPFF_SEND_FLOW_REM,
+                                  instructions: nil)
+              else
+                inst = Instructions::ApplyAction.new(actions: flowentry.actions)
+                send_flow_mod_add(flowentry.dpid,
+                                  match: flowentry.match,
+                                  idle_timeout: idle_timeout,
+                                  hard_timeout: hard_timeout,
+                                  priority: priority,
+                                  transaction_id: txid,
+                                  buffer_id: OFP_NO_BUFFER,
+                                  flags: OFPFF_SEND_FLOW_REM,
+                                  instructions: [inst])
+              end
 
               # send barrier request with txid to be notified for success
               send_message(flowentry.dpid, BarrierRequest.new(txid))
@@ -1733,10 +1745,8 @@ module Odenos
           #
           def _set_node_attributes(node, dpid)
             info "_set_node_attributes( #{node.inspect}, #{'%#x' % dpid})"
-            node.attributes[Node::ATTR_KEY_ADMIN_STATUS] = 'UP'
             node.attributes[Node::ATTR_KEY_OPER_STATUS] = 'UP'
             node.attributes[Node::ATTR_KEY_PHYSICAL_ID] = '%#x' % dpid
-            #node.attributes[Node::ATTR_KEY_VENDOR_ID] = ATTR_OFD_VENDORID
             node.attributes[Node::ATTR_KEY_VENDOR_ID] = @vendor_id
           end
 
@@ -1750,16 +1760,6 @@ module Odenos
             msg = format('[port:%s, dpid:%#x, of_port]', port.inspect, dpid, of_port.inspect)
             info "_set_port_attributes #{msg}"
 
-            if _is_port_up(of_port)
-              port.attributes[Port::ATTR_KEY_ADMIN_STATUS] = 'UP'
-            else
-              port.attributes[Port::ATTR_KEY_ADMIN_STATUS] = 'DOWN'
-            end
-            if _is_link_up(of_port)
-              port.attributes[PORT_ATTR_KEY_LINK_STATUS] = 'UP'
-            else
-              port.attributes[PORT_ATTR_KEY_LINK_STATUS] = 'DOWN'
-            end
             if _is_port_up(of_port) && _is_link_up(of_port)
               port.attributes[Port::ATTR_KEY_OPER_STATUS] = 'UP'
             else
@@ -1767,7 +1767,6 @@ module Odenos
             end
 
             port.attributes[Port::ATTR_KEY_PHYSICAL_ID] = '%d@%#x' % [of_port.port_no, dpid]
-            #port.attributes[Port::ATTR_KEY_VENDOR_ID] = ATTR_OFD_VENDORID
             port.attributes[Port::ATTR_KEY_VENDOR_ID] = @vendor_id
 
             port.attributes[PORT_ATTR_KEY_HW_ADDR] = of_port.hw_addr.to_s
@@ -1941,12 +1940,13 @@ module Odenos
             debug ">> #{__method__}"
 
             actions = []
+            outport = nil
             edge_actions.each do |od_action|
               # FlowAction for OpenFlow1.3
               case od_action.action_type
               when 'FlowActionOutput'
                 of_port_no = get_of_port_no(nodeid, od_action.output)
-                actions << Trema::Actions::SendOutPort.new(port_number: of_port_no)
+                outport = Trema::Actions::SendOutPort.new(port_number: of_port_no)
               when 'OFPFlowActionCopyTtlIn'
                 actions.push(Trema::Actions::CopyTtlIn.new)
               when 'OFPFlowActionCopyTtlOut'
@@ -2030,14 +2030,14 @@ module Odenos
                     unless match.ipv4_src_mask.nil?
                       val = format('%s/%s', match.ipv4_src, match.ipv4_src_mask)
                     end
-                    fields.push(Trema::Actions::Ipv4SrcAddr.new(IPAddr.new(val)))
+                    fields.push(Trema::Actions::Ipv4SrcAddr.new(ip_addr: IPAddr.new(val)))
                   end
                   unless match.ipv4_dst.nil?
                     val = match.ipv4_dst
                     unless match.ipv4_dst_mask.nil?
                       val = format('%s/%s', match.ipv4_dst, match.ipv4_dst_mask)
                     end
-                    fields.push(Trema::Actions::Ipv4DstAddr.new(IPAddr.new(val)))
+                    fields.push(Trema::Actions::Ipv4DstAddr.new(ip_addr: IPAddr.new(val)))
                   end
                   unless match.tcp_src.nil?
                     val = match.tcp_src.to_i
@@ -2186,6 +2186,11 @@ module Odenos
               end
             end
 
+            if outport.nil?
+              actions = nil
+            else
+              actions.push(outport)
+            end
             actions
           end
 

@@ -37,26 +37,36 @@ public interface IPubSubDriver extends Closeable {
 
   /**
    * Checks if the implementation class is started. 
+   *
+   * @return boolean isStarted
    */
   boolean isStarted();
 
   /**
    * Subscribes channels. 
+   *
+   * @param channels Set String
    */
   void subscribeChannels(Set<String> channels);
 
   /**
    * Subscribe a channel.
+   *
+   * @param channel String
    */
   void subscribeChannel(String channel);
 
   /**
    * Unsubscribes channels.
+   *
+   * @param channels Set String
    */
   void unsubscribeChannels(Set<String> channels);
 
   /**
    * Unsubscribe a channel. 
+   *
+   * @param channel String
    */
   void unsubscribeChannel(String channel);
 
@@ -67,21 +77,29 @@ public interface IPubSubDriver extends Closeable {
 
   /**
    * Subscribes channels.
+   *
+   * @param patterns Set String
    */
   void psubscribeChannels(Set<String> patterns);
 
   /**
    * Subscribe a channel.
+   *
+   * @param pattern String
    */
   void psubscribeChannel(String pattern);
 
   /**
    * Unsubscribes channels.
+   *
+   * @param patterns Set String
    */
   void punsubscribeChannels(Set<String> patterns);
 
   /**
    * Unsubscribe a channel. 
+   *
+   * @param pattern String
    */
   void punsubscribeChannel(String pattern);
 
@@ -92,6 +110,9 @@ public interface IPubSubDriver extends Closeable {
 
   /**
    * Publishes a message to listeners.
+   *
+   * @param channel String
+   * @param data  byte[]
    */
   void publish(String channel, byte[] data);
 
@@ -105,13 +126,12 @@ public interface IPubSubDriver extends Closeable {
   boolean channelExist(String channel) throws ProtocolException;
   
   /**
-   * This method informs the implementation class that SystemManager
-   * has just been attached to the driver.
-   */
-  void systemManagerAttached();
-
-  /**
    * This method provides extended features for future enhancements.
+   *
+   * @param name String
+   * @param <K> K
+   * @param <V> V
+   * @return K, V K,V
    */
   <K, V> IMultiMap<K, V> getMultiMap(String name);
 

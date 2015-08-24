@@ -252,7 +252,7 @@ public class BasicFlowTest {
 
     target.addEdgeAction("node1", actions.get(0));
 
-    assertThat(target.validate(), is(false));
+    assertThat(target.validate(), is(true));
   }
 
   /**

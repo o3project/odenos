@@ -16,6 +16,14 @@
 
 package org.o3project.odenos.remoteobject;
 
+import org.apache.commons.lang.StringUtils;
+import org.apache.zookeeper.CreateMode;
+import org.apache.zookeeper.KeeperException;
+import org.apache.zookeeper.WatchedEvent;
+import org.apache.zookeeper.Watcher;
+import org.apache.zookeeper.ZooDefs;
+import org.apache.zookeeper.ZooKeeper;
+import org.o3project.odenos.core.util.ZooKeeperService;
 import org.o3project.odenos.remoteobject.actor.Mail;
 import org.o3project.odenos.remoteobject.event.EventSubscription;
 import org.o3project.odenos.remoteobject.event.ObjectPropertyChanged;
@@ -166,6 +174,7 @@ public class RemoteObject {
    *
    * @param objectId
    *            ID of the unregistering RemoteObject
+   * @throws IOException for java.io.IOException
    */
   protected final void removeRemoteObject(final String objectId)
       throws IOException {
@@ -189,7 +198,7 @@ public class RemoteObject {
   protected Response requestSync(String objectId, Request.Method method,
       String path, Object body) throws Exception {
     return messageDispatcher.requestSync(new Request(objectId, method,
-        path, body));
+        path, body), this.getObjectId());
   }
 
   /**
@@ -247,8 +256,8 @@ public class RemoteObject {
    * @return response to the RemoteObject
    */
   public Response dispatchRequest(Request request) {
-    log.debug("dispatchRequest: " + request.method + ", " + request.path);
-    if (request.path == null || request.path == "") {
+    log.debug("dispatchRequest: {}, {}", request.method, request.path);
+    if (StringUtils.stripToNull(request.path) == null) {
       return new Response(Response.BAD_REQUEST, null);
     }
 
@@ -266,8 +275,7 @@ public class RemoteObject {
       try {
         response = callback.process(parsed);
       } catch (Exception e) {
-        log.error("Exception Request: " + request.method + ", "
-            + request.path);
+        log.error("Exception Request: {}, {}", request.method, request.path);
         response = new Response(Response.BAD_REQUEST, null);
       }
     }
@@ -415,8 +423,8 @@ public class RemoteObject {
   }
 
   protected void onStateChanged(String oldState, String newState) {
-    if (oldState != ObjectProperty.State.FINALIZING
-        && newState == ObjectProperty.State.FINALIZING) {
+    if (!ObjectProperty.State.FINALIZING.equals(oldState)
+        && ObjectProperty.State.FINALIZING.equals(newState)) {
       onFinalize();
     }
   }
@@ -481,6 +489,42 @@ public class RemoteObject {
           ObjectProperty.State.FINALIZING);
     }
     return false;
+  }
+
+  /**
+   * Keep-alive registration with ZooKeeper server.
+   */
+  public void keepAlive(final String path, final int timeout) {
+    final String objectId = getObjectId();
+    Watcher watcher = new Watcher() {
+      @Override
+      public void process(WatchedEvent event) {
+        switch (event.getState()) {
+          case Expired:
+            keepAlive(path, timeout);
+            log.warn("ZooKeeper session exipired: {}/{}", path, objectId);
+            break;
+          default:
+            break;
+        }
+      }
+    };
+    // Registers system manager ID with ZooKeeper server.
+    ZooKeeper zk = ZooKeeperService.zooKeeper(timeout, watcher);
+    try {
+      // TODO: ACL
+      if (zk.exists(path, false) == null) {
+        zk.create(path, new byte[0], ZooDefs.Ids.OPEN_ACL_UNSAFE,
+            CreateMode.PERSISTENT);
+      }
+      // TODO: ACL
+      zk.create(path + "/" + objectId, new byte[0],
+          ZooDefs.Ids.OPEN_ACL_UNSAFE,
+          CreateMode.EPHEMERAL);
+      log.debug("ZooKeeper node registered: {}/{}", path, objectId);
+    } catch (KeeperException | InterruptedException e) {
+      log.error("Unable to register system manager ID with ZooKeeper server", e);
+    }
   }
 
 }

@@ -18,6 +18,7 @@ package org.o3project.odenos.core.component.network.flow.ofpflow;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
+import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.CoreMatchers.sameInstance;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.doReturn;
@@ -251,15 +252,15 @@ public class OFPFlowMatchTest {
      * test
      */
     Long result1st = target.getInPhyPort();
-    Whitebox.setInternalState(target, "inPhyPort", MAX_UINT32);
+    target.setInPhyPort(MAX_UINT32);
     Long resultMax = target.getInPhyPort();
-    Whitebox.setInternalState(target, "inPhyPort", MIN_UINT32);
+    target.setInPhyPort(MIN_UINT32);
     Long resultMin = target.getInPhyPort();
 
     /*
      * check
      */
-    assertThat(result1st, is(0L));
+    assertThat(result1st, is(nullValue()));
     assertThat(resultMax, is(MAX_UINT32));
     assertThat(resultMin, is(MIN_UINT32));
 
@@ -304,15 +305,15 @@ public class OFPFlowMatchTest {
      * test
      */
     String result1st = target.getMetadata();
-    Whitebox.setInternalState(target, "metadata", MAX_UINT64);
+    target.setMetadata(MAX_UINT64);
     String resultMax = target.getMetadata();
-    Whitebox.setInternalState(target, "metadata", MIN_UINT64);
+    target.setMetadata(MIN_UINT64);
     String resultMin = target.getMetadata();
 
     /*
      * check
      */
-    assertThat(result1st, is("0"));
+    assertThat(result1st, is(nullValue()));
     assertThat(resultMax, is(MAX_UINT64));
     assertThat(resultMin, is(MIN_UINT64));
 
@@ -357,15 +358,15 @@ public class OFPFlowMatchTest {
      * test
      */
     String result1st = target.getMetadataMask();
-    Whitebox.setInternalState(target, "metadataMask", MAX_UINT64);
+    target.setMetadataMask(MAX_UINT64);
     String resultMax = target.getMetadataMask();
-    Whitebox.setInternalState(target, "metadataMask", MIN_UINT64);
+    target.setMetadataMask(MIN_UINT64);
     String resultMin = target.getMetadataMask();
 
     /*
      * check
      */
-    assertThat(result1st, is("0"));
+    assertThat(result1st, is(nullValue()));
     assertThat(resultMax, is(MAX_UINT64));
     assertThat(resultMin, is(MIN_UINT64));
 
@@ -409,13 +410,13 @@ public class OFPFlowMatchTest {
      * test
      */
     String result1st = target.getEthSrc();
-    Whitebox.setInternalState(target, "ethSrc", "11:22:33:44:55:66");
+    target.setEthSrc("11:22:33:44:55:66");
     String result2nd = target.getEthSrc();
 
     /*
      * check
      */
-    assertThat(result1st, is(""));
+    assertThat(result1st, is(nullValue()));
     assertThat(result2nd, is("11:22:33:44:55:66"));
 
     verify(target, times(2)).getEthSrc();
@@ -459,13 +460,13 @@ public class OFPFlowMatchTest {
      * test
      */
     String result1st = target.getEthSrcMask();
-    Whitebox.setInternalState(target, "ethSrcMask", "ff:ff:ff:ff:ff:ff");
+    target.setEthSrcMask("ff:ff:ff:ff:ff:ff");
     String result2nd = target.getEthSrcMask();
 
     /*
      * check
      */
-    assertThat(result1st, is(""));
+    assertThat(result1st, is(nullValue()));
     assertThat(result2nd, is("ff:ff:ff:ff:ff:ff"));
 
     verify(target, times(2)).getEthSrcMask();
@@ -509,13 +510,13 @@ public class OFPFlowMatchTest {
      * test
      */
     String result1st = target.getEthDst();
-    Whitebox.setInternalState(target, "ethDst", "11:22:33:44:55:66");
+    target.setEthDst("11:22:33:44:55:66");
     String result2nd = target.getEthDst();
 
     /*
      * check
      */
-    assertThat(result1st, is(""));
+    assertThat(result1st, is(nullValue()));
     assertThat(result2nd, is("11:22:33:44:55:66"));
 
     verify(target, times(2)).getEthDst();
@@ -559,13 +560,13 @@ public class OFPFlowMatchTest {
      * test
      */
     String result1st = target.getEthDstMask();
-    Whitebox.setInternalState(target, "ethDstMask", "11:22:33:44:55:66");
+    target.setEthDstMask("11:22:33:44:55:66");
     String result2nd = target.getEthDstMask();
 
     /*
      * check
      */
-    assertThat(result1st, is(""));
+    assertThat(result1st, is(nullValue()));
     assertThat(result2nd, is("11:22:33:44:55:66"));
 
     verify(target, times(2)).getEthDstMask();
@@ -609,15 +610,15 @@ public class OFPFlowMatchTest {
      * test
      */
     Integer result1st = target.getVlanVid();
-    Whitebox.setInternalState(target, "vlanVid", MAX_UINT16);
+    target.setVlanVid(MAX_UINT16);
     Integer resultMax = target.getVlanVid();
-    Whitebox.setInternalState(target, "vlanVid", MIN_UINT16);
+    target.setVlanVid(MIN_UINT16);
     Integer resultMin = target.getVlanVid();
 
     /*
      * check
      */
-    assertThat(result1st, is(0));
+    assertThat(result1st, is(nullValue()));
     assertThat(resultMax, is(MAX_UINT16));
     assertThat(resultMin, is(MIN_UINT16));
 
@@ -662,15 +663,15 @@ public class OFPFlowMatchTest {
      * test
      */
     Integer result1st = target.getVlanVidMask();
-    Whitebox.setInternalState(target, "vlanVidMask", MAX_UINT16);
+    target.setVlanVidMask(MAX_UINT16);
     Integer resultMax = target.getVlanVidMask();
-    Whitebox.setInternalState(target, "vlanVidMask", MIN_UINT16);
+    target.setVlanVidMask(MIN_UINT16);
     Integer resultMin = target.getVlanVidMask();
 
     /*
      * check
      */
-    assertThat(result1st, is(0));
+    assertThat(result1st, is(nullValue()));
     assertThat(resultMax, is(MAX_UINT16));
     assertThat(resultMin, is(MIN_UINT16));
 
@@ -715,15 +716,15 @@ public class OFPFlowMatchTest {
      * test
      */
     Integer result1st = target.getVlanPcp();
-    Whitebox.setInternalState(target, "vlanPcp", MAX_UINT8);
+    target.setVlanPcp(MAX_UINT8);
     Integer resultMax = target.getVlanPcp();
-    Whitebox.setInternalState(target, "vlanPcp", MIN_UINT8);
+    target.setVlanPcp(MIN_UINT8);
     Integer resultMin = target.getVlanPcp();
 
     /*
      * check
      */
-    assertThat(result1st, is(0));
+    assertThat(result1st, is(nullValue()));
     assertThat(resultMax, is(MAX_UINT8));
     assertThat(resultMin, is(MIN_UINT8));
 
@@ -768,15 +769,15 @@ public class OFPFlowMatchTest {
      * test
      */
     Integer result1st = target.getEthType();
-    Whitebox.setInternalState(target, "ethType", MAX_UINT16);
+    target.setEthType(MAX_UINT16);
     Integer resultMax = target.getEthType();
-    Whitebox.setInternalState(target, "ethType", MIN_UINT16);
+    target.setEthType(MIN_UINT16);
     Integer resultMin = target.getEthType();
 
     /*
      * check
      */
-    assertThat(result1st, is(0));
+    assertThat(result1st, is(nullValue()));
     assertThat(resultMax, is(MAX_UINT16));
     assertThat(resultMin, is(MIN_UINT16));
 
@@ -821,17 +822,17 @@ public class OFPFlowMatchTest {
      * test
      */
     Integer result1st = target.getIpDscp();
-    Whitebox.setInternalState(target, "ipDscp", MAX_UINT8);
+    target.setIpDscp(MAX_UINT16);
     Integer resultMax = target.getIpDscp();
-    Whitebox.setInternalState(target, "ipDscp", MIN_UINT8);
+    target.setIpDscp(MIN_UINT16);
     Integer resultMin = target.getIpDscp();
 
     /*
      * check
      */
-    assertThat(result1st, is(0));
-    assertThat(resultMax, is(MAX_UINT8));
-    assertThat(resultMin, is(MIN_UINT8));
+    assertThat(result1st, is(nullValue()));
+    assertThat(resultMax, is(MAX_UINT16));
+    assertThat(resultMin, is(MIN_UINT16));
 
     verify(target, times(3)).getIpDscp();
 
@@ -874,15 +875,15 @@ public class OFPFlowMatchTest {
      * test
      */
     Integer result1st = target.getIpEcn();
-    Whitebox.setInternalState(target, "ipEcn", MAX_UINT8);
+    target.setIpEcn(MAX_UINT8);
     Integer resultMax = target.getIpEcn();
-    Whitebox.setInternalState(target, "ipEcn", MIN_UINT8);
+    target.setIpEcn(MIN_UINT8);
     Integer resultMin = target.getIpEcn();
 
     /*
      * check
      */
-    assertThat(result1st, is(0));
+    assertThat(result1st, is(nullValue()));
     assertThat(resultMax, is(MAX_UINT8));
     assertThat(resultMin, is(MIN_UINT8));
 
@@ -927,15 +928,15 @@ public class OFPFlowMatchTest {
      * test
      */
     Integer result1st = target.getIpProto();
-    Whitebox.setInternalState(target, "ipProto", MAX_UINT8);
+    target.setIpProto(MAX_UINT8);
     Integer resultMax = target.getIpProto();
-    Whitebox.setInternalState(target, "ipProto", MIN_UINT8);
+    target.setIpProto(MIN_UINT8);
     Integer resultMin = target.getIpProto();
 
     /*
      * check
      */
-    assertThat(result1st, is(0));
+    assertThat(result1st, is(nullValue()));
     assertThat(resultMax, is(MAX_UINT8));
     assertThat(resultMin, is(MIN_UINT8));
 
@@ -980,13 +981,13 @@ public class OFPFlowMatchTest {
      * test
      */
     String result1st = target.getIpv4Src();
-    Whitebox.setInternalState(target, "ipv4Src", "127.0.0.1");
+    target.setIpv4Src("127.0.0.1");
     String result2nd = target.getIpv4Src();
 
     /*
      * check
      */
-    assertThat(result1st, is(""));
+    assertThat(result1st, is(nullValue()));
     assertThat(result2nd, is("127.0.0.1"));
 
     verify(target, times(2)).getIpv4Src();
@@ -1030,13 +1031,13 @@ public class OFPFlowMatchTest {
      * test
      */
     String result1st = target.getIpv4SrcMask();
-    Whitebox.setInternalState(target, "ipv4SrcMask", "255.0.0.0");
+    target.setIpv4SrcMask("255.0.0.0");
     String result2nd = target.getIpv4SrcMask();
 
     /*
      * check
      */
-    assertThat(result1st, is(""));
+    assertThat(result1st, is(nullValue()));
     assertThat(result2nd, is("255.0.0.0"));
 
     verify(target, times(2)).getIpv4SrcMask();
@@ -1080,13 +1081,13 @@ public class OFPFlowMatchTest {
      * test
      */
     String result1st = target.getIpv4Dst();
-    Whitebox.setInternalState(target, "ipv4Dst", "127.0.0.1");
+    target.setIpv4Dst("127.0.0.1");
     String result2nd = target.getIpv4Dst();
 
     /*
      * check
      */
-    assertThat(result1st, is(""));
+    assertThat(result1st, is(nullValue()));
     assertThat(result2nd, is("127.0.0.1"));
 
     verify(target, times(2)).getIpv4Dst();
@@ -1130,13 +1131,13 @@ public class OFPFlowMatchTest {
      * test
      */
     String result1st = target.getIpv4DstMask();
-    Whitebox.setInternalState(target, "ipv4DstMask", "255.0.0.0");
+    target.setIpv4DstMask("255.0.0.0");
     String result2nd = target.getIpv4DstMask();
 
     /*
      * check
      */
-    assertThat(result1st, is(""));
+    assertThat(result1st, is(nullValue()));
     assertThat(result2nd, is("255.0.0.0"));
 
     verify(target, times(2)).getIpv4DstMask();
@@ -1180,15 +1181,15 @@ public class OFPFlowMatchTest {
      * test
      */
     Integer result1st = target.getTcpSrc();
-    Whitebox.setInternalState(target, "tcpSrc", MAX_UINT16);
+    target.setTcpSrc(MAX_UINT16);
     Integer resultMax = target.getTcpSrc();
-    Whitebox.setInternalState(target, "tcpSrc", MIN_UINT16);
+    target.setTcpSrc(MIN_UINT16);
     Integer resultMin = target.getTcpSrc();
 
     /*
      * check
      */
-    assertThat(result1st, is(0));
+    assertThat(result1st, is(nullValue()));
     assertThat(resultMax, is(MAX_UINT16));
     assertThat(resultMin, is(MIN_UINT16));
 
@@ -1233,15 +1234,15 @@ public class OFPFlowMatchTest {
      * test
      */
     Integer result1st = target.getTcpDst();
-    Whitebox.setInternalState(target, "tcpDst", MAX_UINT16);
+    target.setTcpDst(MAX_UINT16);
     Integer resultMax = target.getTcpDst();
-    Whitebox.setInternalState(target, "tcpDst", MIN_UINT16);
+    target.setTcpDst(MIN_UINT16);
     Integer resultMin = target.getTcpDst();
 
     /*
      * check
      */
-    assertThat(result1st, is(0));
+    assertThat(result1st, is(nullValue()));
     assertThat(resultMax, is(MAX_UINT16));
     assertThat(resultMin, is(MIN_UINT16));
 
@@ -1286,15 +1287,15 @@ public class OFPFlowMatchTest {
      * test
      */
     Integer result1st = target.getUdpSrc();
-    Whitebox.setInternalState(target, "udpSrc", MAX_UINT16);
+    target.setUdpSrc(MAX_UINT16);
     Integer resultMax = target.getUdpSrc();
-    Whitebox.setInternalState(target, "udpSrc", MIN_UINT16);
+    target.setUdpSrc(MIN_UINT16);
     Integer resultMin = target.getUdpSrc();
 
     /*
      * check
      */
-    assertThat(result1st, is(0));
+    assertThat(result1st, is(nullValue()));
     assertThat(resultMax, is(MAX_UINT16));
     assertThat(resultMin, is(MIN_UINT16));
 
@@ -1339,15 +1340,15 @@ public class OFPFlowMatchTest {
      * test
      */
     Integer result1st = target.getUdpDst();
-    Whitebox.setInternalState(target, "udpDst", MAX_UINT16);
+    target.setUdpDst(MAX_UINT16);
     Integer resultMax = target.getUdpDst();
-    Whitebox.setInternalState(target, "udpDst", MIN_UINT16);
+    target.setUdpDst(MIN_UINT16);
     Integer resultMin = target.getUdpDst();
 
     /*
      * check
      */
-    assertThat(result1st, is(0));
+    assertThat(result1st, is(nullValue()));
     assertThat(resultMax, is(MAX_UINT16));
     assertThat(resultMin, is(MIN_UINT16));
 
@@ -1392,15 +1393,15 @@ public class OFPFlowMatchTest {
      * test
      */
     Integer result1st = target.getSctpSrc();
-    Whitebox.setInternalState(target, "sctpSrc", MAX_UINT16);
+    target.setSctpSrc(MAX_UINT16);
     Integer resultMax = target.getSctpSrc();
-    Whitebox.setInternalState(target, "sctpSrc", MIN_UINT16);
+    target.setSctpSrc(MIN_UINT16);
     Integer resultMin = target.getSctpSrc();
 
     /*
      * check
      */
-    assertThat(result1st, is(0));
+    assertThat(result1st, is(nullValue()));
     assertThat(resultMax, is(MAX_UINT16));
     assertThat(resultMin, is(MIN_UINT16));
 
@@ -1445,15 +1446,15 @@ public class OFPFlowMatchTest {
      * test
      */
     Integer result1st = target.getSctpDst();
-    Whitebox.setInternalState(target, "sctpDst", MAX_UINT16);
+    target.setSctpDst(MAX_UINT16);
     Integer resultMax = target.getSctpDst();
-    Whitebox.setInternalState(target, "sctpDst", MIN_UINT16);
+    target.setSctpDst(MIN_UINT16);
     Integer resultMin = target.getSctpDst();
 
     /*
      * check
      */
-    assertThat(result1st, is(0));
+    assertThat(result1st, is(nullValue()));
     assertThat(resultMax, is(MAX_UINT16));
     assertThat(resultMin, is(MIN_UINT16));
 
@@ -1498,15 +1499,15 @@ public class OFPFlowMatchTest {
      * test
      */
     Integer result1st = target.getIcmpv4Type();
-    Whitebox.setInternalState(target, "icmpv4Type", MAX_UINT8);
+    target.setIcmpv4Type(MAX_UINT8);
     Integer resultMax = target.getIcmpv4Type();
-    Whitebox.setInternalState(target, "icmpv4Type", MIN_UINT8);
+    target.setIcmpv4Type(MIN_UINT8);
     Integer resultMin = target.getIcmpv4Type();
 
     /*
      * check
      */
-    assertThat(result1st, is(0));
+    assertThat(result1st, is(nullValue()));
     assertThat(resultMax, is(MAX_UINT8));
     assertThat(resultMin, is(MIN_UINT8));
 
@@ -1551,15 +1552,15 @@ public class OFPFlowMatchTest {
      * test
      */
     Integer result1st = target.getIcmpv4Code();
-    Whitebox.setInternalState(target, "icmpv4Code", MAX_UINT8);
+    target.setIcmpv4Code(MAX_UINT8);
     Integer resultMax = target.getIcmpv4Code();
-    Whitebox.setInternalState(target, "icmpv4Code", MIN_UINT8);
+    target.setIcmpv4Code(MIN_UINT8);
     Integer resultMin = target.getIcmpv4Code();
 
     /*
      * check
      */
-    assertThat(result1st, is(0));
+    assertThat(result1st, is(nullValue()));
     assertThat(resultMax, is(MAX_UINT8));
     assertThat(resultMin, is(MIN_UINT8));
 
@@ -1603,20 +1604,17 @@ public class OFPFlowMatchTest {
     /*
      * test
      */
-    Integer result1st = target.getArpOp();
-    Whitebox.setInternalState(target, "arpOp", MAX_UINT16);
+    target.setArpOp(MAX_UINT16);
     Integer resultMax = target.getArpOp();
-    Whitebox.setInternalState(target, "arpOp", MIN_UINT16);
+    target.setArpOp(MIN_UINT16);
     Integer resultMin = target.getArpOp();
 
     /*
      * check
      */
-    assertThat(result1st, is(0));
     assertThat(resultMax, is(MAX_UINT16));
     assertThat(resultMin, is(MIN_UINT16));
-
-    verify(target, times(3)).getArpOp();
+    verify(target, times(2)).getArpOp();
 
   }
 
@@ -1657,13 +1655,13 @@ public class OFPFlowMatchTest {
      * test
      */
     String result1st = target.getArpSpa();
-    Whitebox.setInternalState(target, "arpSpa", "127.0.0.1");
+    target.setArpSpa("127.0.0.1");
     String result2nd = target.getArpSpa();
 
     /*
      * check
      */
-    assertThat(result1st, is(""));
+    assertThat(result1st, is(nullValue()));
     assertThat(result2nd, is("127.0.0.1"));
 
     verify(target, times(2)).getArpSpa();
@@ -1707,13 +1705,13 @@ public class OFPFlowMatchTest {
      * test
      */
     String result1st = target.getArpSpaMask();
-    Whitebox.setInternalState(target, "arpSpaMask", "255.0.0.0");
+    target.setArpSpaMask("255.0.0.0");
     String result2nd = target.getArpSpaMask();
 
     /*
      * check
      */
-    assertThat(result1st, is(""));
+    assertThat(result1st, is(nullValue()));
     assertThat(result2nd, is("255.0.0.0"));
 
     verify(target, times(2)).getArpSpaMask();
@@ -1757,13 +1755,13 @@ public class OFPFlowMatchTest {
      * test
      */
     String result1st = target.getArpTpa();
-    Whitebox.setInternalState(target, "arpTpa", "127.0.0.1");
+    target.setArpTpa("127.0.0.1");
     String result2nd = target.getArpTpa();
 
     /*
      * check
      */
-    assertThat(result1st, is(""));
+    assertThat(result1st, is(nullValue()));
     assertThat(result2nd, is("127.0.0.1"));
 
     verify(target, times(2)).getArpTpa();
@@ -1807,13 +1805,13 @@ public class OFPFlowMatchTest {
      * test
      */
     String result1st = target.getArpTpaMask();
-    Whitebox.setInternalState(target, "arpTpaMask", "255.0.0.0");
+    target.setArpTpaMask("255.0.0.0");
     String result2nd = target.getArpTpaMask();
 
     /*
      * check
      */
-    assertThat(result1st, is(""));
+    assertThat(result1st, is(nullValue()));
     assertThat(result2nd, is("255.0.0.0"));
 
     verify(target, times(2)).getArpTpaMask();
@@ -1857,13 +1855,13 @@ public class OFPFlowMatchTest {
      * test
      */
     String result1st = target.getArpSha();
-    Whitebox.setInternalState(target, "arpSha", "127.0.0.1");
+    target.setArpSha("127.0.0.1");
     String result2nd = target.getArpSha();
 
     /*
      * check
      */
-    assertThat(result1st, is(""));
+    assertThat(result1st, is(nullValue()));
     assertThat(result2nd, is("127.0.0.1"));
 
     verify(target, times(2)).getArpSha();
@@ -1907,13 +1905,13 @@ public class OFPFlowMatchTest {
      * test
      */
     String result1st = target.getArpShaMask();
-    Whitebox.setInternalState(target, "arpShaMask", "255.0.0.0");
+    target.setArpShaMask("255.0.0.0");
     String result2nd = target.getArpShaMask();
 
     /*
      * check
      */
-    assertThat(result1st, is(""));
+    assertThat(result1st, is(nullValue()));
     assertThat(result2nd, is("255.0.0.0"));
 
     verify(target, times(2)).getArpShaMask();
@@ -1957,13 +1955,13 @@ public class OFPFlowMatchTest {
      * test
      */
     String result1st = target.getArpTha();
-    Whitebox.setInternalState(target, "arpTha", "127.0.0.1");
+    target.setArpTha("127.0.0.1");
     String result2nd = target.getArpTha();
 
     /*
      * check
      */
-    assertThat(result1st, is(""));
+    assertThat(result1st, is(nullValue()));
     assertThat(result2nd, is("127.0.0.1"));
 
     verify(target, times(2)).getArpTha();
@@ -2007,13 +2005,13 @@ public class OFPFlowMatchTest {
      * test
      */
     String result1st = target.getArpThaMask();
-    Whitebox.setInternalState(target, "arpThaMask", "255.0.0.0");
+    target.setArpThaMask("255.0.0.0");
     String result2nd = target.getArpThaMask();
 
     /*
      * check
      */
-    assertThat(result1st, is(""));
+    assertThat(result1st, is(nullValue()));
     assertThat(result2nd, is("255.0.0.0"));
 
     verify(target, times(2)).getArpThaMask();
@@ -2057,13 +2055,13 @@ public class OFPFlowMatchTest {
      * test
      */
     String result1st = target.getIpv6Src();
-    Whitebox.setInternalState(target, "ipv6Src", "::1");
+    target.setIpv6Src("::1");
     String result2nd = target.getIpv6Src();
 
     /*
      * check
      */
-    assertThat(result1st, is(""));
+    assertThat(result1st, is(nullValue()));
     assertThat(result2nd, is("::1"));
 
     verify(target, times(2)).getIpv6Src();
@@ -2107,13 +2105,13 @@ public class OFPFlowMatchTest {
      * test
      */
     String result1st = target.getIpv6SrcMask();
-    Whitebox.setInternalState(target, "ipv6SrcMask", "ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff");
+    target.setIpv6SrcMask("ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff");
     String result2nd = target.getIpv6SrcMask();
 
     /*
      * check
      */
-    assertThat(result1st, is(""));
+    assertThat(result1st, is(nullValue()));
     assertThat(result2nd, is("ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff"));
 
     verify(target, times(2)).getIpv6SrcMask();
@@ -2157,13 +2155,13 @@ public class OFPFlowMatchTest {
      * test
      */
     String result1st = target.getIpv6Dst();
-    Whitebox.setInternalState(target, "ipv6Dst", "::1");
+    target.setIpv6Dst("::1");
     String result2nd = target.getIpv6Dst();
 
     /*
      * check
      */
-    assertThat(result1st, is(""));
+    assertThat(result1st, is(nullValue()));
     assertThat(result2nd, is("::1"));
 
     verify(target, times(2)).getIpv6Dst();
@@ -2207,13 +2205,13 @@ public class OFPFlowMatchTest {
      * test
      */
     String result1st = target.getIpv6DstMask();
-    Whitebox.setInternalState(target, "ipv6DstMask", "ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff");
+    target.setIpv6DstMask("ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff");
     String result2nd = target.getIpv6DstMask();
 
     /*
      * check
      */
-    assertThat(result1st, is(""));
+    assertThat(result1st, is(nullValue()));
     assertThat(result2nd, is("ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff"));
 
     verify(target, times(2)).getIpv6DstMask();
@@ -2257,15 +2255,15 @@ public class OFPFlowMatchTest {
      * test
      */
     Long result1st = target.getIpv6Flabel();
-    Whitebox.setInternalState(target, "ipv6Flabel", MAX_UINT32);
+    target.setIpv6Flabel(MAX_UINT32);
     Long resultMax = target.getIpv6Flabel();
-    Whitebox.setInternalState(target, "ipv6Flabel", MIN_UINT32);
+    target.setIpv6Flabel(MIN_UINT32);
     Long resultMin = target.getIpv6Flabel();
 
     /*
      * check
      */
-    assertThat(result1st, is(0L));
+    assertThat(result1st, is(nullValue()));
     assertThat(resultMax, is(MAX_UINT32));
     assertThat(resultMin, is(MIN_UINT32));
 
@@ -2310,15 +2308,15 @@ public class OFPFlowMatchTest {
      * test
      */
     Long result1st = target.getIpv6FlabelMask();
-    Whitebox.setInternalState(target, "ipv6FlabelMask", MAX_UINT32);
+    target.setIpv6FlabelMask(MAX_UINT32);
     Long resultMax = target.getIpv6FlabelMask();
-    Whitebox.setInternalState(target, "ipv6FlabelMask", MIN_UINT32);
+    target.setIpv6FlabelMask(MIN_UINT32);
     Long resultMin = target.getIpv6FlabelMask();
 
     /*
      * check
      */
-    assertThat(result1st, is(0L));
+    assertThat(result1st, is(nullValue()));
     assertThat(resultMax, is(MAX_UINT32));
     assertThat(resultMin, is(MIN_UINT32));
 
@@ -2363,15 +2361,15 @@ public class OFPFlowMatchTest {
      * test
      */
     Integer result1st = target.getIcmpv6Type();
-    Whitebox.setInternalState(target, "icmpv6Type", MAX_UINT8);
+    target.setIcmpv6Type(MAX_UINT8);
     Integer resultMax = target.getIcmpv6Type();
-    Whitebox.setInternalState(target, "icmpv6Type", MIN_UINT8);
+    target.setIcmpv6Type(MIN_UINT8);
     Integer resultMin = target.getIcmpv6Type();
 
     /*
      * check
      */
-    assertThat(result1st, is(0));
+    assertThat(result1st, is(nullValue()));
     assertThat(resultMax, is(MAX_UINT8));
     assertThat(resultMin, is(MIN_UINT8));
 
@@ -2416,15 +2414,15 @@ public class OFPFlowMatchTest {
      * test
      */
     Integer result1st = target.getIcmpv6Code();
-    Whitebox.setInternalState(target, "icmpv6Code", MAX_UINT8);
+    target.setIcmpv6Code(MAX_UINT8);
     Integer resultMax = target.getIcmpv6Code();
-    Whitebox.setInternalState(target, "icmpv6Code", MIN_UINT8);
+    target.setIcmpv6Code(MIN_UINT8);
     Integer resultMin = target.getIcmpv6Code();
 
     /*
      * check
      */
-    assertThat(result1st, is(0));
+    assertThat(result1st, is(nullValue()));
     assertThat(resultMax, is(MAX_UINT8));
     assertThat(resultMin, is(MIN_UINT8));
 
@@ -2469,13 +2467,13 @@ public class OFPFlowMatchTest {
      * test
      */
     String result1st = target.getIpv6NdTarget();
-    Whitebox.setInternalState(target, "ipv6NdTarget", "::1");
+    target.setIpv6NdTarget("::1");
     String result2nd = target.getIpv6NdTarget();
 
     /*
      * check
      */
-    assertThat(result1st, is(""));
+    assertThat(result1st, is(nullValue()));
     assertThat(result2nd, is("::1"));
 
     verify(target, times(2)).getIpv6NdTarget();
@@ -2519,13 +2517,13 @@ public class OFPFlowMatchTest {
      * test
      */
     String result1st = target.getIpv6NdSll();
-    Whitebox.setInternalState(target, "ipv6NdSll", "11:22:33:44:55:66");
+    target.setIpv6NdSll("11:22:33:44:55:66");
     String result2nd = target.getIpv6NdSll();
 
     /*
      * check
      */
-    assertThat(result1st, is(""));
+    assertThat(result1st, is(nullValue()));
     assertThat(result2nd, is("11:22:33:44:55:66"));
 
     verify(target, times(2)).getIpv6NdSll();
@@ -2569,13 +2567,13 @@ public class OFPFlowMatchTest {
      * test
      */
     String result1st = target.getIpv6NdTll();
-    Whitebox.setInternalState(target, "ipv6NdTll", "11:22:33:44:55:66");
+    target.setIpv6NdTll("11:22:33:44:55:66");
     String result2nd = target.getIpv6NdTll();
 
     /*
      * check
      */
-    assertThat(result1st, is(""));
+    assertThat(result1st, is(nullValue()));
     assertThat(result2nd, is("11:22:33:44:55:66"));
 
     verify(target, times(2)).getIpv6NdTll();
@@ -2619,15 +2617,15 @@ public class OFPFlowMatchTest {
      * test
      */
     Long result1st = target.getMplsLabel();
-    Whitebox.setInternalState(target, "mplsLabel", MAX_UINT32);
+    target.setMplsLabel(MAX_UINT32);
     Long resultMax = target.getMplsLabel();
-    Whitebox.setInternalState(target, "mplsLabel", MIN_UINT32);
+    target.setMplsLabel(MIN_UINT32);
     Long resultMin = target.getMplsLabel();
 
     /*
      * check
      */
-    assertThat(result1st, is(0L));
+    assertThat(result1st, is(nullValue()));
     assertThat(resultMax, is(MAX_UINT32));
     assertThat(resultMin, is(MIN_UINT32));
 
@@ -2672,15 +2670,15 @@ public class OFPFlowMatchTest {
      * test
      */
     Integer result1st = target.getMplsTc();
-    Whitebox.setInternalState(target, "mplsTc", MAX_UINT8);
+    target.setMplsTc(MAX_UINT8);
     Integer resultMax = target.getMplsTc();
-    Whitebox.setInternalState(target, "mplsTc", MIN_UINT8);
+    target.setMplsTc(MIN_UINT8);
     Integer resultMin = target.getMplsTc();
 
     /*
      * check
      */
-    assertThat(result1st, is(0));
+    assertThat(result1st, is(nullValue()));
     assertThat(resultMax, is(MAX_UINT8));
     assertThat(resultMin, is(MIN_UINT8));
 
@@ -2725,15 +2723,15 @@ public class OFPFlowMatchTest {
      * test
      */
     Integer result1st = target.getMplsBos();
-    Whitebox.setInternalState(target, "mplsBos", MAX_UINT8);
+    target.setMplsBos(MAX_UINT8);
     Integer resultMax = target.getMplsBos();
-    Whitebox.setInternalState(target, "mplsBos", MIN_UINT8);
+    target.setMplsBos(MIN_UINT8);
     Integer resultMin = target.getMplsBos();
 
     /*
      * check
      */
-    assertThat(result1st, is(0));
+    assertThat(result1st, is(nullValue()));
     assertThat(resultMax, is(MAX_UINT8));
     assertThat(resultMin, is(MIN_UINT8));
 
@@ -2778,15 +2776,15 @@ public class OFPFlowMatchTest {
      * test
      */
     Long result1st = target.getPbbIsid();
-    Whitebox.setInternalState(target, "pbbIsid", MAX_UINT32);
+    target.setPbbIsid(MAX_UINT32);
     Long resultMax = target.getPbbIsid();
-    Whitebox.setInternalState(target, "pbbIsid", MIN_UINT32);
+    target.setPbbIsid(MIN_UINT32);
     Long resultMin = target.getPbbIsid();
 
     /*
      * check
      */
-    assertThat(result1st, is(0L));
+    assertThat(result1st, is(nullValue()));
     assertThat(resultMax, is(MAX_UINT32));
     assertThat(resultMin, is(MIN_UINT32));
 
@@ -2831,15 +2829,15 @@ public class OFPFlowMatchTest {
      * test
      */
     Long result1st = target.getPbbIsidMask();
-    Whitebox.setInternalState(target, "pbbIsidMask", MAX_UINT32);
+    target.setPbbIsidMask(MAX_UINT32);
     Long resultMax = target.getPbbIsidMask();
-    Whitebox.setInternalState(target, "pbbIsidMask", MIN_UINT32);
+    target.setPbbIsidMask(MIN_UINT32);
     Long resultMin = target.getPbbIsidMask();
 
     /*
      * check
      */
-    assertThat(result1st, is(0L));
+    assertThat(result1st, is(nullValue()));
     assertThat(resultMax, is(MAX_UINT32));
     assertThat(resultMin, is(MIN_UINT32));
 
@@ -2884,15 +2882,15 @@ public class OFPFlowMatchTest {
      * test
      */
     String result1st = target.getTunnelId();
-    Whitebox.setInternalState(target, "tunnelId", MAX_UINT64);
+    target.setTunnelId(MAX_UINT64);
     String resultMax = target.getTunnelId();
-    Whitebox.setInternalState(target, "tunnelId", MIN_UINT64);
+    target.setTunnelId(MIN_UINT64);
     String resultMin = target.getTunnelId();
 
     /*
      * check
      */
-    assertThat(result1st, is("0"));
+    assertThat(result1st, is(nullValue()));
     assertThat(resultMax, is(MAX_UINT64));
     assertThat(resultMin, is(MIN_UINT64));
 
@@ -2937,15 +2935,15 @@ public class OFPFlowMatchTest {
      * test
      */
     String result1st = target.getTunnelIdMask();
-    Whitebox.setInternalState(target, "tunnelIdMask", MAX_UINT64);
+    target.setTunnelIdMask(MAX_UINT64);
     String resultMax = target.getTunnelIdMask();
-    Whitebox.setInternalState(target, "tunnelIdMask", MIN_UINT64);
+    target.setTunnelIdMask(MIN_UINT64);
     String resultMin = target.getTunnelIdMask();
 
     /*
      * check
      */
-    assertThat(result1st, is("0"));
+    assertThat(result1st, is(nullValue()));
     assertThat(resultMax, is(MAX_UINT64));
     assertThat(resultMin, is(MIN_UINT64));
 
@@ -2990,15 +2988,15 @@ public class OFPFlowMatchTest {
      * test
      */
     Integer result1st = target.getIpv6Exthdr();
-    Whitebox.setInternalState(target, "ipv6Exthdr", MAX_UINT16);
+    target.setIpv6Exthdr(MAX_UINT16);
     Integer resultMax = target.getIpv6Exthdr();
-    Whitebox.setInternalState(target, "ipv6Exthdr", MIN_UINT16);
+    target.setIpv6Exthdr(MIN_UINT16);
     Integer resultMin = target.getIpv6Exthdr();
 
     /*
      * check
      */
-    assertThat(result1st, is(0));
+    assertThat(result1st, is(nullValue()));
     assertThat(resultMax, is(MAX_UINT16));
     assertThat(resultMin, is(MIN_UINT16));
 
@@ -3043,15 +3041,15 @@ public class OFPFlowMatchTest {
      * test
      */
     Integer result1st = target.getIpv6ExthdrMask();
-    Whitebox.setInternalState(target, "ipv6ExthdrMask", MAX_UINT16);
+    target.setIpv6ExthdrMask(MAX_UINT16);
     Integer resultMax = target.getIpv6ExthdrMask();
-    Whitebox.setInternalState(target, "ipv6ExthdrMask", MIN_UINT16);
+    target.setIpv6ExthdrMask(MIN_UINT16);
     Integer resultMin = target.getIpv6ExthdrMask();
 
     /*
      * check
      */
-    assertThat(result1st, is(0));
+    assertThat(result1st, is(nullValue()));
     assertThat(resultMax, is(MAX_UINT16));
     assertThat(resultMin, is(MIN_UINT16));
 

@@ -27,8 +27,8 @@ class BasicFlowTest(unittest.TestCase):
     Enabled = True
     Priority = 65535
     Status = "none"
-    Attributes = {"admin_status": "UP", "oper_status": "UP",
-                  "physical_id": "DPIS", "vendor": "Vendor"}
+    Attributes = {"oper_status": "UP", "physical_id": "DPIS",
+                  "vendor": "Vendor"}
     # BaseFlowMatch key P1:type P2:in_node P3:in_port
 #    Matches = [["BasicFlowMatch", "NODE_ID_1", "ANY"]]
     Matches = [["BasicFlowMatch", "NODE_ID_1", "ANY"]]

@@ -220,6 +220,9 @@ public class OFPFlowMatch extends BasicFlowMatch {
   }
 
   public Long getInPhyPort() {
+    if (isWcInPhyPort()) {
+      return null;
+    }
     return inPhyPort;
   }
 
@@ -229,6 +232,9 @@ public class OFPFlowMatch extends BasicFlowMatch {
   }
 
   public String getMetadata() {
+    if (isWcMetadata()) {
+      return null;
+    }
     return metadata;
   }
 
@@ -238,6 +244,9 @@ public class OFPFlowMatch extends BasicFlowMatch {
   }
 
   public String getMetadataMask() {
+    if (isWcMetadataMask()) {
+      return null;
+    }
     return metadataMask;
   }
 
@@ -247,6 +256,9 @@ public class OFPFlowMatch extends BasicFlowMatch {
   }
 
   public String getEthSrc() {
+    if (isWcEthSrc()) {
+      return null;
+    }
     return ethSrc;
   }
 
@@ -256,6 +268,9 @@ public class OFPFlowMatch extends BasicFlowMatch {
   }
 
   public String getEthSrcMask() {
+    if (isWcEthSrcMask()) {
+      return null;
+    }
     return ethSrcMask;
   }
 
@@ -265,6 +280,9 @@ public class OFPFlowMatch extends BasicFlowMatch {
   }
 
   public String getEthDst() {
+    if (isWcEthDst()) {
+      return null;
+    }
     return ethDst;
   }
 
@@ -274,6 +292,9 @@ public class OFPFlowMatch extends BasicFlowMatch {
   }
 
   public String getEthDstMask() {
+    if (isWcEthDstMask()) {
+      return null;
+    }
     return ethDstMask;
   }
 
@@ -283,6 +304,9 @@ public class OFPFlowMatch extends BasicFlowMatch {
   }
 
   public Integer getVlanVid() {
+    if (isWcVlanVid()) {
+      return null;
+    }
     return vlanVid;
   }
 
@@ -292,6 +316,9 @@ public class OFPFlowMatch extends BasicFlowMatch {
   }
 
   public Integer getVlanVidMask() {
+    if (isWcVlanVidMask()) {
+      return null;
+    }
     return vlanVidMask;
   }
 
@@ -301,6 +328,9 @@ public class OFPFlowMatch extends BasicFlowMatch {
   }
 
   public Integer getVlanPcp() {
+    if (isWcVlanPcp()) {
+      return null;
+    }
     return vlanPcp;
   }
 
@@ -310,6 +340,9 @@ public class OFPFlowMatch extends BasicFlowMatch {
   }
 
   public Integer getEthType() {
+    if (isWcEthType()) {
+      return null;
+    }
     return ethType;
   }
 
@@ -319,6 +352,9 @@ public class OFPFlowMatch extends BasicFlowMatch {
   }
 
   public Integer getIpDscp() {
+    if (isWcIpDscp()) {
+      return null;
+    }
     return ipDscp;
   }
 
@@ -328,6 +364,9 @@ public class OFPFlowMatch extends BasicFlowMatch {
   }
 
   public Integer getIpEcn() {
+    if (isWcIpEcn()) {
+      return null;
+    }
     return ipEcn;
   }
 
@@ -337,6 +376,9 @@ public class OFPFlowMatch extends BasicFlowMatch {
   }
 
   public Integer getIpProto() {
+    if (isWcIpProto()) {
+      return null;
+    }
     return ipProto;
   }
 
@@ -346,6 +388,9 @@ public class OFPFlowMatch extends BasicFlowMatch {
   }
 
   public String getIpv4Src() {
+    if (isWcIpv4Src()) {
+      return null;
+    }
     return ipv4Src;
   }
 
@@ -355,6 +400,9 @@ public class OFPFlowMatch extends BasicFlowMatch {
   }
 
   public String getIpv4SrcMask() {
+    if (isWcIpv4SrcMask()) {
+      return null;
+    }
     return ipv4SrcMask;
   }
 
@@ -364,6 +412,9 @@ public class OFPFlowMatch extends BasicFlowMatch {
   }
 
   public String getIpv4Dst() {
+    if (isWcIpv4Dst()) {
+      return null;
+    }
     return ipv4Dst;
   }
 
@@ -373,6 +424,9 @@ public class OFPFlowMatch extends BasicFlowMatch {
   }
 
   public String getIpv4DstMask() {
+    if (isWcIpv4DstMask()) {
+      return null;
+    }
     return ipv4DstMask;
   }
 
@@ -382,6 +436,9 @@ public class OFPFlowMatch extends BasicFlowMatch {
   }
 
   public Integer getTcpSrc() {
+    if (isWcTcpSrc()) {
+      return null;
+    }
     return tcpSrc;
   }
 
@@ -391,6 +448,9 @@ public class OFPFlowMatch extends BasicFlowMatch {
   }
 
   public Integer getTcpDst() {
+    if (isWcTcpDst()) {
+      return null;
+    }
     return tcpDst;
   }
 
@@ -400,6 +460,9 @@ public class OFPFlowMatch extends BasicFlowMatch {
   }
 
   public Integer getUdpSrc() {
+    if (isWcUdpSrc()) {
+      return null;
+    }
     return udpSrc;
   }
 
@@ -409,6 +472,9 @@ public class OFPFlowMatch extends BasicFlowMatch {
   }
 
   public Integer getUdpDst() {
+    if (isWcUdpDst()) {
+      return null;
+    }
     return udpDst;
   }
 
@@ -418,6 +484,9 @@ public class OFPFlowMatch extends BasicFlowMatch {
   }
 
   public Integer getSctpSrc() {
+    if (isWcSctpSrc()) {
+      return null;
+    }
     return sctpSrc;
   }
 
@@ -427,6 +496,9 @@ public class OFPFlowMatch extends BasicFlowMatch {
   }
 
   public Integer getSctpDst() {
+    if (isWcSctpDst()) {
+      return null;
+    }
     return sctpDst;
   }
 
@@ -436,6 +508,9 @@ public class OFPFlowMatch extends BasicFlowMatch {
   }
 
   public Integer getIcmpv4Type() {
+    if (isWcIcmpv4Type()) {
+      return null;
+    }
     return icmpv4Type;
   }
 
@@ -445,6 +520,9 @@ public class OFPFlowMatch extends BasicFlowMatch {
   }
 
   public Integer getIcmpv4Code() {
+    if (isWcIcmpv4Code()) {
+      return null;
+    }
     return icmpv4Code;
   }
 
@@ -454,6 +532,9 @@ public class OFPFlowMatch extends BasicFlowMatch {
   }
 
   public Integer getArpOp() {
+    if (isWcArpOp()) {
+      return null;
+    }
     return arpOp;
   }
 
@@ -463,6 +544,9 @@ public class OFPFlowMatch extends BasicFlowMatch {
   }
 
   public String getArpSpa() {
+    if (isWcArpSpa()) {
+      return null;
+    }
     return arpSpa;
   }
 
@@ -472,6 +556,9 @@ public class OFPFlowMatch extends BasicFlowMatch {
   }
 
   public String getArpSpaMask() {
+    if (isWcArpSpaMask()) {
+      return null;
+    }
     return arpSpaMask;
   }
 
@@ -481,6 +568,9 @@ public class OFPFlowMatch extends BasicFlowMatch {
   }
 
   public String getArpTpa() {
+    if (isWcArpTpa()) {
+      return null;
+    }
     return arpTpa;
   }
 
@@ -490,6 +580,9 @@ public class OFPFlowMatch extends BasicFlowMatch {
   }
 
   public String getArpTpaMask() {
+    if (isWcArpTpaMask()) {
+      return null;
+    }
     return arpTpaMask;
   }
 
@@ -499,6 +592,9 @@ public class OFPFlowMatch extends BasicFlowMatch {
   }
 
   public String getArpSha() {
+    if (isWcArpSha()) {
+      return null;
+    }
     return arpSha;
   }
 
@@ -508,6 +604,9 @@ public class OFPFlowMatch extends BasicFlowMatch {
   }
 
   public String getArpShaMask() {
+    if (isWcArpShaMask()) {
+      return null;
+    }
     return arpShaMask;
   }
 
@@ -517,6 +616,9 @@ public class OFPFlowMatch extends BasicFlowMatch {
   }
 
   public String getArpTha() {
+    if (isWcArpTha()) {
+      return null;
+    }
     return arpTha;
   }
 
@@ -526,6 +628,9 @@ public class OFPFlowMatch extends BasicFlowMatch {
   }
 
   public String getArpThaMask() {
+    if (isWcArpThaMask()) {
+      return null;
+    }
     return arpThaMask;
   }
 
@@ -535,6 +640,9 @@ public class OFPFlowMatch extends BasicFlowMatch {
   }
 
   public String getIpv6Src() {
+    if (isWcIpv6Src()) {
+      return null;
+    }
     return ipv6Src;
   }
 
@@ -544,6 +652,9 @@ public class OFPFlowMatch extends BasicFlowMatch {
   }
 
   public String getIpv6SrcMask() {
+    if (isWcIpv6SrcMask()) {
+      return null;
+    }
     return ipv6SrcMask;
   }
 
@@ -553,6 +664,9 @@ public class OFPFlowMatch extends BasicFlowMatch {
   }
 
   public String getIpv6Dst() {
+    if(isWcIpv6Dst()) {
+      return null;
+    }
     return ipv6Dst;
   }
 
@@ -562,6 +676,9 @@ public class OFPFlowMatch extends BasicFlowMatch {
   }
 
   public String getIpv6DstMask() {
+    if (isWcIpv6DstMask()) {
+      return null;
+    }
     return ipv6DstMask;
   }
 
@@ -571,6 +688,9 @@ public class OFPFlowMatch extends BasicFlowMatch {
   }
 
   public Long getIpv6Flabel() {
+    if (isWcIpv6Flabel()) {
+      return null;
+    }
     return ipv6Flabel;
   }
 
@@ -580,6 +700,9 @@ public class OFPFlowMatch extends BasicFlowMatch {
   }
 
   public Long getIpv6FlabelMask() {
+    if (isWcIpv6FlabelMask()) {
+      return null;
+    }
     return ipv6FlabelMask;
   }
 
@@ -589,6 +712,9 @@ public class OFPFlowMatch extends BasicFlowMatch {
   }
 
   public Integer getIcmpv6Type() {
+    if (isWcIcmpv6Type()) {
+      return null;
+    }
     return icmpv6Type;
   }
 
@@ -598,6 +724,9 @@ public class OFPFlowMatch extends BasicFlowMatch {
   }
 
   public Integer getIcmpv6Code() {
+    if (isWcIcmpv6Code()) {
+      return null;
+    }
     return icmpv6Code;
   }
 
@@ -607,6 +736,9 @@ public class OFPFlowMatch extends BasicFlowMatch {
   }
 
   public String getIpv6NdTarget() {
+    if(isWcIpv6NdTarget()) {
+      return null;
+    }
     return ipv6NdTarget;
   }
 
@@ -616,6 +748,9 @@ public class OFPFlowMatch extends BasicFlowMatch {
   }
 
   public String getIpv6NdSll() {
+    if (isWcIpv6NdSll()) {
+      return null;
+    }
     return ipv6NdSll;
   }
 
@@ -625,6 +760,9 @@ public class OFPFlowMatch extends BasicFlowMatch {
   }
 
   public String getIpv6NdTll() {
+    if (isWcIpv6NdTll()) {
+      return null;
+    }
     return ipv6NdTll;
   }
 
@@ -634,6 +772,9 @@ public class OFPFlowMatch extends BasicFlowMatch {
   }
 
   public Long getMplsLabel() {
+    if (isWcMplsLabel()) {
+      return null;
+    }
     return mplsLabel;
   }
 
@@ -643,6 +784,9 @@ public class OFPFlowMatch extends BasicFlowMatch {
   }
 
   public Integer getMplsTc() {
+    if (isWcMplsTc()) {
+      return null;
+    }
     return mplsTc;
   }
 
@@ -652,6 +796,9 @@ public class OFPFlowMatch extends BasicFlowMatch {
   }
 
   public Integer getMplsBos() {
+    if (isWcMplsBos()) {
+      return null;
+    }
     return mplsBos;
   }
 
@@ -661,6 +808,9 @@ public class OFPFlowMatch extends BasicFlowMatch {
   }
 
   public Long getPbbIsid() {
+    if (isWcPbbIsid()) {
+      return null;
+    }
     return pbbIsid;
   }
 
@@ -670,6 +820,9 @@ public class OFPFlowMatch extends BasicFlowMatch {
   }
 
   public Long getPbbIsidMask() {
+    if (isWcPbbIsidMask()) {
+      return null;
+    }
     return pbbIsidMask;
   }
 
@@ -679,6 +832,9 @@ public class OFPFlowMatch extends BasicFlowMatch {
   }
 
   public String getTunnelId() {
+    if (isWcTunnelId()) {
+      return null;
+    }
     return tunnelId;
   }
 
@@ -688,6 +844,9 @@ public class OFPFlowMatch extends BasicFlowMatch {
   }
 
   public String getTunnelIdMask() {
+    if (isWcTunnelIdMask()) {
+      return null;
+    }
     return tunnelIdMask;
   }
 
@@ -697,6 +856,9 @@ public class OFPFlowMatch extends BasicFlowMatch {
   }
 
   public Integer getIpv6Exthdr() {
+    if (isWcIpv6Exthdr()) {
+      return null;
+    }
     return ipv6Exthdr;
   }
 
@@ -706,6 +868,9 @@ public class OFPFlowMatch extends BasicFlowMatch {
   }
 
   public Integer getIpv6ExthdrMask() {
+    if (isWcIpv6ExthdrMask()) {
+      return null;
+    }
     return ipv6ExthdrMask;
   }
 

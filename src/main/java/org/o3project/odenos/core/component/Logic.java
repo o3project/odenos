@@ -16,9 +16,18 @@
 
 package org.o3project.odenos.core.component;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import org.o3project.odenos.core.component.network.flow.Flow;
 import org.o3project.odenos.core.component.network.flow.FlowChanged;
 import org.o3project.odenos.core.component.network.flow.FlowObject;
+import org.o3project.odenos.core.component.network.flow.FlowObject.FlowStatus;
 import org.o3project.odenos.core.component.network.flow.basic.BasicFlow;
 import org.o3project.odenos.core.component.network.flow.basic.BasicFlowMatch;
 import org.o3project.odenos.core.component.network.flow.basic.FlowAction;
@@ -44,14 +53,6 @@ import org.o3project.odenos.remoteobject.messagingclient.MessageDispatcher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 /**
  * Logic class.
  *
@@ -59,62 +60,8 @@ import java.util.regex.Pattern;
 public abstract class Logic extends Component {
   private static final Logger log = LoggerFactory.getLogger(Logic.class);
 
-  public static final String CONN_ADD = "add";
-  public static final String CONN_UPDATE = "update";
-  public static final String CONN_DELETE = "delete";
-  public static final String NODE_CHANGED = "NODE_CHANGED";
-  public static final String PORT_CHANGED = "PORT_CHANGED";
-  public static final String LINK_CHANGED = "LINK_CHANGED";
-  public static final String FLOW_CHANGED = "FLOW_CHANGED";
-  public static final String IN_PACKET_ADDED = "IN_PACKET_ADDED";
-  public static final String OUT_PACKET_ADDED = "OUT_PACKET_ADDED";
-
   /**
-   * NetworkElements class.
-   *
-   */
-  public class NetworkElements {
-    public static final String TYPE = "type";
-    public static final String VERSION = "version";
-    public static final String NODE_ID = "node_id";
-    public static final String PORT_ID = "port_id";
-    public static final String LINK_ID = "link_id";
-    public static final String FLOW_ID = "flow_id";
-    public static final String IN_LINK = "in_link";
-    public static final String OUT_LINK = "out_link";
-    public static final String SRC_NODE = "src_node";
-    public static final String SRC_PORT = "src_port";
-    public static final String DST_NODE = "dst_node";
-    public static final String DST_PORT = "dst_port";
-    public static final String OWNER = "owner";
-    public static final String ENABLED = "enabled";
-    public static final String PRIORITY = "priority";
-    public static final String STATUS = "status";
-  }
-
-  /**
-   * AttrElements class.
-   *
-   */
-  public class AttrElements {
-    public static final String ATTRIBUTES = "attributes";
-    public static final String ADMIN_STATUS = "admin_status";
-    public static final String OPER_STATUS = "oper_status";
-    public static final String PHYSICAL_ID = "physical_id";
-    public static final String VENDOR = "vendor";
-    public static final String MAX_BANDWIDTH = "max_bandwidth";
-    public static final String UNRESERVED_BANDWIDTH = "unreserved_bandwidth";
-    public static final String IS_BOUNDARY = "is_boundary";
-    public static final String COST = "cost";
-    public static final String LATENCY = "latency";
-    public static final String BANDWIDTH = "bandwidth";
-    public static final String REQ_LATENCY = "req_latency";
-    public static final String REQ_BANDWIDTH = "req_bandwidth";
-    public static final String ESTABLISHMENT_STATUS = "establishment_status";
-  }
-
-  /**
-   * flow's keys. 
+   * flow's keys.
    */
   public static final ArrayList<String> keysFlow =
       new ArrayList<String>(Arrays.asList(
@@ -123,24 +70,23 @@ public abstract class Logic extends Component {
           NetworkElements.ENABLED, NetworkElements.PRIORITY,
           NetworkElements.STATUS));
   /**
-   * node's default attribute keys. 
+   * node's default attribute keys.
    */
   public static final ArrayList<String> attributesNode = new ArrayList<String>(
       Arrays.asList(
-          AttrElements.ADMIN_STATUS, AttrElements.OPER_STATUS,
-          AttrElements.PHYSICAL_ID, AttrElements.VENDOR));
+          AttrElements.OPER_STATUS, AttrElements.PHYSICAL_ID,
+          AttrElements.VENDOR));
   /**
-   * port's default attribute keys. 
+   * port's default attribute keys.
    */
   public static ArrayList<String> attributesPort = new ArrayList<String>(
       Arrays.asList(
-          AttrElements.ADMIN_STATUS, AttrElements.OPER_STATUS,
-          AttrElements.PHYSICAL_ID, AttrElements.VENDOR,
-          AttrElements.MAX_BANDWIDTH,
+          AttrElements.OPER_STATUS, AttrElements.PHYSICAL_ID,
+          AttrElements.VENDOR, AttrElements.MAX_BANDWIDTH,
           AttrElements.UNRESERVED_BANDWIDTH,
           AttrElements.IS_BOUNDARY));
   /**
-   * link's default attribute keys. 
+   * link's default attribute keys.
    */
   public static final ArrayList<String> attributesLink = new ArrayList<String>(
       Arrays.asList(
@@ -150,7 +96,7 @@ public abstract class Logic extends Component {
           AttrElements.UNRESERVED_BANDWIDTH,
           AttrElements.REQ_BANDWIDTH));
   /**
-   * flow's default attribute keys. 
+   * flow's default attribute keys.
    */
   public static final ArrayList<String> attributesFlow = new ArrayList<String>(
       Arrays.asList(
@@ -183,7 +129,7 @@ public abstract class Logic extends Component {
    * @param baseUri Base URI.
    * @param dispatcher Message dispatcher.
    * @throws Exception if parameter is wrong.
-   * @deprecated @see org.o3project.odenos.component.Logic#Logic(java.lang.String, org.o3project.odenos.remoteobject.messagingclient.MessageDispatcher)
+   * @deprecated @see #Logic(String, MessageDispatcher)
    */
   @Deprecated
   public Logic(
@@ -206,7 +152,7 @@ public abstract class Logic extends Component {
       throws Exception {
     super(objectId, dispatcher);
     this.conversionTable = new ConversionTable();
-    this.systemMngInterface = new SystemManagerInterface(dispatcher);
+    this.systemMngInterface = new SystemManagerInterface(dispatcher, objectId);
     this.networkInterfaces = new HashMap<String, NetworkInterface>();
   }
 
@@ -233,7 +179,7 @@ public abstract class Logic extends Component {
           return;
         }
         NetworkInterface networkInterface = new NetworkInterface(
-            this.messageDispatcher, nwcId);
+            this.messageDispatcher, nwcId, getObjectId());
         this.networkInterfaces.put(nwcId, networkInterface);
         this.onConnectionChangedAdded(message);
         return;
@@ -297,7 +243,7 @@ public abstract class Logic extends Component {
   // Event Hash Table
   // event::[action(update)]::networkComponentId => update copy attribute
   // ex) NODE_CHANGED::network1 =>
-  // [admin_status, oper_status, physical_id, vendor]
+  // [oper_status, physical_id, vendor]
   private HashMap<String, ArrayList<String>> subscriptionTable =
       new HashMap<String, ArrayList<String>>();
 
@@ -437,19 +383,18 @@ public abstract class Logic extends Component {
   // //////////////////////////////////////////////////
   @Override
   protected void onEvent(final Event event) {
-    log.debug("");
-    log.debug("onEvnet : objcetId = '" + this.getObjectId() + "'.");
+    log.debug("onEvent : objectId = '{}'.", this.getObjectId());
 
     try {
-      if (event.eventType.equals(ComponentConnectionChanged.TYPE)) {
-        log.debug("onEvnet ConnectionChanged : objcetId = '"
-            + this.getObjectId() + "'.");
+      if (ComponentConnectionChanged.TYPE.equals(event.eventType)) {
+        log.debug("onEvent ConnectionChanged : objectId = '{}'.",
+                this.getObjectId());
         onEventComponentConnection(event
             .getBody(ComponentConnectionChanged.class));
         return;
       }
 
-      log.debug("Recieved Message: " + event.eventType);
+      log.debug("Recieved Message: {}", event.eventType);
       if (event.eventType == null) {
         return;
       }
@@ -480,11 +425,11 @@ public abstract class Logic extends Component {
               event.getBody(OutPacketAdded.class));
           break;
         default:
-          log.info("Unexpected event: " + event.eventType);
+          log.info("Unexpected event: {}", event.eventType);
           break;
       }
     } catch (ParseBodyException e) {
-      log.error("Recieved Message which can't be parsed.");
+      log.error("Recieved Message which can't be parsed.", e);
     } catch (Exception e) {
       log.error("Recieved Message Exception.", e);
     }
@@ -494,9 +439,8 @@ public abstract class Logic extends Component {
       final String networkId,
       final NodeChanged msg)
       throws Exception {
-    log.debug("");
-    log.debug("Recieved NodeChangedMessag ["
-        + msg.action + "]networkId:" + networkId);
+    log.debug("Recieved NodeChangedMessage [{}]networkId:{}",
+                msg.action, networkId);
 
     String key = null;
     switch (msg.action) {
@@ -532,9 +476,8 @@ public abstract class Logic extends Component {
       final String networkId,
       final PortChanged msg)
       throws Exception {
-    log.debug("");
-    log.debug("Recieved PortChangedMessag ["
-        + msg.action + "]networkId:" + networkId);
+    log.debug("Recieved PortChangedMessage [{}]networkId:{}",
+              msg.action, networkId);
 
     String key = null;
     switch (msg.action) {
@@ -570,9 +513,8 @@ public abstract class Logic extends Component {
       final String networkId,
       final LinkChanged msg)
       throws Exception {
-    log.debug("");
-    log.debug("Recieved LinkChangedMessag ["
-        + msg.action + "]networkId_id:" + networkId);
+    log.debug("Recieved LinkChangedMessage [{}]networkId:{}",
+              msg.action, networkId);
 
     String key = null;
     switch (msg.action) {
@@ -608,9 +550,8 @@ public abstract class Logic extends Component {
       final String networkId,
       final FlowChanged msg)
       throws Exception {
-    log.debug("");
-    log.debug("Recieved FlowChangedMessag ["
-        + msg.action + "]networkId_id:" + networkId);
+    log.debug("Recieved FlowChangedMessage [{}]networkId:{}",
+              msg.action, networkId);
 
     String key = null;
     switch (msg.action) {
@@ -1112,6 +1053,10 @@ public abstract class Logic extends Component {
 
         Response resp = networkIf.putFlow(convFlow);
         respList.put(nwcId, resp);
+
+        // Update conversionTable (add flowId).
+        conversionTable.addEntryFlow(
+          networkId, flow.getFlowId(), nwcId, convFlow.getFlowId());
       } else {
         log.warn("There is no inheritance relationship with 'BasicFlow'.");
       }
@@ -1176,8 +1121,12 @@ public abstract class Logic extends Component {
       body.getHeader().setInPort(list[2]);
 
       NetworkInterface networkIfpost = networkInterfaces().get(list[0]);
-      respList.put(networkIfpost.getNetworkId(),
-          networkIfpost.postInPacket(body));
+      Port convPort = networkIfpost.getPort(nlist[1], plist[2]);
+      if ((convPort.getInLink() == null )
+          && (convPort.getInLink() == null)) {
+        respList.put(networkIfpost.getNetworkId(),
+            networkIfpost.postInPacket(body));
+      }
     } catch (Exception e) {
       log.error("Recieved Message Exception.", e);
     }
@@ -1305,28 +1254,37 @@ public abstract class Logic extends Component {
         continue;
       }
 
-      // GET node
-      Node body = networkIf.getNode(nodeId[1]);
-      if (body == null) {
-        continue;
-      }
-
-      // attributes copy (curr -> body)
+      Response resp = null;
+      int retry = 3;
       boolean updated = false;
-      Map<String, String> currAttributes = curr.getAttributes();
-      for (String key : currAttributes.keySet()) {
-        String oldAttr = body.getAttribute(key);
-        if (nodeMessageIgnoreAttributes.contains(key)
-            || (oldAttr != null && oldAttr.equals(currAttributes
-                .get(key)))) {
-          continue;
+      do {
+        // GET node
+        Node body = networkIf.getNode(nodeId[1]);
+        if (body == null) {
+          break;
         }
-        updated = true;
-        body.putAttribute(key, currAttributes.get(key));
-      }
-      if (updated) {
+
+        // attributes copy (curr -> body)
+        Map<String, String> currAttributes = curr.getAttributes();
+        for (String key : currAttributes.keySet()) {
+          String oldAttr = prev.getAttribute(key);
+          if (nodeMessageIgnoreAttributes.contains(key)
+              || (oldAttr != null && oldAttr.equals(currAttributes.get(key)))) {
+            continue;
+          }
+          updated = true;
+          body.putAttribute(key, currAttributes.get(key));
+        }
         // PUT Node
-        respList.put(dstNode, networkIf.putNode(body));
+        if (updated) {
+          resp = networkIf.putNode(body);
+          retry--;
+        }
+      } while ((resp != null)
+            && (resp.statusCode == Response.CONFLICT)
+            && (retry > 0)) ;
+      if (updated) {
+        respList.put(dstNode, resp);
       }
     }
     return respList;
@@ -1372,7 +1330,7 @@ public abstract class Logic extends Component {
       boolean updated = false;
       Map<String, String> currAttributes = curr.getAttributes();
       for (String key : currAttributes.keySet()) {
-        String oldAttr = body.getAttribute(key);
+        String oldAttr = prev.getAttribute(key);
         if (portMessageIgnoreAttributes.contains(key)
             || (oldAttr != null && oldAttr.equals(currAttributes
                 .get(key)))) {
@@ -1428,7 +1386,7 @@ public abstract class Logic extends Component {
       boolean updated = false;
       Map<String, String> currAttributes = curr.getAttributes();
       for (String key : currAttributes.keySet()) {
-        String oldAttr = body.getAttribute(key);
+        String oldAttr = prev.getAttribute(key);
         if (messageIgnoreAttributes.contains(key)
             || (oldAttr != null && oldAttr.equals(currAttributes
                 .get(key)))) {
@@ -1506,7 +1464,7 @@ public abstract class Logic extends Component {
       // attributes copy (curr -> body)
       Map<String, String> currAttributes = curr.getAttributes();
       for (String key : currAttributes.keySet()) {
-        String oldAttr = body.getAttribute(key);
+        String oldAttr = prev.getAttribute(key);
         if (messageIgnoreAttributes.contains(key)
             || (oldAttr != null && oldAttr.equals(currAttributes
                 .get(key)))) {
@@ -1677,16 +1635,31 @@ public abstract class Logic extends Component {
 
     NetworkInterface networkIf = this.networkInterfaces.get(networkId);
     Flow srcFlow = networkIf.getFlow(flow.getFlowId());
-    if (srcFlow != null) {
-      srcFlow.setEnabled(true);
-      srcFlow.setStatus(FlowObject.FlowStatus.TEARDOWN.toString());
-      networkIf.putFlow(srcFlow);
-
-      srcFlow = networkIf.getFlow(flow.getFlowId());
-      srcFlow.setEnabled(true);
-      srcFlow.setStatus(FlowObject.FlowStatus.NONE.toString());
-      networkIf.putFlow(srcFlow);
+    if (srcFlow == null) {
+      return respList;
     }
+    if (srcFlow.getStatus().equals(FlowStatus.NONE.toString())) {
+      return respList;
+    }
+    if (srcFlow.getStatus().equals(FlowStatus.TEARDOWN.toString())) {
+      return respList;
+    }
+
+    srcFlow.setEnabled(true);
+    srcFlow.setStatus(FlowObject.FlowStatus.TEARDOWN.toString());
+    networkIf.putFlow(srcFlow);
+
+    srcFlow = networkIf.getFlow(flow.getFlowId());
+    if (srcFlow == null) {
+      return respList;
+    }
+    if (srcFlow.getStatus().equals(FlowStatus.NONE.toString())) {
+      return respList;
+    }
+
+    srcFlow.setEnabled(true);
+    srcFlow.setStatus(FlowObject.FlowStatus.NONE.toString());
+    networkIf.putFlow(srcFlow);
 
     conversionTable.delEntryFlow(networkId, flow.getFlowId());
     return respList;
@@ -1756,7 +1729,7 @@ public abstract class Logic extends Component {
 
     try {
       /**
-       * convert matches. 
+       * convert matches.
        */
       List<BasicFlowMatch> matches = convFlow.getMatches();
       List<BasicFlowMatch> convMatches = new ArrayList<>();
@@ -1789,8 +1762,8 @@ public abstract class Logic extends Component {
           convMatches.add(convMatch); // append match
         }
       }
-      log.info("before:" + matches.toString());
-      log.info("after: " + convMatches.toString());
+      log.debug("{} Matches: {}", networkId, matches);
+      log.debug("Converted Matches: {}", convMatches);
       /**
        * convert actions.
        */
@@ -1815,7 +1788,11 @@ public abstract class Logic extends Component {
             ArrayList<String> convPortId = conversionTable.getPort(
                 networkId, nodeId, outputAct.getOutput());
             if (convPortId.size() == 0) {
-              log.error("not found conversion port (flow.action's output).");
+              log.warn("not found conversion port (flow.action Drop).");
+              if (!convEdgeActions.containsKey(edgeNodeId)) {
+                convEdgeActions.put(edgeNodeId, new ArrayList<FlowAction>());
+              }
+              convEdgeActions.get(edgeNodeId).add(new FlowActionOutput(""));
               continue;
             }
             String[] plist = convPortId.get(0).split("::");
@@ -1831,8 +1808,8 @@ public abstract class Logic extends Component {
           }
         }
       }
-      log.info("before: " + edgeActions.toString());
-      log.info("after: " + convEdgeActions.toString());
+      log.debug("{} EdgeAction: {}", networkId, edgeActions);
+      log.debug("Converted EdgeAction: {}", convEdgeActions);
       /**
        * convert path.
        */
@@ -1846,14 +1823,18 @@ public abstract class Logic extends Component {
         ArrayList<String> convLinkId =
             conversionTable.getLink(networkId, linkId);
         if (convLinkId.size() == 0) {
-          log.error("not found conversion link (flow.path's linkId).");
+          if (!getDescription().contains("Aggregator")) {
+            // FIXME Dirty hack: If the Logic is Aggregator,
+            // no corresponding Link is expected.
+            log.error("not found conversion link (flow.path's linkId).");
+          }
           continue;
         }
         String[] llist = convLinkId.get(0).split("::");
         convPath.add(llist[1]);
       }
-      log.info("before: " + path.toString());
-      log.info("after: " + convPath.toString());
+      log.debug("{} Path: {}", networkId, path);
+      log.debug("Converted Path: {}", convPath);
 
       /**
        * set conversion matches, actions, path.
@@ -1895,7 +1876,7 @@ public abstract class Logic extends Component {
         ignorekeys.remove(updatekey);
       }
     }
-    log.debug("ignore key_list:: " + ignorekeys);
+    log.debug("ignore key_list:: {}", ignorekeys);
     return ignorekeys;
   }
 

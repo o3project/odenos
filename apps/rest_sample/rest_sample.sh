@@ -1,4 +1,4 @@
-#!bin/sh
+#!/bin/sh
 
 # Copyright 2015 NEC Corporation.                                          #
 #                                                                          #
@@ -18,7 +18,7 @@
 unset http_proxy
 
 FORMAT="\n%{url_effective}, %{response_code}\n\n"
-ADDRESS=0.0.0.0
+ADDRESS=127.0.0.1
 
 
 # create NetworkComponent and LinkLayerizer
@@ -36,25 +36,25 @@ curl -w "$FORMAT" http://$ADDRESS:10080/systemmanager/connections -X POST -d '{"
 curl http://$ADDRESS:10080/systemmanager/connections | python -mjson.tool
 
 sleep 1
-curl -w "$FORMAT" http://$ADDRESS:10080/network0/topology/nodes/node001 -X PUT -d '{"id": "node001", "type": "Node", "version: "0", "ports": {}, "attributes": {}}'
-curl -w "$FORMAT" http://$ADDRESS:10080/network0/topology/nodes/node002 -X PUT -d '{"id": "node002", "type": "Node", "version: "0", "ports": {}, "attributes": {}}'
-curl -w "$FORMAT" http://$ADDRESS:10080/network0/topology/nodes/node003 -X PUT -d '{"id": "node003", "type": "Node", "version: "0", "ports": {}, "attributes": {}}'
+curl -w "$FORMAT" http://$ADDRESS:10080/network0/topology/nodes/node001 -X PUT -d '{"node_id": "node001", "type": "Node", "ports": {}, "attributes": {}}'
+curl -w "$FORMAT" http://$ADDRESS:10080/network0/topology/nodes/node002 -X PUT -d '{"node_id": "node002", "type": "Node", "ports": {}, "attributes": {}}'
+curl -w "$FORMAT" http://$ADDRESS:10080/network0/topology/nodes/node003 -X PUT -d '{"node_id": "node003", "type": "Node", "ports": {}, "attributes": {}}'
 sleep 1
-curl -w "$FORMAT" http://$ADDRESS:10080/network0/topology/nodes/node001/ports/port0011 -X PUT -d '{"type": "Port", "version": "0", "node_id": "node001", "port_id": "port0011", "out_link": null, "in_link": null, "attributes": {}}'
-curl -w "$FORMAT" http://$ADDRESS:10080/network0/topology/nodes/node001/ports/port0012 -X PUT -d '{"type": "Port", "version": "0", "node_id": "node001", "port_id": "port0012", "out_link": null, "in_link": null, "attributes": {}}'
-curl -w "$FORMAT" http://$ADDRESS:10080/network0/topology/nodes/node001/ports/port0013 -X PUT -d '{"type": "Port", "version": "0", "node_id": "node001", "port_id": "port0013", "out_link": null, "in_link": null, "attributes": {}}'
-curl -w "$FORMAT" http://$ADDRESS:10080/network0/topology/nodes/node002/ports/port0021 -X PUT -d '{"type": "Port", "version": "0", "node_id": "node002", "port_id": "port0021", "out_link": null, "in_link": null, "attributes": {}}'
-curl -w "$FORMAT" http://$ADDRESS:10080/network0/topology/nodes/node002/ports/port0022 -X PUT -d '{"type": "Port", "version": "0", "node_id": "node002", "port_id": "port0022", "out_link": null, "in_link": null, "attributes": {}}'
-curl -w "$FORMAT" http://$ADDRESS:10080/network0/topology/nodes/node002/ports/port0023 -X PUT -d '{"type": "Port", "version": "0", "node_id": "node002", "port_id": "port0023", "out_link": null, "in_link": null, "attributes": {}}'
-curl -w "$FORMAT" http://$ADDRESS:10080/network0/topology/nodes/node002/ports/port0024 -X PUT -d '{"type": "Port", "version": "0", "node_id": "node002", "port_id": "port0024", "out_link": null, "in_link": null, "attributes": {}}'
-curl -w "$FORMAT" http://$ADDRESS:10080/network0/topology/nodes/node003/ports/port0031 -X PUT -d '{"type": "Port", "version": "0", "node_id": "node003", "port_id": "port0031", "out_link": null, "in_link": null, "attributes": {}}'
-curl -w "$FORMAT" http://$ADDRESS:10080/network0/topology/nodes/node003/ports/port0032 -X PUT -d '{"type": "Port", "version": "0", "node_id": "node003", "port_id": "port0032", "out_link": null, "in_link": null, "attributes": {}}'
-curl -w "$FORMAT" http://$ADDRESS:10080/network0/topology/nodes/node003/ports/port0033 -X PUT -d '{"type": "Port", "version": "0", "node_id": "node003", "port_id": "port0033", "out_link": null, "in_link": null, "attributes": {}}'
+curl -w "$FORMAT" http://$ADDRESS:10080/network0/topology/nodes/node001/ports/port0011 -X PUT -d '{"type": "Port", "node_id": "node001", "port_id": "port0011", "out_link": null, "in_link": null, "attributes": {}}'
+curl -w "$FORMAT" http://$ADDRESS:10080/network0/topology/nodes/node001/ports/port0012 -X PUT -d '{"type": "Port", "node_id": "node001", "port_id": "port0012", "out_link": null, "in_link": null, "attributes": {}}'
+curl -w "$FORMAT" http://$ADDRESS:10080/network0/topology/nodes/node001/ports/port0013 -X PUT -d '{"type": "Port", "node_id": "node001", "port_id": "port0013", "out_link": null, "in_link": null, "attributes": {}}'
+curl -w "$FORMAT" http://$ADDRESS:10080/network0/topology/nodes/node002/ports/port0021 -X PUT -d '{"type": "Port", "node_id": "node002", "port_id": "port0021", "out_link": null, "in_link": null, "attributes": {}}'
+curl -w "$FORMAT" http://$ADDRESS:10080/network0/topology/nodes/node002/ports/port0022 -X PUT -d '{"type": "Port", "node_id": "node002", "port_id": "port0022", "out_link": null, "in_link": null, "attributes": {}}'
+curl -w "$FORMAT" http://$ADDRESS:10080/network0/topology/nodes/node002/ports/port0023 -X PUT -d '{"type": "Port", "node_id": "node002", "port_id": "port0023", "out_link": null, "in_link": null, "attributes": {}}'
+curl -w "$FORMAT" http://$ADDRESS:10080/network0/topology/nodes/node002/ports/port0024 -X PUT -d '{"type": "Port", "node_id": "node002", "port_id": "port0024", "out_link": null, "in_link": null, "attributes": {}}'
+curl -w "$FORMAT" http://$ADDRESS:10080/network0/topology/nodes/node003/ports/port0031 -X PUT -d '{"type": "Port", "node_id": "node003", "port_id": "port0031", "out_link": null, "in_link": null, "attributes": {}}'
+curl -w "$FORMAT" http://$ADDRESS:10080/network0/topology/nodes/node003/ports/port0032 -X PUT -d '{"type": "Port", "node_id": "node003", "port_id": "port0032", "out_link": null, "in_link": null, "attributes": {}}'
+curl -w "$FORMAT" http://$ADDRESS:10080/network0/topology/nodes/node003/ports/port0033 -X PUT -d '{"type": "Port", "node_id": "node003", "port_id": "port0033", "out_link": null, "in_link": null, "attributes": {}}'
 sleep 1
-curl -w "$FORMAT" http://$ADDRESS:10080/network0/topology/links/link0012 -X PUT -d '{"type": "Link", "version": "0", "link_id": "link0012", "src_node": "node001", "src_port": "port0011", "dst_node": "node002", "dst_port": "port0021", "attributes": {}}'
-curl -w "$FORMAT" http://$ADDRESS:10080/network0/topology/links/link0021 -X PUT -d '{"type": "Link", "version": "0", "link_id": "link0021", "src_node": "node002", "src_port": "port0021", "dst_node": "node001", "dst_port": "port0011", "attributes": {}}'
-curl -w "$FORMAT" http://$ADDRESS:10080/network0/topology/links/link0023 -X PUT -d '{"type": "Link", "version": "0", "link_id": "link0023", "src_node": "node002", "src_port": "port0022", "dst_node": "node003", "dst_port": "port0031", "attributes": {}}'
-curl -w "$FORMAT" http://$ADDRESS:10080/network0/topology/links/link0032 -X PUT -d '{"type": "Link", "version": "0", "link_id": "link0032", "src_node": "node003", "src_port": "port0031", "dst_node": "node002", "dst_port": "port0022", "attributes": {}}'
+curl -w "$FORMAT" http://$ADDRESS:10080/network0/topology/links/link0012 -X PUT -d '{"type": "Link", "link_id": "link0012", "src_node": "node001", "src_port": "port0011", "dst_node": "node002", "dst_port": "port0021", "attributes": {}}'
+curl -w "$FORMAT" http://$ADDRESS:10080/network0/topology/links/link0021 -X PUT -d '{"type": "Link", "link_id": "link0021", "src_node": "node002", "src_port": "port0021", "dst_node": "node001", "dst_port": "port0011", "attributes": {}}'
+curl -w "$FORMAT" http://$ADDRESS:10080/network0/topology/links/link0023 -X PUT -d '{"type": "Link", "link_id": "link0023", "src_node": "node002", "src_port": "port0022", "dst_node": "node003", "dst_port": "port0031", "attributes": {}}'
+curl -w "$FORMAT" http://$ADDRESS:10080/network0/topology/links/link0032 -X PUT -d '{"type": "Link", "link_id": "link0032", "src_node": "node003", "src_port": "port0031", "dst_node": "node002", "dst_port": "port0022", "attributes": {}}'
 
 curl http://$ADDRESS:10080/systemmanager/components/network1/topology -X GET | python -mjson.tool
 

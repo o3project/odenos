@@ -25,6 +25,7 @@ import org.msgpack.unpacker.Unpacker;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -139,7 +140,7 @@ public class ComponentConnection implements MessagePackable, Cloneable {
   public final void setProperty(final String key, final String value) {
     if (!isReadOnlyKey(key)) {
       String oldValue = property.get(key);
-      if (oldValue != value) {
+      if (!Objects.equals(oldValue, value)) {
         property.put(key, value);
         if (componentConnectionChangedListener != null) {
           componentConnectionChangedListener
@@ -151,7 +152,7 @@ public class ComponentConnection implements MessagePackable, Cloneable {
   }
 
   protected Boolean isReadOnlyKey(String key) {
-    return key == OBJECT_ID || key == OBJECT_TYPE;
+    return OBJECT_ID.equals(key) || OBJECT_TYPE.equals(key);
   }
 
   public final String getProperty(final String key) {

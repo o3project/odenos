@@ -1,0 +1,11 @@
+language: java
+jdk:
+  - oraclejdk7
+  - openjdk7
+  - oraclejdk8
+
+before_install:
+  - sudo service redis-server restart
+
+script:
+  - mvn test javadoc:javadoc -B

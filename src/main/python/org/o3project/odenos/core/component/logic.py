@@ -71,7 +71,7 @@ class Logic(Component):
         # SystemManager IF
         if self.dispatcher is None:
             return
-        self._sys_manager_interface = SystemManagerInterface(dispatcher)
+        self._sys_manager_interface = SystemManagerInterface(dispatcher, object_id)
 
     ###################################
     # Receive ComponentConnectionChanged
@@ -93,7 +93,7 @@ class Logic(Component):
                 if network_id in self._network_interfaces:
                     return
                 self._network_interfaces[network_id] = \
-                    NetworkInterface(self.dispatcher, network_id)
+                    NetworkInterface(self.dispatcher, network_id, self.object_id)
                 self._connection_changed_added(msg)
         elif msg.action == ComponentConnectionChanged.Action.UPDATE:
             if (self._connection_changed_update_pre(msg)):
@@ -845,8 +845,8 @@ class Logic(Component):
     keys_flow = ["type", "version", "flow_id", "owner",
                  "enabled", "priority", "status"]
 
-    attributes_node = ["admin_status", "oper_status", "physical_id", "vendor"]
-    attributes_port = ["admin_status", "oper_status", "physical_id", "vendor",
+    attributes_node = ["oper_status", "physical_id", "vendor"]
+    attributes_port = ["oper_status", "physical_id", "vendor",
                        "max_bandwidth", "unreserved_bandwidth", "is_boundary"]
     attributes_link = ["oper_status", "cost", "latency", "req_latency",
                        "max_bandwidth", "unreserved_bandwidth",

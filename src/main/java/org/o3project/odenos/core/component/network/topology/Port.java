@@ -28,6 +28,7 @@ import org.o3project.odenos.remoteobject.message.BaseObject;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * Switch Port data class.
@@ -36,16 +37,33 @@ import java.util.Map;
 public class Port extends BaseObject implements Cloneable {
   private static final int MSG_NUM_MIN = 1;
   private static final int MSG_NUM_MAX = 7;
-  private String type = "Port";
   private String portId;
   private String nodeId;
   private String outLink;
   private String inLink;
 
+  /* NetworkElements */
+  public static final String TYPE = "type";
+  public static final String VERSION = "version";
+  public static final String NODE_ID = "node_id";
+  public static final String PORT_ID = "port_id";
+  public static final String IN_LINK = "in_link";
+  public static final String OUT_LINK = "out_link";
+  public static final String ATTRIBUTES = "attributes";
+
+  /* AttrbuteElements */
+  public static final String OPER_STATUS = "oper_status";
+  public static final String MAX_BANDWIDTH = "max_bandwidth";
+  public static final String UNRESERVED_BANDWIDTH = "unreserved_bandwidth";
+  public static final String PHYSICAL_ID = "physical_id";
+  public static final String VENDOR = "vendor";
+  public static final String IS_BOUNDARY = "is_boundary";
+
   /**
    * Constructor.
    */
   public Port() {
+    initElements(this.INITIAL_VERSION, null, null, null, null, null);
   }
 
   /**
@@ -53,7 +71,7 @@ public class Port extends BaseObject implements Cloneable {
    * @param portId port id that is unique in the Node.
    */
   public Port(String portId) {
-    this.portId = portId;
+    initElements(this.INITIAL_VERSION, portId, null, null, null, null);
   }
 
   /**
@@ -62,8 +80,7 @@ public class Port extends BaseObject implements Cloneable {
    * @param nodeId Port belongs to this node id.
    */
   public Port(String portId, String nodeId) {
-    this(portId);
-    this.nodeId = nodeId;
+    initElements(this.INITIAL_VERSION, portId, nodeId, null, null, null);
   }
 
   /**
@@ -73,8 +90,7 @@ public class Port extends BaseObject implements Cloneable {
    * @param nodeId Port belongs to this node id.
    */
   public Port(String version, String portId, String nodeId) {
-    this(portId, nodeId);
-    this.setVersion(version);
+    initElements(version, portId, nodeId, null, null, null);
   }
 
   /**
@@ -88,10 +104,36 @@ public class Port extends BaseObject implements Cloneable {
    */
   public Port(String version, String portId, String nodeId,
       String outLink, String inLink, Map<String, String> attributes) {
-    this(version, portId, nodeId);
-    this.outLink = outLink;
-    this.inLink = inLink;
+    initElements(version, portId, nodeId, outLink, inLink, attributes);
+  }
+
+  protected void initElements(
+      String version, String portId, String nodeId,
+      String outLink, String inLink, Map<String, String> attributes) {
+
+    this.setType("Port");
+    this.setVersion(version);
+    this.setNode(nodeId);
+    this.setId(portId);
+    this.setOutLink(outLink);
+    this.setInLink(inLink);
     this.putAttributes(attributes);
+
+    if(attributes != null) {
+      this.putAttributes(attributes);
+    }
+    if(!this.isAttribute(OPER_STATUS)) {
+      this.putAttribute(OPER_STATUS, STATUS_UP);
+    }
+    if(!this.isAttribute(PHYSICAL_ID)) {
+      this.putAttribute(PHYSICAL_ID, portId + "@" + nodeId);
+    }
+    if(!this.isAttribute(VENDOR)) {
+      this.putAttribute(VENDOR, "unknown");
+    }
+    if(!this.isAttribute(IS_BOUNDARY)) {
+      this.putAttribute(IS_BOUNDARY, "false");
+    }
   }
 
   /**
@@ -109,20 +151,12 @@ public class Port extends BaseObject implements Cloneable {
    * @return true if parameter is valid.
    */
   public boolean validate() {
-    if (this.nodeId == null
-        || this.portId == null
-        || this.type == null) {
+    if (this.getNode() == null
+        || this.getId() == null
+        || this.getType() == null) {
       return false;
     }
     return true;
-  }
-
-  /**
-   * Returns a type of port.
-   * @return type of port.
-   */
-  public String getType() {
-    return type;
   }
 
   /**
@@ -199,10 +233,10 @@ public class Port extends BaseObject implements Cloneable {
 
     while (size-- > 0) {
       switch (upk.readString()) {
-        case "type":
-          type = upk.readString();
+        case TYPE:
+          this.setType(upk.readString());
           break;
-        case "version":
+        case VERSION:
           if (upk.getNextType() == ValueType.NIL) {
             upk.readNil();
             setVersion("0");
@@ -210,7 +244,7 @@ public class Port extends BaseObject implements Cloneable {
             setVersion(upk.readString());
           }
           break;
-        case "port_id":
+        case PORT_ID:
           if (upk.getNextType() == ValueType.NIL) {
             upk.readNil();
             portId = null;
@@ -218,7 +252,7 @@ public class Port extends BaseObject implements Cloneable {
             portId = upk.readString();
           }
           break;
-        case "node_id":
+        case NODE_ID:
           if (upk.getNextType() == ValueType.NIL) {
             upk.readNil();
             nodeId = null;
@@ -226,7 +260,7 @@ public class Port extends BaseObject implements Cloneable {
             nodeId = upk.readString();
           }
           break;
-        case "out_link":
+        case OUT_LINK:
           if (upk.getNextType() == ValueType.NIL) {
             upk.readNil();
             outLink = null;
@@ -234,7 +268,7 @@ public class Port extends BaseObject implements Cloneable {
             outLink = upk.readString();
           }
           break;
-        case "in_link":
+        case IN_LINK:
           if (upk.getNextType() == ValueType.NIL) {
             upk.readNil();
             inLink = null;
@@ -242,7 +276,7 @@ public class Port extends BaseObject implements Cloneable {
             inLink = upk.readString();
           }
           break;
-        case "attributes":
+        case ATTRIBUTES:
           putAttributes(upk.read(tMap(TString, TString)));
           break;
         default:
@@ -257,33 +291,33 @@ public class Port extends BaseObject implements Cloneable {
   public void writeTo(Packer pk) throws IOException {
     pk.writeMapBegin(MSG_NUM_MAX);
 
-    pk.write("type");
-    pk.write(type);
+    pk.write(TYPE);
+    pk.write(getType());
 
-    pk.write("version");
+    pk.write(VERSION);
     pk.write(getVersion());
 
-    pk.write("port_id");
+    pk.write(PORT_ID);
     pk.write(portId);
 
-    pk.write("node_id");
+    pk.write(NODE_ID);
     pk.write(nodeId);
 
-    pk.write("out_link");
+    pk.write(OUT_LINK);
     if (outLink != null) {
       pk.write(outLink);
     } else {
       pk.writeNil();
     }
 
-    pk.write("in_link");
+    pk.write(IN_LINK);
     if (inLink != null) {
       pk.write(inLink);
     } else {
       pk.writeNil();
     }
 
-    pk.write("attributes");
+    pk.write(ATTRIBUTES);
     pk.write(getAttributes());
 
     pk.writeMapEnd();
@@ -307,14 +341,12 @@ public class Port extends BaseObject implements Cloneable {
     Port portMessage = (Port) obj;
 
     try {
-      if (portMessage.getType().equals(this.type)
+      if (portMessage.getType().equals(this.getType())
           && portMessage.getVersion().equals(this.getVersion())
           && portMessage.getId().equals(this.portId)
           && portMessage.getNode().equals(this.nodeId)
-          && String.format("%s", portMessage.getOutLink()).equals(
-              String.format("%s", this.outLink))
-          && String.format("%s", portMessage.getInLink()).equals(
-              String.format("%s", this.inLink))
+          && Objects.equals(portMessage.getOutLink(), this.outLink)
+          && Objects.equals(portMessage.getInLink(), this.inLink)
           && portMessage.getAttributes().equals(this.getAttributes())) {
         return true;
       }
@@ -336,14 +368,13 @@ public class Port extends BaseObject implements Cloneable {
   public String toString() {
 
     ToStringBuilder sb = new ToStringBuilder(this);
-    sb.append("version", getVersion());
-    sb.append("portId", portId);
-    sb.append("nodeId", nodeId);
-    sb.append("outLink", outLink);
-    sb.append("inLink", inLink);
-    sb.append("attributes", getAttributes());
+    sb.append(VERSION, getVersion());
+    sb.append(PORT_ID, portId);
+    sb.append(NODE_ID, nodeId);
+    sb.append(OUT_LINK, outLink);
+    sb.append(IN_LINK, inLink);
+    sb.append(ATTRIBUTES, getAttributes());
 
     return sb.toString();
-
   }
 }

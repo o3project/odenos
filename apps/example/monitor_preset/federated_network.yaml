@@ -1,0 +1,13 @@
+# Object IDs
+object_ids:
+  - systemmanager
+  - romger1
+  - dummy-driver01
+  - original-nw01
+  - dummy-driver02
+  - original-nw02
+  - federator
+  - federated-nw
+  - leaning-switch
+
+    

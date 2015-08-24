@@ -45,6 +45,12 @@ class MessageDispatcher:
     SYSTEM_MANAGER_ID = "systemmanager"
     TIME_RETRY_INTERVAL = 100
 
+    # For monitor
+    MONITOR_CHANNEL = "_monitor"
+    REQUEST = "REQUEST"
+    RESPONSE = "RESPONSE"
+    EVENT = "EVENT"
+
     class EventSubscriptionMap:
 
         def __init__(self):
@@ -104,7 +110,8 @@ class MessageDispatcher:
 
     def __init__(self, system_manager_id=SYSTEM_MANAGER_ID,
                  redis_server=REDIS_SERVER,
-                 redis_port=REDIS_PORT):
+                 redis_port=REDIS_PORT,
+                 enable_monitor=False):
         self.__clients = {}
         self.__local_objects = {}
         self.__event_manager_id = None
@@ -116,8 +123,12 @@ class MessageDispatcher:
         self.__redisSubscriberThread = None
         self.__redisSubscriber = None
         self.__redisPublisherThread = None
-        self.__redisPubliser = None
+        self.__redisPublisher = None
         self.__subscription_map = self.EventSubscriptionMap()
+        self.__enable_monitor=enable_monitor
+    
+    def monitor_enabled(self):
+        return self.__enable_monitor
 
     def __redisPublisherRunnable(self):
         while (True):
@@ -125,7 +136,7 @@ class MessageDispatcher:
             if pubs is None:
                 break
             try:
-                self.__redisPubliser.publish(pubs.channel, pubs.data)
+                self.__redisPublisher.publish(pubs.channel, pubs.data)
             except:
                 if pubs.type == self.TYPE_REQUEST:
                     if pubs.trans is not None:
@@ -139,6 +150,7 @@ class MessageDispatcher:
             if mesg['type'] != 'message':
                 continue
             try:
+                channel = mesg['channel']
                 bio = BytesIO()
                 bio.write(mesg['data'])
                 bio.seek(0)
@@ -150,32 +162,49 @@ class MessageDispatcher:
                     request = Request.create_from_packed(upk.unpack())
 
                     def request_runnable(request, sno, srcid):
-                        response = self.dispatch_request(request)
-                        pk = msgpack.Packer()
-                        resb = bytearray()
-                        resb.extend(pk.pack(self.TYPE_RESPONSE))
-                        resb.extend(pk.pack(sno))
-                        resb.extend(pk.pack(request.object_id))
-                        resb.extend(pk.pack(response.packed_object()))
-                        self.__pubsqueue.put(
-                            MessageDispatcher.PublishData(None,
-                                                          self.TYPE_RESPONSE,
-                                                          sno,
-                                                          srcid,
-                                                          resb))
+                        try:
+                            response = self.dispatch_request(request)
+                            pk = msgpack.Packer()
+                            resb = bytearray()
+                            resb.extend(pk.pack(self.TYPE_RESPONSE))
+                            resb.extend(pk.pack(sno))
+                            resb.extend(pk.pack(request.object_id))
+                            resb.extend(pk.pack(response.packed_object()))
+                            self.__pubsqueue.put(
+                                MessageDispatcher.PublishData(None,
+                                                              self.TYPE_RESPONSE,
+                                                              sno,
+                                                              srcid,
+                                                              resb))
+                        except:
+                            logging.exception('Request processing error')
                     self.thread_pool.submit(request_runnable,
                                             request,
                                             sno,
                                             srcid)
+                    if self.monitor_enabled():  # Monitor
+                        self.publish_reflected_request(channel,
+                                                       srcid,
+                                                       sno,
+                                                       request)
+                                            
                 elif tp == self.TYPE_RESPONSE:
                     trans = self.__clients[srcid]
                     response = Response.create_from_packed(upk.unpack())
                     trans.signalResponse(sno, response)
+                    if self.monitor_enabled():  # Monitor
+                        self.publish_reflected_response(channel,
+                                                        srcid,
+                                                        sno,
+                                                        response)
                 elif tp == self.TYPE_EVENT:
                     event = Event.create_from_packed(upk.unpack())
 
                     def event_runnable(event):
-                        self.dispatch_event(event)
+                        try:
+                            self.dispatch_event(channel, event)
+                        except:
+                            logging.exception('Event processing error')
                     self.thread_pool.submit(event_runnable, event)
             except:
                 logging.error(traceback.format_exc())
@@ -183,7 +212,7 @@ class MessageDispatcher:
 
     def start(self):
         self.thread_pool = futures.ThreadPoolExecutor(max_workers=8)
-        self.__redisPubliser = redis.StrictRedis(host=self.__redisServer,
+        self.__redisPublisher = redis.StrictRedis(host=self.__redisServer,
                                                  port=self.__redisPort)
         self.__redisSubscriber = redis.StrictRedis(
             host=self.__redisServer,
@@ -234,7 +263,7 @@ class MessageDispatcher:
         return self.__sourceDispatcherId
 
     def getRedisPublisher(self):
-        return self.__redisPubliser
+        return self.__redisPublisher
 
     def __update_subscriber(self):
         if self.__redisSubscriber is not None:
@@ -277,10 +306,13 @@ class MessageDispatcher:
         self.__clients[self.system_manager_id] = \
             RemoteMessageTransport(self.system_manager_id, self)
 
-    def request_sync(self, request):
+    def request_sync(self, request, source_object_id=None):
+        '''
+        Note: source_object_id is required for the ODENOS monitor tool.
+        '''
         client = self.__get_message_client(request.object_id)
         logging.debug("[request_sync ]:send to " + client.object_id)
-        return client.send_request_message(request)
+        return client.send_request_message(request, source_object_id)
 
     def publish_event_async(self, event):
         pk = msgpack.Packer()
@@ -295,6 +327,63 @@ class MessageDispatcher:
                               event.publisher_id + ":" + event.event_type,
                               resb)
 
+    def publish_reflected_request(self, channel, source_object_id, sno, request):
+        '''
+        Publishes an event as a reflected request to the monitor.
+        Note: this function is for the ODENOS monitor tool.
+        '''
+        pk = msgpack.Packer()
+        resb = bytearray()
+        resb.extend(pk.pack(self.REQUEST))
+        resb.extend(pk.pack(channel))
+        resb.extend(pk.pack(source_object_id))
+        resb.extend(pk.pack(sno))
+        resb.extend(pk.pack(request.method))
+        resb.extend(pk.pack("/" + channel + "/" + request.path))
+        resb.extend(pk.pack(request.packed_object()))
+        self.pushPublishQueue(None,
+                              self.TYPE_REQUEST,
+                              sno,
+                              self.MONITOR_CHANNEL,
+                              resb)
+
+    def publish_reflected_response(self, channel, source_object_id, sno, response):
+        '''
+        Publishes an event as a reflected response to the monitor.
+        Note: this function is for the ODENOS monitor tool.
+        '''
+        pk = msgpack.Packer()
+        resb = bytearray()
+        resb.extend(pk.pack(self.RESPONSE))
+        resb.extend(pk.pack(channel))
+        resb.extend(pk.pack(source_object_id))
+        resb.extend(pk.pack(sno))
+        resb.extend(pk.pack(response.status_code))
+        resb.extend(pk.pack(response.packed_object()))
+        self.pushPublishQueue(None,
+                              self.TYPE_RESPONSE,
+                              sno,
+                              self.MONITOR_CHANNEL,
+                              resb)
+
+    def publish_reflected_event(self, channel, subscriber, event):
+        '''
+        Publishes an event as a reflected event to the monitor.
+        Note: this function is for the ODENOS monitor tool.
+        '''
+        pk = msgpack.Packer()
+        resb = bytearray()
+        resb.extend(pk.pack(self.EVENT))
+        resb.extend(pk.pack(subscriber))
+        resb.extend(pk.pack(event.publisher_id))
+        resb.extend(pk.pack(channel))
+        resb.extend(pk.pack(event.packed_object()))
+        self.pushPublishQueue(None,
+                              self.TYPE_EVENT,
+                              0,
+                              self.MONITOR_CHANNEL,
+                              resb)
+
     def subscribe_event(self, event_subscription):
         self.__subscription_map.remove_subscription(
             event_subscription.subscriber_id)
@@ -306,7 +395,7 @@ class MessageDispatcher:
                           Request.Method.PUT,
                           "settings/event_subscriptions/%s" % event_subscription.subscriber_id,
                           event_subscription)
-        return self.request_sync(request)
+        return self.request_sync(request, self.get_source_dispatcher_id())
 
     def pushPublishQueue(self, trans, type_, sno, channel, data):
         self.__pubsqueue.put(MessageDispatcher.PublishData(trans,
@@ -322,17 +411,19 @@ class MessageDispatcher:
         else:
             return Response(404, None)
 
-    def dispatch_event(self, event):
+    def dispatch_event(self, channel, event):
         subscribers = self.__subscription_map.get_subscribers(
             event.publisher_id,
             event.event_type)
         del_obj_ids = []
-        for es in subscribers:
+        for es in subscribers.copy():
             if es in self.__local_objects:
                 if self.__local_objects[es] is None:
                     del_obj_ids.append(es)
                     continue
                 self.__local_objects[es].dispatch_event(event)
+                if self.monitor_enabled():  # Monitor
+                    self.publish_reflected_event(channel, es, event)
         for id in del_obj_ids:
             del self.__local_objects[id]
             self.__subscription_map.remove_subscription(id)

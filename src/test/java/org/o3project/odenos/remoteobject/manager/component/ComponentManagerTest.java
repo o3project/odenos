@@ -286,7 +286,7 @@ public class ComponentManagerTest {
     dispatcher = Mockito.mock(MessageDispatcher.class);
     Response dummyResp = new Response(Response.OK, null);
 
-    doReturn(dummyResp).when(dispatcher).requestSync((Request) anyObject());
+    doReturn(dummyResp).when(dispatcher).requestSync((Request) anyObject(), anyString());
 
     target = PowerMockito.spy(new ComponentManager(objectId, dispatcher));
 
@@ -310,7 +310,7 @@ public class ComponentManagerTest {
     Response mockResp = Mockito.mock(Response.class,
         Mockito.CALLS_REAL_METHODS);
 
-    doReturn(mockResp).when(dispatcher).requestSync((Request) anyObject());
+    doReturn(mockResp).when(dispatcher).requestSync((Request) anyObject(), anyString());
 
     target = PowerMockito.spy(new ComponentManager(objectId, dispatcher));
 
@@ -331,7 +331,7 @@ public class ComponentManagerTest {
         "EventManager");
     Response resp = new Response(Response.OK, prop);
 
-    doReturn(resp).when(dispatcher).requestSync((Request) anyObject());
+    doReturn(resp).when(dispatcher).requestSync((Request) anyObject(), anyString());
 
     target = PowerMockito.spy(new ComponentManager(objectId, dispatcher));
     PowerMockito.doReturn("eventmanager").when(target, "getEventManagerId");
@@ -357,7 +357,7 @@ public class ComponentManagerTest {
         Mockito.CALLS_REAL_METHODS);
 
     doReturn(mockResponse).when(dispatcher).requestSync(
-        (Request) anyObject());
+        (Request) anyObject(), anyString());
 
     target = PowerMockito.spy(new ComponentManager(objectId, dispatcher));
 
@@ -383,7 +383,7 @@ public class ComponentManagerTest {
         Mockito.CALLS_REAL_METHODS);
 
     doReturn(mockResponse).when(dispatcher).requestSync(
-        (Request) anyObject());
+        (Request) anyObject(), anyString());
 
     target = PowerMockito.spy(new ComponentManager(objectId, dispatcher));
 
@@ -407,7 +407,7 @@ public class ComponentManagerTest {
     dispatcher = Mockito.mock(MessageDispatcher.class);
     Response resp = new Response(Response.OK, null);
 
-    doReturn(resp).when(dispatcher).requestSync((Request) anyObject());
+    doReturn(resp).when(dispatcher).requestSync((Request) anyObject(), anyString());
 
     target = PowerMockito.spy(new ComponentManager(objectId, dispatcher));
 
@@ -432,7 +432,7 @@ public class ComponentManagerTest {
         Mockito.CALLS_REAL_METHODS);
 
     doReturn(mockResponse).when(dispatcher).requestSync(
-        (Request) anyObject());
+        (Request) anyObject(), anyString());
 
     target = PowerMockito.spy(new ComponentManager(objectId, dispatcher));
 
@@ -457,7 +457,7 @@ public class ComponentManagerTest {
     propList.add(new ObjectProperty("Network", "network1"));
     Response resp = new Response(Response.OK, propList);
 
-    doReturn(resp).when(dispatcher).requestSync((Request) anyObject());
+    doReturn(resp).when(dispatcher).requestSync((Request) anyObject(), anyString());
 
     target = PowerMockito.spy(new ComponentManager(objectId, dispatcher));
 
@@ -486,7 +486,7 @@ public class ComponentManagerTest {
         Mockito.CALLS_REAL_METHODS);
 
     doReturn(mockResponse).when(dispatcher).requestSync(
-        (Request) anyObject());
+        (Request) anyObject(), anyString());
 
     target = PowerMockito.spy(new ComponentManager(objectId, dispatcher));
 

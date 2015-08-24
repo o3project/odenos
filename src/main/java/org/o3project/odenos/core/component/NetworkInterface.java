@@ -72,18 +72,35 @@ public class NetworkInterface {
   private String networkId;
   private MessageDispatcher dispatcher;
 
+  private String sourceObjectId;
+
   /**
    * Constructor.
    * @param dispatcher Message Dispatcher object.
    * @param nwcId network ID.
    */
+  @Deprecated
   public NetworkInterface(
       final MessageDispatcher dispatcher,
       final String nwcId) {
     this.networkId = nwcId;
     this.dispatcher = dispatcher;
-    log.debug("Create NetworkInterface : networkId = '" + this.networkId
-        + "'.");
+    log.debug("Create NetworkInterface : networkId = '{}'.", this.networkId);
+  }
+
+  /**
+   * Constructor.
+   * @param dispatcher Message Dispatcher object.
+   * @param nwcId network ID.
+   * @param sourceObjectId source objectID
+   */
+  public NetworkInterface(
+      final MessageDispatcher dispatcher,
+      final String nwcId, final String sourceObjectId) {
+    this.networkId = nwcId;
+    this.dispatcher = dispatcher;
+    this.sourceObjectId = sourceObjectId;
+    log.debug("Create NetworkInterface : networkId = '{}'.", this.networkId);
   }
 
   /**
@@ -120,8 +137,7 @@ public class NetworkInterface {
    */
   public final Topology getTopology() {
     String path = TOPOLOGY_PATH;
-    log.debug(">> "
-        + String.format(" [networkId : '%s']", this.networkId));
+    log.debug(">>  [networkId : '{}']", this.networkId);
     Response resp = getObjectToNetwork(this.networkId, path);
     if (resp == null) {
       return null;
@@ -147,8 +163,7 @@ public class NetworkInterface {
    */
   public final Response putTopology(final Topology body) {
     String path = TOPOLOGY_PATH;
-    log.debug(">> "
-        + String.format(" [networkId : '%s']", this.networkId));
+    log.debug(">>  [networkId : '{}']", this.networkId);
     return putObjectToNetwork(this.networkId, path, body);
   }
 
@@ -171,8 +186,7 @@ public class NetworkInterface {
    */
   public final Response postNode(final Node body) {
     String path = NODES_PATH;
-    log.debug(">> "
-        + String.format(" [networkId : '%s']", this.networkId));
+    log.debug(">>  [networkId : '{}']", this.networkId);
     return postObjectToNetwork(this.networkId, path, body);
   }
 
@@ -188,8 +202,7 @@ public class NetworkInterface {
    */
   public final Map<String, Node> getNodes() {
     String path = NODES_PATH;
-    log.debug(">> "
-        + String.format(" [networkId : '%s']", this.networkId));
+    log.debug(">>  [networkId : '{}']", this.networkId);
     Response resp = getObjectToNetwork(this.networkId, path);
     if (resp == null) {
       return null;
@@ -215,8 +228,7 @@ public class NetworkInterface {
    */
   public final Node getNode(final String nodeId) {
     String path = String.format(NODE_PATH, nodeId);
-    log.debug(">> "
-        + String.format(" [networkId : '%s']", this.networkId));
+    log.debug(">>  [networkId : '{}']", this.networkId);
     Response resp = getObjectToNetwork(this.networkId, path);
     if (resp == null) {
       return null;
@@ -242,8 +254,7 @@ public class NetworkInterface {
    */
   public final Response putNode(final Node body) {
     String path = String.format(NODE_PATH, body.getId());
-    log.debug(">> "
-        + String.format(" [networkId : '%s']", this.networkId));
+    log.debug(">>  [networkId : '{}']", this.networkId);
     return putObjectToNetwork(this.networkId, path, body);
   }
 
@@ -260,8 +271,7 @@ public class NetworkInterface {
    */
   public final Response delNode(final String nodeId) {
     String path = String.format(NODE_PATH, nodeId);
-    log.debug(">> "
-        + String.format(" [networkId : '%s']", this.networkId));
+    log.debug(">>  [networkId : '{}']", this.networkId);
     return delObjectToNetwork(this.networkId, path);
   }
 
@@ -278,8 +288,7 @@ public class NetworkInterface {
    */
   public final Node getPhysicalNode(final String physicalId) {
     String path = String.format(PHYSICAL_NODES_PATH, physicalId);
-    log.debug(">> "
-        + String.format(" [networkId : '%s']", this.networkId));
+    log.debug(">>  [networkId : '{}']", this.networkId);
     Response resp = getObjectToNetwork(this.networkId, path);
     if (resp == null) {
       return null;
@@ -306,8 +315,7 @@ public class NetworkInterface {
   public final Response putPhysicalNode(final Node body) {
     String path = String.format(PHYSICAL_NODES_PATH,
         body.getAttribute(Logic.AttrElements.PHYSICAL_ID));
-    log.debug(">> "
-        + String.format(" [networkId : '%s']", this.networkId));
+    log.debug(">>  [networkId : '{}']", this.networkId);
     return putObjectToNetwork(this.networkId, path, body);
   }
 
@@ -324,8 +332,7 @@ public class NetworkInterface {
    */
   public final Response delPhysicalNode(final String physicalId) {
     String path = String.format(PHYSICAL_NODES_PATH, physicalId);
-    log.debug(">> "
-        + String.format(" [networkId : '%s']", this.networkId));
+    log.debug(">>  [networkId : '{}']", this.networkId);
     return delObjectToNetwork(this.networkId, path);
   }
 
@@ -348,8 +355,7 @@ public class NetworkInterface {
    */
   public final Response postPort(final Port body) {
     String path = String.format(PORTS_PATH, body.getNode());
-    log.debug(">> "
-        + String.format(" [networkId : '%s']", this.networkId));
+    log.debug(">>  [networkId : '{}']", this.networkId);
     return postObjectToNetwork(this.networkId, path, body);
   }
 
@@ -366,8 +372,7 @@ public class NetworkInterface {
    */
   public final Map<String, Port> getPorts(String nodeId) {
     String path = String.format(PORTS_PATH, nodeId);
-    log.debug(">> "
-        + String.format(" [networkId : '%s']", this.networkId));
+    log.debug(">>  [networkId : '{}']", this.networkId);
     Response resp = getObjectToNetwork(this.networkId, path);
     if (resp == null) {
       return null;
@@ -395,8 +400,7 @@ public class NetworkInterface {
   public final Port getPort(
       final String nodeId, final String portId) {
     String path = String.format(PORT_PATH, nodeId, portId);
-    log.debug(">> "
-        + String.format(" [networkId : '%s']", this.networkId));
+    log.debug(">>  [networkId : '{}']", this.networkId);
     Response resp = getObjectToNetwork(this.networkId, path);
     if (resp == null) {
       return null;
@@ -423,8 +427,7 @@ public class NetworkInterface {
   public final Response putPort(final Port body) {
     String path =
         String.format(PORT_PATH, body.getNode(), body.getId());
-    log.debug(">> "
-        + String.format(" [networkId : '%s']", this.networkId));
+    log.debug(">>  [networkId : '{}']", this.networkId);
     return putObjectToNetwork(this.networkId, path, body);
   }
 
@@ -443,8 +446,7 @@ public class NetworkInterface {
   public final Response delPort(
       final String nodeId, final String portId) {
     String path = String.format(PORT_PATH, nodeId, portId);
-    log.debug(">> "
-        + String.format(" [networkId : '%s']", this.networkId));
+    log.debug(">>  [networkId : '{}']", this.networkId);
     return delObjectToNetwork(this.networkId, path);
   }
 
@@ -461,8 +463,7 @@ public class NetworkInterface {
    */
   public final Port getPhysicalPort(final String physicalId) {
     String path = String.format(PHYSICAL_PORTS_PATH, physicalId);
-    log.debug(">> "
-        + String.format(" [networkId : '%s']", this.networkId));
+    log.debug(">>  [networkId : '{}']", this.networkId);
     Response resp = getObjectToNetwork(this.networkId, path);
     if (resp == null) {
       return null;
@@ -489,8 +490,7 @@ public class NetworkInterface {
   public final Response putPhysicalPort(final Port body) {
     String path = String.format(PHYSICAL_PORTS_PATH,
         body.getAttribute(Logic.AttrElements.PHYSICAL_ID));
-    log.debug(">> "
-        + String.format(" [networkId : '%s']", this.networkId));
+    log.debug(">>  [networkId : '{}']", this.networkId);
     return putObjectToNetwork(this.networkId, path, body);
   }
 
@@ -507,8 +507,8 @@ public class NetworkInterface {
    */
   public final Response delPhysicalPort(final String physicalId) {
     String path = String.format(PHYSICAL_PORTS_PATH, physicalId);
-    log.debug(">> "
-        + String.format(" [networkId : '%s']", this.networkId));
+    log.debug(">>  [networkId : '{}']", this.networkId);
+
     return delObjectToNetwork(this.networkId, path);
   }
 
@@ -531,8 +531,7 @@ public class NetworkInterface {
    */
   public final Response postLink(final Link body) {
     String path = LINKS_PATH;
-    log.debug(">> "
-        + String.format(" [networkId : '%s']", this.networkId));
+    log.debug(">>  [networkId : '{}']", this.networkId);
     return postObjectToNetwork(this.networkId, path, body);
   }
 
@@ -548,8 +547,7 @@ public class NetworkInterface {
    */
   public final Map<String, Link> getLinks() {
     String path = LINKS_PATH;
-    log.debug(">> "
-        + String.format(" [networkId : '%s']", this.networkId));
+    log.debug(">>  [networkId : '{}']", this.networkId);
     Response resp = getObjectToNetwork(this.networkId, path);
     if (resp == null) {
       return null;
@@ -575,8 +573,7 @@ public class NetworkInterface {
    */
   public final Link getLink(final String linkId) {
     String path = String.format(LINK_PATH, linkId);
-    log.debug(">> "
-        + String.format(" [networkId : '%s']", this.networkId));
+    log.debug(">>  [networkId : '{}']", this.networkId);
     Response resp = getObjectToNetwork(this.networkId, path);
     if (resp == null) {
       return null;
@@ -602,8 +599,7 @@ public class NetworkInterface {
    */
   public final Response putLink(final Link body) {
     String path = String.format(LINK_PATH, body.getId());
-    log.debug(">> "
-        + String.format(" [networkId : '%s']", this.networkId));
+    log.debug(">>  [networkId : '{}']", this.networkId);
     return putObjectToNetwork(this.networkId, path, body);
   }
 
@@ -620,8 +616,7 @@ public class NetworkInterface {
    */
   public final Response delLink(final String linkId) {
     String path = String.format(LINK_PATH, linkId);
-    log.debug(">> "
-        + String.format(" [networkId : '%s']", this.networkId));
+    log.debug(">>  [networkId : '{}']", this.networkId);
     return delObjectToNetwork(this.networkId, path);
   }
 
@@ -644,8 +639,7 @@ public class NetworkInterface {
    */
   public final Response postFlow(final Flow body) {
     String path = FLOWS_PATH;
-    log.debug(">> "
-        + String.format(" [networkId : '%s']", this.networkId));
+    log.debug(">>  [networkId : '{}']", this.networkId);
     return postObjectToNetwork(this.networkId, path, body);
   }
 
@@ -661,8 +655,7 @@ public class NetworkInterface {
    */
   public final FlowSet getFlowSet() {
     String path = FLOWS_PATH;
-    log.debug(">> "
-        + String.format(" [networkId : '%s']", this.networkId));
+    log.debug(">>  [networkId : '{}']", this.networkId);
     Response resp = getObjectToNetwork(this.networkId, path);
     if (resp == null) {
       return null;
@@ -688,8 +681,7 @@ public class NetworkInterface {
    */
   public final Flow getFlow(final String flowId) {
     String path = String.format(FLOW_PATH, flowId);
-    log.debug(">> "
-        + String.format(" [networkId : '%s']", this.networkId));
+    log.debug(">>  [networkId : '{}']", this.networkId);
     Response resp = getObjectToNetwork(this.networkId, path);
     if (resp == null) {
       return null;
@@ -715,8 +707,7 @@ public class NetworkInterface {
    */
   public final Response putFlow(final Flow body) {
     String path = String.format(FLOW_PATH, body.getFlowId());
-    log.debug(">> "
-        + String.format(" [networkId : '%s']", this.networkId));
+    log.debug(">>  [networkId : '{}'] {}", this.networkId, body.getFlowId());
     return putObjectToNetwork(this.networkId, path, body);
   }
 
@@ -733,8 +724,7 @@ public class NetworkInterface {
    */
   public final Response delFlow(final String flowId) {
     String path = String.format(FLOW_PATH, flowId);
-    log.debug(">> "
-        + String.format(" [networkId : '%s']", this.networkId));
+    log.debug(">>  [networkId : '{}'] {}", this.networkId, flowId);
 
     Flow flow = getFlow(flowId);
     if (flow == null) {
@@ -745,7 +735,7 @@ public class NetworkInterface {
       Response resp = sendRequest(this.networkId,
           Request.Method.DELETE, path, flow);
       if (resp.isError("DELETE")) {
-        log.warn("invalid DELETE:" + resp.statusCode);
+        log.warn("invalid DELETE:{}", resp.statusCode);
       }
       return resp;
     } catch (Exception e) {
@@ -772,8 +762,7 @@ public class NetworkInterface {
    */
   public final PacketStatus getPackets() {
     String path = PACKETS_PATH;
-    log.debug(">> "
-        + String.format(" [networkId : '%s']", this.networkId));
+    log.debug(">>  [networkId : '{}']", this.networkId);
     Response resp = getObjectToNetwork(this.networkId, path);
     if (resp == null) {
       return null;
@@ -799,8 +788,7 @@ public class NetworkInterface {
    */
   public final Response postInPacket(final InPacket body) {
     String path = INPACKETS_PATH;
-    log.debug(">> "
-        + String.format(" [networkId : '%s']", this.networkId));
+    log.debug(">>  [networkId : '{}']", this.networkId);
     return postObjectToNetwork(this.networkId, path, body);
   }
 
@@ -816,8 +804,7 @@ public class NetworkInterface {
    */
   public final PacketStatus getInPackets() {
     String path = INPACKETS_PATH;
-    log.debug(">> "
-        + String.format(" [networkId : '%s']", this.networkId));
+    log.debug(">>  [networkId : '{}']", this.networkId);
     Response resp = getObjectToNetwork(this.networkId, path);
     if (resp == null) {
       return null;
@@ -842,8 +829,7 @@ public class NetworkInterface {
    */
   public final Response delInPackets() {
     String path = INPACKETS_PATH;
-    log.debug(">> "
-        + String.format(" [networkId : '%s']", this.networkId));
+    log.debug(">>  [networkId : '{}']", this.networkId);
     return delObjectToNetwork(this.networkId, path);
   }
 
@@ -859,8 +845,7 @@ public class NetworkInterface {
    */
   public final InPacket getInPacketHead() {
     String path = INPACKETS_HEAD_PATH;
-    log.debug(">> "
-        + String.format(" [networkId : '%s']", this.networkId));
+    log.debug(">>  [networkId : '{}']", this.networkId);
     Response resp = getObjectToNetwork(this.networkId, path);
     if (resp == null) {
       return null;
@@ -885,8 +870,7 @@ public class NetworkInterface {
    */
   public final Response delInPacketHead() {
     String path = INPACKETS_HEAD_PATH;
-    log.debug(">> "
-        + String.format(" [networkId : '%s']", this.networkId));
+    log.debug(">>  [networkId : '{}']", this.networkId);
     return delObjectToNetwork(this.networkId, path);
   }
 
@@ -903,8 +887,7 @@ public class NetworkInterface {
    */
   public final InPacket getInPacket(final String packetId) {
     String path = String.format(INPACKET_PATH, packetId);
-    log.debug(">> "
-        + String.format(" [networkId : '%s']", this.networkId));
+    log.debug(">>  [networkId : '{}']", this.networkId);
     Response resp = getObjectToNetwork(this.networkId, path);
     if (resp == null) {
       return null;
@@ -930,8 +913,7 @@ public class NetworkInterface {
    */
   public final Response delInPacket(final String id) {
     String path = String.format(INPACKET_PATH, id);
-    log.debug(">> "
-        + String.format(" [networkId : '%s']", this.networkId));
+    log.debug(">>  [networkId : '{}']", this.networkId);
     return delObjectToNetwork(this.networkId, path);
   }
 
@@ -948,8 +930,7 @@ public class NetworkInterface {
    */
   public final Response postOutPacket(final OutPacket body) {
     String path = OUTPACKETS_PATH;
-    log.debug(">> "
-        + String.format(" [networkId : '%s']", this.networkId));
+    log.debug(">>  [networkId : '{}']", this.networkId);
     return postObjectToNetwork(this.networkId, path, body);
   }
 
@@ -965,8 +946,7 @@ public class NetworkInterface {
    */
   public final PacketStatus getOutPackets() {
     String path = OUTPACKETS_PATH;
-    log.debug(">> "
-        + String.format(" [networkId : '%s']", this.networkId));
+    log.debug(">>  [networkId : '{}']", this.networkId);
     Response resp = getObjectToNetwork(this.networkId, path);
     if (resp == null) {
       return null;
@@ -991,8 +971,7 @@ public class NetworkInterface {
    */
   public final Response delOutPackets() {
     String path = OUTPACKETS_PATH;
-    log.debug(">> "
-        + String.format(" [networkId : '%s']", this.networkId));
+    log.debug(">>  [networkId : '{}']", this.networkId);
     return delObjectToNetwork(this.networkId, path);
   }
 
@@ -1007,8 +986,7 @@ public class NetworkInterface {
    */
   public final OutPacket getOutPacketHead() {
     String path = OUTPACKETS_HEAD_PATH;
-    log.debug(">> "
-        + String.format(" [networkId : '%s']", this.networkId));
+    log.debug(">>  [networkId : '{}']", this.networkId);
     Response resp = getObjectToNetwork(this.networkId, path);
     if (resp == null) {
       return null;
@@ -1032,8 +1010,7 @@ public class NetworkInterface {
    */
   public final Response delOutPacketHead() {
     String path = OUTPACKETS_HEAD_PATH;
-    log.debug(">> "
-        + String.format(" [networkId : '%s']", this.networkId));
+    log.debug(">>  [networkId : '{}']", this.networkId);
     return delObjectToNetwork(this.networkId, path);
   }
 
@@ -1049,8 +1026,7 @@ public class NetworkInterface {
    */
   public final OutPacket getOutPacket(final String packetId) {
     String path = String.format(OUTPACKET_PATH, packetId);
-    log.debug(">> "
-        + String.format(" [networkId : '%s']", this.networkId));
+    log.debug(">>  [networkId : '{}']", this.networkId);
     Response resp = getObjectToNetwork(this.networkId, path);
     if (resp == null) {
       return null;
@@ -1077,8 +1053,7 @@ public class NetworkInterface {
   public final Response delOutPacket(
       final String id) {
     String path = String.format(OUTPACKET_PATH, id);
-    log.debug(">> "
-        + String.format(" [networkId : '%s']", this.networkId));
+    log.debug(">>  [networkId : '{}']", this.networkId);
     return delObjectToNetwork(this.networkId, path);
   }
 
@@ -1095,8 +1070,7 @@ public class NetworkInterface {
    */
   public final Response putAttributeOfNode(
       final Map<String, String> attributes) {
-    log.debug(">> "
-        + String.format(" [networkId : '%s']", this.networkId));
+    log.debug(">>  [networkId : '{}']", this.networkId);
 
     Response resp = new Response(Response.OK, null);
     if (attributes == null || attributes.size() == 0) {
@@ -1135,8 +1109,7 @@ public class NetworkInterface {
    * @return list of responses.
    */
   public final List<Response> putStatusFaildAllFlow() {
-    log.debug(">> "
-        + String.format(" [networkId : '%s']", this.networkId));
+    log.debug(">>  [networkId : '{}']", this.networkId);
 
     List<Response> resps = new ArrayList<Response>();
     FlowSet flowSet = this.getFlowSet();
@@ -1158,8 +1131,7 @@ public class NetworkInterface {
    * @return list of response.
    */
   public final List<Response> deleteAllFlow() {
-    log.debug(">> "
-        + String.format(" [networkId : '%s']", this.networkId));
+    log.debug(">>  [networkId : '{}']", this.networkId);
 
     List<Response> resps = new ArrayList<Response>();
     FlowSet flowSet = this.getFlowSet();
@@ -1179,8 +1151,7 @@ public class NetworkInterface {
    * @return list of response.
    */
   public final List<Response> deleteTopology() {
-    log.debug(">> "
-        + String.format(" [networkId : '%s']", this.networkId));
+    log.debug(">>  [networkId : '{}']", this.networkId);
 
     List<Response> resps = new ArrayList<Response>();
     Topology topology = this.getTopology();
@@ -1210,6 +1181,31 @@ public class NetworkInterface {
     return resps;
   }
 
+  /**
+   * Requests a "GET inLink".
+   * @param port Port Object
+   * @return link Object.
+   */
+  public final Link getInLink(final Port port) {
+    String inLink = port.getInLink();
+    if (inLink == null) {
+      return null;
+    }
+    return this.getLink(inLink);
+  }
+  /**
+   * Requests a "GET outLink".
+   * @param port Port Object
+   * @return link Object.
+   */
+  public final Link getOutLink(final Port port) {
+    String outLink = port.getOutLink();
+    if (outLink == null) {
+      return null;
+    }
+    return this.getLink(outLink);
+  }
+
   // //////////////////////////////////////////////////
   //
   // common method ( private )
@@ -1218,15 +1214,13 @@ public class NetworkInterface {
 
   private Response postObjectToNetwork(
       final String nwcId, final String path, final Object body) {
-    log.debug(">> "
-        + String.format(" [networkId : '%s']", this.networkId));
+    log.debug(">>  [networkId : '{}']", this.networkId);
 
     try {
       Response resp = sendRequest(nwcId, Request.Method.POST, path, body);
       if (resp.isError("POST")) {
-        String msg = String.format("invalid POST(%s) to %s: '%s' %s",
-            resp.statusCode, nwcId, path, resp.getBodyValue());
-        log.warn(msg);
+        log.warn("invalid POST({}) to {}: '{}' {}",
+                 resp.statusCode, nwcId, path, resp.getBodyValue());
       }
       return resp;
     } catch (Exception e) {
@@ -1237,15 +1231,13 @@ public class NetworkInterface {
 
   private Response putObjectToNetwork(
       final String nwcId, final String path, final Object body) {
-    log.debug(">> "
-        + String.format(" [networkId : '%s']", this.networkId));
+    log.debug(">>  [networkId : '{}']", this.networkId);
 
     try {
       Response resp = sendRequest(nwcId, Request.Method.PUT, path, body);
       if (resp.isError("PUT")) {
-        String msg = String.format("invalid PUT(%s) to %s: '%s' %s",
-            resp.statusCode, nwcId, path, resp.getBodyValue());
-        log.warn(msg);
+        log.warn("invalid PUT({}) to {}: '{}' {}",
+                 resp.statusCode, nwcId, path, resp.getBodyValue());
       }
       return resp;
     } catch (Exception e) {
@@ -1257,16 +1249,14 @@ public class NetworkInterface {
   private Response delObjectToNetwork(
       final String nwcId,
       final String path) {
-    log.debug(">> "
-        + String.format(" [networkId : '%s']", this.networkId));
+    log.debug(">>  [networkId : '{}']", this.networkId);
 
     try {
       Response resp = sendRequest(nwcId, Request.Method.DELETE, path,
           null);
       if (resp.isError("DELETE")) {
-        String msg = String.format("invalid DELETE(%s) to %s: '%s' %s",
-            resp.statusCode, nwcId, path, resp.getBodyValue());
-        log.warn(msg);
+        log.warn("invalid DELETE({}) to {}: '{}' {}",
+                 resp.statusCode, nwcId, path, resp.getBodyValue());
       }
       return resp;
     } catch (Exception e) {
@@ -1277,15 +1267,13 @@ public class NetworkInterface {
 
   private Response getObjectToNetwork(
       String nwcId, String path) {
-    log.debug(">> "
-        + String.format(" [networkId : '%s']", this.networkId));
+    log.debug(">>  [networkId : '{}']", this.networkId);
 
     try {
       Response resp = sendRequest(nwcId, Request.Method.GET, path, null);
       if (resp.isError("GET")) {
-        String msg = String.format("invalid GET(%s) to %s: '%s' %s",
-            resp.statusCode, nwcId, path, resp.getBodyValue());
-        log.warn(msg);
+        log.warn("invalid GET({}) to {}: '{}' {}",
+                 resp.statusCode, nwcId, path, resp.getBodyValue());
         return null;
       }
       return resp;
@@ -1297,13 +1285,12 @@ public class NetworkInterface {
 
   private Response sendRequest(final String objId,
       final Request.Method method, final String path, final Object body) {
-    log.debug(">> "
-        + String.format(" [networkId : '%s']", this.networkId));
+    log.debug(">>  [networkId : '{}']", this.networkId);
 
     Response rsp = null;
     Request req = new Request(objId, method, path, body);
     try {
-      rsp = this.dispatcher.requestSync(req);
+      rsp = this.dispatcher.requestSync(req, sourceObjectId);
     } catch (Exception e) {
       log.error("Recieved Message Exception.", e);
       return new Response(Response.INTERNAL_SERVER_ERROR, null);

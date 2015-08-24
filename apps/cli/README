@@ -4,38 +4,37 @@ clio (CLI for OdenOS)
 Installation
 ------------
 
-1. This script requires Python 3.
+1. This script requires Python 3.4.
 
-2. You need to have these packages pre-installed: httplib2, pyyaml and mako(optional).
-$ pip3 install httplib2
-$ pip3 install pyyaml
-$ pip3 install mako 
+2. You need to have these packages pre-installed: httplib2, pyyaml, mako(optional) and readline.
+$ sudo apt-get install python3-pip
+$ sudo pip3 install httplib2
+$ sudo pip3 install pyyaml
+$ sudo pip3 install mako
+$ sudo pip3 install readline
 
 3. Build an artifact "generator".
 $ mvn compile
 
 Note that a maven artifact "odenos" must be installed into your local maven repo (i.e., ~/.m2, just run "mvn install") before building the generator.
 
-4. modify etc/odenos.conf
-#PROCESS romgr1,java,apps/java/sample_components/target/classes
-PROCESS romgr1,java,apps/cli/target/classes
-
-5. Start OdenOS
+4. Start OdenOS
+$ odenos start -c apps/cli/odenos.conf
 
 Optionally, you may set a clio init file name to 'CLIO_INIT' like this:
 export CLIO_INIT=$HOME/somedir/init.yaml
 
 clio requests can traverse a proxy. Just set a proxy address to http_proxy:
-export http_proxy=(your proxy address) 
+export http_proxy=(your proxy address)
 
 
 CLI features
 -------------
 
 * Python-shell-like CLI
-* Command auto-complete with pre-defined schema and history 
+* Command auto-complete with pre-defined schema and history
 * URL params and REST body as YAML data
-* Command pipeline: producer | coroutine | coroutine | ... | consumer 
+* Command pipeline: producer | coroutine | coroutine | ... | consumer
 * CLI add-on: filter, transform, producer and fancy_output as coroutines
 * CLI macro definition
 * Scenario execution
@@ -49,7 +48,7 @@ clio architecture:
     +----------------------+
     |                      |
     | CLIO core    [filter add-on]
-    |              [transform add-on] 
+    |              [transform add-on]
     |              [producer add-on]
     |              [fancy_output add-on]
     | [Macro]              |- - - - - +
@@ -106,7 +105,6 @@ lsw:
 ...
 node003:
   attributes:
-    admin_status: UP
     oper_status: UP
     physical_id: '003'
     vendor: VENDOR_A
@@ -150,9 +148,9 @@ By adding '*' to the path, key-value pairs in the body is automaticlaly shown.
 ...   generating: true
 ...   maxSeqno: 65535
 ...   payload: Hello OdenOS!
-...   
+...
 
->>> 
+>>>
 
 
 clio as a scenario runner
@@ -163,17 +161,17 @@ clio as a scenario runner
 * The scenario file may include "- cli" to suspend the execution and to jump to CLI. Entering "q" quits CLI and then resumes the scenario execution. Optionally "- cli" may include "tag" that is used as a resume point when CLI is terminated.
 * Two kinds of scenario formats are supported: pure YAML and CLI style.
 * You can omit '-m' or '-c' option by including '#!mako' or '#!cli' or '#!mako!cli' in the scenario headline.
-* You may include 'generators' to auto-generate a large network. 
+* You may include 'generators' to auto-generate a large network.
 
 
 Sample clio scenarios
 ---------------------
 
 To create a fat tree topology:
-$ clio scenarios/topologies/fat_tree.yaml
+$ ./clio scenarios/topologies/fat_tree.yaml
 
 To create 1000 nodes with a ring topology:
-$ clio scenarios/topologies/1000nodes_ring.yaml  
+$ ./clio scenarios/topologies/1000nodes_ring.yaml
 
 
 pipeline-oriented
@@ -215,22 +213,22 @@ filter (uses "dict_grep" function in util.py)
 transform (uses "substitute" function in util.py)
     |send()
     V
-generated REST request 
+generated REST request
 
 Example:
->>> a nodes 
+>>> a nodes
 --- filter: nodes ---
 path: /node(\d+)/attributes/physical_id/
 value: \d+
->>> a show_node 
+>>> a show_node
 --- transform: show_node ---
 read: /network1/topology/nodes/node{0}
->>> read /network1/topology/nodes | nodes 
+>>> read /network1/topology/nodes | nodes
 ----- filter output ----------------------------------------------------------
 /node003/ 003
 /node002/ 002
 /node001/ 001
->>> read /network1/topology/nodes | nodes | show_node 
+>>> read /network1/topology/nodes | nodes | show_node
                  :
     (REST API output about node001, node002 and node003)
                  :
@@ -243,13 +241,13 @@ producer with filters and transforms
 
 clio provides "producer" that generate data.
 
-producer.py 
+producer.py
     |send()
     V
 transform (uses "substitute" function in util.py)
     |send()
     V
-generated REST requests 
+generated REST requests
 
 Example:
 >>> produce topo_ring node | create_node | rest_request
@@ -290,31 +288,31 @@ clio's default preset file ("preset.yaml") includes the following macros:
 Usage
 -----
 To initiate CLI:
-$ clio
+$ ./clio
 
 To load and execute a scenario "preset.yaml":
-$ clio preset.yaml
+$ ./clio preset.yaml
 
 To initiate CLI with update_schema option:
-$ clio -u
+$ ./clio -u
 
 To initiate CLI with verbose option:
-$ clio -v
+$ ./clio -v
 
-To run a scenario "rest_test.cli" (clio CLI format): 
-$ clio -c rest_test.cli
+To run a scenario "rest_test.cli" (clio CLI format):
+$ ./clio -c rest_test.cli
 
-To run a scenario "rest_test.yaml" (pure YAML format): 
-$ clio rest_test.yaml
+To run a scenario "rest_test.yaml" (pure YAML format):
+$ ./clio rest_test.yaml
 
 To run the scenario and to show all the output in JSON:
-$ clio -j rest_test.yaml
+$ ./clio -j rest_test.yaml
 
 To run a scenario with Python script embedded (uses Mako):
-$ clio -m rest_aggregator2.yaml
+$ ./clio -m rest_aggregator2.yaml
 
 To show the auto-generated scenario:
-$ clio -M rest_aggregator2.yaml
+$ ./clio -M rest_aggregator2.yaml
 
 To resume a scenario starting from tag 1:
 $ clio -m -t 1 rest_aggregator2.yaml

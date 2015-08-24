@@ -29,42 +29,54 @@ Python or Ruby environment, please see "Appendix A".
 1. Install jdk and maven
 
    ```
-   $ sudo apt-get install maven openjdk-7-jdk
-   $ export JAVA_HOME=/usr/lib/jvm/default-java
+   $ sudo apt-get install git maven openjdk-7-jdk curl
+   $ export JAVA_HOME=/usr/lib/jvm/java-7-openjdk-amd64
    ```
 
 ## 2. Build, Run, Test
 
-1. Build
+1. git clone
+
+   ```
+   $ git clone https://github.com/o3project/odenos.git
+   $ cd odenos
+   ```
+
+2. Build
 
    ```
    $ mvn package
    ```
 
-2. Start odenos
+3. Start odenos
 
    ```
    $ ./odenos start
    ```
 
-3. Stop odenos
+4. Stop odenos
 
    ```
    $ ./odenos stop
   ```
 
-4. run unit tests (if you want)
+5. run unit tests (if you want)
 
    ```
    $ ./run-unittests.sh
    ```
 
-5. run examples (if you want)
+6. run examples (if you want)
 
    ```
    $ cd apps/example
    $ ./run-example.sh all
    ```
+
+## 3. Let's try ODENOS examples with Mininet
+* [Single Node](../apps/mininet_examples/single_node_control/README.md)
+* [Single Network](../apps/mininet_examples/single_network_control/README.md)
+* [Multiple Networks](../apps/mininet_examples/multi_network_control/README.md)
 
 
 ## Appendix A: Setup Additional Environments
@@ -74,8 +86,8 @@ Python or Ruby environment, please see "Appendix A".
 1. Install python packages
 
    ```
-   $ sudo apt-get install python-setuptools
-   $ sudo -E easy_install msgpack-python redis futures mock coverage
+   $ sudo apt-get install python-setuptools python-dev
+   $ sudo -E easy_install msgpack-python redis futures mock coverage kazoo
    ```
 
 2. Add the following line to *./etc/odenos.conf*
@@ -92,11 +104,12 @@ Python or Ruby environment, please see "Appendix A".
 1. Install rvm, ruby2.0.0 and gem package
 
    ```
+   $ cd ./odenos
    $ sudo apt-get --purge remove ruby rubygems
    $ curl -L https://get.rvm.io | bash -s stable --ruby
    $ source ~/.rvm/scripts/rvm
-   $ rvm install ruby-2.0.0-p576
-   $ rvm use --default ruby-2.0.0-p576
+   $ rvm install ruby-2.0.0-p643
+   $ rvm use --default ruby-2.0.0-p643
    $ gem install bundler
    $ bundle install
    $ bundle update
@@ -155,7 +168,7 @@ Try the following instruction:
    $ gem source -r https://rubygems.org/
    ```
 
-2. Check souce site
+2. Check source site
 
    ```
    $ gem source -l
@@ -169,3 +182,7 @@ Try the following instruction:
    ```
    $ gem install bundler
    ```
+
+### Q. Where could I find other technical documents (API, etc.)?
+
+Please start looking from here [doc/api](/doc/api/index.md)

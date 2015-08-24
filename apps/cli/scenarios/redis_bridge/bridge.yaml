@@ -1,0 +1,10 @@
+# OdenOS base configuration
+- macro: create_bridge
+  scenario:
+    - put: /systemmanager/components/bridge
+      body:
+        type: Bridge
+        id: redis-bridge
+        cm_id: romgr1 
+    - post: /redis-bridge/{0}
+    - post: /redis-bridge/{1}

@@ -52,18 +52,32 @@ public class SystemManagerInterface {
   public static final String OBJECT_PATH = "objects/%s";
 
   private MessageDispatcher dispatcher;
+  private String sourceObjectId = null;
 
   /**
    * Constructor.
    * @param dispatcher Message Dispatcher object.
    */
+  @Deprecated
   public SystemManagerInterface(
       final MessageDispatcher dispatcher) {
     this.dispatcher = dispatcher;
-    log.debug("Create SystemManagerInterface : Id = '"
-        + this.getSystemManagerId() + "'.");
+    log.debug("Create SystemManagerInterface : Id = '{}'.", this.getSystemManagerId());
   }
 
+  /**
+   * Constructor.
+   * @param dispatcher Message Dispatcher object.
+   * @param sourceObjectId String
+   */
+  public SystemManagerInterface(
+      final MessageDispatcher dispatcher,
+      final String sourceObjectId) {
+    this.dispatcher = dispatcher;
+    this.sourceObjectId = sourceObjectId;
+    log.debug("Create SystemManagerInterface : Id = '{}'.", this.getSystemManagerId());
+  }
+  
   /**
    * Returns a system manager ID.
    * @return value of the system manager ID.
@@ -477,7 +491,7 @@ public class SystemManagerInterface {
     try {
       Response resp = sendRequest(Request.Method.POST, path, body);
       if (resp.isError("POST")) {
-        log.warn("invalid POST:" + resp.statusCode);
+        log.warn("invalid POST:{}", resp.statusCode);
       }
       return resp;
     } catch (Exception e) {
@@ -499,7 +513,7 @@ public class SystemManagerInterface {
     try {
       Response resp = sendRequest(Request.Method.PUT, path, body);
       if (resp.isError("PUT")) {
-        log.warn("invalid PUT:" + resp.statusCode);
+        log.warn("invalid PUT:{}", resp.statusCode);
       }
       return resp;
     } catch (Exception e) {
@@ -519,7 +533,7 @@ public class SystemManagerInterface {
     try {
       Response resp = sendRequest(Request.Method.DELETE, path, null);
       if (resp.isError("DELETE")) {
-        log.warn("invalid DELETE:" + resp.statusCode);
+        log.warn("invalid DELETE:{}", resp.statusCode);
       }
       return resp;
     } catch (Exception e) {
@@ -539,7 +553,7 @@ public class SystemManagerInterface {
     try {
       Response resp = sendRequest(Request.Method.GET, path, null);
       if (resp.isError("GET")) {
-        log.warn("invalid GET:" + resp.statusCode);
+        log.warn("invalid GET:{}", resp.statusCode);
       }
       return resp;
     } catch (Exception e) {
@@ -555,9 +569,9 @@ public class SystemManagerInterface {
     Response rsp = null;
     Request req = new Request(
         this.dispatcher.getSystemManagerId(), method, path, body);
-    log.debug("   " + req.getBodyValue());
+    log.debug("   {}", req.getBodyValue());
     try {
-      rsp = this.dispatcher.requestSync(req);
+      rsp = this.dispatcher.requestSync(req, sourceObjectId);
 
     } catch (Exception e) {
       log.error("Recieved Message Exception.", e);

@@ -35,7 +35,7 @@ public abstract class Boundary extends OdenosMessage {
 
   /** logger. */
   @Ignore
-  private static final Logger logger = LoggerFactory.getLogger(Boundary.class);
+  private static final Logger log = LoggerFactory.getLogger(Boundary.class);
 
   /** ID that is unique in the ODENOS. */
   @NotNullable
@@ -60,12 +60,12 @@ public abstract class Boundary extends OdenosMessage {
   public Boundary(String id, String type) {
 
     if (StringUtils.isBlank(id)) {
-      logger.error("id is null");
+      log.error("id is null");
       throw new IllegalArgumentException("id is null");
     }
 
     if (StringUtils.isBlank(type)) {
-      logger.error("type is null");
+      log.error("type is null");
       throw new IllegalArgumentException("type is null");
     }
 

@@ -24,21 +24,17 @@ from util import dict2yaml
 
 json_loads = json.loads
 
-class Rest:
+def build_send_request_function(url, headers=None):
     """
-    REST Transaction class
+    REST Transaction
+    returns send_request
     """
+    if not headers:
+        headers = {'Content-type': 'application/json', 'Accept': 'application/json'}
+    headers['Connection'] = 'Keep-Alive'
+    conn = httplib2.Http()
 
-    def __init__(self, url, headers=None):
-    
-        self.url = url
-        if not headers:
-            headers = {'Content-type': 'application/json', 'Accept': 'application/json'}
-        headers['Connection'] = 'Keep-Alive'
-        self.headers = headers
-        self.conn = httplib2.Http()
-
-    def send_request(self, method, path, params, body, verbose=False, print_json=False):
+    def send_request(method, path, params, body, verbose=False, print_json=False):
         """
         REST Transaction
         """
@@ -69,7 +65,7 @@ class Rest:
         try:
             response = res_body = None
 
-            response, _res_body = self.conn.request(self.url+path, method, body_json, self.headers) 
+            response, _res_body = conn.request(url+path, method, body_json, headers) 
             res_body = _res_body.decode('ascii')
 
             length = None 
@@ -120,3 +116,6 @@ class Rest:
             print('[Hint] check if the target REST server is running')
             print('[Hint] you might need to unset http_proxy')
             sys.exit(1)
+
+    
+    return send_request

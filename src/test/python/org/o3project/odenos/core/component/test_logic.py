@@ -2719,7 +2719,7 @@ class LogicTest(unittest.TestCase):
                           mock_put_object):
 
             self.target._Logic__subscription_table =\
-                {"NodeChanged::UPDATE::publisher_id": ["admin_status"]}
+                {"NodeChanged::UPDATE::publisher_id": ["oper_status"]}
             conversion_table._ConversionTable__network_conversion_table =\
                 {"network1": ["network2"]}
             conversion_table._ConversionTable__node_conversion_table =\
@@ -2746,7 +2746,7 @@ class LogicTest(unittest.TestCase):
             self.result = self.target._update_node_conversion("network1",
                                                               node_prev,
                                                               node_curr,
-                                                              ["admin_status"])
+                                                              ["oper_status"])
 
             self.assertEqual(
                 logging_error.call_count, 0)
@@ -2793,7 +2793,7 @@ class LogicTest(unittest.TestCase):
             self.result = self.target._update_node_conversion(None,
                                                               node_prev,
                                                               node_curr,
-                                                              ["admin_status"])
+                                                              ["oper_status"])
 
             self.assertEqual(
                 logging_error.call_count, 0)
@@ -2839,7 +2839,7 @@ class LogicTest(unittest.TestCase):
             self.result = self.target._update_node_conversion("network1",
                                                               node_prev,
                                                               None,
-                                                              ["admin_status"])
+                                                              ["oper_status"])
 
             self.assertEqual(
                 logging_error.call_count, 0)
@@ -2866,7 +2866,7 @@ class LogicTest(unittest.TestCase):
                           mock_put_object):
 
             self.target._Logic__subscription_table =\
-                {"NodeChanged::UPDATE::publisher_id": ["admin_status"]}
+                {"NodeChanged::UPDATE::publisher_id": ["oper_status"]}
             conversion_table._ConversionTable__network_conversion_table =\
                 {"network1": ["network2"]}
             conversion_table._ConversionTable__node_conversion_table =\
@@ -2921,7 +2921,7 @@ class LogicTest(unittest.TestCase):
                           mock_put_object):
 
             self.target._Logic__subscription_table =\
-                {"NodeChanged::UPDATE::publisher_id": ["admin_status"]}
+                {"NodeChanged::UPDATE::publisher_id": ["oper_status"]}
             conversion_table._ConversionTable__network_conversion_table =\
                 {"network1": ["network2"]}
             conversion_table._ConversionTable__node_conversion_table =\
@@ -2946,7 +2946,7 @@ class LogicTest(unittest.TestCase):
             self.result = self.target._update_node_conversion("network1",
                                                               node_prev,
                                                               node_curr,
-                                                              ["admin_status"])
+                                                              ["oper_status"])
 
             self.assertEqual(
                 logging_error.call_count, 0)
@@ -2973,7 +2973,7 @@ class LogicTest(unittest.TestCase):
                           mock_put_object):
 
             self.target._Logic__subscription_table =\
-                {"NodeChanged::UPDATE::publisher_id": ["admin_status"]}
+                {"NodeChanged::UPDATE::publisher_id": ["oper_status"]}
             conversion_table._ConversionTable__network_conversion_table =\
                 {"network1": ["network2"]}
             conversion_table._ConversionTable__node_conversion_table =\
@@ -3000,7 +3000,7 @@ class LogicTest(unittest.TestCase):
             self.result = self.target._update_node_conversion("network1",
                                                               node_prev,
                                                               node_curr,
-                                                              ["admin_status"])
+                                                              ["oper_status"])
 
             self.assertEqual(
                 logging_error.call_count, 0)
@@ -3027,7 +3027,7 @@ class LogicTest(unittest.TestCase):
                           mock_put_object):
 
             self.target._Logic__subscription_table =\
-                {"NodeChanged::UPDATE::publisher_id": ["admin_status"]}
+                {"NodeChanged::UPDATE::publisher_id": ["oper_status"]}
             conversion_table._ConversionTable__network_conversion_table =\
                 {"network1": ["network2"]}
             conversion_table._ConversionTable__node_conversion_table =\
@@ -3054,7 +3054,7 @@ class LogicTest(unittest.TestCase):
             self.result = self.target._update_node_conversion("network1",
                                                               node_prev,
                                                               node_curr,
-                                                              ["admin_status"])
+                                                              ["oper_status"])
 
             self.assertEqual(
                 logging_error.call_count, 0)
@@ -3081,7 +3081,7 @@ class LogicTest(unittest.TestCase):
                           mock_put_object):
 
             self.target._Logic__subscription_table =\
-                {"NodeChanged::UPDATE::publisher_id": ["admin_status"]}
+                {"NodeChanged::UPDATE::publisher_id": ["oper_status"]}
             conversion_table._ConversionTable__network_conversion_table =\
                 {"network1": ["network2"]}
             conversion_table._ConversionTable__node_conversion_table =\
@@ -3108,7 +3108,7 @@ class LogicTest(unittest.TestCase):
             self.result = self.target._update_node_conversion("network1",
                                                               node_prev,
                                                               node_curr,
-                                                              ["admin_status"])
+                                                              ["oper_status"])
 
             self.assertEqual(
                 logging_error.call_count, 0)
@@ -3148,7 +3148,7 @@ class LogicTest(unittest.TestCase):
                           mock_put_object,
                           mock_get_node):
             self.target._Logic__subscription_table =\
-                {"NodeChanged::UPDATE::publisher_id": ["admin_status"]}
+                {"NodeChanged::UPDATE::publisher_id": ["oper_status"]}
             conversion_table._ConversionTable__network_conversion_table =\
                 {"network1": ["network2"]}
             conversion_table._ConversionTable__node_conversion_table =\
@@ -3166,7 +3166,7 @@ class LogicTest(unittest.TestCase):
             self.result = self.target._update_node_conversion("network1",
                                                               node_prev,
                                                               node_curr,
-                                                              ["admin_status"])
+                                                              ["oper_status"])
 
             self.assertEqual(
                 logging_error.call_count, 1)
@@ -3193,7 +3193,7 @@ class LogicTest(unittest.TestCase):
                           mock_put_object):
 
             self.target._Logic__subscription_table =\
-                {"PortChanged::UPDATE::publisher_id": ["admin_status"]}
+                {"PortChanged::UPDATE::publisher_id": ["oper_status"]}
             conversion_table._ConversionTable__network_conversion_table =\
                 {"network1": ["network2"]}
             conversion_table._ConversionTable__port_conversion_table =\
@@ -3215,7 +3215,7 @@ class LogicTest(unittest.TestCase):
             self.result = self.target._update_port_conversion("network1",
                                                               port_prev,
                                                               port_curr,
-                                                              ["admin_status"])
+                                                              ["oper_status"])
 
             self.assertEqual(
                 logging_error.call_count, 0)
@@ -3243,7 +3243,7 @@ class LogicTest(unittest.TestCase):
                           mock_put_object):
 
             self.target._Logic__subscription_table =\
-                {"PortChanged::UPDATE::publisher_id": ["admin_status"]}
+                {"PortChanged::UPDATE::publisher_id": ["oper_status"]}
             conversion_table._ConversionTable__network_conversion_table =\
                 {"network1": ["network2"]}
             conversion_table._ConversionTable__port_conversion_table =\
@@ -3265,7 +3265,7 @@ class LogicTest(unittest.TestCase):
             self.result = self.target._update_port_conversion(None,
                                                               port_prev,
                                                               port_curr,
-                                                              ["admin_status"])
+                                                              ["oper_status"])
 
             self.assertEqual(
                 logging_error.call_count, 0)
@@ -3292,7 +3292,7 @@ class LogicTest(unittest.TestCase):
                           mock_put_object):
 
             self.target._Logic__subscription_table =\
-                {"PortChanged::UPDATE::publisher_id": ["admin_status"]}
+                {"PortChanged::UPDATE::publisher_id": ["oper_status"]}
             conversion_table._ConversionTable__network_conversion_table =\
                 {"network1": ["network2"]}
             conversion_table._ConversionTable__port_conversion_table =\
@@ -3314,7 +3314,7 @@ class LogicTest(unittest.TestCase):
             self.result = self.target._update_port_conversion("network1",
                                                               port_prev,
                                                               None,
-                                                              ["admin_status"])
+                                                              ["oper_status"])
 
             self.assertEqual(
                 logging_error.call_count, 0)
@@ -3341,7 +3341,7 @@ class LogicTest(unittest.TestCase):
                           mock_put_object):
 
             self.target._Logic__subscription_table =\
-                {"PortChanged::UPDATE::publisher_id": ["admin_status"]}
+                {"PortChanged::UPDATE::publisher_id": ["oper_status"]}
             conversion_table._ConversionTable__network_conversion_table =\
                 {"network1": ["network2"]}
             conversion_table._ConversionTable__port_conversion_table =\
@@ -3391,7 +3391,7 @@ class LogicTest(unittest.TestCase):
                           mock_put_object):
 
             self.target._Logic__subscription_table =\
-                {"PortChanged::UPDATE::publisher_id": ["admin_status"]}
+                {"PortChanged::UPDATE::publisher_id": ["oper_status"]}
             conversion_table._ConversionTable__network_conversion_table =\
                 {"network1": ["network2"]}
             conversion_table._ConversionTable__port_conversion_table =\
@@ -3411,7 +3411,7 @@ class LogicTest(unittest.TestCase):
             self.result = self.target._update_port_conversion("network1",
                                                               port_prev,
                                                               port_curr,
-                                                              ["admin_status"])
+                                                              ["oper_status"])
 
             self.assertEqual(
                 logging_error.call_count, 0)
@@ -3438,7 +3438,7 @@ class LogicTest(unittest.TestCase):
                           mock_put_object):
 
             self.target._Logic__subscription_table =\
-                {"PortChanged::UPDATE::publisher_id": ["admin_status"]}
+                {"PortChanged::UPDATE::publisher_id": ["oper_status"]}
             conversion_table._ConversionTable__network_conversion_table =\
                 {"network1": ["network2"]}
             conversion_table._ConversionTable__port_conversion_table =\
@@ -3460,7 +3460,7 @@ class LogicTest(unittest.TestCase):
             self.result = self.target._update_port_conversion("network1",
                                                               port_prev,
                                                               port_curr,
-                                                              ["admin_status"])
+                                                              ["oper_status"])
 
             self.assertEqual(
                 logging_error.call_count, 0)
@@ -3487,7 +3487,7 @@ class LogicTest(unittest.TestCase):
                           mock_put_object):
 
             self.target._Logic__subscription_table =\
-                {"PortChanged::UPDATE::publisher_id": ["admin_status"]}
+                {"PortChanged::UPDATE::publisher_id": ["oper_status"]}
             conversion_table._ConversionTable__network_conversion_table =\
                 {"network1": ["network2"]}
             conversion_table._ConversionTable__port_conversion_table =\
@@ -3509,7 +3509,7 @@ class LogicTest(unittest.TestCase):
             self.result = self.target._update_port_conversion("network1",
                                                               port_prev,
                                                               port_curr,
-                                                              ["admin_status"])
+                                                              ["oper_status"])
 
             self.assertEqual(
                 logging_error.call_count, 0)
@@ -3536,7 +3536,7 @@ class LogicTest(unittest.TestCase):
                           mock_put_object):
 
             self.target._Logic__subscription_table =\
-                {"PortChanged::UPDATE::publisher_id": ["admin_status"]}
+                {"PortChanged::UPDATE::publisher_id": ["oper_status"]}
             conversion_table._ConversionTable__network_conversion_table =\
                 {"network1": ["network2"]}
             conversion_table._ConversionTable__port_conversion_table =\
@@ -3558,7 +3558,7 @@ class LogicTest(unittest.TestCase):
             self.result = self.target._update_port_conversion("network1",
                                                               port_prev,
                                                               port_curr,
-                                                              ["admin_status"])
+                                                              ["oper_status"])
 
             self.assertEqual(
                 logging_error.call_count, 0)
@@ -3568,7 +3568,7 @@ class LogicTest(unittest.TestCase):
     def test_update_port_conversion_KeyError(self):
         conversion_table = self.target._conversion_table
         self.target._Logic__subscription_table =\
-            {"PortChanged::UPDATE::publisher_id": ["admin_status"]}
+            {"PortChanged::UPDATE::publisher_id": ["oper_status"]}
         conversion_table._ConversionTable__network_conversion_table =\
             {"network1": ["network2"]}
         conversion_table._ConversionTable__port_conversion_table =\
@@ -3605,7 +3605,7 @@ class LogicTest(unittest.TestCase):
             self.result = self.target._update_port_conversion("network1",
                                                               port_prev,
                                                               port_curr,
-                                                              ["admin_status"])
+                                                              ["oper_status"])
 
             self.assertEqual(
                 logging_error.call_count, 1)
@@ -4899,7 +4899,7 @@ class LogicTest(unittest.TestCase):
                           mock_del_object):
 
             self.target._Logic__subscription_table =\
-                {"PortChanged::UPDATE::publisher_id": ["admin_status"]}
+                {"PortChanged::UPDATE::publisher_id": ["oper_status"]}
             conversion_table._ConversionTable__network_conversion_table =\
                 {"network1": ["network2"]}
             conversion_table._ConversionTable__port_conversion_table =\
@@ -4953,7 +4953,7 @@ class LogicTest(unittest.TestCase):
                           mock_del_object):
 
             self.target._Logic__subscription_table =\
-                {"PortChanged::UPDATE::publisher_id": ["admin_status"]}
+                {"PortChanged::UPDATE::publisher_id": ["oper_status"]}
             conversion_table._ConversionTable__network_conversion_table =\
                 {"network1": ["network2"]}
             conversion_table._ConversionTable__port_conversion_table =\
@@ -5003,7 +5003,7 @@ class LogicTest(unittest.TestCase):
                           mock_del_object):
 
             self.target._Logic__subscription_table =\
-                {"PortChanged::UPDATE::publisher_id": ["admin_status"]}
+                {"PortChanged::UPDATE::publisher_id": ["oper_status"]}
             conversion_table._ConversionTable__network_conversion_table =\
                 {"network1": ["network2"]}
             conversion_table._ConversionTable__port_conversion_table =\
@@ -5053,7 +5053,7 @@ class LogicTest(unittest.TestCase):
                           mock_del_object):
 
             self.target._Logic__subscription_table =\
-                {"PortChanged::UPDATE::publisher_id": ["admin_status"]}
+                {"PortChanged::UPDATE::publisher_id": ["oper_status"]}
             conversion_table._ConversionTable__network_conversion_table =\
                 {"network1": ["network2"]}
             conversion_table._ConversionTable__port_conversion_table =\
@@ -5101,7 +5101,7 @@ class LogicTest(unittest.TestCase):
                           mock_del_object):
 
             self.target._Logic__subscription_table =\
-                {"PortChanged::UPDATE::publisher_id": ["admin_status"]}
+                {"PortChanged::UPDATE::publisher_id": ["oper_status"]}
             conversion_table._ConversionTable__network_conversion_table =\
                 {"network1": ["network2"]}
             conversion_table._ConversionTable__port_conversion_table =\
@@ -5852,32 +5852,32 @@ class LogicTest(unittest.TestCase):
                 self.result, None)
 
     def test_get_ignore_keys_match(self):
-        attributes_port = ["admin_status", "oper_status", "physical_id",
+        attributes_port = ["oper_status", "physical_id",
                            "vendor", "max_bandwidth",
                            "unreserved_bandwidth", "is_boundary"]
 
         self.result = self.target._Logic__get_ignore_keys(
-            attributes_port, ["attributes::admin_status"])
+            attributes_port, ["attributes::unreserved_bandwidth"])
 
         self.assertEqual(
             self.result,
             ["oper_status", "physical_id",
              "vendor", "max_bandwidth",
-             "unreserved_bandwidth", "is_boundary"])
+             "is_boundary"])
 
     def test_get_ignore_keys_not_match(self):
-        attributes_port = ["admin_status", "oper_status", "physical_id",
+        attributes_port = ["oper_status", "physical_id",
                            "vendor", "max_bandwidth",
                            "unreserved_bandwidth", "is_boundary"]
 
         self.result = self.target._Logic__get_ignore_keys(
-            attributes_port, ["admin_status"])
+            attributes_port, ["unreserved_bandwidth"])
 
         self.assertEqual(
             self.result,
             ["oper_status", "physical_id",
              "vendor", "max_bandwidth",
-             "unreserved_bandwidth", "is_boundary"])
+             "is_boundary"])
 
 if __name__ == "__main__":
     unittest.main()

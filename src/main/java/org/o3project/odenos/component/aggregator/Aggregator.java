@@ -252,6 +252,9 @@ public class Aggregator extends Logic {
       }
       orgNwIf = networkInterfaces().get(orgNetworkId.get(0));
       aggNwIf = networkInterfaces().get(networkId);
+    } else {
+      log.error("Unexpected network type: {}", type);
+      throw new IllegalArgumentException("Unexpected network type: " + type);
     }
     // Update conversionTable.
     conversionTable().addEntryNetwork(
@@ -371,12 +374,8 @@ public class Aggregator extends Logic {
     addEntryEventSubscription(OUT_PACKET_ADDED, nwcId);
 
     String attrBase = AttrElements.ATTRIBUTES + "::%s";
-    ArrayList<String> nodeAttributes = new ArrayList<String>(Arrays.asList(
-        String.format(attrBase, AttrElements.ADMIN_STATUS)));
-    updateEntryEventSubscription(NODE_CHANGED, nwcId, nodeAttributes);
 
     ArrayList<String> portAttributes = new ArrayList<String>(Arrays.asList(
-        String.format(attrBase, AttrElements.ADMIN_STATUS),
         String.format(attrBase, AttrElements.UNRESERVED_BANDWIDTH),
         String.format(attrBase, AttrElements.IS_BOUNDARY)));
     updateEntryEventSubscription(PORT_CHANGED, nwcId, portAttributes);
@@ -429,7 +428,7 @@ public class Aggregator extends Logic {
               public Response process(
                   final RequestParser<IActionCallback>
                   .ParsedRequest parsed) throws Exception {
-                return getNwPort(AGGREGATED);
+                return getNwPort(ORIGINAL);
               }
             });
         addRule(Method.GET, "original_nw_port", new IActionCallback() {
@@ -437,7 +436,7 @@ public class Aggregator extends Logic {
           public Response process(
               final RequestParser<IActionCallback>
               .ParsedRequest parsed) throws Exception {
-            return getNwPort(ORIGINAL);
+            return getNwPort(AGGREGATED);
           }
         });
         addRule(Method.GET, "aggregated_nw_flow",
@@ -446,7 +445,7 @@ public class Aggregator extends Logic {
               public Response process(
                   final RequestParser<IActionCallback>
                   .ParsedRequest parsed) throws Exception {
-                return getNwFlow(AGGREGATED);
+                return getNwFlow(ORIGINAL);
               }
             });
         addRule(Method.GET, "original_nw_flow", new IActionCallback() {
@@ -454,7 +453,7 @@ public class Aggregator extends Logic {
           public Response process(
               final RequestParser<IActionCallback>
               .ParsedRequest parsed) throws Exception {
-            return getNwFlow(ORIGINAL);
+                return getNwFlow(AGGREGATED);
           }
 
         });
@@ -595,8 +594,7 @@ public class Aggregator extends Logic {
     }
     NetworkInterface aggNetworkIf = networkInterfaces().get(aggNetworkId);
 
-    String aggNodeId = getConvNodeId(networkId, node.getId());
-    if (aggNodeId == null) {
+    if (getConvNodeId(aggNetworkId, this.getObjectId()) == null) {
       node.putAttribute(AttrElements.PHYSICAL_ID, this.getObjectId());
       Node aggNodeMsg = new Node(
           node.getVersion(), this.getObjectId(),
@@ -605,7 +603,7 @@ public class Aggregator extends Logic {
       aggNetworkIf.putNode(aggNodeMsg);
     }
 
-    // changed node's oper_status. ("UP" -> "DOWN")  
+    // changed node's oper_status. ("UP" -> "DOWN")
     Map<String, String> updateAttr = new HashMap<>();
     updateAttr.put(Logic.AttrElements.OPER_STATUS, STATUS_DOWN);
     aggNetworkIf.putAttributeOfNode(updateAttr);
@@ -742,7 +740,7 @@ public class Aggregator extends Logic {
       return;
     }
     if (!link.validate()) {
-      log.error(String.format(">> link[ %s ] is invalid.", link.getId()));
+      log.error(">> link[ {} ] is invalid.", link.getId());
       return;
     }
 
@@ -887,7 +885,7 @@ public class Aggregator extends Logic {
 
     FlowSet flowSet = orgNetworkIf.getFlowSet();
     for (String flowId : flowSet.flows.keySet()) {
-      log.debug(String.format(">> target flow : '%s'", flowId));
+      log.debug(">> target flow : '{}'", flowId);
       BasicFlow orgFlow = (BasicFlow) flowSet.flows.get(flowId);
       // Get aggregated_network's flowId from orgFlowId.
       String aggFlowId = getConvFlowId(
@@ -898,7 +896,7 @@ public class Aggregator extends Logic {
         continue;
       }
       String[] list = aggFlowId.split("::");
-      log.debug(String.format(">> conversion flow : '%s'", list[1]));
+      log.debug(">> conversion flow : '{}'", list[1]);
 
       orgFlow = getFlow(orgNetworkIf, flowId);
       BasicFlow aggFlow = getFlow(aggNetworkIf, list[1]);
@@ -988,7 +986,6 @@ public class Aggregator extends Logic {
     }
     // Aggregated Network ==> Aggregator
     dstFlow.setEnabled(srcFlow.getEnabled());
-    dstFlow.setStatus(srcFlow.getStatus());
     dstFlow.setPriority(srcFlow.getPriority());
     updateFlow(dstNetworkIf, srcNetworkIf, dstFlow, srcFlow);
 
@@ -1001,8 +998,7 @@ public class Aggregator extends Logic {
       final InPacketAdded msg) {
     log.debug("");
 
-    log.debug(
-        String.format("###Received InPacketAdded:id(%s)", msg.getId()));
+    log.debug("###Received InPacketAdded:id({})", msg.getId());
     String connType = conversionTable().getConnectionType(networkId);
     if (connType != null
         && connType.equals(AGGREGATED)) {
@@ -1016,8 +1012,8 @@ public class Aggregator extends Logic {
       final OutPacketAdded msg) {
     log.debug("");
 
-    log.debug(String.format("###Received OutPacketAdded:id(%s)",
-        msg.getId()));
+    log.debug("###Received OutPacketAdded:id({})",
+        msg.getId());
     String connType = conversionTable().getConnectionType(networkId);
     if (connType != null
         && connType.equals(ORIGINAL)) {
@@ -1130,7 +1126,8 @@ public class Aggregator extends Logic {
       List<String> dstPorts = getConvPortIdByActions(
           aggNetworkIf.getNetworkId(), aggFlow.getEdgeActions());
       // Create a Path & Set Match.
-      List<String> path = createOriginalFlowPath(srcPort, dstPorts);
+      List<String> path
+          = createOriginalFlowPath(srcPort, dstPorts, pathCalculator);
       if (path == null
           || !setMatch(orgFlow.getMatches(), srcPort)) {
         aggFlow.setStatus(FlowStatus.FAILED.toString());
@@ -1223,7 +1220,8 @@ public class Aggregator extends Logic {
 
   protected List<String> createOriginalFlowPath(
       final String srcNode,
-      final List<String> dstNodes) {
+      final List<String> dstNodes,
+      final PathCalculator calc) {
     log.debug("");
 
     List<String> path = new ArrayList<String>();
@@ -1242,7 +1240,7 @@ public class Aggregator extends Logic {
       if (srcNList[1].equals(dstNId)) {
         continue;
       }
-      List<String> plist = pathCalculator.createPath(srcNList[1], dstNId);
+      List<String> plist = calc.createPath(srcNList[1], dstNId);
       if (plist == null || plist.size() == 0) {
         return null;
       }

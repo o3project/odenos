@@ -35,7 +35,7 @@ module Odenos
               lldp = Pio::Lldp.read(packet_in.data.pack('C*'))
               @dpid1 = lldp.dpid
               @dpid2 = dpid
-              @port1 = lldp.port_number.value.value
+              @port1 = lldp.port_id.to_i
               @port2 = packet_in.in_port
             end
 

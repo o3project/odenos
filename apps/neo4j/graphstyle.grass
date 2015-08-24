@@ -1,0 +1,122 @@
+relationship {
+  color: #A5ABB6;
+  shaft-width: 8px;
+  font-size: 18px;
+  padding: 3px;
+  text-color-external: #000000;
+  text-color-internal: #FFFFFF;
+  caption: '<type>';
+}
+
+relationship.topology {
+  color: #A5ABB6;
+  shaft-width: 8px;
+  font-size: 18px;
+  padding: 3px;
+  text-color-external: #000000;
+  text-color-internal: #FFFFFF;
+  caption: '<type>';
+}
+
+relationship.Link {
+  color: #A5ABB6;
+  shaft-width: 4px;
+  text-color-external: #000000;
+  text-color-internal: #FFFFFF;
+  font-size: 0px;
+  padding: 0px;
+  caption: '';
+}
+
+relationship.Flow {
+  color: #FF1493;
+  shaft-width: 4px;
+  text-color-external: #000000;
+  text-color-internal: #FFFFFF;
+  font-size: 0px;
+  padding: 0px;
+  caption: '';
+}
+
+node {
+  diameter: 80px;
+  color: #A5ABB6;
+  border-color: #9AA1AC;
+  border-width: 2px;
+  text-color-internal: #FFFFFF;
+  font-size: 14px;
+}
+
+node.ODENOS {
+  color: #dda0dd;
+  border-color: #ee82ee;
+  text-color-internal: #FFFFFF;
+  caption: '{id}';
+}
+
+node.component {
+  color: #FF756E;
+  border-color: #E06760;
+  text-color-internal: #FFFFFF;
+  caption: '{id}';
+}
+
+
+node.Network {
+  color: #68BDF6;
+  border-color: #5CA8DB;
+  text-color-internal: #FFFFFF;
+  caption: '{id}';
+  diameter: 80px;
+}
+
+node.Driver {
+  color: #FFD86E;
+  border-color: #EDBA39;
+  text-color-internal: #604A0E;
+  caption: '{id}';
+  diameter: 80px;
+}
+
+node.LinkLayerizer {
+  color: #6DCE9E;
+  border-color: #60B58B;
+  text-color-internal: #FFFFFF;
+  diameter: 80px;
+}
+
+
+relationship.lower {
+  color: #6DCE9E;
+  border-color: #60B58B;
+  text-color-internal: #FFFFFF;
+}
+
+relationship.layerized {
+  color: #6DCE9E;
+  border-color: #60B58B;
+  text-color-internal: #FFFFFF;
+}
+
+relationship.upper {
+  color: #6DCE9E;
+  border-color: #60B58B;
+  text-color-internal: #FFFFFF;
+}
+
+relationship.original {
+  color: #A5ABB6;
+  border-color: #9AA1AC;
+  text-color-internal: #FFFFFF;
+}
+
+
+
+node.Node {
+  diameter: 40px;
+  color: #1E90FF;
+  border-color: #191970;
+  text-color-internal: #FFFFFF;
+  caption: '{id}';
+}
+

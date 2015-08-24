@@ -16,6 +16,7 @@
 
 package org.o3project.odenos.remoteobject.messagingclient;
 
+import java.util.Collection;
 import java.util.EnumSet;
 import java.util.UUID;
 import java.util.concurrent.BlockingQueue;
@@ -41,9 +42,9 @@ public class ConfigBuilder {
   /**
    *  Default {@link IPubSubDriver} implementation class
    */
-  private static final String DEFAULT_PUBSUB_DRIVER_IMPL_CLASS =
-      org.o3project.odenos.remoteobject.messagingclient.redis.PubSubDriverImpl.class.getName();
-  private String pubSubDriverImpl = DEFAULT_PUBSUB_DRIVER_IMPL_CLASS;
+  public static final Class<?> DEFAULT_PUBSUB_DRIVER_IMPL_CLASS =
+      org.o3project.odenos.remoteobject.messagingclient.redis.PubSubDriverImpl.class;
+  private String pubSubDriverImpl = DEFAULT_PUBSUB_DRIVER_IMPL_CLASS.getName();
 
   // MessageDispatcher basic properties
   // "0" means that an IPubSubDriver impl class should set its default.
@@ -77,6 +78,9 @@ public class ConfigBuilder {
   // Pubsub server such as Redis support scripting to extend its capabilities.
   private String publishScript =
       "redis.call('publish', KEYS[1]..'@bridge', ARGV[1]) ; redis.call('publish', KEYS[1], ARGV[1])";
+  
+  // A list of object IDs to filter out messages to be output to logger
+  private Collection<String> objectIds = null;
 
   public ConfigBuilder setSystemManagerId(final String systemManagerId) {
     this.systemManagerId = systemManagerId;
@@ -100,7 +104,7 @@ public class ConfigBuilder {
    * Master pubsub server host name or IP address.
    * 
    * @param host master pubsub server host name or IP address
-   * @return
+   * @return ConfigBuilder ConfigBuilder
    */
   public ConfigBuilder setHost(final String host) {
     this.host = host;
@@ -114,8 +118,8 @@ public class ConfigBuilder {
   /**
    * Master pubsub server port number.
    * 
-   * @param host master pubsub server port number 
-   * @return
+   * @param port master pubsub server port number
+   * @return ConfigBuilder ConfigBuilder
    */
   public ConfigBuilder setPort(final int port) {
     this.port = port;
@@ -132,8 +136,8 @@ public class ConfigBuilder {
    * <p>
    * This parameter is optional.
    * 
-   * @param host slave pubsub server host name or IP address
-   * @return
+   * @param hostB slave pubsub server host name or IP address
+   * @return ConfigBuilder ConfigBuilder
    */
   public ConfigBuilder setHostB(final String hostB) {
     this.hostB = hostB;
@@ -150,8 +154,8 @@ public class ConfigBuilder {
    * <p>
    * This parameter is optional.
    * 
-   * @param host slave pubsub server port number
-   * @return
+   * @param portB slave pubsub server port number
+   * @return ConfigBuilder ConfigBuilder
    */
   public ConfigBuilder setPortB(final int portB) {
     this.portB = portB;
@@ -244,9 +248,20 @@ public class ConfigBuilder {
   public String getPublishScript() {
     return publishScript;
   }
+  
+  public ConfigBuilder setObjectIds(Collection<String> objectIds) {
+    this.objectIds = objectIds;
+    return this;
+  }
+  
+  public Collection<String> getObjectIds() {
+    return objectIds;
+  }
  
   /**
    * Returns an instance of immutable config. 
+   *
+   * @return Config ConfigImpl(this)
    */
   public Config build() {
     return new ConfigImpl(this);
@@ -268,6 +283,7 @@ public class ConfigBuilder {
     private final boolean systemManagerStatusCheck;
     private final EnumSet<MODE> mode;
     private final String publishScript;
+    private final Collection<String> objectIds;
 
     private ConfigImpl(ConfigBuilder builder) {
       this.systemManagerId = builder.getSystemManagerId();
@@ -284,6 +300,7 @@ public class ConfigBuilder {
       this.systemManagerStatusCheck = builder.getSystemManagerStatusCheck();
       this.mode = builder.getMode();
       this.publishScript = builder.getPublishScript();
+      this.objectIds = builder.getObjectIds();
     }
 
     @Override
@@ -359,6 +376,11 @@ public class ConfigBuilder {
     @Override
     public String getPublishScript() {
       return publishScript;
+    }
+    
+    @Override
+    public Collection<String> getObjectIds() {
+      return objectIds;
     }
   }
 }

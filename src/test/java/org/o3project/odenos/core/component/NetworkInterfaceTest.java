@@ -2396,7 +2396,7 @@ public class NetworkInterfaceTest {
 
     doReturn(new Response(Response.OK, new Object())).when(dispatcher)
         .requestSync(
-            (Request) anyObject());
+            (Request) anyObject(), anyString());
 
     /*
      * test
@@ -2409,7 +2409,7 @@ public class NetworkInterfaceTest {
     /*
      * check
      */
-    verify(dispatcher).requestSync((Request) anyObject());
+    verify(dispatcher).requestSync((Request) anyObject(), anyString());
 
     assertThat(result.statusCode, is(Response.OK));
   }

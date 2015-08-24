@@ -45,9 +45,6 @@ public class FlowActionOutput extends FlowAction {
 
   @Override
   public boolean validate() {
-    if (output == null || output.equals("")) {
-      return false;
-    }
     return true;
   }
 

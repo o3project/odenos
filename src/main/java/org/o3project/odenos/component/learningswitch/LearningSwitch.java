@@ -48,6 +48,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * LearningSwitch that emulates a layer 2 switch.
@@ -76,7 +77,8 @@ public class LearningSwitch extends Logic {
    * @param baseUri Base URI
    * @param dispatcher Message dispatcher.
    * @throws Exception if parameter is wrong.
-   * @deprecated @see org.o3project.odenos.component.learningswitch.LearningSwitch#LearningSwitch(java.util.String, org.o3project.odenos.remoteobject.messagingclient.MessageDispatcher).
+   *
+   * @deprecated @see #LearningSwitch(String, MessageDispatcher)
    */
   @Deprecated
   public LearningSwitch(
@@ -103,7 +105,7 @@ public class LearningSwitch extends Logic {
     this.pathCalculator = new PathCalculator();
     this.idleTimeout = DEFAULT_IDLE_TIMER;
     this.hardTimeout = DEFAULT_HARD_TIMER;
-    log.info("created");
+    log.debug("created");
   }
 
   /**
@@ -250,7 +252,7 @@ public class LearningSwitch extends Logic {
     this.fdb.clear();
     // Clear Flows.
     this.flows.clear();
-    
+
     this.network = null;
 
     // Changed ConectionProperty's status.
@@ -742,7 +744,7 @@ public class LearningSwitch extends Logic {
       BasicFlow sendFlow =
           createOFPFlow(inPacket, dstPList[0], dstPList[1], path);
       // PUT flow
-      log.debug(String.format("Fegisted flow info: %s", this.flows));
+      log.debug("Fegisted flow info: {}", this.flows);
       if (!isRegisteredFlow(sendFlow)) {
         networkIf.putFlow(sendFlow);
         this.flows.put(sendFlow.getFlowId(), sendFlow);
@@ -858,8 +860,8 @@ public class LearningSwitch extends Logic {
           continue;
         }
         // Check node.
-        if (link.getSrcNode() == nodeId
-            || link.getDstNode() == nodeId) {
+        if (Objects.equals(link.getSrcNode(), nodeId)
+            || Objects.equals(link.getDstNode(), nodeId)) {
           nwIf.delFlow(flowId);
         }
       }
@@ -881,8 +883,8 @@ public class LearningSwitch extends Logic {
           continue;
         }
         // Check port.
-        if (link.getSrcPort() == portId
-            || link.getDstPort() == portId) {
+        if (Objects.equals(link.getSrcPort(), portId)
+            || Objects.equals(link.getDstPort(), portId)) {
           nwIf.delFlow(flowId);
         }
       }
@@ -900,8 +902,8 @@ public class LearningSwitch extends Logic {
       List<BasicFlowMatch> matchs = ofpFlow.getMatches();
       for (BasicFlowMatch match : matchs) {
         OFPFlowMatch ofMatch = (OFPFlowMatch) match;
-        if (ofMatch.getEthDst() == ethAddr
-            || ofMatch.getEthSrc() == ethAddr) {
+        if (Objects.equals(ofMatch.getEthDst(), ethAddr)
+            || Objects.equals(ofMatch.getEthSrc(), ethAddr)) {
           delFlowList.add(flowId);
         }
       }

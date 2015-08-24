@@ -54,7 +54,7 @@ public class PacketQueue {
     Field field;
     byte[] data;
     try {
-      field = clazz.getDeclaredField("data");
+      field = clazz.getField("data");
       data = (byte[]) field.get(packet);
     } catch (Exception e) {
       return null;

@@ -16,6 +16,7 @@
 require 'forwardable'
 require 'observer'
 require 'odenos/component/driver/of_driver'
+require 'odenos/core/util/logger'
 
 module Odenos
   module Component
@@ -47,6 +48,7 @@ module Odenos
             include Odenos::Component::Driver::OFDriver
 
             include Observable
+            include Odenos::Util::Logger
             extend Forwardable
 
             def_delegator :@ports, :each_pair, :each_switch
@@ -112,7 +114,14 @@ module Odenos
                 fail 'Not an LLDP packet!'
               end
 
-              link = Link.new(dpid, packet_in)
+              begin
+                link = Link.new(dpid, packet_in)
+              rescue => e
+                lldp = Pio::Lldp.read(packet_in.data.pack('C*'))
+                warn ">>Can not be created link dpid:#{dpid} - lldp.lpid:#{lldp.dpid}"
+                return
+              end
+
               unless @links.include?(link)
                 @links << link
                 @links.sort!

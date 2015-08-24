@@ -27,7 +27,6 @@ import java.util.Map;
  *
  */
 public class OFPOutPacket extends OutPacket {
-  public byte[] data;
 
   /**
    * Constructor.

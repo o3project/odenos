@@ -60,7 +60,7 @@ import java.util.Set;
 public class LinkLayerizer extends Logic {
 
   /** logger. */
-  private static final Logger logger = LoggerFactory.getLogger(LinkLayerizer.class);
+  private static final Logger log = LoggerFactory.getLogger(LinkLayerizer.class);
 
   public static final String LAYERIZED_NETWORK = "layerized";
 
@@ -154,7 +154,7 @@ public class LinkLayerizer extends Logic {
   @Override
   protected boolean onConnectionChangedAddedPre(
       ComponentConnectionChanged message) {
-    logger.debug("");
+    log.debug("");
 
     ComponentConnection curr = message.curr();
 
@@ -204,7 +204,7 @@ public class LinkLayerizer extends Logic {
   @Override
   protected boolean onConnectionChangedUpdatePre(
       ComponentConnectionChanged message) {
-    logger.debug("");
+    log.debug("");
 
     ComponentConnection curr = message.curr();
 
@@ -228,7 +228,7 @@ public class LinkLayerizer extends Logic {
   @Override
   protected boolean onConnectionChangedDeletePre(
       ComponentConnectionChanged message) {
-    logger.debug("");
+    log.debug("");
 
     ComponentConnection curr = message.curr();
 
@@ -277,7 +277,7 @@ public class LinkLayerizer extends Logic {
    */
   @Override
   protected void onConnectionChangedAdded(ComponentConnectionChanged message) {
-    logger.debug("");
+    log.debug("");
 
     ComponentConnection curr = message.curr();
     String networkId = curr
@@ -320,7 +320,7 @@ public class LinkLayerizer extends Logic {
 
       default:
         String errorMessage = "unknown type: " + connectionType;
-        logger.error(errorMessage);
+        log.error(errorMessage);
         throw new IllegalArgumentException(errorMessage);
     }
 
@@ -334,7 +334,7 @@ public class LinkLayerizer extends Logic {
    */
   @Override
   protected void onConnectionChangedUpdate(ComponentConnectionChanged message) {
-    logger.debug("");
+    log.debug("");
 
     /*
      * do nothing
@@ -346,7 +346,7 @@ public class LinkLayerizer extends Logic {
    */
   @Override
   protected void onConnectionChangedDelete(ComponentConnectionChanged message) {
-    logger.debug("");
+    log.debug("");
 
     ComponentConnection curr = message.curr();
     // Changed ConectionProperty's status.
@@ -367,7 +367,7 @@ public class LinkLayerizer extends Logic {
         doOnConnectionChangedDeleteLayerized(networkId);
         break;
       default:
-        logger.error("unknown type: " + connectionType);
+        log.error("unknown type: {}", connectionType);
         return;
     }
 
@@ -381,7 +381,7 @@ public class LinkLayerizer extends Logic {
   }
 
   protected void doOnConnectionChangedAddedLower(String lowerId) {
-    logger.debug("");
+    log.debug("");
 
     List<String> layerizedIds = getLayerizedNetworkIds();
     if (CollectionUtils.isNotEmpty(layerizedIds)) {
@@ -415,7 +415,7 @@ public class LinkLayerizer extends Logic {
   }
 
   protected void doOnConnectionChangedAddedUpper(String upperId) {
-    logger.debug("");
+    log.debug("");
 
     List<String> layerizedIds = getLayerizedNetworkIds();
     if (CollectionUtils.isNotEmpty(layerizedIds)) {
@@ -447,7 +447,7 @@ public class LinkLayerizer extends Logic {
   }
 
   protected void doOnConnectionChangedAddedLayerized(String layeriedId) {
-    logger.debug("");
+    log.debug("");
 
     List<String> upperIds = getUpperNetworkIds();
     if (CollectionUtils.isNotEmpty(upperIds)) {
@@ -500,7 +500,7 @@ public class LinkLayerizer extends Logic {
   }
 
   protected void doOnConnectionChangedDeleteLower(String lowerId) {
-    logger.debug("");
+    log.debug("");
 
     unsubscribeLower(lowerId);
 
@@ -519,7 +519,7 @@ public class LinkLayerizer extends Logic {
   }
 
   protected void doOnConnectionChangedDeleteUpper(String upperId) {
-    logger.debug("");
+    log.debug("");
 
     unsubscribeUpper(upperId);
 
@@ -574,7 +574,7 @@ public class LinkLayerizer extends Logic {
   }
 
   protected void doOnConnectionChangedDeleteLayerized(String layerizedId) {
-    logger.debug("");
+    log.debug("");
 
     unsubscribeLayerized(layerizedId);
 
@@ -628,7 +628,7 @@ public class LinkLayerizer extends Logic {
   }
 
   protected void subscribeLower(final String lowerId) {
-    logger.debug("");
+    log.debug("");
 
     try {
       addEntryEventSubscription(PORT_CHANGED, lowerId);
@@ -640,12 +640,12 @@ public class LinkLayerizer extends Logic {
       applyEventSubscription();
 
     } catch (Exception ex) {
-      logger.error(ex.getMessage(), ex);
+      log.error(ex.getMessage(), ex);
     }
   }
 
   protected void subscribeUpper(final String upperId) {
-    logger.debug("");
+    log.debug("");
 
     try {
       addEntryEventSubscription(NODE_CHANGED, upperId);
@@ -688,12 +688,12 @@ public class LinkLayerizer extends Logic {
       applyEventSubscription();
 
     } catch (Exception ex) {
-      logger.error(ex.getMessage(), ex);
+      log.error(ex.getMessage(), ex);
     }
   }
 
   protected void subscribeLayerized(final String layerizedId) {
-    logger.debug("");
+    log.debug("");
 
     try {
       addEntryEventSubscription(LINK_CHANGED, layerizedId);
@@ -701,12 +701,6 @@ public class LinkLayerizer extends Logic {
       addEntryEventSubscription(OUT_PACKET_ADDED, layerizedId);
 
       String attrBase = AttrElements.ATTRIBUTES + SEPARATOR + "%s";
-
-      ArrayList<String> nodeAttributes = new ArrayList<String>(
-          Arrays.asList(
-              String.format(attrBase, AttrElements.ADMIN_STATUS)));
-      updateEntryEventSubscription(NODE_CHANGED, layerizedId,
-          nodeAttributes);
 
       ArrayList<String> portAttributes = new ArrayList<String>(
           Arrays.asList(
@@ -739,7 +733,7 @@ public class LinkLayerizer extends Logic {
       applyEventSubscription();
 
     } catch (Exception ex) {
-      logger.error(ex.getMessage(), ex);
+      log.error(ex.getMessage(), ex);
     }
   }
 
@@ -748,7 +742,7 @@ public class LinkLayerizer extends Logic {
    * @param lowerid ID for lower network.
    */
   protected void unsubscribeLower(final String lowerid) {
-    logger.debug("");
+    log.debug("");
 
     try {
       removeEntryEventSubscription(FLOW_CHANGED, lowerid);
@@ -756,7 +750,7 @@ public class LinkLayerizer extends Logic {
       applyEventSubscription();
 
     } catch (Exception ex) {
-      logger.warn(ex.getMessage(), ex);
+      log.warn(ex.getMessage(), ex);
     }
   }
 
@@ -765,7 +759,7 @@ public class LinkLayerizer extends Logic {
    * @param upperId ID for upper network.
    */
   protected void unsubscribeUpper(final String upperId) {
-    logger.debug("");
+    log.debug("");
 
     try {
       removeEntryEventSubscription(NODE_CHANGED, upperId);
@@ -777,7 +771,7 @@ public class LinkLayerizer extends Logic {
       applyEventSubscription();
 
     } catch (Exception ex) {
-      logger.warn(ex.getMessage(), ex);
+      log.warn(ex.getMessage(), ex);
     }
   }
 
@@ -786,7 +780,7 @@ public class LinkLayerizer extends Logic {
    * @param layerizedId ID for layerizer network.
    */
   protected void unsubscribeLayerized(final String layerizedId) {
-    logger.debug("");
+    log.debug("");
 
     try {
       removeEntryEventSubscription(NODE_CHANGED, layerizedId);
@@ -798,7 +792,7 @@ public class LinkLayerizer extends Logic {
       applyEventSubscription();
 
     } catch (Exception ex) {
-      logger.warn(ex.getMessage(), ex);
+      log.warn(ex.getMessage(), ex);
     }
   }
 
@@ -814,7 +808,7 @@ public class LinkLayerizer extends Logic {
    * @return RequestParser for LinkLayerizer.
    */
   private RequestParser<IActionCallback> createParser() {
-    logger.debug("");
+    log.debug("");
 
     return new RequestParser<IActionCallback>() {
       {
@@ -862,8 +856,7 @@ public class LinkLayerizer extends Logic {
               public Response process(
                   final RequestParser<IActionCallback>
                   .ParsedRequest parsed) throws Exception {
-                String boundaryId = parsed
-                    .getParam("boundary_id");
+                String boundaryId = parsed.getParam("boundary_id");
                 return getBoundary(boundaryId);
               }
             });
@@ -877,8 +870,7 @@ public class LinkLayerizer extends Logic {
                 LinkLayerizerBoundary boundary = parsed
                     .getRequest().getBody(
                         LinkLayerizerBoundary.class);
-                String boundaryId = parsed
-                    .getParam("boundary_id");
+                String boundaryId = parsed.getParam("boundary_id");
                 return putBoundary(boundaryId, boundary);
               }
             });
@@ -889,8 +881,7 @@ public class LinkLayerizer extends Logic {
               public Response process(
                   final RequestParser<IActionCallback>
                   .ParsedRequest parsed) throws Exception {
-                String boundaryId = parsed
-                    .getParam("boundary_id");
+                String boundaryId = parsed.getParam("boundary_id");
                 return deleteBoundary(boundaryId);
               }
             });
@@ -911,8 +902,7 @@ public class LinkLayerizer extends Logic {
               public Response process(
                   final RequestParser<IActionCallback>
                   .ParsedRequest parsed) throws Exception {
-                String linkId = parsed.getRequest().getBody(
-                    String.class);
+                String linkId = parsed.getParam("link_id");
                 return getLowerFlows(linkId);
               }
             });
@@ -933,8 +923,7 @@ public class LinkLayerizer extends Logic {
               public Response process(
                   final RequestParser<IActionCallback>
                   .ParsedRequest parsed) throws Exception {
-                String flowId = parsed.getRequest().getBody(
-                    String.class);
+                String flowId = parsed.getParam("flow_id");
                 return getLayerizedLink(flowId);
               }
             });
@@ -947,7 +936,7 @@ public class LinkLayerizer extends Logic {
    */
   @Override
   protected Response onRequest(Request request) {
-    logger.debug("received {}", request.path);
+    log.debug("received {}", request.path);
 
     try {
       RequestParser<IActionCallback>.ParsedRequest parsed =
@@ -966,7 +955,7 @@ public class LinkLayerizer extends Logic {
       return callback.process(parsed);
 
     } catch (Exception ex) {
-      logger.error("Error unknown request", ex);
+      log.error("Error unknown request", ex);
       return new Response(Response.BAD_REQUEST, "Error unknown request ");
     }
 
@@ -985,7 +974,7 @@ public class LinkLayerizer extends Logic {
    */
   @Override
   protected boolean onPortAddedPre(String networkId, Port port) {
-    logger.debug("");
+    log.debug("");
 
     if (!isLowerNetwork(networkId)) {
       return true;
@@ -1012,7 +1001,7 @@ public class LinkLayerizer extends Logic {
   @Override
   protected void onPortAddedPost(
       String networkId, Port port, HashMap<String, Response> respList) {
-    logger.debug("");
+    log.debug("");
 
     if (!isUpperNetwork(networkId)) {
       return;
@@ -1041,7 +1030,7 @@ public class LinkLayerizer extends Logic {
    */
   @Override
   protected void onPortDeletePost(String networkId, Port port, HashMap<String, Response> respList) {
-    logger.debug("");
+    log.debug("");
     
     if (!isUpperNetwork(networkId)) {
       return;
@@ -1061,11 +1050,11 @@ public class LinkLayerizer extends Logic {
    */
   @Override
   protected boolean onLinkAddedPre(String networkId, Link link) {
-    logger.debug("");
+    log.debug("");
 
     if (StringUtils.isBlank(networkId)) {
       String message = "invalid networkID: " + networkId;
-      logger.error(message);
+      log.error(message);
       throw new IllegalArgumentException(message);
     }
 
@@ -1124,11 +1113,11 @@ public class LinkLayerizer extends Logic {
   @Override
   protected boolean onLinkUpdatePre(String networkId, Link prev, Link curr,
       ArrayList<String> attributesList) {
-    logger.debug("");
+    log.debug("");
 
     if (StringUtils.isBlank(networkId)) {
       String message = "invalid networkID: " + networkId;
-      logger.error(message);
+      log.error(message);
       throw new IllegalArgumentException(message);
     }
 
@@ -1144,10 +1133,10 @@ public class LinkLayerizer extends Logic {
    */
   @Override
   protected boolean onLinkDeletePre(String networkId, Link link) {
-    logger.debug("");
+    log.debug("");
 
     if (StringUtils.isBlank(networkId)) {
-      logger.warn("invalid networkID: " + networkId);
+      log.warn("invalid networkID: {}", networkId);
       return false;
     }
 
@@ -1163,15 +1152,20 @@ public class LinkLayerizer extends Logic {
    */
   @Override
   protected boolean onFlowAddedPre(String networkId, Flow flow) {
-    logger.debug("");
+    log.debug("");
 
     if ((StringUtils.isBlank(networkId)) || (flow == null)) {
-      logger.error("invalid parameter");
+      log.error("invalid parameter");
       throw new IllegalArgumentException("invalid parameter");
     }
 
     BasicFlow basicFlow = getFlow(networkId, flow);
     if (basicFlow == null) {
+      return false;
+    }
+
+    if (isLowerNetwork(networkId)) {
+      linkLayerizerOnFlow.flowAddedLowerNw(networkId, basicFlow);
       return false;
     }
 
@@ -1183,10 +1177,7 @@ public class LinkLayerizer extends Logic {
       } else {
         return true;
       }
-    } else if (isLowerNetwork(networkId)) {
-      linkLayerizerOnFlow.flowAddedLowerNw(networkId, basicFlow);
     }
-
     return false;
   }
 
@@ -1196,7 +1187,7 @@ public class LinkLayerizer extends Logic {
   @Override
   protected boolean onFlowUpdatePre(String networkId, Flow prev, Flow curr,
       ArrayList<String> attributesList) {
-    logger.debug("");
+    log.debug("");
 
     BasicFlow basicFlow = getFlow(networkId, curr);
     if (basicFlow == null) {
@@ -1204,8 +1195,7 @@ public class LinkLayerizer extends Logic {
     }
 
     if (isLowerNetwork(networkId)) {
-      linkLayerizerOnFlow.flowUpdateLowerNw(
-          networkId, basicFlow, attributesList);
+      linkLayerizerOnFlow.flowUpdateLowerNw(networkId, basicFlow, attributesList);
       return false;
     }
 
@@ -1226,13 +1216,18 @@ public class LinkLayerizer extends Logic {
    */
   @Override
   protected boolean onFlowDeletePre(String networkId, Flow flow) {
-    logger.debug("");
+    log.debug("");
 
     if (flow == null || !(flow instanceof BasicFlow)) {
-      logger.warn("invalid flow.");
+      log.warn("invalid flow.");
       return false;
     }
     BasicFlow basicFlow = (BasicFlow) flow;
+
+    if (isLowerNetwork(networkId)) {
+      linkLayerizerOnFlow.flowDeleteLowerNw(networkId, basicFlow);
+      return false;
+    }
 
     if (isLayerizedNetwork(networkId)) {
       if (!upperLinkSync) {
@@ -1240,17 +1235,12 @@ public class LinkLayerizer extends Logic {
       }
       return true;
     }
-
-    if (isLowerNetwork(networkId)) {
-      linkLayerizerOnFlow.flowDeleteLowerNw(networkId, basicFlow);
-    }
-
     return false;
   }
 
   @Override
   protected boolean onInPacketAddedPre(String networkId, InPacketAdded msg) {
-    logger.debug("");
+    log.debug("");
 
     NetworkInterface upperNwIf = networkInterfaces().get(networkId);
     NetworkInterface layerizedNwIf = getNetworkIf(LAYERIZED_NETWORK);
@@ -1287,20 +1277,20 @@ public class LinkLayerizer extends Logic {
    * @param upperPort upper's port.
    */
   protected void reflectBoundaryLinkOnUpperPortAdded(String upperNwId, Port upperPort) {
-    logger.debug("");
+    log.debug("");
 
     // get lower flows.
     NetworkInterface lowerNwIf = getLowerNetworkIf();
     if (lowerNwIf == null) {
-      logger.warn("not exist lower network interface.");
+      log.warn("not exist lower network interface.");
       return;
     }
     FlowSet lowerFlows = lowerNwIf.getFlowSet();
     if (lowerFlows == null) {
-      logger.debug("not exist lower flows.");
+      log.debug("not exist lower flows.");
       return;
     }
-    logger.debug(String.format("lower flows : %s", lowerFlows));
+    log.debug("lower flows : {}", lowerFlows);
 
     // reflect boundary links by lower flow.
     Map<String, LinkLayerizerBoundary> layerizerBoundaries =
@@ -1311,7 +1301,7 @@ public class LinkLayerizer extends Logic {
           && String.valueOf(boundary.getUpperNwPort()).equals(upperPort.getId())) {
         for (Flow lowFlow : lowerFlows.getFlows().values()) {
           if (!(lowFlow instanceof BasicFlow)) {
-            logger.error("lower flow is not BasicFlow's instance.");
+            log.error("lower flow is not BasicFlow's instance.");
             continue;
           }
           Port lowPort = lowerNwIf.getPort(
@@ -1346,17 +1336,17 @@ public class LinkLayerizer extends Logic {
    * @param upperPort upper's port.
    */
   protected void reflectBoundaryLinkOnUpperPortDelete(String upperNwId, Port upperPort) {
-    logger.debug("");
+    log.debug("");
 
      // get lower flows.
     NetworkInterface lowerNwIf = getLowerNetworkIf();
     if (lowerNwIf == null) {
-      logger.warn("not exist lower network interface.");
+      log.warn("not exist lower network interface.");
       return;
     }
     FlowSet lowerFlows = lowerNwIf.getFlowSet();
     if (lowerFlows == null) {
-      logger.debug("not exist lower flows.");
+      log.debug("not exist lower flows.");
       return;
     }
 
@@ -1369,7 +1359,7 @@ public class LinkLayerizer extends Logic {
           && String.valueOf(boundary.getUpperNwPort()).equals(upperPort.getId())) {
         for (Flow lowFlow : lowerFlows.getFlows().values()) {
           if (!(lowFlow instanceof BasicFlow)) {
-            logger.error("lower flow is not BasicFlow's instance.");
+            log.error("lower flow is not BasicFlow's instance.");
             continue;
           }
           Port lowPort = lowerNwIf.getPort(
@@ -1392,14 +1382,14 @@ public class LinkLayerizer extends Logic {
    * @return true: contain port in flow's match or action. false: not contain.
    */
   protected final boolean isContainPortInFlow(Port port, BasicFlow basicFlow) {
-    logger.debug("");
+    log.debug("");
           
     String nodeId = String.valueOf(port.getNode());
     String portId = String.valueOf(port.getId());
     // check match's in_node, in_port.
     BasicFlowMatch match = ((BasicFlow)basicFlow).getMatches().get(0);
     if (match == null) {
-      logger.error("not exist lower flow's match.");
+      log.error("not exist lower flow's match.");
       return false;
     }
     if (nodeId.equals(String.valueOf(match.getInNode()))
@@ -1432,10 +1422,10 @@ public class LinkLayerizer extends Logic {
     /*
      * PUT <base_uri>/settings/upper_link_sync
      */
-    logger.debug("");
+    log.debug("");
 
     if (sync == null) {
-      logger.error("sync is null");
+      log.error("sync is null");
       return new Response(Response.BAD_REQUEST, "sync is null");
     }
 
@@ -1454,7 +1444,7 @@ public class LinkLayerizer extends Logic {
     /*
      * POST <base_uri>/settings/boundaries
      */
-    logger.debug("");
+    log.debug("");
 
     try {
       LinkLayerizerBoundary resultBoundary =
@@ -1477,7 +1467,7 @@ public class LinkLayerizer extends Logic {
     /*
      * GET <base_uri>/settings/boundaries
      */
-    logger.debug("");
+    log.debug("");
 
     Map<String, LinkLayerizerBoundary> boundaries =
         linkLayerizerBoundaryTable.getBoundaries();
@@ -1495,10 +1485,10 @@ public class LinkLayerizer extends Logic {
     /*
      * GET <base_uri>/settings/boundaries/<boundary_id>
      */
-    logger.debug("");
+    log.debug("");
 
     if (StringUtils.isBlank(boundaryId)) {
-      logger.error("Boundary-ID is empty");
+      log.error("Boundary-ID is empty");
       return new Response(Response.BAD_REQUEST, "Boundary-ID is empty");
     }
 
@@ -1522,8 +1512,8 @@ public class LinkLayerizer extends Logic {
     /*
      * PUT <base_uri>/settings/boundaries/<boundary_id>
      */
-    if (logger.isDebugEnabled()) {
-      logger.debug("boundaryId: {}", boundaryId);
+    if (log.isDebugEnabled()) {
+      log.debug("boundaryId: {}", boundaryId);
     }
 
     try {
@@ -1549,10 +1539,10 @@ public class LinkLayerizer extends Logic {
     /*
      * DELETE <base_uri>/settings/boundaries/<boundary_id>
      */
-    logger.debug("");
+    log.debug("");
 
     if (StringUtils.isBlank(boundaryId)) {
-      logger.error("Boundary-ID is empty");
+      log.error("Boundary-ID is empty");
       return new Response(Response.BAD_REQUEST, "Boundary-ID is empty");
     }
 
@@ -1573,7 +1563,7 @@ public class LinkLayerizer extends Logic {
     /*
      * GET <base_uri>/lower_flows
      */
-    logger.debug("");
+    log.debug("");
 
     return new Response(Response.OK,
         linkLayerizerOnFlow.getLowerFlows());
@@ -1588,10 +1578,10 @@ public class LinkLayerizer extends Logic {
     /*
      * GET <base_uri>/lower_flows/<link_id>
      */
-    logger.debug("");
+    log.debug("");
 
     if (StringUtils.isBlank(linkId)) {
-      logger.error("Link-ID is empty");
+      log.error("Link-ID is empty");
       return new Response(Response.BAD_REQUEST, "Link-ID is empty");
     }
 
@@ -1609,7 +1599,7 @@ public class LinkLayerizer extends Logic {
     /*
      * GET <base_uri>/layerized_links
      */
-    logger.debug("");
+    log.debug("");
 
     return new Response(Response.OK,
         linkLayerizerOnFlow.getLayerizedLinks());
@@ -1624,10 +1614,10 @@ public class LinkLayerizer extends Logic {
     /*
      * GET <base_uri>/layerized_links/<flow_id>
      */
-    logger.debug("");
+    log.debug("");
 
     if (StringUtils.isBlank(flowId)) {
-      logger.error("Flow-ID is empty");
+      log.error("Flow-ID is empty");
       return new Response(Response.BAD_REQUEST, "Flow-ID is empty");
     }
 
@@ -1648,15 +1638,15 @@ public class LinkLayerizer extends Logic {
    * @return got the flow
    */
   protected BasicFlow getFlow(String networkId, Flow flow) {
-    logger.debug("");
+    log.debug("");
 
     if (StringUtils.isBlank(networkId)) {
-      logger.error("Network ID is empty");
+      log.error("Network ID is empty");
       throw new IllegalArgumentException("Network ID is empty");
     }
 
     if (flow == null) {
-      logger.error("flow is null");
+      log.error("flow is null");
       throw new IllegalArgumentException("flow is null");
     }
 
@@ -1672,10 +1662,10 @@ public class LinkLayerizer extends Logic {
    */
   @Override
   protected BasicFlow getFlow(final NetworkInterface nwIf, final String flowId) {
-    logger.debug("");
+    log.debug("");
 
     if ((nwIf == null) || StringUtils.isBlank(flowId)) {
-      logger.error("parameter is null");
+      log.error("parameter is null");
       throw new IllegalArgumentException("parameter is null");
     }
 
@@ -1699,7 +1689,7 @@ public class LinkLayerizer extends Logic {
   }
 
   protected void setBoundaryPortAttr() {
-    logger.debug("");
+    log.debug("");
 
     Map<String, LinkLayerizerBoundary> boundaryMap =
         linkLayerizerBoundaryTable.getBoundaries();
@@ -1739,7 +1729,7 @@ public class LinkLayerizer extends Logic {
         }
 
       } catch (Exception ex) {
-        logger.error("Receive Exception.", ex);
+        log.error("Receive Exception.", ex);
       }
     }
   }
@@ -1749,7 +1739,7 @@ public class LinkLayerizer extends Logic {
    * @param boundaryId ID for boundary.
    */
   protected void unsetBoundaryPortAttr(String boundaryId) {
-    logger.debug("");
+    log.debug("");
 
     if (boundaryId == null) {
       return;
@@ -1815,7 +1805,7 @@ public class LinkLayerizer extends Logic {
    * @return List of ID for the network.
    */
   protected final List<String> getNetworkIds(String type) {
-    logger.debug("");
+    log.debug("");
 
     ConversionTable convTable = conversionTable();
 
@@ -1855,7 +1845,7 @@ public class LinkLayerizer extends Logic {
    * @return NetworkInterface for the network.
    */
   protected final NetworkInterface getNetworkIf(String type) {
-    logger.debug("");
+    log.debug("");
 
     ConversionTable convTable = conversionTable();
 
@@ -1878,10 +1868,10 @@ public class LinkLayerizer extends Logic {
    * @return NetworkInterface for the network.
    */
   protected final NetworkInterface getNetworkIf(List<String> ids) {
-    logger.debug("");
+    log.debug("");
 
     if (CollectionUtils.isEmpty(ids)) {
-      logger.error("ids is empty");
+      log.error("ids is empty");
       throw new IllegalArgumentException("ids is empty");
     }
 
@@ -1897,7 +1887,7 @@ public class LinkLayerizer extends Logic {
    * @return true: connected to the network. false: not connected.
    */
   protected final boolean isConnectionType(String type) {
-    logger.debug("");
+    log.debug("");
 
     ConversionTable convTable = conversionTable();
     boolean result = convTable.isConnectionType(type);
@@ -1911,7 +1901,7 @@ public class LinkLayerizer extends Logic {
    * @return true: connected to layerized network. false: not connected.
    */
   protected final boolean isLayerizedNetwork(String networkId) {
-    logger.debug("");
+    log.debug("");
 
     String connType = getConnectionType(networkId);
     if (LAYERIZED_NETWORK.equals(connType)) {
@@ -1926,7 +1916,7 @@ public class LinkLayerizer extends Logic {
    * @return true: connected to lower network. false: not connected.
    */
   protected final boolean isLowerNetwork(String networkId) {
-    logger.debug("");
+    log.debug("");
 
     String connType = getConnectionType(networkId);
     if (LOWER_NETWORK.equals(connType)) {
@@ -1941,7 +1931,7 @@ public class LinkLayerizer extends Logic {
    * @return true: connected to upper network. false: not connected.
    */
   protected final boolean isUpperNetwork(String networkId) {
-    logger.debug("");
+    log.debug("");
 
     String connType = getConnectionType(networkId);
     if (UPPER_NETWORK.equals(connType)) {
@@ -1956,7 +1946,7 @@ public class LinkLayerizer extends Logic {
    * @return Type of the network.
    */
   protected final String getConnectionType(String networkId) {
-    logger.debug("");
+    log.debug("");
 
     ConversionTable convTable = conversionTable();
     String connType = convTable.getConnectionType(networkId);

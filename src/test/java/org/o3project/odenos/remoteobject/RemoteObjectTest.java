@@ -21,6 +21,7 @@ import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.anyObject;
+import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.doThrow;
@@ -392,7 +393,7 @@ public class RemoteObjectTest {
 
     Response dummyResp = new Response(Response.OK, "aaa");
 
-    doReturn(dummyResp).when(dispatcher).requestSync((Request) anyObject());
+    doReturn(dummyResp).when(dispatcher).requestSync((Request) anyObject(), anyString());
 
     Response result = target.requestSync(objectId, Request.Method.GET, "/",
         "body");
@@ -434,7 +435,7 @@ public class RemoteObjectTest {
 
     Response dummyResp = new Response(Response.OK, "aaa");
 
-    doReturn(dummyResp).when(dispatcher).requestSync((Request) anyObject());
+    doReturn(dummyResp).when(dispatcher).requestSync((Request) anyObject(), anyString());
 
     Response result = target.request(objectId, Request.Method.GET, "/",
         "body");

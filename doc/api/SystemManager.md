@@ -77,18 +77,18 @@ get Object settings.
 
 ##### [Response]:
   * **Status Code** : 200
-  * **Body** :  [Objectsettings](./DataClass.md#Objectsettings)
+  * **Body** :  [ObjectSettings](./DataClass.md#ObjectSettings)
 
 ----
 #### <a name="PUTsettings"> PUT \<base_uri>/settings</a>
 set Object settings.
 
 ##### [Request]:   
-  * **Body** :  [Objectsettings](./DataClass.md#Objectsettings)
+  * **Body** :  [ObjectSettings](./DataClass.md#ObjectSettings)
 
 ##### [Response]:
   * **Status Code** : 200
-  * **Body** :  [Objectsettings](./DataClass.md#Objectsettings)
+  * **Body** :  [ObjectSettings](./DataClass.md#ObjectSettings)
 
 ----
 ### <a name="GETobjects_id">  GET \<base_uri>/objects/\<object_id></a>  
