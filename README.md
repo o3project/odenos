@@ -38,3 +38,7 @@ github "Pull Requests".
 If you find any bug, let us know by github's Issues page.
 
 [ODENOS APIs](/doc/api/index.md).
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/o3project/odenos/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
