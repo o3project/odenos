@@ -53,6 +53,10 @@ MONITOR=false
 MONITOR_LOGGING=""
 ZOOKEEPER_HOST=""
 ZOOKEEPER_EMBED=""
+ZOOKEEPER_LOG=var/zookeeper
+# Refer to http://zookeeper.apache.org/doc/r3.3.1/zookeeperAdmin.html 
+# log file size 100KBytes, snapshot per 1000 transactions
+ZOOKEEPER_OPT="-Dzookeeper.preAllocSize=100 -Dzookeeper.snapCount=1000"
 
 ##########################################################################
 # common functions                                                       #
@@ -145,8 +149,7 @@ start_system() {
         echo "odenos core system is already running"
         return 1
     fi
-    set_classpath
-    $JAVA -classpath $CLASSPATH:. ${ODENOS_OPT} \
+    $JAVA -classpath $CLASSPATH:. ${ODENOS_OPT} ${ZOOKEEPER_OPT}\
 	-Dlog4j.configuration=file:${ODENOS_CONF}/log_java.conf \
 	-Dlog4j.configurationFile=file:${ODENOS_CONF}/log4j2_java.yaml \
 	-Dapp.log=${ODENOS_LOG}/odenos_system.log \
@@ -182,9 +185,7 @@ start_process() {
 
 	if [ $PROC_TYPE = "java" ]; then
 	    # start java RemoteObjectManager
-	    set_classpath
-
-	    $JAVA -classpath $CLASSPATH:. ${ODENOS_OPT} \
+	    $JAVA -classpath $CLASSPATH:. ${ODENOS_OPT} ${ZOOKEEPER_OPT}\
 		-Dlog4j.configuration=file:${ODENOS_CONF}/log_java.conf \
 		-Dlog4j.configurationFile=file:${ODENOS_CONF}/log4j2_java.yaml \
 		-Dapp.log=${ODENOS_LOG}/odenos_${PROC_NAME}.log \
@@ -266,6 +267,11 @@ start() {
     echo "starting ODENOS"
     cp $ODENOS_CONF_FILE $ODENOS_CONF_FILE_TMP
     read_config_file
+
+    set_classpath
+
+    # Cleans up ZooKeeper's logs and snapshots 
+    $JAVA -classpath $CLASSPATH org.apache.zookeeper.server.PurgeTxnLog ${ZOOKEEPER_LOG} ${ZOOKEEPER_LOG} -n 3 
 
     if [ -n "${MANAGER_ENABLED}" ]; then
         start_system
