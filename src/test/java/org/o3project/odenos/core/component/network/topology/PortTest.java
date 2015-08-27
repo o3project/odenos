@@ -928,7 +928,7 @@ public class PortTest {
         "node_id=NodeId",
         "out_link=OutLink",
         "in_link=InLink",
-        "attributes={physical_id=PortId@NodeId, vendor=unknown, is_boundary=false, oper_status=UP, admin_status=UP, att123=val123}]"
+        "attributes={physical_id=PortId@NodeId, vendor=unknown, is_boundary=false, oper_status=UP, att123=val123}]"
     }, ",");
 
     System.out.println(result);

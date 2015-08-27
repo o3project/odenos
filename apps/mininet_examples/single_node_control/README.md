@@ -144,7 +144,6 @@ Response
                         "unreserved_bandwidth": "10000",
                         "physical_id": "1@0x1",
                         "max_bandwidth": "10000",
-                        "admin_status": "UP",
                         "hw_addr": "de:4d:25:65:c4:7a",
                         "vendor": "OpenFlow"
                     }
@@ -161,7 +160,6 @@ Response
                         "unreserved_bandwidth": "10000",
                         "physical_id": "2@0x1",
                         "max_bandwidth": "10000",
-                        "admin_status": "UP",
                         "hw_addr": "fa:c4:65:f3:6c:8e",
                         "vendor": "OpenFlow"
                     }
@@ -169,7 +167,6 @@ Response
             },
             "attributes": {
                 "oper_status": "UP",
-                "admin_status": "UP",
                 "vendor": "OpenFlow",
                 "physical_id": "0x1"
             }

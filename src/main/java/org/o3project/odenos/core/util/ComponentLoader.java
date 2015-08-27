@@ -18,6 +18,8 @@ package org.o3project.odenos.core.util;
 
 import org.apache.commons.io.FilenameUtils;
 import org.o3project.odenos.remoteobject.RemoteObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
@@ -29,6 +31,8 @@ import java.util.List;
 
 public final class ComponentLoader {
   private static ClassLoader classLoader;
+
+  private final static Logger log = LoggerFactory.getLogger(ComponentLoader.class);
 
   /**
    * create Class Loader.
@@ -95,7 +99,7 @@ public final class ComponentLoader {
         Class<?> clazz = classLoader.loadClass(className);
         if (RemoteObject.class.isAssignableFrom(clazz) &&
             !Modifier.isAbstract(clazz.getModifiers())) {
-          System.out.println("Loading... " + className);
+          log.info("Loading... {}", className); 
           result.add((Class<? extends RemoteObject>) clazz);
         }
       }

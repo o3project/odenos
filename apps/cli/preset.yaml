@@ -94,7 +94,7 @@
     type: Node
     version: "0"
     ports: {}
-    attributes: {"admin_status":"UP", "oper_status":"UP", "physical_id":"{1}", "vendor":"VENDOR_A"}
+    attributes: {"oper_status":"UP", "physical_id":"{1}", "vendor":"VENDOR_A"}
 
 - transform: show_node 
   get: "/network1/topology/nodes/node{0}" 

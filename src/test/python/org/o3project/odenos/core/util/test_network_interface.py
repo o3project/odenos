@@ -1353,10 +1353,10 @@ class NetworkInterfaceTest(unittest.TestCase):
                                                  "PacketId1")
 
     def test_put_attribute_of_node(self):
-        NodeAttributes1 = {"admin_status": "UP", "oper_status": "UP",
-                           "physical_id": "DPID", "vendor": "Vendor1"}
-        NodeAttributes2 = {"admin_status": "UP", "oper_status": "DOWN",
-                           "physical_id": "DPID", "vendor": "Vendor1"}
+        NodeAttributes1 = {"oper_status": "UP", "physical_id": "DPID",
+                           "vendor": "Vendor1"}
+        NodeAttributes2 = {"oper_status": "DOWN", "physical_id": "DPID",
+                           "vendor": "Vendor1"}
         Port1 = Port('Port', '1', 'PortId1', 'NodeId1', 'LinkId1', None, {})
         Node_body = Node('Node', '1', 'NodeId1', {'PortId1': Port1},
                          NodeAttributes1)
@@ -1381,8 +1381,8 @@ class NetworkInterfaceTest(unittest.TestCase):
                 self.assertNotEqual(self.result, None)
 
     def test_put_attribute_of_node_attributes_None(self):
-        NodeAttributes1 = {"admin_status": "UP", "oper_status": "UP",
-                           "physical_id": "DPID", "vendor": "Vendor1"}
+        NodeAttributes1 = {"oper_status": "UP", "physical_id": "DPID",
+                           "vendor": "Vendor1"}
         NodeAttributes2 = {}
         Port1 = Port('Port', '1', 'PortId1', 'NodeId1', 'LinkId1', None, {})
         Node_body = Node('Node', '1', 'NodeId1', {'PortId1': Port1},
@@ -1405,8 +1405,8 @@ class NetworkInterfaceTest(unittest.TestCase):
                 self.assertNotEqual(self.result, None)
 
     def test_put_attribute_of_node_get_nodes_None(self):
-        NodeAttributes1 = {"admin_status": "UP", "oper_status": "DOWN",
-                           "physical_id": "DPID", "vendor": "Vendor1"}
+        NodeAttributes1 = {"oper_status": "DOWN", "physical_id": "DPID",
+                           "vendor": "Vendor1"}
 
         with nested(
                 patch('org.o3project.odenos.core.util.network_interface.'
@@ -1423,8 +1423,8 @@ class NetworkInterfaceTest(unittest.TestCase):
                 self.assertNotEqual(self.result, None)
 
     def test_put_attribute_of_node_get_nodes_Len0(self):
-        NodeAttributes1 = {"admin_status": "UP", "oper_status": "DOWN",
-                           "physical_id": "DPID", "vendor": "Vendor1"}
+        NodeAttributes1 = {"oper_status": "DOWN", "physical_id": "DPID",
+                           "vendor": "Vendor1"}
         Node1 = {}
         with nested(
                 patch('org.o3project.odenos.core.util.network_interface.'
@@ -1441,10 +1441,10 @@ class NetworkInterfaceTest(unittest.TestCase):
                 self.assertNotEqual(self.result, None)
 
     def test_put_attribute_of_node_Update_False(self):
-        NodeAttributes1 = {"admin_status": "UP", "oper_status": "UP",
-                           "physical_id": "DPID", "vendor": "Vendor1"}
-        NodeAttributes2 = {"admin_status": "UP", "oper_status": "UP",
-                           "physical_id": "DPID", "vendor": "Vendor1"}
+        NodeAttributes1 = {"oper_status": "UP", "physical_id": "DPID",
+                           "vendor": "Vendor1"}
+        NodeAttributes2 = {"oper_status": "UP", "physical_id": "DPID",
+                           "vendor": "Vendor1"}
         Port1 = Port('Port', '1', 'PortId1', 'NodeId1', 'LinkId1', None, {})
         Node_body = Node('Node', '1', 'NodeId1',
                          {'PortId1': Port1}, NodeAttributes1)
@@ -1764,8 +1764,8 @@ class NetworkInterfaceTest(unittest.TestCase):
                 self.assertEqual(self.result, None)
 
     def test_put_physical_node_InNode(self):
-        NodeAttributes1 = {"admin_status": "UP", "oper_status": "UP",
-                           "physical_id": "Physicalid1", "vendor": "Vendor1"}
+        NodeAttributes1 = {"oper_status": "UP", "physical_id": "Physicalid1",
+                           "vendor": "Vendor1"}
         Port1 = Port('Port', '1', 'PortId1', 'NodeId1', 'LinkId1', None, {})
         Node_body = Node('Node', '1', 'NodeId1', {'PortId1': Port1},
                          NodeAttributes1)
@@ -1990,8 +1990,8 @@ class NetworkInterfaceTest(unittest.TestCase):
                 self.assertEqual(self.result, None)
 
     def test_put_physical_port_InPort(self):
-        Portattributes = {"admin_status": "UP", "oper_status": "UP",
-                          "max_bandwidth": 128, "unreserved_bandwidth": 129,
+        Portattributes = {"oper_status": "UP", "max_bandwidth": 128,
+                          "unreserved_bandwidth": 129,
                           "physical_id": "PhysicalId1", "vendor": "Vendor1",
                           "is_boundary": True}
         Port1 = Port('Port', '1', 'PortId1', 'NodeId1',

@@ -947,14 +947,6 @@ public class LinkLayerizerTest {
     PowerMockito.verifyPrivate(target).invoke("addEntryEventSubscription",
         "FLOW_CHANGED", "LayerizedId");
 
-    ArrayList<String> nodeAttributes = new ArrayList<String>(
-        Arrays.asList(
-            "attributes::admin_status")
-        );
-    PowerMockito.verifyPrivate(target).invoke(
-        "updateEntryEventSubscription", "NODE_CHANGED", "LayerizedId",
-        nodeAttributes);
-
     ArrayList<String> portAttributes = new ArrayList<String>(
         Arrays.asList(
             "attributes::unreserved_bandwidth",

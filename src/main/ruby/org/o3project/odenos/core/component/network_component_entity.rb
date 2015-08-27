@@ -57,8 +57,6 @@ module Odenos
       # @return [[String]] List of Port.id on this node
       hash_accessor :object, :ports
 
-      # Common Attribute: admin status
-      ATTR_KEY_ADMIN_STATUS = 'admin_status'
       # Common Attribute: operational status
       ATTR_KEY_OPER_STATUS = 'oper_status'
       # Common Attribute: physical_id
@@ -98,8 +96,6 @@ module Odenos
 
       hash_accessor :object, :port_id, :node_id, :out_link, :in_link
 
-      # Common Attribute: admin status
-      ATTR_KEY_ADMIN_STATUS = 'admin_status'
       # Common Attribute: operational status
       ATTR_KEY_OPER_STATUS = 'oper_status'
       # Common Attribute: max bandwidth
