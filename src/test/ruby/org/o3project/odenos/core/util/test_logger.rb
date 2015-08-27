@@ -419,7 +419,7 @@ class TestLogger < MiniTest::Test
     
     @@logger.expects(:debug).with{"TestLogger"}.never
     @@syslogger.expects(:debug).with{
-      "DEBUG TestLogger - debug::false"}.never
+      "DEBUG TestLogger - debug::false"}.once
     
     debug("debug::true")
   end
@@ -437,7 +437,7 @@ class TestLogger < MiniTest::Test
     initialize_syslog(conf)
     
     @@syslogger.expects(:debug?).returns(false)
-    @@logger.expects(:debug).with{"TestLogger"}.never
+    @@logger.expects(:debug).with{"TestLogger"}.once
     @@syslogger.expects(:debug).with{
       "DEBUG TestLogger - debug::false"}.never
     
@@ -497,7 +497,7 @@ class TestLogger < MiniTest::Test
     
     @@logger.expects(:info).with{"TestLogger"}.never
     @@syslogger.expects(:info).with{
-      "INFO TestLogger - info::false"}.never
+      "INFO TestLogger - info::false"}.once
     
     info("info::false")
   end
@@ -515,7 +515,7 @@ class TestLogger < MiniTest::Test
     initialize_syslog(conf)
     
     @@syslogger.expects(:info?).returns(false)
-    @@logger.expects(:info).with{"TestLogger"}.never
+    @@logger.expects(:info).with{"TestLogger"}.once
     @@syslogger.expects(:info).with{
       "INFO TestLogger - info::false"}.never
     
@@ -574,7 +574,7 @@ class TestLogger < MiniTest::Test
     
     @@logger.expects(:warn).with{"TestLogger"}.never
     @@syslogger.expects(:warn).with{
-      "WARN TestLogger - warn::false"}.never
+      "WARN TestLogger - warn::false"}.once
     
     warn("warn::false")
   end
@@ -591,7 +591,7 @@ class TestLogger < MiniTest::Test
     initialize_syslog(conf)
 
     @@syslogger.expects(:warn?).returns(false)
-    @@logger.expects(:warn).with{"TestLogger"}.never
+    @@logger.expects(:warn).with{"TestLogger"}.once
     @@syslogger.expects(:warn).with{
       "WARN TestLogger - warn::false"}.never
     
@@ -650,7 +650,7 @@ class TestLogger < MiniTest::Test
     
     @@logger.expects(:error).with{"TestLogger"}.never
     @@syslogger.expects(:error).with{
-      "ERROR TestLogger - error::false"}.never
+      "ERROR TestLogger - error::false"}.once
     
     error("error::false")
   end
@@ -667,7 +667,7 @@ class TestLogger < MiniTest::Test
     initialize_syslog(conf)
     
     @@syslogger.expects(:error?).returns(false)
-    @@logger.expects(:error).with{"TestLogger"}.never
+    @@logger.expects(:error).with{"TestLogger"}.once
     @@syslogger.expects(:error).with{
       "ERROR TestLogger - error::false"}.never
     
@@ -726,7 +726,7 @@ class TestLogger < MiniTest::Test
     initialize_syslog(conf)
     
     @@logger.expects(:fatal?).returns(false)
-    @@syslogger.expects(:fatal?).never
+    @@syslogger.expects(:fatal?).once
     @@logger.expects(:fatal).with{"TestLogger"}.never
     @@syslogger.expects(:fatal).with{
       "FATAL TestLogger - fatal::false"}.never
@@ -746,7 +746,7 @@ class TestLogger < MiniTest::Test
     initialize_syslog(conf)
     
     @@syslogger.expects(:fatal?).returns(false)
-    @@logger.expects(:fatal).with{"TestLogger"}.never
+    @@logger.expects(:fatal).with{"TestLogger"}.once
     @@syslogger.expects(:fatal).with{
       "FATAL TestLogger - fatal::false"}.never
     

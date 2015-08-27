@@ -44,6 +44,33 @@ Python or Ruby environment, please see "Appendix A".
    $ export JAVA_HOME=/usr/lib/jvm/java-8-oracle
    ```
 
+### 1-3. syslog setting
+
+1. Edit the following parameters in  */etc/rsyslog.d/50-default.conf*
+   * \*.\*;auth,authpriv.none,local1.non,local2.non,local3.non -/var/log/syslog
+
+2. Add the following file in */etc/rsyslog.d/*
+
+   ```
+   local1.*                /var/log/odenos/componentLoader.log
+   local2.*                /var/log/odenos/componentManager.log
+   $template odenos,"/var/log/odenos/%programname%.log"
+   if $syslogfacility-text == 'local3' then ?odenos
+   ```
+
+3. Enable the following parameters in */etc/rsyslog.conf*
+
+   ```
+   $ModLoad imudp
+   $UDPServerRun 514
+   ```
+
+4. Restart rsyslog
+
+   ```
+   $sudo /etc/init.d/rsyslog restart
+   ```
+
 ## 2. Build, Run, Test
 
 1. git clone
