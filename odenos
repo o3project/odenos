@@ -148,7 +148,9 @@ start_system() {
     set_classpath
     $JAVA -classpath $CLASSPATH:. ${ODENOS_OPT} \
 	-Dlog4j.configuration=file:${ODENOS_CONF}/log_java.conf \
+	-Dlog4j.configurationFile=file:${ODENOS_CONF}/log4j2_java.yaml \
 	-Dapp.log=${ODENOS_LOG}/odenos_system.log \
+	-Dlog4j2_app.log=${ODENOS_LOG}/log4j2_odenos_system.log \
 	$ODENOS_MAIN -s -S $MANAGER -o ${REST_PORT} -h ${REST_ROOT} \
 	-i $HOST -p $PORT -I $HOST_B -P $PORT_B \
 	-m $MONITOR $MONITOR_LOGGING $ZOOKEEPER_HOST $ZOOKEEPER_EMBED &
@@ -184,7 +186,9 @@ start_process() {
 
 	    $JAVA -classpath $CLASSPATH:. ${ODENOS_OPT} \
 		-Dlog4j.configuration=file:${ODENOS_CONF}/log_java.conf \
+		-Dlog4j.configurationFile=file:${ODENOS_CONF}/log4j2_java.yaml \
 		-Dapp.log=${ODENOS_LOG}/odenos_${PROC_NAME}.log \
+		-Dlog4j2_app.log=${ODENOS_LOG}/log4j2_odenos_${PROC_NAME}.log \
 		$ODENOS_MAIN -r ${PROC_NAME} -d ${PROC_DIR} \
 		-S $MANAGER -i $HOST -p $PORT -I $HOST_B -P $PORT_B \
 		-m $MONITOR $MONITOR_LOGGING $ZOOKEEPER_HOST &
