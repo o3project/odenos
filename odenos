@@ -53,6 +53,10 @@ MONITOR=false
 MONITOR_LOGGING=""
 ZOOKEEPER_HOST=""
 ZOOKEEPER_EMBED=""
+ZOOKEEPER_LOG=var/zookeeper
+# Refer to http://zookeeper.apache.org/doc/r3.3.1/zookeeperAdmin.html 
+# log file size 100KBytes, snapshot per 100 transactions
+ZOOKEEPER_OPT="-Dzookeeper.preAllocSize=100 -Dzookeeper.snapCount=100"
 
 ##########################################################################
 # common functions                                                       #
@@ -137,6 +141,17 @@ set_classpath() {
     CLASSPATH=.:`echo \`ls lib/java/*\` | tr " " :`:$CLASSPATH
 }
 
+purge_zk_log() {
+    # Purges ZooKeeper's transaction logs 
+    $JAVA -classpath $CLASSPATH \
+          -Dlog4j.configuration=file:${ODENOS_CONF}/log_java.conf \
+	  -Dapp.log=${ODENOS_LOG}/$1 \
+          -Dlog4j.configurationFile=file:${ODENOS_CONF}/log4j2_java.yaml \
+	  org.apache.zookeeper.server.PurgeTxnLog \
+	  ${ZOOKEEPER_LOG} ${ZOOKEEPER_LOG} -n 3 
+}
+
+
 ##########################################################################
 # main functions                                                         #
 ##########################################################################
@@ -145,8 +160,8 @@ start_system() {
         echo "odenos core system is already running"
         return 1
     fi
-    set_classpath
-    $JAVA -classpath $CLASSPATH:. ${ODENOS_OPT} \
+    purge_zk_log odenos_system.log
+    $JAVA -classpath $CLASSPATH:. ${ODENOS_OPT} ${ZOOKEEPER_OPT}\
 	-Dlog4j.configuration=file:${ODENOS_CONF}/log_java.conf \
 	-Dlog4j.configurationFile=file:${ODENOS_CONF}/log4j2_java.yaml \
 	-Dapp.log=${ODENOS_LOG}/odenos_system.log \
@@ -181,10 +196,9 @@ start_process() {
 	fi
 
 	if [ $PROC_TYPE = "java" ]; then
+            purge_zk_log odenos_${PROC_NAME}.log
 	    # start java RemoteObjectManager
-	    set_classpath
-
-	    $JAVA -classpath $CLASSPATH:. ${ODENOS_OPT} \
+	    $JAVA -classpath $CLASSPATH:. ${ODENOS_OPT} ${ZOOKEEPER_OPT}\
 		-Dlog4j.configuration=file:${ODENOS_CONF}/log_java.conf \
 		-Dlog4j.configurationFile=file:${ODENOS_CONF}/log4j2_java.yaml \
 		-Dapp.log=${ODENOS_LOG}/odenos_${PROC_NAME}.log \
@@ -228,7 +242,7 @@ check_start() {
         #echo "Start Compnent Manager :: "$1
         return 0
     else
-        echo "Starting ODENOS Plase wait ..."
+        echo "Starting ODENOS Please wait ..."
         sleep 1
         return -1
     fi
@@ -266,6 +280,8 @@ start() {
     echo "starting ODENOS"
     cp $ODENOS_CONF_FILE $ODENOS_CONF_FILE_TMP
     read_config_file
+
+    set_classpath
 
     if [ ! -d "${ODENOS_LOG}" ] ;then
         mkdir -p "${ODENOS_LOG}"
