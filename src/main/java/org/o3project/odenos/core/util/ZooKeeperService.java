@@ -175,11 +175,14 @@ public final class ZooKeeperService {
    * servers should run in other processes for stability.
    */
   public static void waitForServerToBeUp() {
-    ZooKeeper zk = zooKeeper(60000, null);
+    ZooKeeper zk = null;
     while (true) {
       try {
-        Thread.sleep(2000);
         log.debug("ZooKeeper server is starting...");
+        Thread.sleep(2000);
+        if (zk == null) {
+          zk = zooKeeper(60000, null);
+        }
       } catch (InterruptedException e) {
         log.error("ZooKeeperSerivce startup failed");
       }
