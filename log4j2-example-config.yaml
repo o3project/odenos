@@ -15,7 +15,7 @@ configuration:
 #     name: File
 #     # Set a Java property like this to set a log fine name:
 #     # -Dapp.log="/home/foo/var/abc.log"
-#     fileName: "${app.log}"
+#     fileName: "${sys:app.log}"
 #     PatternLayout:
 #       Pattern: "%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"
     CassandraAppender:
