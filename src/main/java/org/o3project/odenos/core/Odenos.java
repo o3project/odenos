@@ -375,21 +375,25 @@ public final class Odenos {
     Odenos odenos = new Odenos();
 
     // Graceful shutdown
-    Signal signal = new Signal("TERM");
-    Signal.handle(signal, new SignalHandler() {
-      public void handle(Signal signal) {
+    Thread hook = new Thread(new Runnable() {
+      @Override
+      public void run() {
         if (systemIsEnabled) {
+
+          // You add shutdown procedures here:
           // Shutdown method 1
           //       :
           // Shutdown method n
+          
+          // Shutdown ZooKeeper server
           if (zooKeeperEmbedded) {
             ZooKeeperService.stopZkServer();
           }
         }
         log.info("ODENOS is terminated.");
-        System.exit(0);
       }
     });
+    Runtime.getRuntime().addShutdownHook(hook);
 
     try {
       odenos.parseParameters(args);
