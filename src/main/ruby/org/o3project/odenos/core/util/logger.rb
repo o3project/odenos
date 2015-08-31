@@ -102,7 +102,6 @@ module Odenos
         progname = self.class.to_s.split('::').last
         msg = msg_block.call if msg_block
 
-        # TODO
         file = caller.first.split(' ')[0].split('/').last.split(':').first
         method = caller.first.split(' ')[1].delete('`').delete("'")
 
@@ -114,6 +113,7 @@ module Odenos
         if @@syslogger.debug?
           @@syslogger.debug(log_msg)
         end
+        return nil
       end
 
       def info(msg = nil, &msg_block)
@@ -123,7 +123,6 @@ module Odenos
         progname = self.class.to_s.split('::').last
         msg = msg_block.call if msg_block
 
-        # TODO
         file = caller.first.split(' ')[0].split('/').last.split(':').first
         method = caller.first.split(' ')[1].delete('`').delete("'")
 
@@ -135,6 +134,7 @@ module Odenos
         if @@syslogger.info?
           @@syslogger.info(log_msg)
         end
+        return nil
       end
 
       def warn(msg = nil, &msg_block)
@@ -144,7 +144,6 @@ module Odenos
         progname = self.class.to_s.split('::').last
         msg = msg_block.call if msg_block
 
-        # TODO
         file = caller.first.split(' ')[0].split('/').last.split(':').first
         method = caller.first.split(' ')[1].delete('`').delete("'")
         log_msg = "{#{file}##{method}} #{msg}"
@@ -155,6 +154,7 @@ module Odenos
         if @@syslogger.warn?
           @@syslogger.warn(log_msg)
         end
+        return nil
       end
 
       def error(msg = nil, &msg_block)
@@ -164,7 +164,6 @@ module Odenos
         progname = self.class.to_s.split('::').last
         msg = msg_block.call if msg_block
 
-        # TODO
         file = caller.first.split(' ')[0].split('/').last.split(':').first
         method = caller.first.split(' ')[1].delete('`').delete("'")
         log_msg = "{#{file}##{method}} #{msg}"
@@ -175,6 +174,7 @@ module Odenos
         if @@syslogger.error?
           @@syslogger.error(log_msg)
         end
+        return nil
       end
 
       def fatal(msg = nil, &msg_block)
@@ -191,6 +191,7 @@ module Odenos
         if @@syslogger.fatal?
           @@syslogger.fatal(log_msg)
         end
+        return nil
       end
     end
   end
