@@ -18,12 +18,7 @@ package org.o3project.odenos.remoteobject;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.zookeeper.CreateMode;
-import org.apache.zookeeper.KeeperException;
-import org.apache.zookeeper.WatchedEvent;
-import org.apache.zookeeper.Watcher;
-import org.apache.zookeeper.ZooDefs;
-import org.apache.zookeeper.ZooKeeper;
-import org.o3project.odenos.core.util.ZooKeeperService;
+import org.o3project.odenos.core.util.zookeeper.KeepAliveClient;
 import org.o3project.odenos.remoteobject.actor.Mail;
 import org.o3project.odenos.remoteobject.event.EventSubscription;
 import org.o3project.odenos.remoteobject.event.ObjectPropertyChanged;
@@ -490,41 +485,31 @@ public class RemoteObject {
     }
     return false;
   }
+  
+  // ZooKeeper client
+  private KeepAliveClient keepAliveClient = null;
 
   /**
-   * Keep-alive registration with ZooKeeper server.
+   * Creates a znode on ZooKeeper server. 
+   * @param path
+   * @param mode
    */
-  public void keepAlive(final String path, final int timeout) {
-    final String objectId = getObjectId();
-    Watcher watcher = new Watcher() {
-      @Override
-      public void process(WatchedEvent event) {
-        switch (event.getState()) {
-          case Expired:
-            keepAlive(path, timeout);
-            log.warn("ZooKeeper session exipired: {}/{}", path, objectId);
-            break;
-          default:
-            break;
-        }
-      }
-    };
-    // Registers system manager ID with ZooKeeper server.
-    ZooKeeper zk = ZooKeeperService.zooKeeper(timeout, watcher);
-    try {
-      // TODO: ACL
-      if (zk.exists(path, false) == null) {
-        zk.create(path, new byte[0], ZooDefs.Ids.OPEN_ACL_UNSAFE,
-            CreateMode.PERSISTENT);
-      }
-      // TODO: ACL
-      zk.create(path + "/" + objectId, new byte[0],
-          ZooDefs.Ids.OPEN_ACL_UNSAFE,
-          CreateMode.EPHEMERAL);
-      log.debug("ZooKeeper node registered: {}/{}", path, objectId);
-    } catch (KeeperException | InterruptedException e) {
-      log.error("Unable to register system manager ID with ZooKeeper server", e);
+  public void zkCreatePath(final String path, CreateMode mode) {
+    if (keepAliveClient == null) {
+      keepAliveClient = new KeepAliveClient();
     }
+    keepAliveClient.createPath(path, mode);
+  }
+ 
+  /**
+   * Deletes a znode on ZooKeeper server.
+   * @param path
+   */
+  public void zkDeletePath(final String path) {
+    if (keepAliveClient == null) {
+      log.warn("No ZooKeeper connectivity");
+    }
+    keepAliveClient.deletePath(path);
   }
 
 }

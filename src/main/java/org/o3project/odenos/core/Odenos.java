@@ -21,6 +21,7 @@ import org.apache.commons.cli.BasicParser;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
+import org.apache.zookeeper.CreateMode;
 import org.apache.zookeeper.ZooKeeper;
 import org.o3project.odenos.component.aggregator.Aggregator;
 import org.o3project.odenos.component.federator.Federator;
@@ -34,9 +35,10 @@ import org.o3project.odenos.core.manager.ComponentManager2;
 import org.o3project.odenos.core.manager.system.SystemManager;
 import org.o3project.odenos.core.manager.system.SystemManagerIF;
 import org.o3project.odenos.core.util.ComponentLoader;
-import org.o3project.odenos.core.util.ZooKeeperService;
+import org.o3project.odenos.core.util.zookeeper.ZooKeeperService;
 import org.o3project.odenos.remoteobject.ObjectProperty;
 import org.o3project.odenos.remoteobject.RemoteObject;
+import org.o3project.odenos.remoteobject.RemoteObjectManager;
 import org.o3project.odenos.remoteobject.manager.EventManager;
 import org.o3project.odenos.remoteobject.messagingclient.Config;
 import org.o3project.odenos.remoteobject.messagingclient.Config.MODE;
@@ -312,7 +314,8 @@ public final class Odenos {
         new RESTTranslator(REST_TRANSLATOR_ID, disp, restroot, restport);
 
     // Let others know that the system manager has just started.
-    sysmgr.keepAlive("/system_manager", 5000);
+    sysmgr.zkCreatePath("/system_manager", CreateMode.PERSISTENT);
+    sysmgr.zkCreatePath("/system_manager/" + systemMgrId, CreateMode.EPHEMERAL);
   }
 
   private final void runComponentManager(final String romgrId, final String dir) throws Exception {
@@ -338,7 +341,9 @@ public final class Odenos {
     romgr.setState(ObjectProperty.State.RUNNING);
 
     // Let others know that the component manager has just started.
-    romgr.keepAlive("/component_managers", 5000);
+    romgr.zkCreatePath(RemoteObjectManager.ZK_CMPMGR_PATH, CreateMode.PERSISTENT);
+    romgr.zkCreatePath(RemoteObjectManager.ZK_CMPMGR_PATH + "/" + romgrId, CreateMode.EPHEMERAL);
+    romgr.zkCreatePath(RemoteObjectManager.ZK_CMP_PATH, CreateMode.PERSISTENT);
   }
 
   private Set<Class<? extends RemoteObject>> findComponents(String rootOfPackages) {
