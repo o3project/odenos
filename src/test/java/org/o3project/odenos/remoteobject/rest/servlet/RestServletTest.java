@@ -86,6 +86,88 @@ public class RestServletTest {
   }
 
   /**
+   * Test method for static contents.
+   *
+   * @throws Exception
+   */
+  @Test
+  public void testServiceHttpServletRequestHtmlFile()
+      throws Exception {
+
+    /*
+     * setting
+     */
+    HttpServletRequest request = Mockito.mock(HttpServletRequest.class);
+
+    ServletContext servletContext = Mockito.mock(ServletContext.class);
+
+    String path = "/README.md";
+    doReturn("GET").when(request).getMethod();
+    doReturn(servletContext).when(target).getServletContext();
+    doReturn(".").when(servletContext).getAttribute("resource.root");
+    doReturn(path).when(request).getPathInfo();
+
+    HttpServletResponse response = Mockito.mock(HttpServletResponse.class);
+    ServletOutputStream out = Mockito.mock(ServletOutputStream.class);
+    doReturn(out).when(response).getOutputStream();
+
+    doNothing().when(target).doRequestToComponent(request, response,
+        Request.Method.GET);
+
+    /*
+     * test
+     */
+    target.service(request, response);
+
+    /*
+     * check
+     */
+    verify(response, never()).setStatus(anyInt());
+
+  }
+
+  /**
+   * Test method for directory.
+   *
+   * @throws Exception
+   */
+  @Test
+  public void testServiceHttpServletRequestDirectory()
+      throws Exception {
+
+    /*
+     * setting
+     */
+    HttpServletRequest request = Mockito.mock(HttpServletRequest.class);
+
+    ServletContext servletContext = Mockito.mock(ServletContext.class);
+
+    String path = "/";
+    doReturn("GET").when(request).getMethod();
+    doReturn(servletContext).when(target).getServletContext();
+    doReturn("/").when(servletContext).getAttribute("resource.root");
+    doReturn(path).when(request).getPathInfo();
+
+    HttpServletResponse response = Mockito.mock(HttpServletResponse.class);
+    ServletOutputStream out = Mockito.mock(ServletOutputStream.class);
+    doReturn(out).when(response).getOutputStream();
+
+    doNothing().when(target).doRequestToComponent(request, response,
+        Request.Method.GET);
+
+    /*
+     * test
+     */
+    target.service(request, response);
+
+    /*
+     * check
+     */
+    verify(response).setStatus(eq(HttpServletResponse.SC_NOT_FOUND));
+
+  }
+
+  /**
    * Test method for
    * {@link org.o3project.odenos.remoteobject.rest.servlet.RestServlet#service(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)}
    * .
