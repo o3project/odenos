@@ -75,7 +75,7 @@ module Odenos
         Syslog::Logger.syslog.mask = Syslog::LOG_UPTO(Syslog::LOG_EMERG)
         if conf.include?('Syslog') &&
            conf['Syslog']['Enabled']
-          ident = conf['Syslog']['PROGRAM_NAME']
+          ident = self.class.to_s.split('::').last
           if FACILITY.include?(conf['Syslog']['Facility'])
             facility = FACILITY[conf['Syslog']['Facility']]
           elsif
@@ -109,7 +109,7 @@ module Odenos
         if @@logger.debug? 
           @@logger.debug(progname) { log_msg }
         end
-        log_msg = "DEBUG #{progname} - #{log_msg}"
+        log_msg = "#{progname} - #{log_msg}"
         if @@syslogger.debug?
           @@syslogger.debug(log_msg)
         end
@@ -130,7 +130,7 @@ module Odenos
         if @@logger.info? 
           @@logger.info(progname) { log_msg }
         end
-        log_msg = "INFO #{progname} - #{log_msg}"
+        log_msg = "#{progname} - #{log_msg}"
         if @@syslogger.info?
           @@syslogger.info(log_msg)
         end
@@ -150,7 +150,7 @@ module Odenos
         if @@logger.warn?
           @@logger.warn(progname) { log_msg }
         end
-        log_msg = "WARN #{progname} - #{log_msg}"
+        log_msg = "#{progname} - #{log_msg}"
         if @@syslogger.warn?
           @@syslogger.warn(log_msg)
         end
@@ -170,7 +170,7 @@ module Odenos
         if @@logger.error?
           @@logger.error(progname) { log_msg }
         end
-        log_msg = "ERROR #{progname} - #{log_msg}"
+        log_msg = "#{progname} - #{log_msg}"
         if @@syslogger.error?
           @@syslogger.error(log_msg)
         end
@@ -187,7 +187,7 @@ module Odenos
         if @@logger.fatal?
           @@logger.fatal(progname) { msg }
         end
-        log_msg = "FATAL #{progname} - #{log_msg}"
+        log_msg = "#{progname} - #{log_msg}"
         if @@syslogger.fatal?
           @@syslogger.fatal(log_msg)
         end

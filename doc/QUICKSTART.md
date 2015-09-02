@@ -45,26 +45,33 @@ Python or Ruby environment, please see "Appendix A".
    ```
 
 ### 1-3. syslog setting
-If syslog output, edit syslog environment.
+If syslog output, set syslog configuration.
 
-1. Edit the parameter to exclude system syslog in  */etc/rsyslog.d/50-default.conf*, to separate file ODENOS syslog output.
+1. Install rsyslog package
+
    ```
-   *.*;auth,authpriv.none,local1.none -/var/log/syslog
+   $ sudo apt-get install rsyslog
    ```
 
-2. Add the sample file odenos/etc/80-odenos.conf in */etc/rsyslog.d/*
+2. Add the file *odenos/etc/80-odenos.conf* into */etc/rsyslog.d/*
 
-3. Enable the parameters to provide UDP syslog reception in */etc/rsyslog.conf*. because java logging use UDP remote communication.
+3. Enable the parameters ModLoad in */etc/rsyslog.conf* for java logging.
 
    ```
    $ModLoad imudp
    $UDPServerRun 514
    ```
 
+4. To suppress ODENOS log output to default. Edit the file */etc/rsyslog.d/50-default.conf*, as following:
+
+   ```
+   *.*;auth,authpriv.none,local1.none -/var/log/syslog
+   ```
+
 4. Restart rsyslog
 
    ```
-   $ sudo /etc/init.d/rsyslog restart
+   $ sudo service rsyslog restart
    ```
 
 ## 2. Build, Run, Test

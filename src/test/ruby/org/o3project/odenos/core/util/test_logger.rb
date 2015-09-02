@@ -147,7 +147,7 @@ class TestLogger < MiniTest::Test
               "Level" => "FATAL"}}
               
     Syslog::Logger.syslog.expects(:reopen).with(
-      "component_manager_ruby",
+      "TestLogger",
       Syslog::LOG_PID|Syslog::LOG_CONS,
       Syslog::LOG_LOCAL0).once
     
@@ -161,7 +161,7 @@ class TestLogger < MiniTest::Test
               "Level" => "FATAL"}}
               
     Syslog::Logger.syslog.expects(:reopen).with(
-      "component_manager_ruby",
+      "TestLogger",
       Syslog::LOG_PID|Syslog::LOG_CONS,
       Syslog::LOG_LOCAL1).once
     
@@ -175,7 +175,7 @@ class TestLogger < MiniTest::Test
               "Level" => "FATAL"}}
               
     Syslog::Logger.syslog.expects(:reopen).with(
-      "component_manager_ruby",
+      "TestLogger",
       Syslog::LOG_PID|Syslog::LOG_CONS,
       Syslog::LOG_LOCAL2).once
     
@@ -189,7 +189,7 @@ class TestLogger < MiniTest::Test
               "Level" => "FATAL"}}
               
     Syslog::Logger.syslog.expects(:reopen).with(
-      "component_manager_ruby",
+      "TestLogger",
       Syslog::LOG_PID|Syslog::LOG_CONS,
       Syslog::LOG_LOCAL3).once
     
@@ -203,7 +203,7 @@ class TestLogger < MiniTest::Test
               "Level" => "FATAL"}}
               
     Syslog::Logger.syslog.expects(:reopen).with(
-      "component_manager_ruby",
+      "TestLogger",
       Syslog::LOG_PID|Syslog::LOG_CONS,
       Syslog::LOG_LOCAL4).once
     
@@ -217,7 +217,7 @@ class TestLogger < MiniTest::Test
               "Level" => "FATAL"}}
               
     Syslog::Logger.syslog.expects(:reopen).with(
-      "component_manager_ruby",
+      "TestLogger",
       Syslog::LOG_PID|Syslog::LOG_CONS,
       Syslog::LOG_LOCAL5).once
     
@@ -231,7 +231,7 @@ class TestLogger < MiniTest::Test
               "Level" => "FATAL"}}
               
     Syslog::Logger.syslog.expects(:reopen).with(
-      "component_manager_ruby",
+      "TestLogger",
       Syslog::LOG_PID|Syslog::LOG_CONS,
       Syslog::LOG_LOCAL6).once
     
@@ -245,7 +245,7 @@ class TestLogger < MiniTest::Test
               "Level" => "FATAL"}}
               
     Syslog::Logger.syslog.expects(:reopen).with(
-      "component_manager_ruby",
+      "TestLogger",
       Syslog::LOG_PID|Syslog::LOG_CONS,
       Syslog::LOG_LOCAL7).once
     
@@ -259,7 +259,7 @@ class TestLogger < MiniTest::Test
               "Level" => "FATAL"}}
               
     Syslog::Logger.syslog.expects(:reopen).with(
-      "component_manager_ruby",
+      "TestLogger",
       Syslog::LOG_PID|Syslog::LOG_CONS,
       Syslog::LOG_USER).once
     
