@@ -36,7 +36,7 @@ ODENOS_LIB=$ODENOS_ROOT/lib
 ODENOS_LOG=var/log
 ODENOS_TMP=/tmp
 REST_PORT=10080
-REST_ROOT=.
+REST_ROOT=./web
 
 ODENOS_OPT="-Xms512m -Xmx512m -server"
 ODENOS_MAIN=org.o3project.odenos.core.Odenos
