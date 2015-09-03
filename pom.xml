@@ -369,7 +369,6 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
         <configuration>
-          <argLine>-XX:-UseSplitVerifier -XX:MaxPermSize=256m ${argLine}</argLine>
           <systemPropertyVariables>
             <log4j.configuration>file:${basedir}/etc/log4j-silent.properties</log4j.configuration>
           </systemPropertyVariables>
