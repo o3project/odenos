@@ -26,14 +26,21 @@ Python or Ruby environment, please see "Appendix A".
 
 ### 1-2. Java Environment
 
-1. Install jdk for Java 8 and maven
+1. Install jdk and maven
 
    ```
-   $ sudo apt-get install software-properties-common -y
-   $ sudo add-apt-repository ppa:webupd8team/java -y
-   $ sudo apt-get update
-   $ sudo apt-get install oracle-java8-installer oracle-java8-set-default -y
-   $ sudo apt-get install git maven curl
+   $ sudo apt-get install git maven openjdk-7-jdk curl
+   $ export JAVA_HOME=/usr/lib/jvm/java-7-openjdk-amd64
+   ```
+
+   If using java-1.8, please use Oracle JDK instead of OpenJDK.
+   The first, download a JDK-8 archive from
+   [Java SE - Downloads](http://www.oracle.com/technetwork/java/javase/downloads/index.html),
+   and then install its.
+
+   ```
+   $ tar xf jdk-8u25-linux-x64.tar.gz -C /usr/lib/jvm
+   $ ln -s jdk1.8.0_25 /usr/lib/jvm/java-8-oracle
    $ export JAVA_HOME=/usr/lib/jvm/java-8-oracle
    ```
 
