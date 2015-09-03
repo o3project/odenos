@@ -38,6 +38,3 @@ github "Pull Requests".
 If you find any bug, let us know by github's Issues page.
 
 [ODENOS APIs](/doc/api/index.md).
-
-
-[![Analytics](https://ga-beacon.appspot.com/UA-66647984-1/haizawa/odenos/)](https://github.com/igrigorik/ga-beacon)
