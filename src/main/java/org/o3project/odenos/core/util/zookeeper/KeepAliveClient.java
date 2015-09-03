@@ -16,6 +16,7 @@
 
 package org.o3project.odenos.core.util.zookeeper;
 
+import java.util.Iterator;
 import java.util.Set;
 import java.util.concurrent.ConcurrentSkipListSet;
 
@@ -48,7 +49,7 @@ public class KeepAliveClient {
         case Expired:
           log.warn("ZooKeeper session exipired");
           connect();
-          paths.forEach((path) -> createPath(path, CreateMode.EPHEMERAL));
+          createPaths(paths, CreateMode.EPHEMERAL);
           break;
         default:
           break;
@@ -108,7 +109,7 @@ public class KeepAliveClient {
       switch (code) {
         case CONNECTIONLOSS:
           paths.add(path);
-          paths.forEach((p) -> createPath(p, CreateMode.EPHEMERAL));
+          createPaths(paths, CreateMode.EPHEMERAL);
           break;
         case OK:
           paths.add(path);
@@ -122,5 +123,13 @@ public class KeepAliveClient {
       }
     }
   };
+  
+  private void createPaths(final Set<String> paths, final CreateMode mode) {
+    Iterator<String> iterator = paths.iterator();
+    while (iterator.hasNext()) {
+      String path = iterator.next(); 
+      createPath(path, mode);
+    }
+  }
 
 }

@@ -3,9 +3,9 @@ package org.o3project.odenos.core.util.zookeeper;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Method;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Properties;
-import java.util.function.Consumer;
-import java.util.function.Function;
 
 import org.apache.zookeeper.KeeperException;
 import org.apache.zookeeper.WatchedEvent;
@@ -135,30 +135,10 @@ public final class ZooKeeperService {
   public static void stopZkServer() {
     // Removes ephemeral znodes
     ZooKeeper zk = zooKeeper();
-
-    final Function<String, Void> clearChildren = 
-      (path) -> {
-        try {
-          {
-            zk.getChildren(path, false).forEach(new Consumer<String>() {
-              public void accept(final String child) {
-                try {
-                  zk.delete(path + "/" + child, -1);
-                } catch (InterruptedException | KeeperException e) {
-                  log.error("unable to delete children", e);
-                }
-              }
-            });
-          }
-         } catch (Exception e) {
-           log.error("unable to delete children", e);
-         }
-        return null;
-    };
     
-    clearChildren.apply(RemoteObjectManager.ZK_CMPMGR_PATH);
-    clearChildren.apply(RemoteObjectManager.ZK_CMP_PATH);
-    clearChildren.apply("/system_manager");
+    clearChildren(zk, RemoteObjectManager.ZK_CMPMGR_PATH);
+    clearChildren(zk, RemoteObjectManager.ZK_CMP_PATH);
+    clearChildren(zk, "/system_manager");
     
     Method shutdown = null;
     try {
@@ -179,6 +159,24 @@ public final class ZooKeeperService {
       Thread.currentThread().interrupt();
       log.warn("interrupted");
       zkServerThread = null;
+    }
+  }
+
+  private static void clearChildren(final ZooKeeper zk, final String path) {
+    List<String> children;
+    try {
+      children = zk.getChildren(path, false);
+      Iterator<String> iterator = children.iterator();
+      while (iterator.hasNext()) {
+        try {
+          String child = iterator.next();
+          zk.delete(path + "/" + child, -1);
+        } catch (InterruptedException | KeeperException e) {
+          log.error("unable to delete children", e);
+        }
+      }
+    } catch (KeeperException | InterruptedException e) {
+      log.error("Unable to get children", e);
     }
   }
 
