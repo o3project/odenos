@@ -297,6 +297,7 @@ module Odenos
       # @param [String] remote_object_id
       # @param [MessageDispatcher] dispatcher
       def initialize(remote_object_id, dispatcher)
+        logger_ident_initialize(remote_object_id)
         debug "RemoteObject#initialize #{remote_object_id}"
         @property = ObjectProperty.new(type: self.class.to_s.split('::').last,
                                        id: remote_object_id)

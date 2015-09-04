@@ -21,8 +21,10 @@ require 'yaml'
 module Odenos
   module Util
     module Logger
+      @@do_init = true
       @@logger = nil
       @@syslogger = nil
+      @@ident = ""
 
       LEVEL = { 'FATAL' => ::Logger::FATAL,
                 'ERROR' => ::Logger::ERROR,
@@ -39,8 +41,12 @@ module Odenos
                    'LOG_LOCAL6' => Syslog::LOG_LOCAL6,
                    'LOG_LOCAL7' => Syslog::LOG_LOCAL7 }
 
+      def logger_ident_initialize(id = "")
+        @@ident = id
+      end
+
       def maybe_initialize
-        return unless @@logger.nil?
+        return unless @@do_init
         logger_conf = {}
         begin
           # FIXME: load file path
@@ -75,7 +81,7 @@ module Odenos
         Syslog::Logger.syslog.mask = Syslog::LOG_UPTO(Syslog::LOG_EMERG)
         if conf.include?('Syslog') &&
            conf['Syslog']['Enabled']
-          ident = self.class.to_s.split('::').last
+          id = @@ident
           if FACILITY.include?(conf['Syslog']['Facility'])
             facility = FACILITY[conf['Syslog']['Facility']]
           elsif
@@ -88,7 +94,7 @@ module Odenos
             level = Syslog::LOG_WARNING
           end
 
-          Syslog::Logger.syslog.reopen(ident,
+          Syslog::Logger.syslog.reopen(id,
                                        Syslog::LOG_PID | Syslog::LOG_CONS,
                                        facility)
           Syslog::Logger.syslog.mask = Syslog::LOG_UPTO(level)

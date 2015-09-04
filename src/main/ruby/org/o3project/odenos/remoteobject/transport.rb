@@ -39,6 +39,7 @@ module Odenos
       # @param [String] remote_object_id
       def initialize(remote_object_id)
         @remote_object_id = remote_object_id
+        logger_ident_initialize(remote_object_id)
       end
     end
 

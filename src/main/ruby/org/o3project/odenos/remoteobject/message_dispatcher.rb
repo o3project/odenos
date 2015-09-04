@@ -126,6 +126,7 @@ module Odenos
         @redis_publisher = nil
         @redis_subscriber_thread = nil
         @subscription_map = EventSubscriptionMap.new
+        logger_ident_initialize(system_manager_id)
       end
       # start loop
       def start

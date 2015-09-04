@@ -51,6 +51,7 @@ module Odenos
         debug "NetworkInterface#initialize ID: #{nwc_id}"
         @dispatcher = dispatcher
         @nwc_id = nwc_id
+        logger_ident_initialize("NetworkInterface")
       end
 
       # Topology's Request
