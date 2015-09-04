@@ -29,14 +29,17 @@ require 'odenos/core/util/logger'
 
 class TestLogger < MiniTest::Test
   include Odenos::Util::Logger
-  
+  @@ident_tmp = ""
   def setup
     Syslog::Logger.new
+    @@do_init = true
+    @@ident_tmp = @@ident
   end
   
   def teardown
     @@logger = nil
     @@syslogger = nil
+    @@ident = @@ident_tmp
   end
   
   def test_maybe_initialize_logger_conf_get_true
@@ -66,7 +69,8 @@ class TestLogger < MiniTest::Test
   
   def test_maybe_initialize_logger_not_nil
     @@logger = "123456789"
-    
+    @@do_init = false
+
     maybe_initialize()
     
     assert_equal("123456789", @@logger)
@@ -147,7 +151,7 @@ class TestLogger < MiniTest::Test
               "Level" => "FATAL"}}
               
     Syslog::Logger.syslog.expects(:reopen).with(
-      "TestLogger",
+      @@ident_tmp,
       Syslog::LOG_PID|Syslog::LOG_CONS,
       Syslog::LOG_LOCAL0).once
     
@@ -161,7 +165,7 @@ class TestLogger < MiniTest::Test
               "Level" => "FATAL"}}
               
     Syslog::Logger.syslog.expects(:reopen).with(
-      "TestLogger",
+      @@ident_tmp,
       Syslog::LOG_PID|Syslog::LOG_CONS,
       Syslog::LOG_LOCAL1).once
     
@@ -175,7 +179,7 @@ class TestLogger < MiniTest::Test
               "Level" => "FATAL"}}
               
     Syslog::Logger.syslog.expects(:reopen).with(
-      "TestLogger",
+      @@ident_tmp,
       Syslog::LOG_PID|Syslog::LOG_CONS,
       Syslog::LOG_LOCAL2).once
     
@@ -189,7 +193,7 @@ class TestLogger < MiniTest::Test
               "Level" => "FATAL"}}
               
     Syslog::Logger.syslog.expects(:reopen).with(
-      "TestLogger",
+      @@ident_tmp,
       Syslog::LOG_PID|Syslog::LOG_CONS,
       Syslog::LOG_LOCAL3).once
     
@@ -203,7 +207,7 @@ class TestLogger < MiniTest::Test
               "Level" => "FATAL"}}
               
     Syslog::Logger.syslog.expects(:reopen).with(
-      "TestLogger",
+      @@ident_tmp,
       Syslog::LOG_PID|Syslog::LOG_CONS,
       Syslog::LOG_LOCAL4).once
     
@@ -217,7 +221,7 @@ class TestLogger < MiniTest::Test
               "Level" => "FATAL"}}
               
     Syslog::Logger.syslog.expects(:reopen).with(
-      "TestLogger",
+      @@ident,
       Syslog::LOG_PID|Syslog::LOG_CONS,
       Syslog::LOG_LOCAL5).once
     
@@ -231,7 +235,7 @@ class TestLogger < MiniTest::Test
               "Level" => "FATAL"}}
               
     Syslog::Logger.syslog.expects(:reopen).with(
-      "TestLogger",
+      @@ident_tmp,
       Syslog::LOG_PID|Syslog::LOG_CONS,
       Syslog::LOG_LOCAL6).once
     
@@ -245,7 +249,7 @@ class TestLogger < MiniTest::Test
               "Level" => "FATAL"}}
               
     Syslog::Logger.syslog.expects(:reopen).with(
-      "TestLogger",
+      @@ident,
       Syslog::LOG_PID|Syslog::LOG_CONS,
       Syslog::LOG_LOCAL7).once
     
@@ -257,9 +261,9 @@ class TestLogger < MiniTest::Test
               "PROGRAM_NAME" => "component_manager_ruby",
               "Facility" => "other",
               "Level" => "FATAL"}}
-              
+
     Syslog::Logger.syslog.expects(:reopen).with(
-      "TestLogger",
+      @@ident_tmp,
       Syslog::LOG_PID|Syslog::LOG_CONS,
       Syslog::LOG_USER).once
     
@@ -372,7 +376,7 @@ class TestLogger < MiniTest::Test
       "PROGRAM_NAME" => "component_manager_ruby",
       "Facility" => "LOG_LOCAL0",
       "Level" => "DEBUG"}}
-      
+    @@do_init = false
     initialize_logger(conf)
     initialize_syslog(conf)
     
@@ -391,7 +395,7 @@ class TestLogger < MiniTest::Test
       "PROGRAM_NAME" => "component_manager_ruby",
       "Facility" => "LOG_LOCAL0",
       "Level" => "DEBUG"}}
-      
+    @@do_init = false      
     initialize_logger(conf)
     initialize_syslog(conf)
     msg_block = Proc.new { 
@@ -413,7 +417,7 @@ class TestLogger < MiniTest::Test
       "PROGRAM_NAME" => "component_manager_ruby",
       "Facility" => "LOG_LOCAL0",
       "Level" => "DEBUG"}}
-      
+    @@do_init = false      
     initialize_logger(conf)
     initialize_syslog(conf)
     
@@ -432,7 +436,7 @@ class TestLogger < MiniTest::Test
       "PROGRAM_NAME" => "component_manager_ruby",
       "Facility" => "LOG_LOCAL0",
       "Level" => "DEBUG"}}
-      
+    @@do_init = false      
     initialize_logger(conf)
     initialize_syslog(conf)
     
@@ -452,6 +456,7 @@ class TestLogger < MiniTest::Test
       "PROGRAM_NAME" => "component_manager_ruby",
       "Facility" => "LOG_LOCAL0",
       "Level" => "INFO"}}
+    @@do_init = false
     initialize_logger(conf)
     initialize_syslog(conf)
 
@@ -470,6 +475,7 @@ class TestLogger < MiniTest::Test
       "PROGRAM_NAME" => "component_manager_ruby",
       "Facility" => "LOG_LOCAL0",
       "Level" => "INFO"}}
+    @@do_init = false
     initialize_logger(conf)
     initialize_syslog(conf)
     msg_block = Proc.new { 
@@ -491,7 +497,7 @@ class TestLogger < MiniTest::Test
       "PROGRAM_NAME" => "component_manager_ruby",
       "Facility" => "LOG_LOCAL0",
       "Level" => "INFO"}}
-      
+    @@do_init = false      
     initialize_logger(conf)
     initialize_syslog(conf)
     
@@ -510,7 +516,7 @@ class TestLogger < MiniTest::Test
       "PROGRAM_NAME" => "component_manager_ruby",
       "Facility" => "LOG_LOCAL0",
       "Level" => "INFO"}}
-      
+    @@do_init = false      
     initialize_logger(conf)
     initialize_syslog(conf)
     
@@ -530,6 +536,7 @@ class TestLogger < MiniTest::Test
       "PROGRAM_NAME" => "component_manager_ruby",
       "Facility" => "LOG_LOCAL0",
       "Level" => "WARN"}}
+    @@do_init = false
     initialize_logger(conf)
     initialize_syslog(conf)
    
@@ -548,6 +555,7 @@ class TestLogger < MiniTest::Test
       "PROGRAM_NAME" => "component_manager_ruby",
       "Facility" => "LOG_LOCAL0",
       "Level" => "WARN"}}
+    @@do_init = false
     initialize_logger(conf)
     initialize_syslog(conf)
     msg_block = Proc.new { 
@@ -562,13 +570,14 @@ class TestLogger < MiniTest::Test
   end
   
   def test_warn_logger_false
-    conf = {"Logger" => {"Enabled" => true,
+    conf = {"Logger" => {"Enabled" => false,
       "Output" => "/dev/null",
       "Level" => "FATAL"},
     "Syslog" => {"Enabled" => true,
       "PROGRAM_NAME" => "component_manager_ruby",
       "Facility" => "LOG_LOCAL0",
       "Level" => "WARN"}}
+    @@do_init = false
     initialize_logger(conf)
     initialize_syslog(conf)
     
@@ -587,6 +596,7 @@ class TestLogger < MiniTest::Test
       "PROGRAM_NAME" => "component_manager_ruby",
       "Facility" => "LOG_LOCAL0",
       "Level" => "WARN"}}
+    @@do_init = false
     initialize_logger(conf)
     initialize_syslog(conf)
 
@@ -606,6 +616,7 @@ class TestLogger < MiniTest::Test
       "PROGRAM_NAME" => "component_manager_ruby",
       "Facility" => "LOG_LOCAL0",
       "Level" => "ERROR"}}
+    @@do_init = false
     initialize_logger(conf)
     initialize_syslog(conf)
     
@@ -624,6 +635,7 @@ class TestLogger < MiniTest::Test
       "PROGRAM_NAME" => "component_manager_ruby",
       "Facility" => "LOG_LOCAL0",
       "Level" => "ERROR"}}
+    @@do_init = false
     initialize_logger(conf)
     initialize_syslog(conf)
     msg_block = Proc.new { 
@@ -645,6 +657,7 @@ class TestLogger < MiniTest::Test
       "PROGRAM_NAME" => "component_manager_ruby",
       "Facility" => "LOG_LOCAL0",
       "Level" => "ERROR"}}
+    @@do_init = false
     initialize_logger(conf)
     initialize_syslog(conf)
     
@@ -663,6 +676,7 @@ class TestLogger < MiniTest::Test
       "PROGRAM_NAME" => "component_manager_ruby",
       "Facility" => "LOG_LOCAL0",
       "Level" => "ERROR"}}
+    @@do_init = false
     initialize_logger(conf)
     initialize_syslog(conf)
     
@@ -682,6 +696,7 @@ class TestLogger < MiniTest::Test
       "PROGRAM_NAME" => "component_manager_ruby",
       "Facility" => "LOG_LOCAL0",
       "Level" => "FATAL"}}
+    @@do_init = false
     initialize_logger(conf)
     initialize_syslog(conf)
     
@@ -700,6 +715,7 @@ class TestLogger < MiniTest::Test
       "PROGRAM_NAME" => "component_manager_ruby",
       "Facility" => "LOG_LOCAL0",
       "Level" => "FATAL"}}
+    @@do_init = false
     initialize_logger(conf)
     initialize_syslog(conf)
     msg_block = Proc.new { 
@@ -722,6 +738,7 @@ class TestLogger < MiniTest::Test
       "PROGRAM_NAME" => "component_manager_ruby",
       "Facility" => "LOG_LOCAL0",
       "Level" => "FATAL"}}
+    @@do_init = false
     initialize_logger(conf)
     initialize_syslog(conf)
     
@@ -742,6 +759,7 @@ class TestLogger < MiniTest::Test
       "PROGRAM_NAME" => "component_manager_ruby",
       "Facility" => "LOG_LOCAL0",
       "Level" => "FATAL"}}
+    @@do_init = false
     initialize_logger(conf)
     initialize_syslog(conf)
     
@@ -752,4 +770,90 @@ class TestLogger < MiniTest::Test
     
     fatal("fatal::false")
   end
+
+  def test_logger_ident_initialize
+    logger_ident_initialize("123456789")
+    assert_equal("123456789", @@ident)
+  end
+
+  def test_logger_true_syslogger_true
+    conf = {"Logger" => {"Enabled" => true,
+      "Output" => "/dev/null",
+      "Level" => "INFO"},
+    "Syslog" => {"Enabled" => true,
+      "PROGRAM_NAME" => "component_manager_ruby",
+      "Facility" => "LOG_LOCAL0",
+      "Level" => "INFO"}}
+    @@do_init = false
+    initialize_logger(conf)
+    initialize_syslog(conf)
+
+    @@logger.expects(:info).with{"TestLogger"}.once
+    @@syslogger.expects(:info).with{
+      "TestLogger - info::true,true"}.once
+
+    info("info::true,true")
+  end
+
+  def test_logger_true_syslogger_false
+    conf = {"Logger" => {"Enabled" => true,
+      "Output" => "/dev/null",
+      "Level" => "INFO"},
+    "Syslog" => {"Enabled" => false,
+      "PROGRAM_NAME" => "component_manager_ruby",
+      "Facility" => "LOG_LOCAL0",
+      "Level" => "INFO"}}
+    @@do_init = false
+    initialize_logger(conf)
+    initialize_syslog(conf)
+
+    @@syslogger.expects(:info?).returns(false)
+    @@logger.expects(:info).with{"TestLogger"}.once
+    @@syslogger.expects(:info).with{
+      "TestLogger - info::true,false"}.never
+
+    info("info::true,false")
+  end
+
+  def test_logger_false_syslogger_true
+    conf = {"Logger" => {"Enabled" => false,
+      "Output" => "/dev/null",
+      "Level" => "INFO"},
+    "Syslog" => {"Enabled" => true,
+      "PROGRAM_NAME" => "component_manager_ruby",
+      "Facility" => "LOG_LOCAL0",
+      "Level" => "INFO"}}
+    @@do_init = false
+    initialize_logger(conf)
+    initialize_syslog(conf)
+
+    @@logger.expects(:info).with{"TestLogger"}.never
+    @@syslogger.expects(:info).with{
+      "TestLogger - info::false,true"}.once
+
+    info("info::false,true")
+  end
+
+  def test_logger_false_syslogger_false
+    conf = {"Logger" => {"Enabled" => false,
+      "Output" => "/dev/null",
+      "Level" => "INFO"},
+    "Syslog" => {"Enabled" => false,
+      "PROGRAM_NAME" => "component_manager_ruby",
+      "Facility" => "LOG_LOCAL0",
+      "Level" => "INFO"}}
+    @@do_init = false
+    initialize_logger(conf)
+    initialize_syslog(conf)
+
+    @@syslogger.expects(:info?).returns(false)
+    @@logger.expects(:info).with{"TestLogger"}.never
+    @@syslogger.expects(:info).with{
+      "TestLogger - info::false,false"}.never
+
+    info("info::false,false")
+  end
+
+
+
 end
