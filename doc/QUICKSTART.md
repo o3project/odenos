@@ -45,7 +45,7 @@ Python or Ruby environment, please see "Appendix A".
    ```
 
 ### 1-3. syslog setting
-If syslog output, set syslog configuration.
+If you want to output syslog, set syslog configuration.
 
 1. Install rsyslog package
 
@@ -53,16 +53,17 @@ If syslog output, set syslog configuration.
    $ sudo apt-get install rsyslog
    ```
 
-2. Add the file *odenos/etc/80-odenos.conf* into */etc/rsyslog.d/*
+2. Add the file *odenos/etc/80-odenos.conf* into */etc/rsyslog.d/*.
 
-3. Enable the parameters ModLoad in */etc/rsyslog.conf* for java logging.
+3. Enable *ModLoad* parameter in */etc/rsyslog.conf* for java logging.
 
    ```
    $ModLoad imudp
    $UDPServerRun 514
    ```
 
-4. To suppress ODENOS log output to default. Edit the file */etc/rsyslog.d/50-default.conf*, as following:
+4. To suppress ODENOS log output to default, Edit the file */etc/rsyslog.d/50-default.conf*.
+   For example as following:
 
    ```
    *.*;auth,authpriv.none,local1.none -/var/log/syslog
