@@ -1,4 +1,4 @@
-﻿
+
 ## SystemManager
 
 **ODENOS core Component: System Manager**    
@@ -18,6 +18,9 @@
   * [GET \<base_uri>/settings](#GETsettings)
   * [PUT \<base_uri>/settings](#PUTsettings)
   * [GET \<base_uri>/objects/\<object_id>](#GETobjects_id)
+
+    Here, \<base_uri> is http://\<hostname>:10080/systemmanager
+    such as http://localhost:10080/systemmanager
 
 ##### RemoteObject Manager
   * [GET \<base_uri>/component_managers](#GETcomponent_managers)

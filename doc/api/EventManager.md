@@ -1,4 +1,4 @@
-﻿
+
 ## EvenManager
 
 **EventManager is a class of implementing pub-sub communication between RemoteObject instances**    
@@ -12,6 +12,9 @@
   * [GET \<base_uri>/settings/event_subscriptions](#GETevent_subscriptions)
   * [PUT \<base_uri>/settings/event_subscriptions/\<subscriber_id>](#PUTevent_subscriptions_id)
   * [GET \<base_uri>/settings/event_subscriptions/\<subscriber_id>](#GETevent_subscriptions_id)
+
+    Here, \<base_uri> is http://\<hostname>:10080/eventmanager
+    such as http://localhost:10080/eventmanager
 
 ----
 #### <a name="GETproperty"> GET \<base_uri>/property</a>  

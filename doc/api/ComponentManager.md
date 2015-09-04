@@ -9,6 +9,9 @@
   * [GET \<base_uri>/component_types](#GETcomponent_types)
   * [GET \<base_uri>/components](#GETcomponents)
 
+    Here, \<base_uri> is http://\<hostname>:10080/\<remote_object_manager_id>
+    such as http://localhost:10080/romgr1
+
 ----
 #### <a name="GETproperty"> GET \<base_uri>/property</a>
   * **get Object property.**

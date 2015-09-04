@@ -87,7 +87,8 @@ network_id       | \<String>              |Network ID
   * [GET \<base_uri>/sliver_network_flow](#GETsliver_network_flow)
   * [GET \<base_uri>/original_network_flow](#GEToriginal_network_flow)
 
-
+    Here, \<base_uri> is http://\<hostname>:10080/systemmanager/components/slicer
+    such as http://localhost:10080/systemmanager/components/slicer
 
 ----
 #### <a name="SliceCondition"> SliceCondition</a>

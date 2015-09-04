@@ -82,6 +82,8 @@ network_id       | \<String>              |Network ID
   * [GET \<base_uri>/federated_network_flow](#GETfederated_network_flow)
   * [GET \<base_uri>/original_network_flow](#GEToriginal_network_flow)
 
+    Here, \<base_uri> is http://\<hostname>:10080/systemmanager/components/federator
+    such as http://localhost:10080/systemmanager/components/federator
 
 ----
 #### <a name="GETproperty"> GET \<base_uri>/property</a>  
