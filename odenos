@@ -227,12 +227,12 @@ start_process() {
             $TREMA run -d "./src/main/ruby/org/o3project/odenos/core/odenos.rb --cmpmgr=$PROC_NAME"
 	fi
 
-        while :
-        do
-          if check_start $PROC_NAME; then
-            break
-          fi
-        done
+#       while :
+#       do
+#         if check_start $PROC_NAME; then
+#           break
+#         fi
+#       done
     done
 }
 
@@ -290,7 +290,7 @@ start() {
         start_system
     fi
     start_process
-    echo "ODENOS Start-up completion."
+#   echo "ODENOS Start-up completion."
 }
 
 stop() {
