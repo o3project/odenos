@@ -1,12 +1,19 @@
-# Control of Multiple Networks
+# Control of Multiple Networks (DCNs & WAN)
 
-This example makes one big layer2 switch on multi-domain and multi-layer networks. 
-In this example, the entire network consists of three domains(*network1*, *network2*, 
-*network3*) as an overlay network, and one domain(*network4*) as an underlay network. 
-First, three networks, *network1*, *network2*, and *network3*, are merged into *network5* 
-by *federator1*. Second, two different layers(*network5* and *network4*) are merged into 
-*network6* by *linklayerizer1*. And finally, *network6* is aggregated(*network7*). So 
-from *l2sw1*'s point of view, the network has only one node.
+Let's make one big switch on multi-domain and multi-layer networks.
+This example emulates that three data center networks(DCNs) connected by a wide area network(WAN).
+
+*network1-3* express these DCNs and *network4* does the WAN which provides tunnels between DCNs.
+(Note that to emulate connected multi-layer networks in single mininet instance, we use four OpenFlowDriver instances which control different switches in the network.)
+
+In ODENOS, we use three Operators to integrate networks like:
+ 1. *federator1* merges three DCNs(*network1-3*) into *network5*
+ 2. *linklayerizer1* merges two different layers(*network4 & 5*) into *network6*.
+ 3. *aggregator1* aggregates *network6* to *network7* which has only single node.
+
+Consequently, there is single node network from the *l2sw1*'s point of view.
+So we do not need to modify any code of *l2sw1*.
+
 
 The following scripts configure ODENOS as below:
 
