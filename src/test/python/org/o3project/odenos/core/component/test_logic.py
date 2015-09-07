@@ -3027,7 +3027,7 @@ class LogicTest(unittest.TestCase):
                           mock_put_object):
 
             self.target._Logic__subscription_table =\
-                {"NodeChanged::UPDATE::publisher_id": ["oper_status"]}
+                {"NodeChanged::UPDATE::network1": ["physical_id", "vendor"]}
             conversion_table._ConversionTable__network_conversion_table =\
                 {"network1": ["network2"]}
             conversion_table._ConversionTable__node_conversion_table =\
@@ -3035,14 +3035,12 @@ class LogicTest(unittest.TestCase):
                  "network2::Node01": ["network1::Node01"]}
             port_prev = Port("Port", "1", "PortId", "NodeId",
                              "OutLink", "InLink", {"PortKey": "PortVal"})
-            node_prev = Node("Node", "0001", "Node02",
-                             {"port_id": port_prev},
-                             {"attribute_prev": "prev_value"})
             port_curr = Port("Port", "1", "PortId", "NodeId",
                              "OutLink", "InLink", {"PortKey": "PortVal"})
-            node_curr = Node("Node", "0001", "Node01",
-                             {"port_id": port_curr},
-                             {"oper_status": "prev_curr"})
+            node_prev = Node("Node", "1", "Node01", {"port_id": port_prev},
+                             {"oper_status": "DOWN"})
+            node_curr = Node("Node", "2", "Node01", {"port_id": port_curr},
+                             {"oper_status": "UP"})
             self.target._network_interfaces["network2"] = \
                 NetworkInterface(self.target.dispatcher, "network2")
             self.value = Response(200, "node_item")
@@ -3054,7 +3052,7 @@ class LogicTest(unittest.TestCase):
             self.result = self.target._update_node_conversion("network1",
                                                               node_prev,
                                                               node_curr,
-                                                              ["oper_status"])
+                                                              ["physical_id", "vendor"])
 
             self.assertEqual(
                 logging_error.call_count, 0)
