@@ -35,6 +35,7 @@ import org.o3project.odenos.core.manager.ComponentManager2;
 import org.o3project.odenos.core.manager.system.SystemManager;
 import org.o3project.odenos.core.manager.system.SystemManagerIF;
 import org.o3project.odenos.core.util.ComponentLoader;
+import org.o3project.odenos.core.util.zookeeper.ChildrenWatcher;
 import org.o3project.odenos.core.util.zookeeper.ZooKeeperService;
 import org.o3project.odenos.remoteobject.ObjectProperty;
 import org.o3project.odenos.remoteobject.RemoteObject;
@@ -337,6 +338,9 @@ public final class Odenos {
         Thread.sleep(2000);
       }
     }
+    
+    ChildrenWatcher watcher = new ChildrenWatcher(zk);
+    watcher.watchChildren(RemoteObjectManager.ZK_CMPMGR_PATH);
 
     romgr.registerComponents(this.findComponents(dir));
     sysmgr.addComponentManager(romgr.getProperty());
