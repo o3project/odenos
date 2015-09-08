@@ -55,24 +55,54 @@ If you want to output syslog, set syslog configuration.
 
 2. Add the file *odenos/etc/80-odenos.conf* into */etc/rsyslog.d/*.
 
-3. Enable *ModLoad* parameter in */etc/rsyslog.conf* for java logging.
-
-   ```
-   $ModLoad imudp
-   $UDPServerRun 514
-   ```
-
-4. To suppress ODENOS log output to default, Edit the file */etc/rsyslog.d/50-default.conf*.
+3. To suppress ODENOS log output to default, Edit the file */etc/rsyslog.d/50-default.conf*.
    For example as following:
 
    ```
    *.*;auth,authpriv.none,local1.none -/var/log/syslog
    ```
 
-4. Restart rsyslog
+4. Enable *ModLoad* parameter in */etc/rsyslog.conf* for java logging.
+
+   ```
+   $ModLoad imudp
+   $UDPServerRun 514
+   ```
+
+5. Restart rsyslog
 
    ```
    $ sudo service rsyslog restart
+   ```
+
+6. Set syslog configuration of odenos.
+
+   *odenos/etc/log_java.conf* :
+
+   ```
+   log4j.rootLogger=info, file, syslog
+   log4j.logger.org.o3project.odenos.core.Odenos=warn, file, syslog
+   log4j.logger.org.eclipse.jetty=WARN, file, syslog
+   log4j.logger.org.o3project.odenos.remoteobject.messagingclient=WARN, file, syslog
+   log4j.logger.org.apache.zookeeper=WARN, file, syslog
+
+   ```
+
+   *odenos/etc/log_python.conf* :
+
+   ```
+   [logger_root]
+   handlers=fileoutput,syslog
+
+   ```
+
+   *odenos/etc/log_ruby.conf* :
+
+   ```
+   Syslog:
+     # Logger enable true or false
+     Enabled: true
+
    ```
 
 ## 2. Build, Run, Test
