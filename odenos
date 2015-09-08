@@ -237,7 +237,7 @@ start_process() {
 }
 
 check_start() {
-    COMPMGR=`curl http://localhost:10080/systemmanager/component_managers/$1 -w "\n%{response_code}\n" 2>/dev/null |grep 200`
+    COMPMGR=`curl http://${HOST}:${REST_PORT}/systemmanager/component_managers/$1 -w "\n%{response_code}\n" 2>/dev/null |grep 200`
     if [ $(echo ${COMPMGR} | grep -e "200") ]; then
         #echo "Start Compnent Manager :: "$1
         return 0
