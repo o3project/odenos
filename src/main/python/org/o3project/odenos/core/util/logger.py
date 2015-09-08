@@ -22,9 +22,12 @@ class Logger(object):
 
     @classmethod
     def file_config(cls, filename=None):
-        if filename is None:
-            filename = os.environ['LOGGING_CONF']
-        logging.config.fileConfig(filename)
+        try:
+            if filename is None:
+                filename = os.environ['LOGGING_CONF']
+            logging.config.fileConfig(filename)
+        except IOError:
+            print "[Python LOGGING ERROR] Logging configuration failed. Not output log in this running."
 
     @classmethod
     def set_level_debug(cls):
