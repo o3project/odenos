@@ -34,7 +34,7 @@ ODENOS_CONF_FILE=$ODENOS_CONF/odenos.conf
 ODENOS_CONF_FILE_TMP=$ODENOS_CONF/odenos.conf.tmp
 ODENOS_LIB=$ODENOS_ROOT/lib
 ODENOS_LOG=var/log
-ODENOS_TMP=/tmp
+ODENOS_TMP=var/tmp
 REST_PORT=10080
 REST_ROOT=.
 
@@ -285,6 +285,9 @@ start() {
 
     if [ ! -d "${ODENOS_LOG}" ] ;then
         mkdir -p "${ODENOS_LOG}"
+    fi
+    if [ ! -d "${ODENOS_TMP}" ] ;then
+        mkdir -p "${ODENOS_TMP}"
     fi
     if [ -n "${MANAGER_ENABLED}" ]; then
         start_system
