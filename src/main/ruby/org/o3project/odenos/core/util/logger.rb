@@ -43,6 +43,7 @@ module Odenos
 
       def logger_ident_initialize(id = "")
         @@ident = id
+        @@do_init = true
       end
 
       def maybe_initialize

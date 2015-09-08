@@ -48,10 +48,10 @@ module Odenos
       PACKETS_PATH = 'packets'
 
       def initialize(dispatcher, nwc_id)
+        logger_ident_initialize("NetworkInterface")
         debug "NetworkInterface#initialize ID: #{nwc_id}"
         @dispatcher = dispatcher
         @nwc_id = nwc_id
-        logger_ident_initialize("NetworkInterface")
       end
 
       # Topology's Request

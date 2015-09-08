@@ -47,7 +47,6 @@ class TestLogger < MiniTest::Test
               "Output" => "/dev/null",
               "Level" => "DEBUG"},
             "Syslog" => {"Enabled" => true,
-              "PROGRAM_NAME" => "component_manager_ruby",
               "Facility" => "LOG_LOCAL0",
               "Level" => "DEBUG"}}
 
@@ -146,7 +145,6 @@ class TestLogger < MiniTest::Test
 
   def test_initialize_syslog_facility_LOG_LOCAL0
     conf = {"Syslog" => {"Enabled" => true,
-              "PROGRAM_NAME" => "component_manager_ruby",
               "Facility" => "LOG_LOCAL0",
               "Level" => "FATAL"}}
               
@@ -160,7 +158,6 @@ class TestLogger < MiniTest::Test
   
   def test_initialize_syslog_facility_LOG_LOCAL1
     conf = {"Syslog" => {"Enabled" => true,
-              "PROGRAM_NAME" => "component_manager_ruby",
               "Facility" => "LOG_LOCAL1",
               "Level" => "FATAL"}}
               
@@ -174,7 +171,6 @@ class TestLogger < MiniTest::Test
   
   def test_initialize_syslog_facility_LOG_LOCAL2
     conf = {"Syslog" => {"Enabled" => true,
-              "PROGRAM_NAME" => "component_manager_ruby",
               "Facility" => "LOG_LOCAL2",
               "Level" => "FATAL"}}
               
@@ -188,7 +184,6 @@ class TestLogger < MiniTest::Test
   
   def test_initialize_syslog_facility_LOG_LOCAL3
     conf = {"Syslog" => {"Enabled" => true,
-              "PROGRAM_NAME" => "component_manager_ruby",
               "Facility" => "LOG_LOCAL3",
               "Level" => "FATAL"}}
               
@@ -202,7 +197,6 @@ class TestLogger < MiniTest::Test
   
   def test_initialize_syslog_facility_LOG_LOCAL4
     conf = {"Syslog" => {"Enabled" => true,
-              "PROGRAM_NAME" => "component_manager_ruby",
               "Facility" => "LOG_LOCAL4",
               "Level" => "FATAL"}}
               
@@ -216,7 +210,6 @@ class TestLogger < MiniTest::Test
   
   def test_initialize_syslog_facility_LOG_LOCAL5
     conf = {"Syslog" => {"Enabled" => true,
-              "PROGRAM_NAME" => "component_manager_ruby",
               "Facility" => "LOG_LOCAL5",
               "Level" => "FATAL"}}
               
@@ -230,7 +223,6 @@ class TestLogger < MiniTest::Test
   
   def test_initialize_syslog_facility_LOG_LOCAL6
     conf = {"Syslog" => {"Enabled" => true,
-              "PROGRAM_NAME" => "component_manager_ruby",
               "Facility" => "LOG_LOCAL6",
               "Level" => "FATAL"}}
               
@@ -244,7 +236,6 @@ class TestLogger < MiniTest::Test
   
   def test_initialize_syslog_facility_LOG_LOCAL7
     conf = {"Syslog" => {"Enabled" => true,
-              "PROGRAM_NAME" => "component_manager_ruby",
               "Facility" => "LOG_LOCAL7",
               "Level" => "FATAL"}}
               
@@ -258,7 +249,6 @@ class TestLogger < MiniTest::Test
   
   def test_initialize_syslog_facility_else
     conf = {"Syslog" => {"Enabled" => true,
-              "PROGRAM_NAME" => "component_manager_ruby",
               "Facility" => "other",
               "Level" => "FATAL"}}
 
@@ -272,7 +262,6 @@ class TestLogger < MiniTest::Test
   
   def test_initialize_syslog_level_FATAL
     conf = {"Syslog" => {"Enabled" => true,
-              "PROGRAM_NAME" => "component_manager_ruby",
               "Facility" => "LOG_LOCAL0",
               "Level" => "FATAL"}}
               
@@ -286,7 +275,6 @@ class TestLogger < MiniTest::Test
   
   def test_initialize_syslog_level_ERROR
     conf = {"Syslog" => {"Enabled" => true,
-              "PROGRAM_NAME" => "component_manager_ruby",
               "Facility" => "LOG_LOCAL0",
               "Level" => "ERROR"}}
               
@@ -300,7 +288,6 @@ class TestLogger < MiniTest::Test
   
   def test_initialize_syslog_level_WARN
     conf = {"Syslog" => {"Enabled" => false,
-              "PROGRAM_NAME" => "component_manager_ruby",
               "Facility" => "LOG_LOCAL0",
               "Level" => "WARN"}}
 
@@ -316,7 +303,6 @@ class TestLogger < MiniTest::Test
   
   def test_initialize_syslog_level_INFO
     conf = {"Syslog" => {"Enabled" => true,
-              "PROGRAM_NAME" => "component_manager_ruby",
               "Facility" => "LOG_LOCAL0",
               "Level" => "INFO"}}
               
@@ -330,7 +316,6 @@ class TestLogger < MiniTest::Test
   
   def test_initialize_syslog_level_DEBUG
     conf = {"Syslog" => {"Enabled" => true,
-              "PROGRAM_NAME" => "component_manager_ruby",
               "Facility" => "LOG_LOCAL0",
               "Level" => "DEBUG"}}
               
@@ -344,7 +329,6 @@ class TestLogger < MiniTest::Test
 
   def test_initialize_syslog_level_else
     conf = {"Syslog" => {"Enabled" => true,
-              "PROGRAM_NAME" => "component_manager_ruby",
               "Facility" => "LOG_LOCAL0",
               "Level" => "Other"}}
               
@@ -373,7 +357,6 @@ class TestLogger < MiniTest::Test
       "Output" => "/dev/null",
       "Level" => "DEBUG"},
     "Syslog" => {"Enabled" => true,
-      "PROGRAM_NAME" => "component_manager_ruby",
       "Facility" => "LOG_LOCAL0",
       "Level" => "DEBUG"}}
     @@do_init = false
@@ -392,7 +375,6 @@ class TestLogger < MiniTest::Test
       "Output" => "/dev/null",
       "Level" => "DEBUG"},
     "Syslog" => {"Enabled" => true,
-      "PROGRAM_NAME" => "component_manager_ruby",
       "Facility" => "LOG_LOCAL0",
       "Level" => "DEBUG"}}
     @@do_init = false      
@@ -414,7 +396,6 @@ class TestLogger < MiniTest::Test
       "Output" => "/dev/null",
       "Level" => "FATAL"},
     "Syslog" => {"Enabled" => true,
-      "PROGRAM_NAME" => "component_manager_ruby",
       "Facility" => "LOG_LOCAL0",
       "Level" => "DEBUG"}}
     @@do_init = false      
@@ -433,7 +414,6 @@ class TestLogger < MiniTest::Test
       "Output" => "/dev/null",
       "Level" => "DEBUG"},
     "Syslog" => {"Enabled" => true,
-      "PROGRAM_NAME" => "component_manager_ruby",
       "Facility" => "LOG_LOCAL0",
       "Level" => "DEBUG"}}
     @@do_init = false      
@@ -453,7 +433,6 @@ class TestLogger < MiniTest::Test
       "Output" => "/dev/null",
       "Level" => "INFO"},
     "Syslog" => {"Enabled" => true,
-      "PROGRAM_NAME" => "component_manager_ruby",
       "Facility" => "LOG_LOCAL0",
       "Level" => "INFO"}}
     @@do_init = false
@@ -472,7 +451,6 @@ class TestLogger < MiniTest::Test
       "Output" => "/dev/null",
       "Level" => "INFO"},
     "Syslog" => {"Enabled" => true,
-      "PROGRAM_NAME" => "component_manager_ruby",
       "Facility" => "LOG_LOCAL0",
       "Level" => "INFO"}}
     @@do_init = false
@@ -494,7 +472,6 @@ class TestLogger < MiniTest::Test
       "Output" => "/dev/null",
       "Level" => "FATAL"},
     "Syslog" => {"Enabled" => true,
-      "PROGRAM_NAME" => "component_manager_ruby",
       "Facility" => "LOG_LOCAL0",
       "Level" => "INFO"}}
     @@do_init = false      
@@ -513,7 +490,6 @@ class TestLogger < MiniTest::Test
       "Output" => "/dev/null",
       "Level" => "INFO"},
     "Syslog" => {"Enabled" => true,
-      "PROGRAM_NAME" => "component_manager_ruby",
       "Facility" => "LOG_LOCAL0",
       "Level" => "INFO"}}
     @@do_init = false      
@@ -533,7 +509,6 @@ class TestLogger < MiniTest::Test
       "Output" => "/dev/null",
       "Level" => "WARN"},
     "Syslog" => {"Enabled" => true,
-      "PROGRAM_NAME" => "component_manager_ruby",
       "Facility" => "LOG_LOCAL0",
       "Level" => "WARN"}}
     @@do_init = false
@@ -552,7 +527,6 @@ class TestLogger < MiniTest::Test
       "Output" => "/dev/null",
       "Level" => "WARN"},
     "Syslog" => {"Enabled" => true,
-      "PROGRAM_NAME" => "component_manager_ruby",
       "Facility" => "LOG_LOCAL0",
       "Level" => "WARN"}}
     @@do_init = false
@@ -574,7 +548,6 @@ class TestLogger < MiniTest::Test
       "Output" => "/dev/null",
       "Level" => "FATAL"},
     "Syslog" => {"Enabled" => true,
-      "PROGRAM_NAME" => "component_manager_ruby",
       "Facility" => "LOG_LOCAL0",
       "Level" => "WARN"}}
     @@do_init = false
@@ -593,7 +566,6 @@ class TestLogger < MiniTest::Test
       "Output" => "/dev/null",
       "Level" => "WARN"},
     "Syslog" => {"Enabled" => true,
-      "PROGRAM_NAME" => "component_manager_ruby",
       "Facility" => "LOG_LOCAL0",
       "Level" => "WARN"}}
     @@do_init = false
@@ -613,7 +585,6 @@ class TestLogger < MiniTest::Test
       "Output" => "/dev/null",
       "Level" => "ERROR"},
     "Syslog" => {"Enabled" => true,
-      "PROGRAM_NAME" => "component_manager_ruby",
       "Facility" => "LOG_LOCAL0",
       "Level" => "ERROR"}}
     @@do_init = false
@@ -632,7 +603,6 @@ class TestLogger < MiniTest::Test
       "Output" => "/dev/null",
       "Level" => "ERROR"},
     "Syslog" => {"Enabled" => true,
-      "PROGRAM_NAME" => "component_manager_ruby",
       "Facility" => "LOG_LOCAL0",
       "Level" => "ERROR"}}
     @@do_init = false
@@ -654,7 +624,6 @@ class TestLogger < MiniTest::Test
       "Output" => "/dev/null",
       "Level" => "FATAL"},
     "Syslog" => {"Enabled" => true,
-      "PROGRAM_NAME" => "component_manager_ruby",
       "Facility" => "LOG_LOCAL0",
       "Level" => "ERROR"}}
     @@do_init = false
@@ -673,7 +642,6 @@ class TestLogger < MiniTest::Test
       "Output" => "/dev/null",
       "Level" => "ERROR"},
     "Syslog" => {"Enabled" => true,
-      "PROGRAM_NAME" => "component_manager_ruby",
       "Facility" => "LOG_LOCAL0",
       "Level" => "ERROR"}}
     @@do_init = false
@@ -693,7 +661,6 @@ class TestLogger < MiniTest::Test
       "Output" => "/dev/null",
       "Level" => "FATAL"},
     "Syslog" => {"Enabled" => true,
-      "PROGRAM_NAME" => "component_manager_ruby",
       "Facility" => "LOG_LOCAL0",
       "Level" => "FATAL"}}
     @@do_init = false
@@ -712,7 +679,6 @@ class TestLogger < MiniTest::Test
       "Output" => "/dev/null",
       "Level" => "FATAL"},
     "Syslog" => {"Enabled" => true,
-      "PROGRAM_NAME" => "component_manager_ruby",
       "Facility" => "LOG_LOCAL0",
       "Level" => "FATAL"}}
     @@do_init = false
@@ -735,7 +701,6 @@ class TestLogger < MiniTest::Test
       "Output" => "/dev/null",
       "Level" => "FATAL"},
     "Syslog" => {"Enabled" => true,
-      "PROGRAM_NAME" => "component_manager_ruby",
       "Facility" => "LOG_LOCAL0",
       "Level" => "FATAL"}}
     @@do_init = false
@@ -756,7 +721,6 @@ class TestLogger < MiniTest::Test
       "Output" => "/dev/null",
       "Level" => "FATAL"},
     "Syslog" => {"Enabled" => true,
-      "PROGRAM_NAME" => "component_manager_ruby",
       "Facility" => "LOG_LOCAL0",
       "Level" => "FATAL"}}
     @@do_init = false
@@ -781,7 +745,6 @@ class TestLogger < MiniTest::Test
       "Output" => "/dev/null",
       "Level" => "INFO"},
     "Syslog" => {"Enabled" => true,
-      "PROGRAM_NAME" => "component_manager_ruby",
       "Facility" => "LOG_LOCAL0",
       "Level" => "INFO"}}
     @@do_init = false
@@ -800,7 +763,6 @@ class TestLogger < MiniTest::Test
       "Output" => "/dev/null",
       "Level" => "INFO"},
     "Syslog" => {"Enabled" => false,
-      "PROGRAM_NAME" => "component_manager_ruby",
       "Facility" => "LOG_LOCAL0",
       "Level" => "INFO"}}
     @@do_init = false
@@ -820,7 +782,6 @@ class TestLogger < MiniTest::Test
       "Output" => "/dev/null",
       "Level" => "INFO"},
     "Syslog" => {"Enabled" => true,
-      "PROGRAM_NAME" => "component_manager_ruby",
       "Facility" => "LOG_LOCAL0",
       "Level" => "INFO"}}
     @@do_init = false
@@ -839,7 +800,6 @@ class TestLogger < MiniTest::Test
       "Output" => "/dev/null",
       "Level" => "INFO"},
     "Syslog" => {"Enabled" => false,
-      "PROGRAM_NAME" => "component_manager_ruby",
       "Facility" => "LOG_LOCAL0",
       "Level" => "INFO"}}
     @@do_init = false
