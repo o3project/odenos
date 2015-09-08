@@ -45,7 +45,8 @@ Python or Ruby environment, please see "Appendix A".
    ```
 
 ### 1-3. syslog setting
-If you want to output syslog, set syslog configuration.
+
+If you want to output syslog, please configure syslog.
 
 1. Install rsyslog package
 
@@ -53,10 +54,11 @@ If you want to output syslog, set syslog configuration.
    $ sudo apt-get install rsyslog
    ```
 
-2. Add the file *odenos/etc/80-odenos.conf* into */etc/rsyslog.d/*.
+2. Add the file *odenos/etc/80-odenos.conf* into */etc/rsyslog.d/*,
+   and customize this file.
 
-3. To suppress ODENOS log output to default, Edit the file */etc/rsyslog.d/50-default.conf*.
-   For example as following:
+3. To suppress ODENOS log output to default file, change the file
+   */etc/rsyslog.d/50-default.conf*.  For example as following:
 
    ```
    *.*;auth,authpriv.none,local1.none -/var/log/syslog
@@ -69,41 +71,17 @@ If you want to output syslog, set syslog configuration.
    $UDPServerRun 514
    ```
 
-5. Restart rsyslog
+5. And then, restart rsyslog service
 
    ```
    $ sudo service rsyslog restart
    ```
 
-6. Set syslog configuration of odenos.
+6. Enable syslog configuration in the following files of ODENOS.
 
-   *odenos/etc/log_java.conf* :
-
-   ```
-   log4j.rootLogger=info, file, syslog
-   log4j.logger.org.o3project.odenos.core.Odenos=warn, file, syslog
-   log4j.logger.org.eclipse.jetty=WARN, file, syslog
-   log4j.logger.org.o3project.odenos.remoteobject.messagingclient=WARN, file, syslog
-   log4j.logger.org.apache.zookeeper=WARN, file, syslog
-
-   ```
-
-   *odenos/etc/log_python.conf* :
-
-   ```
-   [logger_root]
-   handlers=fileoutput,syslog
-
-   ```
-
-   *odenos/etc/log_ruby.conf* :
-
-   ```
-   Syslog:
-     # Logger enable true or false
-     Enabled: true
-
-   ```
+   - *odenos/etc/log_java.conf*
+   - *odenos/etc/log_python.conf*
+   - *odenos/etc/log_ruby.conf*
 
 ## 2. Build, Run, Test
 

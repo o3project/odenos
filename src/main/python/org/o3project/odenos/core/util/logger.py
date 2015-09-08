@@ -15,6 +15,7 @@
 # limitations under the License.                                           #
 
 import os
+import sys
 import logging.config
 
 
@@ -27,7 +28,7 @@ class Logger(object):
                 filename = os.environ['LOGGING_CONF']
             logging.config.fileConfig(filename)
         except IOError:
-            print "[Python LOGGING ERROR] Logging configuration failed. Not output log in this running."
+            print >> sys.stderr, "*** WARN: Logger: may not output log in this time (continued) ***"
 
     @classmethod
     def set_level_debug(cls):
