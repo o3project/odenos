@@ -491,7 +491,8 @@ public class RemoteObject {
 
   /**
    * Creates a znode on ZooKeeper server. 
-   * @param path
+   * 
+   * @param path znode path
    * @param mode
    */
   public void zkCreatePath(final String path, CreateMode mode) {
@@ -503,13 +504,26 @@ public class RemoteObject {
  
   /**
    * Deletes a znode on ZooKeeper server.
-   * @param path
+   * 
+   * @param path znode path
    */
   public void zkDeletePath(final String path) {
     if (keepAliveClient == null) {
       log.warn("No ZooKeeper connectivity");
     }
     keepAliveClient.deletePath(path);
+  }
+  
+  /**
+   * Sets a watch on a znode path.
+   * 
+   * @param path znode path
+   */
+  public void zkWatchPath(final String path, final String message) {
+    if (keepAliveClient == null) {
+      keepAliveClient = new KeepAliveClient();
+    }
+    keepAliveClient.watchPath(path, message);
   }
 
 }
