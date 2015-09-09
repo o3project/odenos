@@ -450,10 +450,12 @@ class MessageDispatcherTest(unittest.TestCase):
 
         with nested(
             patch("redis.client.PubSub.subscribe"),
+                patch("logging.error"),
                 patch("redis.client.PubSub.unsubscribe"),
                 patch("redis.client.PubSub.listen"),
                 patch(self.EVENT_PATH + ".create_from_packed")) as (
                 mock_subscribe,
+                logging_error,
                 mock_unsubscribe,
                 mock_listen,
                 mock_event):
