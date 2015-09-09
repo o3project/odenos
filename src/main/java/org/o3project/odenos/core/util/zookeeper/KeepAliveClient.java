@@ -28,6 +28,7 @@ import org.apache.zookeeper.WatchedEvent;
 import org.apache.zookeeper.Watcher;
 import org.apache.zookeeper.ZooDefs;
 import org.apache.zookeeper.ZooKeeper;
+import org.apache.zookeeper.data.Stat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -36,16 +37,20 @@ import org.slf4j.LoggerFactory;
  */
 public class KeepAliveClient {
 
-  private static final Logger log =
-      LoggerFactory.getLogger(KeepAliveClient.class);
+  private static final Logger log = LoggerFactory.getLogger(KeepAliveClient.class);
 
   ZooKeeper zk = null;
   Set<String> paths = new ConcurrentSkipListSet<>();
 
-  Watcher watcher = new Watcher() {
-    @Override
-    public void process(WatchedEvent event) {
-      switch (event.getState()) {
+  public KeepAliveClient() {
+    connect();
+  }
+
+  private void connect() {
+    zk = ZooKeeperService.zooKeeper(5000, new Watcher() {
+      @Override
+      public void process(WatchedEvent event) {
+        switch (event.getState()) {
         case Expired:
           log.warn("ZooKeeper session exipired");
           connect();
@@ -53,20 +58,14 @@ public class KeepAliveClient {
           break;
         default:
           break;
+        }
       }
-    }
-  };
-
-  public KeepAliveClient() {
-    connect();
-  }
-
-  private void connect() {
-    zk = ZooKeeperService.zooKeeper(5000, watcher);
+    });
   }
 
   /**
    * Creates a znode on ZooKeeper server.
+   * 
    * @param path
    * @param mode
    */
@@ -74,15 +73,13 @@ public class KeepAliveClient {
     if (mode == CreateMode.PERSISTENT) {
       try {
         if (zk.exists(path, false) == null) {
-          zk.create(path, new byte[0], ZooDefs.Ids.OPEN_ACL_UNSAFE,
-              CreateMode.PERSISTENT);
+          zk.create(path, new byte[0], ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT);
         }
       } catch (KeeperException | InterruptedException e) {
         log.error("Unable to create a path: " + path, e);
       }
     } else if (mode == CreateMode.EPHEMERAL) {
-      zk.create(path, new byte[0], ZooDefs.Ids.OPEN_ACL_UNSAFE,
-          mode, createPathCallback, new byte[0]);
+      zk.create(path, new byte[0], ZooDefs.Ids.OPEN_ACL_UNSAFE, mode, createPathCallback, new byte[0]);
     } else {
       log.warn("Unsupported mode: " + mode.toString());
     }
@@ -90,6 +87,7 @@ public class KeepAliveClient {
 
   /**
    * Deletes a znode on ZooKeeper server.
+   * 
    * @param path
    */
   public synchronized void deletePath(final String path) {
@@ -107,29 +105,64 @@ public class KeepAliveClient {
     public void processResult(int rc, String path, Object ctx, String name) {
       Code code = Code.get(rc);
       switch (code) {
-        case CONNECTIONLOSS:
-          paths.add(path);
-          createPaths(paths, CreateMode.EPHEMERAL);
-          break;
-        case OK:
-          paths.add(path);
-          break;
-        case NODEEXISTS:
-          log.warn("node exists: " + path);
-          break;
-        default:
-          log.error("process result: " + code.toString());
-          break;
+      case CONNECTIONLOSS:
+        paths.add(path);
+        createPaths(paths, CreateMode.EPHEMERAL);
+        break;
+      case OK:
+        paths.add(path);
+        break;
+      case NODEEXISTS:
+        log.warn("node exists: " + path);
+        break;
+      default:
+        log.error("process result: " + code.toString());
+        break;
       }
     }
   };
-  
+
   private void createPaths(final Set<String> paths, final CreateMode mode) {
     Iterator<String> iterator = paths.iterator();
     while (iterator.hasNext()) {
-      String path = iterator.next(); 
+      String path = iterator.next();
       createPath(path, mode);
     }
   }
 
+  Set<String> watchedPaths = new ConcurrentSkipListSet<>();
+
+  /**
+   * Sets a watcher on a path to detect its disappearance.
+   * 
+   * @param path
+   */
+  public void watchPath(final String path, final String message) {
+    try {
+      zk.exists(path, new Watcher() {
+        @Override
+        public void process(WatchedEvent event) {
+          String path = event.getPath();
+          switch (event.getType()) {
+          case NodeCreated:
+            log.info("znode created: " + path);
+            watchPath(path, message);
+            break;
+          case NodeDeleted:
+            if (message == null) {
+              log.warn("znode deleted: " + path);
+            } else {
+              log.warn("{}: {}", message, path);
+            }
+            break;
+          default:
+            log.error("Unidentified watch event: " + event.toString());
+            break;
+          }
+        }
+      });
+    } catch (KeeperException | InterruptedException e) {
+      log.error("ZooKeeper operation error");
+    }
+  }
 }

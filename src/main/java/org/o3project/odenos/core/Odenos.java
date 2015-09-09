@@ -337,7 +337,7 @@ public final class Odenos {
         Thread.sleep(2000);
       }
     }
-
+    
     romgr.registerComponents(this.findComponents(dir));
     sysmgr.addComponentManager(romgr.getProperty());
     romgr.setState(ObjectProperty.State.RUNNING);
