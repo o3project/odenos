@@ -133,7 +133,7 @@ public class KeepAliveClient {
   Set<String> watchedPaths = new ConcurrentSkipListSet<>();
 
   /**
-   * Sets a watcher on a path to detect its disappearance.
+   * Sets a watcher on a znode path to detect its disappearance.
    * 
    * @param path
    */
@@ -161,6 +161,20 @@ public class KeepAliveClient {
           }
         }
       });
+    } catch (KeeperException | InterruptedException e) {
+      log.error("ZooKeeper operation error");
+    }
+  }
+  
+  /**
+   * Sets a watcher on a znode path. 
+   * 
+   * @param path
+   * @param watcher
+   */
+  public void watchPath(final String path, Watcher watcher) {
+    try {
+      zk.exists(path, watcher);
     } catch (KeeperException | InterruptedException e) {
       log.error("ZooKeeper operation error");
     }
