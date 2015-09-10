@@ -17,6 +17,26 @@
     <argLine></argLine>
   </properties>
 
+  <profiles>
+    <profile>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <properties>
+        <test.argLine></test.argLine>
+      </properties>
+    </profile>
+    <profile>
+      <id>jdk-1.7</id>
+      <activation>
+        <jdk>1.7</jdk>
+      </activation>
+      <properties>
+        <test.argLine>-XX:-UseSplitVerifier -XX:MaxPermSize=256m</test.argLine>
+      </properties>
+    </profile>
+  </profiles>
+
   <repositories>
     <repository>
       <id>central</id>
@@ -369,7 +389,7 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
         <configuration>
-          <argLine>-XX:-UseSplitVerifier -XX:MaxPermSize=256m ${argLine}</argLine>
+          <argLine>${test.argLine} ${argLine}</argLine>
           <systemPropertyVariables>
             <log4j.configuration>file:${basedir}/etc/log4j-silent.properties</log4j.configuration>
           </systemPropertyVariables>
