@@ -32,7 +32,7 @@ public class StartFederatedNetwork extends SimpleControllerBase {
     // Object Id
     protected static final String DUMMY_DRIVER_01_ID = "dummy-driver01";
     protected static final String DUMMY_DRIVER_02_ID = "dummy-driver02";
-    protected static final String LEARNING_SWITCH_ID = "leaning-switch";
+    protected static final String LEARNING_SWITCH_ID = "learning-switch";
     protected static final String FEDERATOR_ID = "federator";
     protected static final String ORIGINAL_01_NW_ID = "original-nw01";
     protected static final String ORIGINAL_02_NW_ID = "original-nw02";

@@ -33,8 +33,8 @@ public class StartSliverNetwork extends SimpleControllerBase{
 
     // Object Id
     protected static final String DUMMY_DRIVER_ID = "dummy_driver";
-    protected static final String LEARNING_SWITCH_01_ID = "leaning_switch01";
-    protected static final String LEARNING_SWITCH_02_ID = "leaning_switch02";
+    protected static final String LEARNING_SWITCH_01_ID = "learning_switch01";
+    protected static final String LEARNING_SWITCH_02_ID = "learning_switch02";
     protected static final String SLICER_ID = "slicer";
     protected static final String ORIGINAL_NW_ID = "original_network";
     protected static final String SLIVER_01_NW_ID = "slicer_network01";
