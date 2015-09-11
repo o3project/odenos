@@ -1,18 +1,15 @@
 # Control of Multiple Networks (DCNs & WAN)
 
 Let's make one big switch on multi-domain and multi-layer networks.
-This example emulates that three data center networks(DCNs) connected by a wide area network(WAN).
 
-*network1-3* express these DCNs and *network4* does the WAN which provides tunnels between DCNs.
-(Note that to emulate connected multi-layer networks in single mininet instance, we use four OpenFlowDriver instances which control different switches in the network.)
+This example emulates three data center networks(DCNs) connected with a wide area network(WAN). *network1-3* express the DCNs and *network4* does the WAN which provides tunnels between DCNs. (Note that to emulate connected multi-layer networks in single mininet instance, we use four OpenFlowDriver instances which control different switches in the network.)
 
-In ODENOS, we use three Operators to integrate networks like:
+In ODENOS, we use follonwing three Operators to integrate networks like:
  1. *federator1* merges three DCNs(*network1-3*) into *network5*
  2. *linklayerizer1* merges two different layers(*network4 & 5*) into *network6*.
  3. *aggregator1* aggregates *network6* to *network7* which has only single node.
 
-Consequently, there is single node network from the *l2sw1*'s point of view.
-So we do not need to modify any code of *l2sw1*.
+Consequently, from the *l2sw1*'s point of view, there is a network with single node. So we do not need to modify any code of *l2sw1*.
 
 
 The following scripts configure ODENOS as below:
