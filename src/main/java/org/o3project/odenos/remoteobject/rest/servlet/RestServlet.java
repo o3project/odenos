@@ -90,11 +90,17 @@ public class RestServlet extends HttpServlet {
       log.debug("Trying to read \"{}\".", path);
 
       if (Files.isReadable(path)) {
+        if (Files.isDirectory(path)) {
+          resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
+          return;
+        }
+
         try (OutputStream out = resp.getOutputStream()) {
           Files.copy(path, out);
         } catch (IOException e) {
           // just ignore.
           log.error("Failed serving {}", path, e);
+          resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
         return;
       }
