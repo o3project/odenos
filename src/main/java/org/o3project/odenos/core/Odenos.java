@@ -105,6 +105,7 @@ public final class Odenos {
       options.addOption("m", "monitor", true, "Output message to monitor");
       options.addOption("l", "monitor_logging", true, "Output message to logger");
       options.addOption("z", "zookeeper_host", true, "ZooKeeper server host name or IP address");
+      options.addOption("n", "zookeeper_port", true, "port number of ZooKeeper server");
       options.addOption("e", "zookeeper_embed", false, "ZooKeeper server run in JVM for system manager");
     }
 
@@ -200,6 +201,16 @@ public final class Odenos {
       }
     }
 
+    public final int getZooKeeperPort() {
+      if (line.hasOption("zookeeper_port")) {
+        int zookeeper_port = Integer.parseInt(line.getOptionValue("zookeeper_port"));
+        return zookeeper_port;
+      } else {
+        return ZK_PORT;
+      }
+    }
+
+
     public final boolean getZooKeeperEmbed() {
       return line.hasOption("zookeeper_embed") ? true : false;
     }
@@ -276,7 +287,7 @@ public final class Odenos {
       disp.start();
 
       ZooKeeperService.setZkHost(parser.getZooKeeperHost());
-      ZooKeeperService.setZkPort(2181); // TODO: set it via a command option.
+      ZooKeeperService.setZkPort(parser.getZooKeeperPort());
 
       if (systemIsEnabled) {
         // Starts ODENOS core system

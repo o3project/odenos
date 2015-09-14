@@ -36,7 +36,7 @@ public class StartLayerizedNetwork extends SimpleControllerBase {
 
     // Object Id
     protected static final String DUMMY_DRIVER_ID = "dummy-driver";
-    protected static final String LEARNING_SWITCH_ID = "leaning-switch";
+    protected static final String LEARNING_SWITCH_ID = "learning-switch";
     protected static final String LINK_LAYERIZER_ID = "link-layerizer";
     protected static final String UPPER_NW_ID = "upper-nw";
     protected static final String LOWER_NW_ID = "lower-nw";

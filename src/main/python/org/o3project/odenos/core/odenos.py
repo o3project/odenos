@@ -52,6 +52,7 @@ class Parser(object):
         parser.add_option("-m", dest="monitor", help="Toggle monitor", default="false")
         parser.add_option("-S", dest="manager", help="System Manager ID", default="systemmanager")
         parser.add_option("-z", dest="zookeeper_host", help="ZooKeeper host name or IP address", default="localhost")
+        parser.add_option("-n", dest="zookeeper_port", help="Port number of ZooKeeper host", default="2181")
         (options, args) = parser.parse_args()
         return options
 
@@ -109,7 +110,8 @@ if __name__ == '__main__':
     classes.append(DummyDriver)
     
     # ZooKeeper client start
-    zk = kazoo.client.KazooClient(hosts=options.zookeeper_host)
+    zkhost = options.zookeeper_host + ":" + options.zookeeper_port
+    zk = kazoo.client.KazooClient(hosts=zkhost)
     zk.start()
 
     # Wait for the system manager to be up
