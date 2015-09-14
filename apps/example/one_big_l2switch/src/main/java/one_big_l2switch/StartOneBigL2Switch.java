@@ -35,7 +35,7 @@ public class StartOneBigL2Switch extends SimpleControllerBase {
 
     // Object Id
     protected static final String DUMMY_DRIVER_ID = "dummy_driver2";
-    protected static final String LEARNING_SWITCH_ID = "leaning_switch2";
+    protected static final String LEARNING_SWITCH_ID = "learning_switch2";
     protected static final String AGGREGATOR_ID = "aggregator2";
     protected static final String ORIGINAL_NW_ID = "original_network2";
     protected static final String AGGREGATED_NW_ID = "aggregated_network2";
