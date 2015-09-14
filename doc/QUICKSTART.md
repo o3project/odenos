@@ -44,45 +44,6 @@ Python or Ruby environment, please see "Appendix A".
    $ export JAVA_HOME=/usr/lib/jvm/java-8-oracle
    ```
 
-### 1-3. syslog setting
-
-If you want to output syslog, please configure syslog.
-
-1. Install rsyslog package
-
-   ```
-   $ sudo apt-get install rsyslog
-   ```
-
-2. Add the file *odenos/etc/80-odenos.conf* into */etc/rsyslog.d/*,
-   and customize this file.
-
-3. To suppress ODENOS log output to default file, change the file
-   */etc/rsyslog.d/50-default.conf*.  For example as following:
-
-   ```
-   *.*;auth,authpriv.none,local1.none -/var/log/syslog
-   ```
-
-4. Enable *ModLoad* parameter in */etc/rsyslog.conf* for java logging.
-
-   ```
-   $ModLoad imudp
-   $UDPServerRun 514
-   ```
-
-5. And then, restart rsyslog service
-
-   ```
-   $ sudo service rsyslog restart
-   ```
-
-6. Enable syslog configuration in the following files of ODENOS.
-
-   - *odenos/etc/log_java.conf*
-   - *odenos/etc/log_python.conf*
-   - *odenos/etc/log_ruby.conf*
-
 ## 2. Build, Run, Test
 
 1. git clone
@@ -192,6 +153,46 @@ If you want to output syslog, please configure syslog.
    ```
    $ ~/trema-edge/trema killall
    ```
+
+
+### A-3. Syslog Setting
+
+If you want to output syslog, please configure syslog.
+
+1. Install rsyslog package
+
+   ```
+   $ sudo apt-get install rsyslog
+   ```
+
+2. Add the file *odenos/etc/80-odenos.conf* into */etc/rsyslog.d/*,
+   and customize this file.
+
+3. To suppress ODENOS log output to default file, change the file
+   */etc/rsyslog.d/50-default.conf*.  For example as following:
+
+   ```
+   *.*;auth,authpriv.none,local1.none -/var/log/syslog
+   ```
+
+4. Enable *ModLoad* parameter in */etc/rsyslog.conf* for java logging.
+
+   ```
+   $ModLoad imudp
+   $UDPServerRun 514
+   ```
+
+5. And then, restart rsyslog service
+
+   ```
+   $ sudo service rsyslog restart
+   ```
+
+6. Enable syslog configuration in the following files of ODENOS.
+
+   - *odenos/etc/log_java.conf*
+   - *odenos/etc/log_python.conf*
+   - *odenos/etc/log_ruby.conf*
 
 
 ## FAQ
