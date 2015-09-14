@@ -27,6 +27,10 @@ PYTHON=python
 MVN=mvn
 TREMA=~/trema-edge/trema
 
+RUN_DIR=`pwd`
+RUN_SCRIPT_NAME="${0##*/}"
+RUN_SCRIPT_DIR="${0%${RUN_SCRIPT_NAME}}"
+cd ${RUN_SCRIPT_DIR}
 ODENOS_ROOT=`pwd`
 
 ODENOS_CONF=$ODENOS_ROOT/etc
@@ -34,7 +38,7 @@ ODENOS_CONF_FILE=$ODENOS_CONF/odenos.conf
 ODENOS_CONF_FILE_TMP=$ODENOS_CONF/odenos.conf.tmp
 ODENOS_LIB=$ODENOS_ROOT/lib
 ODENOS_LOG=var/log
-ODENOS_TMP=/tmp
+ODENOS_TMP=var/tmp
 REST_PORT=10080
 REST_ROOT=.
 
@@ -52,6 +56,7 @@ PORT_B=0
 MONITOR=false
 MONITOR_LOGGING=""
 ZOOKEEPER_HOST=""
+ZOOKEEPER_PORT=""
 ZOOKEEPER_EMBED=""
 ZOOKEEPER_LOG=var/zookeeper
 # Refer to http://zookeeper.apache.org/doc/r3.3.1/zookeeperAdmin.html 
@@ -120,6 +125,9 @@ read_config_file() {
 	    "zookeeper.host")
                 ZOOKEEPER_HOST="-z "`echo $line | awk '{print $2}'`
 		;;
+	    "zookeeper.port")
+                ZOOKEEPER_PORT="-n "`echo $line | awk '{print $2}'`
+		;;
 	    "zookeeper.embed")
                 ZOOKEEPER_EMBED="-e"
 		;;
@@ -168,7 +176,8 @@ start_system() {
 	-Dlog4j2_app.log=${ODENOS_LOG}/log4j2_odenos_system.log \
 	$ODENOS_MAIN -s -S $MANAGER -o ${REST_PORT} -h ${REST_ROOT} \
 	-i $HOST -p $PORT -I $HOST_B -P $PORT_B \
-	-m $MONITOR $MONITOR_LOGGING $ZOOKEEPER_HOST $ZOOKEEPER_EMBED &
+	-m $MONITOR $MONITOR_LOGGING $ZOOKEEPER_HOST $ZOOKEEPER_PORT \
+	$ZOOKEEPER_EMBED &
     echo $! > $FILE_ODENOS_SYSTEM_PID
 }
 
@@ -205,7 +214,7 @@ start_process() {
 		-Dlog4j2_app.log=${ODENOS_LOG}/log4j2_odenos_${PROC_NAME}.log \
 		$ODENOS_MAIN -r ${PROC_NAME} -d ${PROC_DIR} \
 		-S $MANAGER -i $HOST -p $PORT -I $HOST_B -P $PORT_B \
-		-m $MONITOR $MONITOR_LOGGING $ZOOKEEPER_HOST &
+		-m $MONITOR $MONITOR_LOGGING $ZOOKEEPER_HOST $ZOOKEEPER_PORT &
 
 	    echo $! > $ODENOS_TMP/odenos_${PROC_NAME}.pid
 
@@ -216,7 +225,7 @@ start_process() {
 		APP_LOG=${ODENOS_LOG}/odenos_${PROC_NAME}.log \
 		$PYTHON ${ODENOS_LIB}/python/org/o3project/odenos/core/odenos.py \
 		-r ${PROC_NAME} -d ${PROC_DIR} -S $MANAGER -i $HOST -p $PORT -m \
-	       	$MONITOR $ZOOKEEPER_HOST &
+		MONITOR $ZOOKEEPER_HOST $ZOOKEEPER_PORT &
 
 	    echo $! > $ODENOS_TMP/odenos_${PROC_NAME}.pid
 
@@ -237,7 +246,7 @@ start_process() {
 }
 
 check_start() {
-    COMPMGR=`curl http://localhost:10080/systemmanager/component_managers/$1 -w "\n%{response_code}\n" 2>/dev/null |grep 200`
+    COMPMGR=`curl http://${HOST}:${REST_PORT}/systemmanager/component_managers/$1 -w "\n%{response_code}\n" 2>/dev/null |grep 200`
     if [ $(echo ${COMPMGR} | grep -e "200") ]; then
         #echo "Start Compnent Manager :: "$1
         return 0
@@ -285,6 +294,9 @@ start() {
 
     if [ ! -d "${ODENOS_LOG}" ] ;then
         mkdir -p "${ODENOS_LOG}"
+    fi
+    if [ ! -d "${ODENOS_TMP}" ] ;then
+        mkdir -p "${ODENOS_TMP}"
     fi
     if [ -n "${MANAGER_ENABLED}" ]; then
         start_system
@@ -365,3 +377,5 @@ case "$1" in
     *)
 	show_help
 esac
+
+cd ${RUN_DIR}

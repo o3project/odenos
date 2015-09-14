@@ -35,7 +35,7 @@ public class StartSimpleL2Switch extends SimpleControllerBase {
     // Object Id
     protected static final String NETWORK_ID = "netowrk1";
     protected static final String DUMMY_DRIVER_ID = "dummy_driver";
-    protected static final String LEARNING_SWITCH_ID = "leaning_switch";
+    protected static final String LEARNING_SWITCH_ID = "learning_switch";
     // Type name
     protected static final String NETWORK = "Network";
     protected static final String DUMMY_DRIVER = "DummyDriver";

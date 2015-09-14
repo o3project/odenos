@@ -33,8 +33,8 @@ SLIVER_NW_02_ID = 'sliver-nw02'
 
 ORIGINAL_NW_ID = 'original-nw'
 SLICER_ID = 'slicer'
-LSW_01_ID = 'leaning-sw01'
-LSW_02_ID = 'leaning-sw02'
+LSW_01_ID = 'learning-sw01'
+LSW_02_ID = 'learning-sw02'
 DRIVER_ID = 'openflow-driver'
 CONNECT_ID01 = "#{DRIVER_ID}_#{ORIGINAL_NW_ID}"
 CONNECT_ID02 = "#{SLICER_ID}_#{ORIGINAL_NW_ID}"
