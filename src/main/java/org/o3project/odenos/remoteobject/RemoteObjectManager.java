@@ -17,6 +17,7 @@
 package org.o3project.odenos.remoteobject;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.zookeeper.CreateMode;
 import org.o3project.odenos.remoteobject.message.MessageBodyUnpacker.ParseBodyException;
 import org.o3project.odenos.remoteobject.message.Request;
 import org.o3project.odenos.remoteobject.message.Response;
@@ -35,6 +36,8 @@ public class RemoteObjectManager extends RemoteObject {
   private static final Logger log = LoggerFactory.getLogger(RemoteObjectManager.class);
 
   public static final String ATTR_OBJTYPE = "remote_object_types";
+  public static final String ZK_CMPMGR_PATH = "/component_managers";
+  public static final String ZK_CMP_PATH = "/components";
   private static final String OBJ_ID = "obj_id";
 
   protected RequestParser<IActionCallback> parser;
@@ -199,6 +202,8 @@ public class RemoteObjectManager extends RemoteObject {
       } else {
         object.setState(ObjectProperty.State.ERROR);
       }
+      zkCreatePath(ZK_CMP_PATH + "/" + getObjectId() + ":" +id,
+          CreateMode.EPHEMERAL);
     } catch (Exception e) {
       return new Response(Response.INTERNAL_SERVER_ERROR, e.getMessage());
     }
@@ -211,6 +216,7 @@ public class RemoteObjectManager extends RemoteObject {
       ObjectProperty prev = (ObjectProperty) object.getProperty().clone();
       object.onFinalize();
       objects.remove(id);
+      zkDeletePath(ZK_CMP_PATH + "/" + getObjectId() + ":" +id);
     }
     return new Response(Response.OK, null);
   }
