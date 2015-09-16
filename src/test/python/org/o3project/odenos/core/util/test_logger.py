@@ -15,6 +15,8 @@
 # limitations under the License.                                           #
 
 from org.o3project.odenos.core.util.logger import Logger
+from io import BytesIO
+import sys
 import logging
 import unittest
 from mock import patch
@@ -42,6 +44,18 @@ class LoggerTest(unittest.TestCase):
                 self.assertEqual(m_ileConfig.call_count, 1)
                 self.assertEqual(m_ileConfig.call_args[0][0], "Test_Mock")
                 m_ileConfig.assert_any_call("Test_Mock")
+
+    def test_file_config_Exception(self):
+        stderr_msg = "*** WARN: Logger: may not output log in this time (continued) ***\n"
+        with nested(
+                patch("logging.config.fileConfig"),
+                patch("os.environ", {'LOGGING_CONF': "Test_Mock"}),
+                patch("sys.stderr", new=BytesIO())
+                      ) as(m_ileConfig, Environ, fake_out):
+            m_ileConfig.side_effect = IOError
+            Logger.file_config('filename')
+            self.assertEqual(fake_out.getvalue(), stderr_msg)
+            self.assertEqual(m_ileConfig.call_count, 1)
 
     def test_set_level_debug(self):
         with patch("logging.basicConfig") as m_basicConfig:

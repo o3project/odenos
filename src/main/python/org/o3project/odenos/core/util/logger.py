@@ -15,6 +15,7 @@
 # limitations under the License.                                           #
 
 import os
+import sys
 import logging.config
 
 
@@ -22,9 +23,12 @@ class Logger(object):
 
     @classmethod
     def file_config(cls, filename=None):
-        if filename is None:
-            filename = os.environ['LOGGING_CONF']
-        logging.config.fileConfig(filename)
+        try:
+            if filename is None:
+                filename = os.environ['LOGGING_CONF']
+            logging.config.fileConfig(filename)
+        except IOError:
+            print >> sys.stderr, "*** WARN: Logger: may not output log in this time (continued) ***"
 
     @classmethod
     def set_level_debug(cls):

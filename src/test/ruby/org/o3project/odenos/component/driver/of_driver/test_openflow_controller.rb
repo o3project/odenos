@@ -42,6 +42,7 @@ class TestOpenFlowController < MiniTest::Test
   end
   
   def ini
+    @transactions = Transactions.new(0x0FD0000)
     @base_controller.initialize_topology_mapping
     @base_controller.initialize_flow_mapping
     @base_controller.initialize_queued_call

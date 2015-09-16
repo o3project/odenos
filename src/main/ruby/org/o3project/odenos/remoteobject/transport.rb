@@ -39,6 +39,7 @@ module Odenos
       # @param [String] remote_object_id
       def initialize(remote_object_id)
         @remote_object_id = remote_object_id
+        logger_ident_initialize(remote_object_id)
       end
     end
 
@@ -65,8 +66,8 @@ module Odenos
 
       # @param [String] remote_object_id
       def initialize(remote_object_id, dispatcher)
-        debug { "RemoteMessageTransport#initialize(#{remote_object_id})" }
         super(remote_object_id)
+        debug { "RemoteMessageTransport#initialize(#{remote_object_id})" }
         @dispatcher = dispatcher
         @lockseq = Mutex.new
         @response_map = {}

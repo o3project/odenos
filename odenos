@@ -32,6 +32,7 @@ RUN_SCRIPT_NAME="${0##*/}"
 RUN_SCRIPT_DIR="${0%${RUN_SCRIPT_NAME}}"
 cd ${RUN_SCRIPT_DIR}
 ODENOS_ROOT=`pwd`
+MAX_WAIT_COUNT=30
 
 ODENOS_CONF=$ODENOS_ROOT/etc
 ODENOS_CONF_FILE=$ODENOS_CONF/odenos.conf
@@ -191,6 +192,9 @@ stop_system() {
 }
 
 start_process() {
+    local res proc_list
+
+    proc_list=""
     for proc in ${odenos_process[@]}
     do
 	PROC_NAME=`echo $proc | cut -d "," -f 1 | tr -d " "`
@@ -203,6 +207,7 @@ start_process() {
             echo "odenos $PROC_NAME is already running"
             return 1
 	fi
+	proc_list="${proc_list:+${proc_list} }${PROC_NAME}"
 
 	if [ $PROC_TYPE = "java" ]; then
             purge_zk_log odenos_${PROC_NAME}.log
@@ -236,25 +241,53 @@ start_process() {
             $TREMA run -d "./src/main/ruby/org/o3project/odenos/core/odenos.rb --cmpmgr=$PROC_NAME"
 	fi
 
-#       while :
-#       do
-#         if check_start $PROC_NAME; then
-#           break
-#         fi
-#       done
     done
+
+    check_start ${proc_list}
+    res=$?
+    if [ ${res} -ne 0 ] ;then
+	return 1
+    fi
+    return 0
 }
 
 check_start() {
-    COMPMGR=`curl http://${HOST}:${REST_PORT}/systemmanager/component_managers/$1 -w "\n%{response_code}\n" 2>/dev/null |grep 200`
-    if [ $(echo ${COMPMGR} | grep -e "200") ]; then
-        #echo "Start Compnent Manager :: "$1
-        return 0
-    else
-        echo "Starting ODENOS Please wait ..."
-        sleep 1
-        return -1
+    local ret_val proc_list proc reply_code cnt
+
+    proc_list=" $* "
+    cnt=0
+    while [ -n "${proc_list% }" -a ${cnt} -lt ${MAX_WAIT_COUNT} ] ;do
+	ret_val=0
+	cnt=$(( cnt + 1 ))
+	for proc in ${proc_list} ;do
+	    reply_code=`curl http://${HOST}:${REST_PORT}/systemmanager/component_managers/${proc} -w "\n%{response_code}\n" 2>/dev/null | grep '^[0-5][0-9][0-9]$'`
+	    case "${reply_code}" in
+	    200)
+		echo "Started Compnent Manager :: ${proc}"
+		proc_list="${proc_list% ${proc} *} ${proc_list#* ${proc} }"
+		;;
+	    000|404)	# 000 is not connected
+		ret_val=10
+		;;
+	    *)
+		echo "Failed Compnent Manager :: ${proc}: ${reply_code}"
+		ret_val=1
+		break
+		;;
+	    esac
+	done
+	if [ ${ret_val} -eq 10 ] ;then
+	    #echo "Starting ODENOS Please wait ...${proc_list}"
+	    sleep 1
+	elif [ ${ret_val} -ne 0 ] ;then
+	    break
+	fi
+    done
+
+    if [ ${ret_val} -eq 10 ] ;then
+	echo "Met Timeout Starting ODENOS"
     fi
+    return ${ret_val}
 }
 
 stop_process() {
@@ -278,6 +311,7 @@ stop_process() {
 }
 
 start() {
+    local res
     echo "--  ----------------------------------> "
     echo "--   o-o  o-o   o--o o   o  o-o   o-o   "
     echo "--  o   o |  \  |    |\  | o   o |      "
@@ -302,7 +336,12 @@ start() {
         start_system
     fi
     start_process
-#   echo "ODENOS Start-up completion."
+    res=$?
+    if [ ${res} -ne 0 ] ;then   
+	echo "ODENOS Start-up failed!"
+    else
+	echo "ODENOS Start-up completion."
+    fi
 }
 
 stop() {

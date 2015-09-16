@@ -36,6 +36,7 @@ module Odenos
       def initialize(dispatcher)
         @dispatcher = dispatcher
         @sysmgr_id = dispatcher.system_manager_id
+        logger_ident_initialize('SystemManagerInterface')
       end
 
       ####################

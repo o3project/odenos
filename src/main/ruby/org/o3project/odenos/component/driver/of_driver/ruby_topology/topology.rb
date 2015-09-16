@@ -58,6 +58,7 @@ module Odenos
               @ports = Hash.new { [].freeze }
               # [Link]
               @links = []
+              logger_ident_initialize('Topology')
             end
 
             def add_switch(dpid)
