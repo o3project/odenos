@@ -22,6 +22,7 @@ import org.o3project.odenos.core.manager.system.event.ComponentConnectionChanged
 import org.o3project.odenos.core.manager.system.event.ComponentManagerChanged;
 import org.o3project.odenos.remoteobject.ObjectProperty;
 import org.o3project.odenos.remoteobject.RemoteObject;
+import org.o3project.odenos.remoteobject.RemoteObjectManager;
 import org.o3project.odenos.remoteobject.RequestParser;
 import org.o3project.odenos.remoteobject.event.ObjectPropertyChanged;
 import org.o3project.odenos.remoteobject.manager.ComponentTypesHash;
@@ -652,6 +653,8 @@ public class SystemManager extends RemoteObject {
     }
 
     log.info("Registerd ComponentManager Object ID:{}", body.getObjectId());
+    zkWatchPath(RemoteObjectManager.ZK_CMPMGR_PATH
+        + "/" + compMngId, "Component Manager crashed");  // Component manager alive monitoring
     return new Response(Response.OK, body);
   }
 
