@@ -85,7 +85,6 @@ read_config_file() {
         KEY=`echo $line | cut -d " " -f 1 | tr -d " "`
         case "$KEY" in
             "PROCESS")
-                #VAL=`echo $line | cut -d " " -f 2 | tr -d " "`
                 VAL=`echo $line | awk '{print $2}'`
                 odenos_process=(${odenos_process[@]} $VAL)
                 count=`expr $count + 1`
@@ -142,7 +141,7 @@ read_config_file() {
 	PROC_NAME=`echo $proc | cut -d "," -f 1 | tr -d " "`
 	PROC_TYPE=`echo $proc | cut -d "," -f 2 | tr -d " "`
 	PROC_DIR=`echo $proc | cut -d "," -f 3 | tr -d " "`
-	echo $PROC_NAME, $PROC_TYPE, $PROC_DIR
+	#echo "DEBUG: $PROC_NAME, $PROC_TYPE, $PROC_DIR"
     done
 }
 
@@ -236,7 +235,6 @@ start_process() {
 
 	elif [ $PROC_TYPE = "ruby" ]; then
 	    # start ruby RemoteObjectManager
-	    echo $PROC_NAME, $PROC_TYPE, $PROC_DIR
 	    sleep 3
             $TREMA run -d "./src/main/ruby/org/o3project/odenos/core/odenos.rb --cmpmgr=$PROC_NAME"
 	fi
@@ -383,7 +381,7 @@ set_conf() {
   if [ $# = 3 ]; then
     case "$2" in
     -c)
-      echo Read config files :: $3
+      echo "Read config files :: $3"
       ODENOS_CONF_FILE=$3
     esac
   fi
