@@ -35,8 +35,10 @@ import org.o3project.odenos.remoteobject.message.Request;
 import org.o3project.odenos.remoteobject.message.Request.Method;
 import org.o3project.odenos.remoteobject.message.Response;
 import org.o3project.odenos.remoteobject.messagingclient.MessageDispatcher;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.o3project.odenos.core.logging.Log;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -56,7 +58,7 @@ import java.util.regex.Pattern;
  */
 public class SystemManager extends RemoteObject {
 
-  private static final Logger log = LoggerFactory.getLogger(SystemManager.class);
+  private static final Logger log = LogManager.getLogger(SystemManager.class);
 
   private static final int AliveIntervalTime = 5;
   private static final int WAIT_SUBSCRIPTION_TIME = 100;

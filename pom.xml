@@ -392,6 +392,7 @@
           <argLine>${test.argLine} ${argLine}</argLine>
           <systemPropertyVariables>
             <log4j.configuration>file:${basedir}/etc/log4j-silent.properties</log4j.configuration>
+            <log4j.configurationFile>file:${basedir}/etc/log4j2-silent.yaml</log4j.configurationFile>
           </systemPropertyVariables>
         </configuration>
       </plugin>

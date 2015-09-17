@@ -51,6 +51,7 @@ import org.o3project.odenos.remoteobject.message.Request;
 import org.o3project.odenos.remoteobject.message.Response;
 import org.o3project.odenos.remoteobject.messagingclient.MessageDispatcher;
 import org.powermock.api.mockito.PowerMockito;
+import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.powermock.reflect.Whitebox;
@@ -71,6 +72,7 @@ import java.util.concurrent.TimeUnit;
  */
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({ SystemManager.class })
+@PowerMockIgnore({"javax.management.*"})
 public class SystemManagerTest {
   private MessageDispatcher mockDispatcher = PowerMockito
       .mock(MessageDispatcher.class);

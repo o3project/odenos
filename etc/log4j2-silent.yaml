@@ -1,0 +1,5 @@
+configuration:
+
+  loggers:
+    root:
+      level: "OFF" 
