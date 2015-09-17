@@ -22,4 +22,4 @@ lib
 src/test/.coverage
 src/test/ruby/coverage
 target
-var/log
+var
