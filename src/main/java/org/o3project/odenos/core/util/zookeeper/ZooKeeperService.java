@@ -1,11 +1,13 @@
-package org.o3project.odenos.core.util;
+package org.o3project.odenos.core.util.zookeeper;
 
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Method;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
 
+import org.apache.zookeeper.KeeperException;
 import org.apache.zookeeper.WatchedEvent;
 import org.apache.zookeeper.Watcher;
 import org.apache.zookeeper.ZooKeeper;
@@ -13,6 +15,7 @@ import org.apache.zookeeper.server.PurgeTxnLog;
 import org.apache.zookeeper.server.ServerConfig;
 import org.apache.zookeeper.server.ZooKeeperServerMain;
 import org.apache.zookeeper.server.quorum.QuorumPeerConfig;
+import org.o3project.odenos.remoteobject.RemoteObjectManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -132,20 +135,11 @@ public final class ZooKeeperService {
   public static void stopZkServer() {
     // Removes ephemeral znodes
     ZooKeeper zk = zooKeeper();
-    try {
-      List<String> comp_children = zk.getChildren("/component_managers", false);
-      for (String child : comp_children) {
-        log.debug("delete /component_managers/{}", child);
-        zk.delete("/component_managers/"+child, -1);
-      }
-      List<String> sys_children = zk.getChildren("/system_manager", false);
-      for (String child : sys_children) {
-        log.debug("delete /system_manager/{}", child);
-        zk.delete("/system_manager/"+child, -1);
-      }
-    } catch (Exception e) {
-      log.error("unable to delete children", e);
-    }
+    
+    clearChildren(zk, RemoteObjectManager.ZK_CMPMGR_PATH);
+    clearChildren(zk, RemoteObjectManager.ZK_CMP_PATH);
+    clearChildren(zk, "/system_manager");
+    
     Method shutdown = null;
     try {
       shutdown = ZooKeeperServerMain.class.getDeclaredMethod("shutdown");
@@ -165,6 +159,24 @@ public final class ZooKeeperService {
       Thread.currentThread().interrupt();
       log.warn("interrupted");
       zkServerThread = null;
+    }
+  }
+
+  private static void clearChildren(final ZooKeeper zk, final String path) {
+    List<String> children;
+    try {
+      children = zk.getChildren(path, false);
+      Iterator<String> iterator = children.iterator();
+      while (iterator.hasNext()) {
+        try {
+          String child = iterator.next();
+          zk.delete(path + "/" + child, -1);
+        } catch (InterruptedException | KeeperException e) {
+          log.error("unable to delete children", e);
+        }
+      }
+    } catch (KeeperException | InterruptedException e) {
+      log.error("Unable to get children", e);
     }
   }
 

@@ -24,8 +24,8 @@ module Odenos
       attr_reader :system_manager_interface
 
       def initialize(remote_object_id, dispatcher)
-        debug 'Logic#initialize'
         @system_manager_interface = SystemManagerInterface.new(dispatcher)
+        debug 'Logic#initialize'
         @network_interfaces = {}
         @subscription_table = {}
         super
