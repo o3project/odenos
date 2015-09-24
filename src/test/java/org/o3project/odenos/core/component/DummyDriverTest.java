@@ -47,6 +47,7 @@ import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.powermock.reflect.Whitebox;
+import org.powermock.core.classloader.annotations.PowerMockIgnore;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -57,6 +58,7 @@ import java.util.HashMap;
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({ DummyDriver.class, BaseObjectChanged.class, ComponentConnectionChanged.class,
     ComponentConnection.class, OutPacketAdded.class })
+@PowerMockIgnore({"javax.management.*"})
 public class DummyDriverTest {
 
   private DummyDriver target;

@@ -41,6 +41,7 @@ import org.o3project.odenos.core.component.network.flow.basic.BasicFlow;
 import org.o3project.odenos.core.component.network.flow.FlowChanged.Action;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
+import org.powermock.core.classloader.annotations.PowerMockIgnore;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -51,6 +52,7 @@ import java.io.IOException;
  */
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({ FlowChanged.class })
+@PowerMockIgnore({"javax.management.*"})
 public class FlowChangedTest {
 
   private BasicFlow paramPrev;

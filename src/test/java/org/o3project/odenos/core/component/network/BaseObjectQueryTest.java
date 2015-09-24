@@ -34,6 +34,7 @@ import org.o3project.odenos.remoteobject.message.BaseObject;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
+import org.powermock.core.classloader.annotations.PowerMockIgnore;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -44,6 +45,7 @@ import java.util.Map;
  */
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({ BaseObject.class })
+@PowerMockIgnore({"javax.management.*"})
 public class BaseObjectQueryTest {
 
   private BaseObjectQuery<String> target;

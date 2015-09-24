@@ -52,6 +52,7 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.powermock.reflect.Whitebox;
 import org.powermock.reflect.internal.WhiteboxImpl;
+import org.powermock.core.classloader.annotations.PowerMockIgnore;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -65,6 +66,7 @@ import java.util.Map;
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({ PathCalculator.class, DirectedSparseMultigraph.class,
     BasicFlow.class })
+@PowerMockIgnore({"javax.management.*"})
 public class PathCalculatorTest {
 
   private PathCalculator target = null;

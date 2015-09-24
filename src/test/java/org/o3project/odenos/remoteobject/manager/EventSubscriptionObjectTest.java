@@ -35,6 +35,7 @@ import org.o3project.odenos.remoteobject.manager.EventSubscriptionObject.EventSu
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.powermock.reflect.Whitebox;
+import org.powermock.core.classloader.annotations.PowerMockIgnore;
 
 import java.util.HashMap;
 import java.util.List;
@@ -47,6 +48,7 @@ import java.util.Set;
  */
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({ EventSubscriptionMap.class, EventSubscription.class })
+@PowerMockIgnore({"javax.management.*"})
 public class EventSubscriptionObjectTest {
   private EventSubscriptionMap target1 = null;
   private EventSubscription target2 = null;

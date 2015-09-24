@@ -43,6 +43,7 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.powermock.reflect.Whitebox;
 import org.powermock.reflect.internal.WhiteboxImpl;
+import org.powermock.core.classloader.annotations.PowerMockIgnore;
 
 /**
  *
@@ -50,6 +51,7 @@ import org.powermock.reflect.internal.WhiteboxImpl;
  */
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({ EventManager.class })
+@PowerMockIgnore({"javax.management.*"})
 public class EventManagerTest {
   public static final String OBJECT_ID = "object_id";
   MessageDispatcher mockDispatcher = PowerMockito
