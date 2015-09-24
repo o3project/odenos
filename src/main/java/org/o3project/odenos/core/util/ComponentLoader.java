@@ -18,8 +18,10 @@ package org.o3project.odenos.core.util;
 
 import org.apache.commons.io.FilenameUtils;
 import org.o3project.odenos.remoteobject.RemoteObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.o3project.odenos.core.logging.message.LogMessage;
 
 import java.io.File;
 import java.io.IOException;
@@ -32,7 +34,7 @@ import java.util.List;
 public final class ComponentLoader {
   private static ClassLoader classLoader;
 
-  private final static Logger log = LoggerFactory.getLogger(ComponentLoader.class);
+  private final static Logger log = LogManager.getLogger(ComponentLoader.class);
 
   /**
    * create Class Loader.

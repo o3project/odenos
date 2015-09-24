@@ -20,8 +20,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.o3project.odenos.core.logging.message.LogMessage;
 
 /**
  * Manage boundaries class.
@@ -31,7 +32,7 @@ public class LinkLayerizerBoundaryTable {
 
   /** logger. */
   private static final Logger log =
-      LoggerFactory.getLogger(LinkLayerizerBoundaryTable.class);
+      LogManager.getLogger(LinkLayerizerBoundaryTable.class);
 
   /**
    * Map of boundaries.

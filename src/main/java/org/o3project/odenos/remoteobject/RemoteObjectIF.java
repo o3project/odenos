@@ -19,11 +19,13 @@ package org.o3project.odenos.remoteobject;
 import org.o3project.odenos.remoteobject.message.Request;
 import org.o3project.odenos.remoteobject.message.Response;
 import org.o3project.odenos.remoteobject.messagingclient.MessageDispatcher;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.o3project.odenos.core.logging.message.LogMessage;
 
 public class RemoteObjectIF {
-  private static final Logger log = LoggerFactory.getLogger(RemoteObjectIF.class);
+  private static final Logger log = LogManager.getLogger(RemoteObjectIF.class);
 
   public static final String PATH_PROPETY = "property";
   public static final String PATH_SETTINGS = "settings";

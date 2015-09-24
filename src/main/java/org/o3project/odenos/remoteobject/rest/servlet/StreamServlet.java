@@ -18,8 +18,10 @@ package org.o3project.odenos.remoteobject.rest.servlet;
 
 import org.o3project.odenos.remoteobject.rest.Attributes;
 import org.o3project.odenos.remoteobject.rest.RESTTranslator;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.o3project.odenos.core.logging.message.LogMessage;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -42,7 +44,7 @@ public class StreamServlet extends HttpServlet {
 
   private static final long serialVersionUID = 1L;
 
-  private static final Logger log = LoggerFactory.getLogger(StreamServlet.class);
+  private static final Logger log = LogManager.getLogger(StreamServlet.class);
 
   /*
    * (non-Javadoc)

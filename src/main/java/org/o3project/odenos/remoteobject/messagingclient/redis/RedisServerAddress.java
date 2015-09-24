@@ -20,15 +20,16 @@ import java.util.AbstractMap.SimpleImmutableEntry;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.o3project.odenos.core.logging.message.LogMessage;
 
 /**
  * Redis server addresses holder. 
  */
 public class RedisServerAddress {
 
-  private static final Logger log = LoggerFactory.getLogger(RedisServerAddress.class);
+  private static final Logger log = LogManager.getLogger(RedisServerAddress.class);
 
   private List<SimpleImmutableEntry<String, Integer>> pubsubAddresses =
       new ArrayList<>();

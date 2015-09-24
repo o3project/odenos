@@ -30,8 +30,10 @@ import org.o3project.odenos.remoteobject.messagingclient.MessageDispatcher;
 import org.o3project.odenos.remoteobject.rest.servlet.RestServlet;
 import org.o3project.odenos.remoteobject.rest.servlet.StreamServlet;
 import org.o3project.odenos.remoteobject.rest.servlet.SubscriptionsServlet;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.o3project.odenos.core.logging.message.LogMessage;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -70,7 +72,7 @@ public class RESTTranslator extends RemoteObject {
   private static final MessagePack messagePack = new MessagePack();
   private static final Integer DEFAULT_SERVER_PORT = 10080;
 
-  private static final Logger log = LoggerFactory.getLogger(RESTTranslator.class);
+  private static final Logger log = LogManager.getLogger(RESTTranslator.class);
 
   private final Map<String, AsyncContext> asyncContextMap = new HashMap<String, AsyncContext>();
   private final Map<DistKey, Set<String>> distributionTable = new HashMap<DistKey, Set<String>>();

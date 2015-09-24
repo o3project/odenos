@@ -22,8 +22,10 @@ import org.msgpack.annotation.Ignore;
 import org.msgpack.annotation.Message;
 import org.msgpack.annotation.NotNullable;
 import org.o3project.odenos.remoteobject.message.OdenosMessage;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.o3project.odenos.core.logging.message.LogMessage;
 
 /**
  * Boundary abstract class.
@@ -35,7 +37,7 @@ public abstract class Boundary extends OdenosMessage {
 
   /** logger. */
   @Ignore
-  private static final Logger log = LoggerFactory.getLogger(Boundary.class);
+  private static final Logger log = LogManager.getLogger(Boundary.class);
 
   /** ID that is unique in the ODENOS. */
   @NotNullable

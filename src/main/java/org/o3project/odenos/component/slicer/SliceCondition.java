@@ -21,8 +21,10 @@ import org.msgpack.MessagePackable;
 import org.msgpack.packer.Packer;
 import org.msgpack.type.ValueType;
 import org.msgpack.unpacker.Unpacker;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.o3project.odenos.core.logging.message.LogMessage;
 
 import java.io.IOException;
 
@@ -33,7 +35,7 @@ import java.io.IOException;
 public abstract class SliceCondition implements MessagePackable {
 
   /** logger. */
-  private static final Logger log = LoggerFactory.getLogger(SliceCondition.class);
+  private static final Logger log = LogManager.getLogger(SliceCondition.class);
 
   private String id;
   private String type;

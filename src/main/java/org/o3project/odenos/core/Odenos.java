@@ -45,8 +45,10 @@ import org.o3project.odenos.remoteobject.messagingclient.Config.MODE;
 import org.o3project.odenos.remoteobject.messagingclient.ConfigBuilder;
 import org.o3project.odenos.remoteobject.messagingclient.MessageDispatcher;
 import org.o3project.odenos.remoteobject.rest.RESTTranslator;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.o3project.odenos.core.logging.message.LogMessage;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -57,7 +59,7 @@ import java.util.Set;
 @SuppressWarnings("restriction")
 public final class Odenos {
 
-  private static final Logger log = LoggerFactory.getLogger(Odenos.class);
+  private static final Logger log = LogManager.getLogger(Odenos.class);
 
   public static final String MSGSV_IP = "127.0.0.1";
   public static final int MSGSV_PORT = 6379;

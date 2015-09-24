@@ -22,8 +22,10 @@ import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 import org.o3project.odenos.remoteobject.rest.Attributes;
 import org.o3project.odenos.remoteobject.rest.RESTTranslator;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.o3project.odenos.core.logging.message.LogMessage;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -55,7 +57,7 @@ public class SubscriptionsServlet extends HttpServlet {
 
   private static final Pattern PATH_PATTERN = Pattern.compile("^/event/subscriptions/([^/]+)/?$");
 
-  private static final Logger log = LoggerFactory.getLogger(SubscriptionsServlet.class);
+  private static final Logger log = LogManager.getLogger(SubscriptionsServlet.class);
 
   private String subscriptionId;
 

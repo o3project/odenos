@@ -23,8 +23,10 @@ import org.o3project.odenos.remoteobject.message.Request;
 import org.o3project.odenos.remoteobject.message.Response;
 import org.o3project.odenos.remoteobject.rest.Attributes;
 import org.o3project.odenos.remoteobject.rest.RESTTranslator;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.o3project.odenos.core.logging.message.LogMessage;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -53,7 +55,7 @@ public class RestServlet extends HttpServlet {
   private static final Pattern PATH_PATTERN = Pattern
       .compile("^/([^/]+)/(.+)");
 
-  private static final Logger log = LoggerFactory.getLogger(RestServlet.class);
+  private static final Logger log = LogManager.getLogger(RestServlet.class);
 
   private final MessagePack messagePack = new MessagePack();
 

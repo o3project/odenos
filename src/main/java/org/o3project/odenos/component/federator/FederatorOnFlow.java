@@ -27,8 +27,10 @@ import org.o3project.odenos.core.component.network.flow.basic.FlowAction;
 import org.o3project.odenos.core.component.network.flow.basic.FlowActionOutput;
 import org.o3project.odenos.core.component.network.topology.Link;
 import org.o3project.odenos.remoteobject.message.Response;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.o3project.odenos.core.logging.message.LogMessage;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -41,7 +43,7 @@ import java.util.regex.Pattern;
  * Dispose onFlow in Federator class.
  */
 public class FederatorOnFlow {
-  private static final Logger log = LoggerFactory.getLogger(Federator.class);
+  private static final Logger log = LogManager.getLogger(Federator.class);
 
   protected ConversionTable conversionTable;
   protected Map<String, NetworkInterface> networkInterfaces;

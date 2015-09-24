@@ -24,8 +24,10 @@ import org.msgpack.type.MapValue;
 import org.msgpack.type.Value;
 import org.msgpack.type.ValueFactory;
 import org.o3project.odenos.remoteobject.message.OdenosMessage;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.o3project.odenos.core.logging.message.LogMessage;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -36,7 +38,7 @@ import java.util.Map.Entry;
 
 @SuppressWarnings("serial")
 public class ComponentType extends OdenosMessage implements Serializable {
-  private static final Logger log = LoggerFactory.getLogger(ComponentType.class);
+  private static final Logger log = LogManager.getLogger(ComponentType.class);
 
   private String type = "";
   private String superType = "";

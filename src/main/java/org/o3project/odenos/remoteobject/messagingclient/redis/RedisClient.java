@@ -45,8 +45,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.o3project.odenos.core.logging.message.LogMessage;
 
 /**
  * <h1>Redis client base class.</h1>
@@ -65,7 +66,7 @@ import org.slf4j.LoggerFactory;
  */
 public class RedisClient implements Closeable {
 
-  private static final Logger log = LoggerFactory.getLogger(RedisClient.class);
+  private static final Logger log = LogManager.getLogger(RedisClient.class);
 
   private static final byte[] LIST = "list".getBytes();
   private static final byte[] SETNAME = "setname".getBytes();

@@ -39,8 +39,10 @@ import org.o3project.odenos.remoteobject.message.Request;
 import org.o3project.odenos.remoteobject.message.Request.Method;
 import org.o3project.odenos.remoteobject.message.Response;
 import org.o3project.odenos.remoteobject.messagingclient.MessageDispatcher;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.o3project.odenos.core.logging.message.LogMessage;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -57,7 +59,7 @@ import java.util.regex.Pattern;
 public class Slicer extends Logic {
 
   /** logger. */
-  private static final Logger log = LoggerFactory.getLogger(Slicer.class);
+  private static final Logger log = LogManager.getLogger(Slicer.class);
 
   protected static final String ORIGINAL = "original";
   protected static final String SLIVER = "sliver";

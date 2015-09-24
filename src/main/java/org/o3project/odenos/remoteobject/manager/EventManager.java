@@ -25,15 +25,17 @@ import org.o3project.odenos.remoteobject.manager.EventSubscriptionObject.EventSu
 import org.o3project.odenos.remoteobject.message.Request;
 import org.o3project.odenos.remoteobject.message.Response;
 import org.o3project.odenos.remoteobject.messagingclient.MessageDispatcher;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.o3project.odenos.core.logging.message.LogMessage;
 
 /**
  * EventManagrer handles pub/sub request and manages streaming sessions set up
  * by client RemoteObjects.
  */
 public class EventManager extends RemoteObject {
-  private static final Logger log = LoggerFactory.getLogger(EventManager.class);
+  private static final Logger log = LogManager.getLogger(EventManager.class);
 
   protected final RequestParser<IActionCallback> parser;
 
@@ -166,6 +168,7 @@ public class EventManager extends RemoteObject {
    * @return Response to be sent.
    */
   private Response getSubscriptions() {
+
     log.debug("");
 
     return new Response(Response.OK, subscriptionMap);
@@ -181,6 +184,7 @@ public class EventManager extends RemoteObject {
    */
   private Response getSubscription(final String subscriberId)
       throws Exception {
+
     log.debug("");
 
     EventSubscription subscription = subscriptionMap.getSubscription(subscriberId);

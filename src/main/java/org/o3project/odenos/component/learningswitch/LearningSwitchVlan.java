@@ -25,8 +25,10 @@ import org.o3project.odenos.core.component.network.flow.ofpflow.OFPFlow;
 import org.o3project.odenos.core.component.network.flow.ofpflow.OFPFlowMatch;
 import org.o3project.odenos.core.component.network.packet.InPacket;
 import org.o3project.odenos.remoteobject.messagingclient.MessageDispatcher;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.o3project.odenos.core.logging.message.LogMessage;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -38,7 +40,7 @@ import java.util.Map;
  *
  */
 public class LearningSwitchVlan extends LearningSwitch {
-  private static final Logger log = LoggerFactory.getLogger(LearningSwitchVlan.class);
+  private static final Logger log = LogManager.getLogger(LearningSwitchVlan.class);
   /**
 
    * Constructors.

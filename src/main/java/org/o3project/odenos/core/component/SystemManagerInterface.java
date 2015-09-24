@@ -25,8 +25,10 @@ import org.o3project.odenos.remoteobject.manager.ObjectPropertyList;
 import org.o3project.odenos.remoteobject.message.Request;
 import org.o3project.odenos.remoteobject.message.Response;
 import org.o3project.odenos.remoteobject.messagingclient.MessageDispatcher;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.o3project.odenos.core.logging.message.LogMessage;
 
 import java.util.Map;
 
@@ -35,7 +37,7 @@ import java.util.Map;
  *
  */
 public class SystemManagerInterface {
-  private static final Logger log = LoggerFactory.getLogger(SystemManagerInterface.class);
+  private static final Logger log = LogManager.getLogger(SystemManagerInterface.class);
 
   public static final String PROPETY_PATH = "property";
   public static final String SETTINGS_PATH = "settings";

@@ -16,8 +16,10 @@ import org.apache.zookeeper.server.ServerConfig;
 import org.apache.zookeeper.server.ZooKeeperServerMain;
 import org.apache.zookeeper.server.quorum.QuorumPeerConfig;
 import org.o3project.odenos.remoteobject.RemoteObjectManager;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.o3project.odenos.core.logging.message.LogMessage;
 
 /*
  * Copyright 2015 NEC Corporation.
@@ -41,7 +43,7 @@ import org.slf4j.LoggerFactory;
 public final class ZooKeeperService {
 
   private static final Logger log =
-      LoggerFactory.getLogger(ZooKeeperService.class);
+      LogManager.getLogger(ZooKeeperService.class);
 
   private static ServerConfig zkServerConfig;
   private static Thread zkServerThread;

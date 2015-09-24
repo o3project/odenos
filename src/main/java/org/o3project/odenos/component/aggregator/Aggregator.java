@@ -40,8 +40,10 @@ import org.o3project.odenos.remoteobject.message.Request;
 import org.o3project.odenos.remoteobject.message.Request.Method;
 import org.o3project.odenos.remoteobject.message.Response;
 import org.o3project.odenos.remoteobject.messagingclient.MessageDispatcher;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.o3project.odenos.core.logging.message.LogMessage;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -56,7 +58,7 @@ import java.util.Map;
  *
  */
 public class Aggregator extends Logic {
-  private static final Logger log = LoggerFactory.getLogger(Aggregator.class);
+  private static final Logger log = LogManager.getLogger(Aggregator.class);
 
   public static final String AGGREGATED = "aggregated";
   public static final String ORIGINAL = "original";

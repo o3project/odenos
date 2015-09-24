@@ -16,8 +16,9 @@
 
 package org.o3project.odenos.remoteobject.messagingclient.redis;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.o3project.odenos.core.logging.message.LogMessage;
 
 import redis.clients.jedis.exceptions.JedisConnectionException;
 import redis.clients.util.SafeEncoder;
@@ -50,7 +51,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public class PublisherClient extends RedisClient {
 
-  private static final Logger log = LoggerFactory.getLogger(PublisherClient.class);
+  private static final Logger log = LogManager.getLogger(PublisherClient.class);
 
   private Thread sendThread = null;
   private Thread receiveThread = null;

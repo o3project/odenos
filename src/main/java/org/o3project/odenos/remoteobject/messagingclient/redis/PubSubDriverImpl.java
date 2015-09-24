@@ -19,8 +19,10 @@ package org.o3project.odenos.remoteobject.messagingclient.redis;
 import org.o3project.odenos.remoteobject.messagingclient.IMessageListener;
 import org.o3project.odenos.remoteobject.messagingclient.IMultiMap;
 import org.o3project.odenos.remoteobject.messagingclient.IPubSubDriver;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.o3project.odenos.core.logging.message.LogMessage;
 
 import java.io.Closeable;
 import java.util.Set;
@@ -103,7 +105,7 @@ import static redis.clients.jedis.Protocol.DEFAULT_PORT;
  */
 public class PubSubDriverImpl implements IPubSubDriver, Closeable {
 
-  private static final Logger log = LoggerFactory.getLogger(PubSubDriverImpl.class);
+  private static final Logger log = LogManager.getLogger(PubSubDriverImpl.class);
 
   private PublisherClient publisherClient;
   private SubscriberClient subscriberClient;

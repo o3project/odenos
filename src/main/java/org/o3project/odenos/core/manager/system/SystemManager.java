@@ -38,7 +38,7 @@ import org.o3project.odenos.remoteobject.messagingclient.MessageDispatcher;
 
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
-import org.o3project.odenos.core.logging.Log;
+import org.o3project.odenos.core.logging.message.LogMessage;
 
 import java.util.ArrayList;
 import java.util.Arrays;

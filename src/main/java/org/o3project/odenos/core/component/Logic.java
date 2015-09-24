@@ -50,15 +50,17 @@ import org.o3project.odenos.remoteobject.message.Event;
 import org.o3project.odenos.remoteobject.message.MessageBodyUnpacker.ParseBodyException;
 import org.o3project.odenos.remoteobject.message.Response;
 import org.o3project.odenos.remoteobject.messagingclient.MessageDispatcher;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.o3project.odenos.core.logging.message.LogMessage;
 
 /**
  * Logic class.
  *
  */
 public abstract class Logic extends Component {
-  private static final Logger log = LoggerFactory.getLogger(Logic.class);
+  private static final Logger log = LogManager.getLogger(Logic.class);
 
   /**
    * flow's keys.

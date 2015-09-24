@@ -16,8 +16,10 @@ import org.o3project.odenos.remoteobject.messagingclient.IMessageListener;
 import org.o3project.odenos.remoteobject.messagingclient.IPubSubDriver;
 import org.o3project.odenos.remoteobject.messagingclient.MessageDispatcher;
 import org.o3project.odenos.remoteobject.messagingclient.redis.PubSubDriverImpl;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.o3project.odenos.core.logging.message.LogMessage;
 
 /**
  * Pubsub bridge.
@@ -40,7 +42,7 @@ import org.slf4j.LoggerFactory;
  */
 public class Bridge extends Component {
 
-  private static final Logger log = LoggerFactory.getLogger(Bridge.class);
+  private static final Logger log = LogManager.getLogger(Bridge.class);
 
   // Management-plane
   MessageDispatcher dispatcher;

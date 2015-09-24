@@ -23,8 +23,9 @@ import static redis.clients.jedis.Protocol.Keyword.PUNSUBSCRIBE;
 import static redis.clients.jedis.Protocol.Keyword.SUBSCRIBE;
 import static redis.clients.jedis.Protocol.Keyword.UNSUBSCRIBE;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.o3project.odenos.core.logging.message.LogMessage;
 
 import redis.clients.jedis.exceptions.JedisConnectionException;
 import redis.clients.util.SafeEncoder;
@@ -45,7 +46,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public class SubscriberClient extends RedisClient {
 
-  private static final Logger log = LoggerFactory.getLogger(SubscriberClient.class);
+  private static final Logger log = LogManager.getLogger(SubscriberClient.class);
 
   private PubSubDriverImpl listener;
 

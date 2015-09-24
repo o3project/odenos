@@ -18,8 +18,10 @@ package org.o3project.odenos.component.slicer;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.ToStringBuilder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.o3project.odenos.core.logging.message.LogMessage;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -34,7 +36,7 @@ import java.util.UUID;
  */
 public class SliceConditionTable {
 
-  private static final Logger log = LoggerFactory.getLogger(SliceConditionTable.class);
+  private static final Logger log = LogManager.getLogger(SliceConditionTable.class);
 
   /**
    * Constructor.

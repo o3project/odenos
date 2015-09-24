@@ -28,8 +28,10 @@ import org.o3project.odenos.remoteobject.message.MessageBodyUnpacker;
 import org.o3project.odenos.remoteobject.message.Request;
 import org.o3project.odenos.remoteobject.message.Response;
 import org.o3project.odenos.remoteobject.messagingclient.Config.MODE;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.o3project.odenos.core.logging.message.LogMessage;
 
 import java.io.Closeable;
 import java.io.IOException;
@@ -89,7 +91,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public class MessageDispatcher implements Closeable, IMessageListener {
 
-  private static final Logger log = LoggerFactory.getLogger(MessageDispatcher.class);
+  private static final Logger log = LogManager.getLogger(MessageDispatcher.class);
 
   protected static final byte TYPE_REQUEST = 0;
   protected static final byte TYPE_RESPONSE = 1;

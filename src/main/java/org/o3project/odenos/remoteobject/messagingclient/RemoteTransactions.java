@@ -18,8 +18,10 @@ package org.o3project.odenos.remoteobject.messagingclient;
 
 import org.o3project.odenos.remoteobject.message.Request;
 import org.o3project.odenos.remoteobject.message.Response;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.o3project.odenos.core.logging.message.LogMessage;
 
 import java.io.IOException;
 import java.util.concurrent.ArrayBlockingQueue;
@@ -49,7 +51,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 class RemoteTransactions {
 
-  private static final Logger log = LoggerFactory.getLogger(RemoteTransactions.class);
+  private static final Logger log = LogManager.getLogger(RemoteTransactions.class);
 
   private AtomicInteger seqno = new AtomicInteger(0);
   private ConcurrentHashMap<Integer, SynchronousQueue<Response>> responseMap =

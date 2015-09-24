@@ -19,15 +19,16 @@ package org.o3project.odenos.remoteobject.messagingclient;
 import java.net.ProtocolException;
 import java.util.Set;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.o3project.odenos.core.logging.message.LogMessage;
 
 /**
  * {@link IPubSubDriver} implementation as a loopback interface for events.
  */
 public class LoopBackDriver implements IPubSubDriver {
 
-  private static final Logger log = LoggerFactory.getLogger(LoopBackDriver.class);
+  private static final Logger log = LogManager.getLogger(LoopBackDriver.class);
 
   private IMessageListener listener;
   

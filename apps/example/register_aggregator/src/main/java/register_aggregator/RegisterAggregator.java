@@ -22,8 +22,10 @@ import org.o3project.odenos.core.manager.system.ComponentConnectionLogicAndNetwo
 import org.o3project.odenos.remoteobject.ObjectProperty;
 import org.o3project.odenos.remoteobject.message.Response;
 import org.o3project.odenos.remoteobject.messagingclient.MessageDispatcher;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.o3project.odenos.core.logging.message.LogMessage;
 
 import simple_controller.SimpleControllerBase;
 
@@ -31,7 +33,7 @@ import java.util.Map;
 
 
 public class RegisterAggregator extends SimpleControllerBase {
-    private static Logger log = LoggerFactory.getLogger(RegisterAggregator.class);
+    private static Logger log = LogManager.getLogger(RegisterAggregator.class);
 
     // Object Id
     protected static final String ORIGINAL_NW_ID = "original_network";

@@ -32,11 +32,13 @@ import org.o3project.odenos.core.component.network.topology.Node;
 import org.o3project.odenos.core.component.network.topology.Port;
 import org.o3project.odenos.remoteobject.message.Response;
 import org.o3project.odenos.remoteobject.messagingclient.MessageDispatcher;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.o3project.odenos.core.logging.message.LogMessage;
 
 public class SettingNetwork extends StartOneBigL2Switch {
-    private static Logger log = LoggerFactory.getLogger(SettingNetwork.class);
+    private static Logger log = LogManager.getLogger(SettingNetwork.class);
 
     /**
      * 

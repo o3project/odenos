@@ -22,8 +22,10 @@ import org.o3project.odenos.remoteobject.message.MessageBodyUnpacker.ParseBodyEx
 import org.o3project.odenos.remoteobject.message.Request;
 import org.o3project.odenos.remoteobject.message.Response;
 import org.o3project.odenos.remoteobject.messagingclient.MessageDispatcher;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.o3project.odenos.core.logging.message.LogMessage;
 
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
@@ -33,7 +35,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 public class RemoteObjectManager extends RemoteObject {
-  private static final Logger log = LoggerFactory.getLogger(RemoteObjectManager.class);
+  private static final Logger log = LogManager.getLogger(RemoteObjectManager.class);
 
   public static final String ATTR_OBJTYPE = "remote_object_types";
   public static final String ZK_CMPMGR_PATH = "/component_managers";

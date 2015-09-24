@@ -34,8 +34,10 @@ import org.o3project.odenos.remoteobject.message.Request;
 import org.o3project.odenos.remoteobject.message.Request.Method;
 import org.o3project.odenos.remoteobject.message.Response;
 import org.o3project.odenos.remoteobject.messagingclient.MessageDispatcher;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.o3project.odenos.core.logging.message.LogMessage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,7 +56,7 @@ import java.nio.ByteBuffer;
  */
 public class Generator extends Driver {
 
-  private final static Logger log = LoggerFactory.getLogger(Generator.class);
+  private final static Logger log = LogManager.getLogger(Generator.class);
 
   private String network;
   private final String description = "packet-in generator";

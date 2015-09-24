@@ -51,8 +51,10 @@ import org.o3project.odenos.remoteobject.message.Request;
 import org.o3project.odenos.remoteobject.message.Request.Method;
 import org.o3project.odenos.remoteobject.message.Response;
 import org.o3project.odenos.remoteobject.messagingclient.MessageDispatcher;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.o3project.odenos.core.logging.message.LogMessage;
 
 import java.util.Map;
 import java.util.HashMap;
@@ -66,7 +68,7 @@ import java.util.HashMap;
  *
  */
 public class Network extends Component {
-  private static final Logger log = LoggerFactory.getLogger(Network.class);
+  private static final Logger log = LogManager.getLogger(Network.class);
 
   /**
    * Request parser to parse Request object to decide which action to be

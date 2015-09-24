@@ -1,11 +1,21 @@
 package org.o3project.odenos.core.logging.message;
 
 import java.text.MessageFormat;
+import org.apache.logging.log4j.message.Message;
+import java.util.Random;
+import java.net.NetworkInterface;
+import java.net.SocketException;
+import java.nio.ByteBuffer;
 
 /**
  * Logging message DTO builder.
  */
 public class LogMessage {
+
+  final static int txidNumberSystem = 1000000;
+
+  static int txidSerial = 0;
+  static String txidStack = "";
 
   int number = -1;
   private String txid = null;
@@ -57,6 +67,57 @@ public class LogMessage {
       this.parameters[i] = (Object) msg[i];
     }
     return this;
+  }
+
+  /**
+   * Get a transactionID.
+   */
+  public static String getTxid() {
+    return txidStack;
+  }
+
+ /**
+   * Get a base of transactionID (systemManager).
+   */
+  public static int getSystemBaseTxid() {
+    return txidNumberSystem;
+  }
+
+ /**
+  * Create a transactionID (txid).
+  *
+  * @param offset
+  */
+  public static void createTxid(int offset) {
+    long now = System.currentTimeMillis();
+    Random rnd = new Random(now);
+    long rLong = rnd.nextLong() % 0x10000_0000_0000L;
+    byte[] padd = {(byte)0,(byte)0};
+    String uuid = Long.toHexString(rLong);
+
+    String serial = "";
+    if( offset != 0) {
+      int serial_int = offset + txidSerial;
+      serial = serial + serial_int;
+      txidSerial++;
+    } else {
+      serial = "0000000";
+    }
+
+    int ethNum = 10;
+    try {
+      for(int i = 0; i < ethNum; i++) {
+        NetworkInterface nic = NetworkInterface.getByName("eth" + i);
+        if(nic != null) {
+          uuid = Long.toHexString(ByteBuffer.allocate(8).put(padd).put(nic.getHardwareAddress()).getLong(0));
+        }
+      }
+    } catch (SocketException ex) {
+    }
+
+    String uuid_str = new String();
+    uuid_str = uuid + "-" + serial;
+    txidStack = uuid_str;
   }
 
   /**
@@ -124,5 +185,19 @@ public class LogMessage {
 
     return new LogMessageImmutable(number, txid, format, parameters);
     
+  }
+
+  public static Message buildLogMessage(int msgid, String txid,
+                                        String fmt, String... parameters) {
+    int len = parameters.length;
+    for(int i = 0; i < len; i++) {
+      fmt = fmt.replaceFirst("\\{\\}", "{" + i + "}");
+    }
+
+    return new LogMessage()
+      .setNumber(msgid)
+      .setFormatedMessage(fmt, parameters)
+      .setTxid(txid)
+      .build();
   }
 }

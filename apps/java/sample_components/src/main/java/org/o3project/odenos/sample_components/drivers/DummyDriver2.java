@@ -27,8 +27,10 @@ import org.o3project.odenos.core.manager.system.ComponentConnectionLogicAndNetwo
 import org.o3project.odenos.core.manager.system.event.ComponentConnectionChanged;
 import org.o3project.odenos.remoteobject.message.Response;
 import org.o3project.odenos.remoteobject.messagingclient.MessageDispatcher;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.o3project.odenos.core.logging.message.LogMessage;
 
 import java.util.ArrayList;
 
@@ -37,7 +39,7 @@ import java.util.ArrayList;
  *
  */
 public class DummyDriver2 extends Driver {
-  private Logger log = LoggerFactory.getLogger(DummyDriver2.class);
+  private Logger log = LogManager.getLogger(DummyDriver2.class);
   private String network;
   private final String description = "dummy driver";
 

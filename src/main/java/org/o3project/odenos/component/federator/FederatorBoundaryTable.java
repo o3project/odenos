@@ -19,8 +19,10 @@ package org.o3project.odenos.component.federator;
 import org.apache.commons.collections15.Bag;
 import org.apache.commons.collections15.bag.HashBag;
 import org.apache.commons.lang.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.o3project.odenos.core.logging.message.LogMessage;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -34,7 +36,7 @@ public class FederatorBoundaryTable {
 
   /** logger. */
   private static final Logger log =
-      LoggerFactory.getLogger(FederatorBoundaryTable.class);
+      LogManager.getLogger(FederatorBoundaryTable.class);
 
   /**
    * Map of boundaries.

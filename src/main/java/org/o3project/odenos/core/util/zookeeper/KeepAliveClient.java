@@ -28,15 +28,17 @@ import org.apache.zookeeper.WatchedEvent;
 import org.apache.zookeeper.Watcher;
 import org.apache.zookeeper.ZooDefs;
 import org.apache.zookeeper.ZooKeeper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.o3project.odenos.core.logging.message.LogMessage;
 
 /**
  * ZooKeeper client with a callback handler.
  */
 public class KeepAliveClient {
 
-  private static final Logger log = LoggerFactory.getLogger(KeepAliveClient.class);
+  private static final Logger log = LogManager.getLogger(KeepAliveClient.class);
 
   ZooKeeper zk = null;
   Set<String> paths = new ConcurrentSkipListSet<>();

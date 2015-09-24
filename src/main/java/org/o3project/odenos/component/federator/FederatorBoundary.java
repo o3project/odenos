@@ -25,8 +25,10 @@ import org.msgpack.type.MapValue;
 import org.msgpack.type.Value;
 import org.msgpack.type.ValueFactory;
 import org.o3project.odenos.core.component.Boundary;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.o3project.odenos.core.logging.message.LogMessage;
 
 import java.util.Map;
 
@@ -54,7 +56,7 @@ public class FederatorBoundary extends Boundary {
 
   /** logger. */
   @Ignore
-  private static final Logger log = LoggerFactory.getLogger(FederatorBoundary.class);
+  private static final Logger log = LogManager.getLogger(FederatorBoundary.class);
 
   /** ID that is unique in the ODENOS. */
   @NotNullable
