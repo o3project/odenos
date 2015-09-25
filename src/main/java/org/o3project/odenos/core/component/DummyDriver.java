@@ -153,7 +153,7 @@ public class DummyDriver extends Driver {
     try {
       applyEventSubscription();
     } catch (Exception e) {
-      log.error("Recieved Message Exception.", e);
+      log.error(LogMessage.buildLogMessage(50056, LogMessage.getTxid(), "Recieved Message Exception."), e);
     }
   }
 
@@ -164,7 +164,7 @@ public class DummyDriver extends Driver {
     try {
       applyEventSubscription();
     } catch (Exception e) {
-      log.error("Recieved Message Exception.", e);
+      log.error(LogMessage.buildLogMessage(50056, LogMessage.getTxid(), "Recieved Message Exception."), e);
     }
   }
 
@@ -262,10 +262,10 @@ public class DummyDriver extends Driver {
       NetworkInterface networkIf = networkInterfaces().get(networkId);
       Response resp = networkIf.delOutPacket(packetId);
       if (resp.isError("DELETE")) {
-        log.error("invalid DELETE Packet:{}", resp.statusCode);
+        log.error(LogMessage.buildLogMessage(50057, LogMessage.getTxid(), "invalid DELETE Packet:{}", resp.statusCode));
       }
     } catch (Exception e) {
-      log.error("Recieved Message Exception.", e);
+      log.error(LogMessage.buildLogMessage(50056, LogMessage.getTxid(), "Recieved Message Exception."), e);
     }
   }
 

@@ -173,7 +173,7 @@ public class PubSubDriverImpl implements IPubSubDriver, Closeable {
     try {
       Thread.sleep(1000);
     } catch (InterruptedException e) {
-      log.error("thread error", e);
+      log.error(LogMessage.buildLogMessage(50003, LogMessage.getTxid(), "thread error"), e);
     }
 
     boolean logOutput = false;
@@ -183,14 +183,14 @@ public class PubSubDriverImpl implements IPubSubDriver, Closeable {
         break;
       } else {
         if (!logOutput) {
-          log.warn("unable to get access to Redis server (host: {}, port: {})",
-              redisServerAddress.getHost(), redisServerAddress.getPort());
+          log.warn(LogMessage.buildLogMessage(10011, LogMessage.getTxid(), "unable to get access to Redis server (host: {}, port: {})",
+                                              redisServerAddress.getHost(), redisServerAddress.getPort()));
           logOutput = true;
         }
         try {
           Thread.sleep(3000);
         } catch (InterruptedException e) {
-          log.error("thread error", e);
+          log.error(LogMessage.buildLogMessage(50003, LogMessage.getTxid(), "thread error"), e);
         }
       }
     }

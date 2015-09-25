@@ -65,7 +65,7 @@ public class ChannelCheckerClient extends RedisClient {
       exist = (readPubsubNumsubReply(channel) > 0) ? true : false;
     } catch (ProtocolException e) {
       // TODO: exception handling
-      log.error("Redis protocol error", e);
+      log.error(LogMessage.buildLogMessage(50054, LogMessage.getTxid(), "Redis protocol error"), e);
     }
     return exist;
   }

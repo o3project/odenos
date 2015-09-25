@@ -171,7 +171,7 @@ public class SliceConditionTable {
 
     final String connectionId = condition.getConnection();
     if (!StringUtils.equals(conditionId, condition.getId())) {
-      log.warn("set condition ID: {}", conditionId);
+      log.warn(LogMessage.buildLogMessage(10073, LogMessage.getTxid(), "set condition ID: {}", conditionId));
       condition.setId(connectionId);
     }
 

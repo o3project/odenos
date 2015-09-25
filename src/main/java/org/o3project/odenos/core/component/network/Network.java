@@ -107,9 +107,9 @@ public class Network extends Component {
                     "false"))) {
           verbosePortEvent = Boolean.valueOf(value);
         } else {
-          log.error(
+          log.error(LogMessage.buildLogMessage(50062, LogMessage.getTxid(), 
               "{} is wrong as a value of a key {}. expect true or false.",
-              value, key);
+              value, key));
         }
       }
 
@@ -120,9 +120,9 @@ public class Network extends Component {
                     "false"))) {
           verboseLinkEvent = Boolean.valueOf(value);
         } else {
-          log.error(
+          log.error(LogMessage.buildLogMessage(50062, LogMessage.getTxid(),
               "{} is wrong as a value of a key {}. expect true or false.",
-              value, key);
+              value, key));
         }
       }
 
@@ -197,8 +197,9 @@ public class Network extends Component {
       IActionCallback callback = parsed.getResult();
       return callback.process(parsed);
     } catch (Exception e) {
-      log.error("Exception in onRequest() : [case:{}] [msg:{}]",
-          request.path, e.getClass().getSimpleName());
+      log.error(LogMessage.buildLogMessage(50063, LogMessage.getTxid(),
+          "Exception in onRequest() : [case:{}] [msg:{}]",
+          request.path, e.getClass().getSimpleName()));
       return createErrorResponse(Response.BAD_REQUEST,
           "Error while processing : [" + request.method + "] "
               + request.path);

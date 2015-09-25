@@ -182,7 +182,7 @@ public class LinkLayerizerOnFlow {
     boolean enable = basicFlow.getEnabled();
 
     if (!(FlowStatus.ESTABLISHING.toString().equals(status) && enable)) {
-      log.info("invalid lower flow. [status: {}, enable: {}].", status, enable);
+      log.info(LogMessage.buildLogMessage(10074, LogMessage.getTxid(), "invalid lower flow. [status: {}, enable: {}].", status, enable));
       return;
     }
 
@@ -440,18 +440,18 @@ public class LinkLayerizerOnFlow {
     if ((FlowStatus.NONE.toString().equals(status))
       ||(FlowStatus.TEARDOWN.toString().equals(status))
       ||(FlowStatus.FAILED.toString().equals(status))) {
-        log.warn("invalid flow's status.");
+      log.warn(LogMessage.buildLogMessage(10075, LogMessage.getTxid(), "invalid flow's status."));
         return;
     }
 
     if (!enable) {
-      log.warn("invalid flow's disable.");
+      log.warn(LogMessage.buildLogMessage(10076, LogMessage.getTxid(), "invalid flow's disable."));
       return;
     }
 
     String lowerNwId = getNetworkIdByType(LinkLayerizer.LOWER_NETWORK);
     if (lowerNwId == null) {
-      log.warn("lower_nw not exist.");
+      log.warn(LogMessage.buildLogMessage(10077, LogMessage.getTxid(), "lower_nw not exist."));
       return;
     }
 
@@ -460,7 +460,7 @@ public class LinkLayerizerOnFlow {
     LinkLayerizerBoundary dstBoundary =
         getBoundaryByActions(lowerNwId, basicFlow.getEdgeActions());
     if (srcBoundary == null || dstBoundary == null) {
-      log.warn("invalid lowerFlow.");
+      log.warn(LogMessage.buildLogMessage(10074, LogMessage.getTxid(), "invalid lowerFlow."));
       return;
     }
 
@@ -477,13 +477,13 @@ public class LinkLayerizerOnFlow {
     String layerizedId =
         getNetworkIdByType(LinkLayerizer.LAYERIZED_NETWORK);
     if (layerizedId == null) {
-      log.warn("laerized_nw not exist.");
+      log.warn(LogMessage.buildLogMessage(10078, LogMessage.getTxid(), "laerized_nw not exist."));
       return;
     }
 
     Response resp = networkInterfaces.get(layerizedId).putLink(link);
     if (resp.isError("PUT")) {
-      log.warn("failed PUT Link. response: {}", resp.getBodyValue());
+      log.warn(LogMessage.buildLogMessage(10079, LogMessage.getTxid(), "failed PUT Link. response: {}", resp.getBodyValue()));
       return;
     }
 
@@ -511,7 +511,7 @@ public class LinkLayerizerOnFlow {
     log.debug("");
 
     if ((link == null) || (flow == null)) {
-      log.warn("parameter is null");
+      log.warn(LogMessage.buildLogMessage(10080, LogMessage.getTxid(), "parameter is null"));
       return false;
     }
 
@@ -564,7 +564,7 @@ public class LinkLayerizerOnFlow {
         break;
 
       default:
-        log.warn("unknown status: {}", status);
+        log.warn(LogMessage.buildLogMessage(10081, LogMessage.getTxid(), "unknown status: {}", status));
         return false;
     }
 
@@ -583,7 +583,7 @@ public class LinkLayerizerOnFlow {
 
     if (StringUtils.isEmpty(lowerNwId)
         || matches == null || matches.size() == 0) {
-      log.warn("invalid parameter");
+      log.warn(LogMessage.buildLogMessage(10082, LogMessage.getTxid(), "invalid parameter"));
       return null;
     }
     String inNode = matches.get(0).getInNode();
@@ -606,7 +606,7 @@ public class LinkLayerizerOnFlow {
     log.debug("");
 
     if (StringUtils.isEmpty(lowerNwId) || edgeActions == null) {
-      log.warn("invalid parameter");
+      log.warn(LogMessage.buildLogMessage(10082, LogMessage.getTxid(), "invalid parameter"));
       return null;
     }
     String outNode = null;
@@ -626,7 +626,7 @@ public class LinkLayerizerOnFlow {
     log.debug("nwId : {}, outNode : {}, outPort : {}.",
         lowerNwId, outNode, outPort);
     if (outNode == null || outPort == null) {
-      log.warn("invalid lowerFlow's actions.");
+      log.warn(LogMessage.buildLogMessage(10083, LogMessage.getTxid(), "invalid lowerFlow's actions."));
       return null;
     }
 
@@ -693,7 +693,7 @@ public class LinkLayerizerOnFlow {
     log.debug("");
 
     if (StringUtils.isEmpty(networkId) || flow == null) {
-      log.warn("invalid parameter");
+      log.warn(LogMessage.buildLogMessage(10082, LogMessage.getTxid(), "invalid parameter"));
       return false;
     }
     return true;

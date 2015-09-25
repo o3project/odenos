@@ -38,68 +38,68 @@ public class LoopBackDriver implements IPubSubDriver {
 
   @Override
   public void start() {
-    log.warn("unsupported");
+    log.warn(LogMessage.buildLogMessage(10051, LogMessage.getTxid(), "unsupported"));
   }
 
   @Override
   public void close() {
-    log.warn("unsupported");
+    log.warn(LogMessage.buildLogMessage(10051, LogMessage.getTxid(), "unsupported"));
   }
 
   @Override
   public boolean isStarted() {
-    log.warn("unsupported");
+    log.warn(LogMessage.buildLogMessage(10051, LogMessage.getTxid(), "unsupported"));
     return true;
   }
 
   @Override
   public void subscribeChannels(Set<String> channels) {
-    log.warn("unsupported");
+    log.warn(LogMessage.buildLogMessage(10051, LogMessage.getTxid(), "unsupported"));
   }
 
   @Override
   public void subscribeChannel(String channel) {
-    log.warn("unsupported");
+    log.warn(LogMessage.buildLogMessage(10051, LogMessage.getTxid(), "unsupported"));
   }
 
   @Override
   public void unsubscribeChannels(Set<String> channels) {
-    log.warn("unsupported");
+    log.warn(LogMessage.buildLogMessage(10051, LogMessage.getTxid(), "unsupported"));
   }
 
   @Override
   public void unsubscribeChannel(String channel) {
-    log.warn("unsupported");
+    log.warn(LogMessage.buildLogMessage(10051, LogMessage.getTxid(), "unsupported"));
   }
 
   @Override
   public void unsubscribeAll() {
-    log.warn("unsupported");
+    log.warn(LogMessage.buildLogMessage(10051, LogMessage.getTxid(), "unsupported"));
   }
 
   @Override
   public void psubscribeChannels(Set<String> patterns) {
-    log.warn("unsupported");
+    log.warn(LogMessage.buildLogMessage(10051, LogMessage.getTxid(), "unsupported"));
   }
 
   @Override
   public void psubscribeChannel(String pattern) {
-    log.warn("unsupported");
+    log.warn(LogMessage.buildLogMessage(10051, LogMessage.getTxid(), "unsupported"));
   }
 
   @Override
   public void punsubscribeChannels(Set<String> patterns) {
-    log.warn("unsupported");
+    log.warn(LogMessage.buildLogMessage(10051, LogMessage.getTxid(), "unsupported"));
   }
 
   @Override
   public void punsubscribeChannel(String pattern) {
-    log.warn("unsupported");
+    log.warn(LogMessage.buildLogMessage(10051, LogMessage.getTxid(), "unsupported"));
   }
 
   @Override
   public void punsubscribeAll() {
-    log.warn("unsupported");
+    log.warn(LogMessage.buildLogMessage(10051, LogMessage.getTxid(), "unsupported"));
   }
 
   @Override
@@ -109,7 +109,7 @@ public class LoopBackDriver implements IPubSubDriver {
 
   @Override
   public boolean channelExist(String channel) throws ProtocolException {
-    log.warn("unsupported");
+    log.warn(LogMessage.buildLogMessage(10051, LogMessage.getTxid(), "unsupported"));
     return false;
   }
 

@@ -79,7 +79,7 @@ class RemoteTransactions {
       try {
         rendezvousPool.put(new SynchronousQueue<Response>());
       } catch (InterruptedException e) {
-        log.error("cannot return SynchronousQueue to rendezvous pool");
+        log.error(LogMessage.buildLogMessage(50008, LogMessage.getTxid(), "cannot return SynchronousQueue to rendezvous pool"));
       }
     }
   }

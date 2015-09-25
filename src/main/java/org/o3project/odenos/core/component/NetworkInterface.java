@@ -147,7 +147,7 @@ public class NetworkInterface {
     try {
       return resp.getBody(Topology.class);
     } catch (Exception e) {
-      log.error("Recieved Message Exception.", e);
+      log.error(LogMessage.buildLogMessage(50056, LogMessage.getTxid(), "Recieved Message Exception."), e);
       return null;
     }
   }
@@ -212,7 +212,7 @@ public class NetworkInterface {
     try {
       return resp.getBodyAsMap(Node.class);
     } catch (Exception e) {
-      log.error("Recieved Message Exception.", e);
+      log.error(LogMessage.buildLogMessage(50056, LogMessage.getTxid(), "Recieved Message Exception."), e);
       return null;
     }
   }
@@ -238,7 +238,7 @@ public class NetworkInterface {
     try {
       return resp.getBody(Node.class);
     } catch (Exception e) {
-      log.error("Recieved Message Exception.", e);
+      log.error(LogMessage.buildLogMessage(50056, LogMessage.getTxid(), "Recieved Message Exception."), e);
       return null;
     }
   }
@@ -298,7 +298,7 @@ public class NetworkInterface {
     try {
       return resp.getBody(Node.class);
     } catch (Exception e) {
-      log.error("Recieved Message Exception.", e);
+      log.error(LogMessage.buildLogMessage(50056, LogMessage.getTxid(), "Recieved Message Exception."), e);
       return null;
     }
   }
@@ -382,7 +382,7 @@ public class NetworkInterface {
     try {
       return resp.getBodyAsMap(Port.class);
     } catch (Exception e) {
-      log.error("Recieved Message Exception.", e);
+      log.error(LogMessage.buildLogMessage(50056, LogMessage.getTxid(), "Recieved Message Exception."), e);
       return null;
     }
   }
@@ -410,7 +410,7 @@ public class NetworkInterface {
     try {
       return resp.getBody(Port.class);
     } catch (Exception e) {
-      log.error("Recieved Message Exception.", e);
+      log.error(LogMessage.buildLogMessage(50056, LogMessage.getTxid(), "Recieved Message Exception."), e);
       return null;
     }
   }
@@ -473,7 +473,7 @@ public class NetworkInterface {
     try {
       return resp.getBody(Port.class);
     } catch (Exception e) {
-      log.error("Recieved Message Exception.", e);
+      log.error(LogMessage.buildLogMessage(50056, LogMessage.getTxid(), "Recieved Message Exception."), e);
       return null;
     }
   }
@@ -557,7 +557,7 @@ public class NetworkInterface {
     try {
       return resp.getBodyAsMap(Link.class);
     } catch (Exception e) {
-      log.error("Recieved Message Exception.", e);
+      log.error(LogMessage.buildLogMessage(50056, LogMessage.getTxid(), "Recieved Message Exception."), e);
       return null;
     }
   }
@@ -583,7 +583,7 @@ public class NetworkInterface {
     try {
       return resp.getBody(Link.class);
     } catch (Exception e) {
-      log.error("Recieved Message Exception.", e);
+      log.error(LogMessage.buildLogMessage(50056, LogMessage.getTxid(), "Recieved Message Exception."), e);
       return null;
     }
   }
@@ -665,7 +665,7 @@ public class NetworkInterface {
     try {
       return resp.getBody(FlowSet.class);
     } catch (Exception e) {
-      log.error("Recieved Message Exception.", e);
+      log.error(LogMessage.buildLogMessage(50056, LogMessage.getTxid(), "Recieved Message Exception."), e);
       return null;
     }
   }
@@ -691,7 +691,7 @@ public class NetworkInterface {
     try {
       return FlowObject.readFlowMessageFrom(resp.getBodyValue());
     } catch (Exception e) {
-      log.error("Recieved Message Exception.", e);
+      log.error(LogMessage.buildLogMessage(50056, LogMessage.getTxid(), "Recieved Message Exception."), e);
       return null;
     }
   }
@@ -737,11 +737,11 @@ public class NetworkInterface {
       Response resp = sendRequest(this.networkId,
           Request.Method.DELETE, path, flow);
       if (resp.isError("DELETE")) {
-        log.warn("invalid DELETE:{}", resp.statusCode);
+        log.warn(LogMessage.buildLogMessage(50067, LogMessage.getTxid(), "invalid DELETE:{}", resp.statusCode));
       }
       return resp;
     } catch (Exception e) {
-      log.error("Recieved Message Exception.", e);
+      log.error(LogMessage.buildLogMessage(50056, LogMessage.getTxid(), "Recieved Message Exception."), e);
       return new Response(Response.INTERNAL_SERVER_ERROR, null);
     }
   }
@@ -772,7 +772,7 @@ public class NetworkInterface {
     try {
       return resp.getBody(PacketStatus.class);
     } catch (Exception e) {
-      log.error("Recieved Message Exception.", e);
+      log.error(LogMessage.buildLogMessage(50056, LogMessage.getTxid(), "Recieved Message Exception."), e);
       return null;
     }
   }
@@ -814,7 +814,7 @@ public class NetworkInterface {
     try {
       return resp.getBody(PacketStatus.class);
     } catch (Exception e) {
-      log.error("Recieved Message Exception.", e);
+      log.error(LogMessage.buildLogMessage(50056, LogMessage.getTxid(), "Recieved Message Exception."), e);
       return null;
     }
   }
@@ -855,7 +855,7 @@ public class NetworkInterface {
     try {
       return PacketObject.readInPacketFrom(resp.getBodyValue());
     } catch (Exception e) {
-      log.error("Recieved Message Exception.", e);
+      log.error(LogMessage.buildLogMessage(50056, LogMessage.getTxid(), "Recieved Message Exception."), e);
       return null;
     }
   }
@@ -897,7 +897,7 @@ public class NetworkInterface {
     try {
       return PacketObject.readInPacketFrom(resp.getBodyValue());
     } catch (Exception e) {
-      log.error("Recieved Message Exception.", e);
+      log.error(LogMessage.buildLogMessage(50056, LogMessage.getTxid(), "Recieved Message Exception."), e);
       return null;
     }
   }
@@ -956,7 +956,7 @@ public class NetworkInterface {
     try {
       return resp.getBody(PacketStatus.class);
     } catch (Exception e) {
-      log.error("Recieved Message Exception.", e);
+      log.error(LogMessage.buildLogMessage(50056, LogMessage.getTxid(), "Recieved Message Exception."), e);
       return null;
     }
   }
@@ -996,7 +996,7 @@ public class NetworkInterface {
     try {
       return PacketObject.readOutPacketFrom(resp.getBodyValue());
     } catch (Exception e) {
-      log.error("Recieved Message Exception.", e);
+      log.error(LogMessage.buildLogMessage(50056, LogMessage.getTxid(), "Recieved Message Exception."), e);
       return null;
     }
   }
@@ -1036,7 +1036,7 @@ public class NetworkInterface {
     try {
       return PacketObject.readOutPacketFrom(resp.getBodyValue());
     } catch (Exception e) {
-      log.error("Recieved Message Exception.", e);
+      log.error(LogMessage.buildLogMessage(50056, LogMessage.getTxid(), "Recieved Message Exception."), e);
       return null;
     }
   }
@@ -1100,7 +1100,7 @@ public class NetworkInterface {
         }
       }
     } catch (Exception e) {
-      log.error("Recieved Message Exception.", e);
+      log.error(LogMessage.buildLogMessage(50056, LogMessage.getTxid(), "Recieved Message Exception."), e);
       return new Response(Response.INTERNAL_SERVER_ERROR, null);
     }
     return resp;
@@ -1221,12 +1221,12 @@ public class NetworkInterface {
     try {
       Response resp = sendRequest(nwcId, Request.Method.POST, path, body);
       if (resp.isError("POST")) {
-        log.warn("invalid POST({}) to {}: '{}' {}",
-                 resp.statusCode, nwcId, path, resp.getBodyValue());
+        log.warn(LogMessage.buildLogMessage(50069, LogMessage.getTxid(), "invalid POST({}) to {}: '{}' {}",
+            resp.statusCode, nwcId, path, resp.getBodyValue()));
       }
       return resp;
     } catch (Exception e) {
-      log.error("Recieved Message Exception.", e);
+      log.error(LogMessage.buildLogMessage(50056, LogMessage.getTxid(), "Recieved Message Exception."), e);
       return new Response(Response.INTERNAL_SERVER_ERROR, null);
     }
   }
@@ -1238,12 +1238,12 @@ public class NetworkInterface {
     try {
       Response resp = sendRequest(nwcId, Request.Method.PUT, path, body);
       if (resp.isError("PUT")) {
-        log.warn("invalid PUT({}) to {}: '{}' {}",
-                 resp.statusCode, nwcId, path, resp.getBodyValue());
+        log.warn(LogMessage.buildLogMessage(50066, LogMessage.getTxid(), "invalid PUT({}) to {}: '{}' {}",
+            resp.statusCode, nwcId, path, resp.getBodyValue()));
       }
       return resp;
     } catch (Exception e) {
-      log.error("Recieved Message Exception.", e);
+      log.error(LogMessage.buildLogMessage(50056, LogMessage.getTxid(), "Recieved Message Exception."), e);
       return new Response(Response.INTERNAL_SERVER_ERROR, null);
     }
   }
@@ -1257,12 +1257,12 @@ public class NetworkInterface {
       Response resp = sendRequest(nwcId, Request.Method.DELETE, path,
           null);
       if (resp.isError("DELETE")) {
-        log.warn("invalid DELETE({}) to {}: '{}' {}",
-                 resp.statusCode, nwcId, path, resp.getBodyValue());
+        log.warn(LogMessage.buildLogMessage(50067, LogMessage.getTxid(), "invalid DELETE({}) to {}: '{}' {}",
+            resp.statusCode, nwcId, path, resp.getBodyValue()));
       }
       return resp;
     } catch (Exception e) {
-      log.error("Recieved Message Exception.", e);
+      log.error(LogMessage.buildLogMessage(50056, LogMessage.getTxid(), "Recieved Message Exception."), e);
       return new Response(Response.INTERNAL_SERVER_ERROR, null);
     }
   }
@@ -1274,13 +1274,13 @@ public class NetworkInterface {
     try {
       Response resp = sendRequest(nwcId, Request.Method.GET, path, null);
       if (resp.isError("GET")) {
-        log.warn("invalid GET({}) to {}: '{}' {}",
-                 resp.statusCode, nwcId, path, resp.getBodyValue());
+        log.warn(LogMessage.buildLogMessage(50068, LogMessage.getTxid(), "invalid GET({}) to {}: '{}' {}",
+            resp.statusCode, nwcId, path, resp.getBodyValue()));
         return null;
       }
       return resp;
     } catch (Exception e) {
-      log.error("Recieved Message Exception.", e);
+      log.error(LogMessage.buildLogMessage(50056, LogMessage.getTxid(), "Recieved Message Exception."), e);
       return new Response(Response.INTERNAL_SERVER_ERROR, null);
     }
   }
@@ -1294,7 +1294,7 @@ public class NetworkInterface {
     try {
       rsp = this.dispatcher.requestSync(req, sourceObjectId);
     } catch (Exception e) {
-      log.error("Recieved Message Exception.", e);
+      log.error(LogMessage.buildLogMessage(50056, LogMessage.getTxid(), "Recieved Message Exception."), e);
       return new Response(Response.INTERNAL_SERVER_ERROR, null);
     }
     return rsp;

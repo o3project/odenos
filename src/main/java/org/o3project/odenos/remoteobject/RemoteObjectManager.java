@@ -87,7 +87,7 @@ public class RemoteObjectManager extends RemoteObject {
     try {
       response = callback.process(parsed);
     } catch (Exception e) {
-      log.error("Exception Request: {}, {}", request.method, request.path);
+      log.error(LogMessage.buildLogMessage(50026, LogMessage.getTxid(), "Exception Request: {}, {}", request.method, request.path));
       response = new Response(Response.BAD_REQUEST, null);
     }
     if (response == null) {

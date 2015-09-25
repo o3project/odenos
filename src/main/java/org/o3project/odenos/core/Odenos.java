@@ -251,6 +251,8 @@ public final class Odenos {
    * Start ODENOS.
    */
   public final void run() {
+    LogMessage.createTxid(0);
+
     try {
       EnumSet<MODE> mode = EnumSet.noneOf(MODE.class);
       mode.add(MODE.RESEND_SUBSCRIBE_ON_RECONNECTED);
@@ -305,7 +307,7 @@ public final class Odenos {
 
       disp.join();
     } catch (Exception e) {
-      log.error("system start failed", e);
+      log.error(LogMessage.buildLogMessage(50000, LogMessage.getTxid(), "system start failed"), e);
     } finally {
       disp.close();
     }

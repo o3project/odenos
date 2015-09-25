@@ -84,7 +84,7 @@ public class FederatorBoundaryTable {
       throws FederatorException {
 
     if (boundary == null) {
-      log.error("boundary is null");
+      log.error(LogMessage.buildLogMessage(50075, LogMessage.getTxid(), "boundary is null"));
       throw new IllegalArgumentException("boundary is null");
     }
 
@@ -97,7 +97,7 @@ public class FederatorBoundaryTable {
     }
 
     if (StringUtils.equals(boundaryId, boundary.getId())) {
-      log.warn("set boundaryId: {}", boundary);
+      log.warn(LogMessage.buildLogMessage(10061, LogMessage.getTxid(), "set boundaryId: {}", boundary));
       boundary.setId(boundaryId);
     }
 

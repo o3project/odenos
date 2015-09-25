@@ -20,8 +20,10 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.msgpack.MessagePackable;
 import org.msgpack.packer.Packer;
 import org.msgpack.unpacker.Unpacker;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.o3project.odenos.core.logging.message.LogMessage;
 
 import java.io.IOException;
 
@@ -34,7 +36,7 @@ public class BasicSliceCondition extends SliceCondition
     implements MessagePackable {
 
   /** logger. */
-  private static final Logger log = LoggerFactory
+  private static final Logger log = LogManager
       .getLogger(BasicSliceCondition.class);
 
   protected String matchInNode;
@@ -119,7 +121,7 @@ public class BasicSliceCondition extends SliceCondition
       }
 
     } catch (IOException ex) {
-      log.error("fail to read packer", ex);
+      log.error(LogMessage.buildLogMessage(50079, LogMessage.getTxid(), "fail to read packer"), ex);
       throw ex;
 
     } finally {
@@ -152,7 +154,7 @@ public class BasicSliceCondition extends SliceCondition
       }
 
     } catch (IOException ex) {
-      log.error(ex.getMessage(), ex);
+      log.error(LogMessage.buildLogMessage(50052, LogMessage.getTxid(), ex.getMessage()), ex);
       throw ex;
     }
   }
@@ -169,7 +171,7 @@ public class BasicSliceCondition extends SliceCondition
       doWriteTo(pk);
 
     } catch (IOException ex) {
-      log.error("fail to write packer", ex);
+      log.error(LogMessage.buildLogMessage(50080, LogMessage.getTxid(), "fail to write packer"), ex);
       throw ex;
 
     } finally {
@@ -190,7 +192,7 @@ public class BasicSliceCondition extends SliceCondition
       pk.write(getInPort());
 
     } catch (IOException ex) {
-      log.error(ex.getMessage(), ex);
+      log.error(LogMessage.buildLogMessage(50052, LogMessage.getTxid(), ex.getMessage()), ex);
       throw ex;
     }
   }

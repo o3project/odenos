@@ -59,12 +59,12 @@ public class LogMessage {
    * @param fmt format
    * @param msg
    */
-  public LogMessage setFormatedMessage(String fmt, String... msg) {
+  public LogMessage setFormatedMessage(String fmt, Object... msg) {
     this.format = fmt;
     int len = msg.length;
     this.parameters = new Object[len];
     for (int i = 0; i < len; i++) {
-      this.parameters[i] = (Object) msg[i];
+      this.parameters[i] = msg[i];
     }
     return this;
   }
@@ -188,7 +188,7 @@ public class LogMessage {
   }
 
   public static Message buildLogMessage(int msgid, String txid,
-                                        String fmt, String... parameters) {
+                                        String fmt, Object... parameters) {
     int len = parameters.length;
     for(int i = 0; i < len; i++) {
       fmt = fmt.replaceFirst("\\{\\}", "{" + i + "}");
