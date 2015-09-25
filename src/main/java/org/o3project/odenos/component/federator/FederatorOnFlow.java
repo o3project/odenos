@@ -79,25 +79,16 @@ public class FederatorOnFlow {
   public void flowUpdatePreStatusFailed(String networkId, BasicFlow flow) {
     log.debug("");
 
-    String fedNwId = getNetworkIdByType(Federator.FEDERATED_NETWORK);
-    NetworkInterface fedNwIf = networkInterfaces.get(fedNwId);
-    Flow fedFlow = fedNwIf.getFlow(getConvFlowId(networkId, flow.getFlowId()));
+    List<String> fedFlowIds
+        = conversionTable.getFlow(networkId, flow.getFlowId());
+    String[] fedFlowId = fedFlowIds.get(0).split("::");
+    NetworkInterface fedNwIf = networkInterfaces.get(fedFlowId[0]);
+    Flow fedFlow = fedNwIf.getFlow(fedFlowId[1]);
     if (fedFlow != null) {
       // set failed.
       fedFlow.setStatus(FlowObject.FlowStatus.FAILED.toString());
       // PUT flow.
       fedNwIf.putFlow(fedFlow);
-    }
-
-    List<String> orgNetworks =
-        conversionTable.getConnectionList(Federator.ORIGINAL_NETWORK);
-    for (String orgNwId : orgNetworks) {
-      // update conversionTable.
-      conversionTable.delEntryFlow(orgNwId, flow.getFlowId());
-
-      NetworkInterface orgNwIf = networkInterfaces.get(orgNwId);
-      // DELETE flow
-      orgNwIf.delFlow(flow.getFlowId());
     }
   }
 
@@ -110,20 +101,22 @@ public class FederatorOnFlow {
   public boolean flowUpdatePreStatusEstablished(String networkId, BasicFlow flow) {
     log.debug("");
 
-    List<String> orgNetworks =
-        conversionTable.getConnectionList(Federator.ORIGINAL_NETWORK);
-    for (String orgNwId : orgNetworks) {
-      if (orgNwId.equals(networkId)) {
-        continue;
-      }
-      if (conversionTable.getFlow(orgNwId, flow.getFlowId()).size() == 0) {
-        continue;
-      }
-      NetworkInterface orgNwIf = networkInterfaces.get(orgNwId);
-      Flow orgFlow = orgNwIf.getFlow(flow.getFlowId());
+    List<String> fedFlowIds
+        = conversionTable.getFlow(networkId, flow.getFlowId());
+    String[] fedFlowId = fedFlowIds.get(0).split("::");
 
-      if (!FlowObject.FlowStatus.ESTABLISHED.toString().equalsIgnoreCase(
-          orgFlow.getStatus())) {
+    List<String> fedOrgIds
+        = conversionTable.getFlow(fedFlowId[0], fedFlowId[1]);
+
+    for (String orgFlowId : fedOrgIds) {
+      String[] flowId = orgFlowId.split("::");
+      if (flowId[1].equals(flow.getFlowId())) {
+        continue;
+      }
+
+      NetworkInterface orgNwIf = networkInterfaces.get(flowId[0]);
+      Flow orgFlow = orgNwIf.getFlow(flowId[1]);
+      if (!FlowObject.FlowStatus.ESTABLISHED.toString().equalsIgnoreCase(orgFlow.getStatus())) {
         log.debug("not flow's status established.");
         return false;
       }
@@ -141,17 +134,20 @@ public class FederatorOnFlow {
   public boolean flowUpdatePreStatusNone(String networkId, BasicFlow flow) {
     log.debug("");
 
-    List<String> orgNetworks =
-        conversionTable.getConnectionList(Federator.ORIGINAL_NETWORK);
-    for (String orgNwId : orgNetworks) {
-      if (orgNwId.equals(networkId)) {
+    List<String> fedFlowIds
+        = conversionTable.getFlow(networkId, flow.getFlowId());
+    String[] fedFlowId = fedFlowIds.get(0).split("::");
+    List<String> fedOrgIds
+        = conversionTable.getFlow(fedFlowId[0], fedFlowId[1]);
+
+    for (String orgFlowId : fedOrgIds) {
+      String[] flowId = orgFlowId.split("::");
+      if (flowId[1].equals(flow.getFlowId())) {
         continue;
       }
-      if (conversionTable.getFlow(orgNwId, flow.getFlowId()).size() == 0) {
-        continue;
-      }
-      NetworkInterface orgNwIf = networkInterfaces.get(orgNwId);
-      Flow orgFlow = orgNwIf.getFlow(flow.getFlowId());
+
+      NetworkInterface orgNwIf = networkInterfaces.get(flowId[0]);
+      Flow orgFlow = orgNwIf.getFlow(flowId[1]);
 
       if (!FlowObject.FlowStatus.NONE.toString().equalsIgnoreCase(
           orgFlow.getStatus())) {
