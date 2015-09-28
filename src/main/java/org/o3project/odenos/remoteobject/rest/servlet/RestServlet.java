@@ -126,7 +126,8 @@ public class RestServlet extends HttpServlet {
     }
     Object reqBody = JSONValue.parse(req.getReader());
 
-    LogMessage.createTxid(LogMessage.TXID_SYSTEMMGR_OFFSET);
+    String txid = LogMessage.createTxid(LogMessage.TXID_SYSTEMMGR_OFFSET);
+    LogMessage.setSavedTxid(txid);
 
     RESTTranslator translator = (RESTTranslator) req.getServletContext()
         .getAttribute(Attributes.REST_TRANSLATOR);

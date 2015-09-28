@@ -252,7 +252,8 @@ public final class Odenos {
    */
   public final void run() {
     LogMessage.initParameters();
-    LogMessage.createTxid(LogMessage.TXID_OFFSET);
+    String txid = LogMessage.createTxid(LogMessage.TXID_OFFSET);
+    LogMessage.setSavedTxid(txid);
 
     try {
       EnumSet<MODE> mode = EnumSet.noneOf(MODE.class);

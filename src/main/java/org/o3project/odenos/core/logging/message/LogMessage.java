@@ -19,13 +19,23 @@ public class LogMessage {
   public static final int TXID_OFFSET = 0;
   private static int txidSerial = 0;
 
-  private static String savedTxid = null;
   private static Random rnd;
 
   int number = -1;
   private String txid = null;
   private Object[] parameters;
   private String format = null;
+
+  /**
+   * Alloc ThreadLocal variable.
+   *
+   */
+  private static ThreadLocal<String> savedTxid = new ThreadLocal<String>() {
+    @Override
+    protected String initialValue() {
+      return new String();
+    }
+  };
 
   /**
    * Init parameters.
@@ -85,10 +95,17 @@ public class LogMessage {
   }
 
   /**
+   * Set a transactionID.
+   */
+  public static void setSavedTxid(String id) {
+    savedTxid.set(id);
+  }
+
+  /**
    * Get a transactionID.
    */
   public static String getSavedTxid() {
-    return savedTxid;
+    return savedTxid.get();
   }
 
  /**
@@ -96,7 +113,7 @@ public class LogMessage {
   *
   * @param offset
   */
-  public static void createTxid(int offset) {
+  public static String createTxid(int offset) {
     String uuid = "";
 
     int serial = 0;
@@ -125,9 +142,8 @@ public class LogMessage {
       }
     }
 
-    String uuid_str = new String();
-    uuid_str = uuid.toLowerCase() + "-" + String.format("%07d", serial);
-    savedTxid = uuid_str;
+    String uuid_str = uuid.toLowerCase() + "-" + String.format("%07d", serial);
+    return uuid_str;
   }
 
   /**
