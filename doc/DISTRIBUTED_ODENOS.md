@@ -6,7 +6,7 @@
 
 You can install zookeeper server as follows:
 ```
-$ sudo apt-get install zookeeper-server
+$ sudo apt-get install zookeeperd
 ```
 
 ##Example configuration:
@@ -42,6 +42,9 @@ zookeeper.host                  172.17.42.1
 
 host3's etc/odenos.conf
 ```
+     :
+manager.disabled
+     :
 PROCESS    romgr1,java,apps/java/sample_components/target/classes
 #PROCESS    romgr2,python,apps/python/sample_components
      :
@@ -54,12 +57,9 @@ zookeeper.host                  172.17.42.1
 
 [Step 1] Start odenos on host3. The odenos process waits for systemmanager(host2) to be up.
 
-[Step 2] Start odenos on host2. Confirm that that the odenos process on host1 outputs the following messages: 
-```
-Start-up completion: systemmanager
-Start-up completion: resttranslator
-```
+[Step 2] Start odenos on host2. The odenos process connects to server(host1). 
+
 [Step 3] Confirm that the odenos process on host2 outputs the following message:
 ```
-Start-up completion: romgr1
+Started Compnent Manager :: romgr1
 ```
