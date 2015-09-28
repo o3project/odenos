@@ -135,7 +135,7 @@ public class EventManager extends RemoteObject {
       return callback.process(parsed);
 
     } catch (Exception ex) {
-      log.error(LogMessage.buildLogMessage(50042, LogMessage.getTxid(), "Error unknown request"), ex);
+      log.error(LogMessage.buildLogMessage(50042, LogMessage.getSavedTxid(), "Error unknown request"), ex);
       return new Response(Response.BAD_REQUEST, "Error unknown request");
     }
   }

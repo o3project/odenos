@@ -244,7 +244,7 @@ public class ComponentType extends OdenosMessage implements Serializable {
       return true;
 
     } catch (IllegalArgumentException ex) {
-      log.error(LogMessage.buildLogMessage(50052, LogMessage.getTxid(), ex.getMessage()), ex);
+      log.error(LogMessage.buildLogMessage(50052, LogMessage.getSavedTxid(), ex.getMessage()), ex);
       return false;
     }
   }
@@ -252,7 +252,7 @@ public class ComponentType extends OdenosMessage implements Serializable {
   @Override
   public boolean writeValueSub(Map<String, Value> values) {
     if (values == null) {
-      log.error(LogMessage.buildLogMessage(50053, LogMessage.getTxid(), "values is null"));
+      log.error(LogMessage.buildLogMessage(50053, LogMessage.getSavedTxid(), "values is null"));
       throw new IllegalArgumentException("values is null");
     }
 

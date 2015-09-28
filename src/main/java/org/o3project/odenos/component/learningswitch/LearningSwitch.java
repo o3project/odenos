@@ -280,7 +280,7 @@ public class LearningSwitch extends Logic {
     try {
       applyEventSubscription();
     } catch (Exception e) {
-      log.error(LogMessage.buildLogMessage(50028, LogMessage.getTxid(), "Recieved Message Exception."), e);
+      log.error(LogMessage.buildLogMessage(50028, LogMessage.getSavedTxid(), "Recieved Message Exception."), e);
     }
   }
 
@@ -296,7 +296,7 @@ public class LearningSwitch extends Logic {
     try {
       applyEventSubscription();
     } catch (Exception e) {
-      log.error(LogMessage.buildLogMessage(50028, LogMessage.getTxid(), "Recieved Message Exception."), e);
+      log.error(LogMessage.buildLogMessage(50028, LogMessage.getSavedTxid(), "Recieved Message Exception."), e);
     }
   }
 
@@ -402,7 +402,7 @@ public class LearningSwitch extends Logic {
       // Get response.
       return callback.process(parsed);
     } catch (Exception e) {
-      log.error(LogMessage.buildLogMessage(50042, LogMessage.getTxid(), "Error unknown request"));
+      log.error(LogMessage.buildLogMessage(50042, LogMessage.getSavedTxid(), "Error unknown request"));
       return new Response(Response.BAD_REQUEST, "Error unknown request ");
     }
   }
@@ -424,7 +424,7 @@ public class LearningSwitch extends Logic {
         respBody.put(mac, vals);
       }
     } catch (Exception e) {
-      log.error(LogMessage.buildLogMessage(50028, LogMessage.getTxid(), "Recieved Message Exception."), e);
+      log.error(LogMessage.buildLogMessage(50028, LogMessage.getSavedTxid(), "Recieved Message Exception."), e);
       return new Response(Response.INTERNAL_SERVER_ERROR, null);
     }
     return new Response(Response.OK, respBody);
@@ -481,7 +481,7 @@ public class LearningSwitch extends Logic {
       }
       keyMac = sb.toString();
     } catch (Exception e) {
-      log.error(LogMessage.buildLogMessage(50028, LogMessage.getTxid(), "Recieved Message Exception."), e);
+      log.error(LogMessage.buildLogMessage(50028, LogMessage.getSavedTxid(), "Recieved Message Exception."), e);
       return new Response(Response.INTERNAL_SERVER_ERROR, null);
     }
     this.fdb.remove(keyMac);
@@ -697,12 +697,12 @@ public class LearningSwitch extends Logic {
       return;
     }
     if (inPacket.getHeader() == null) {
-      log.info(LogMessage.buildLogMessage(10052, LogMessage.getTxid(), ">> InPacket's header does not exist."));
+      log.info(LogMessage.buildLogMessage(10052, LogMessage.getSavedTxid(), ">> InPacket's header does not exist."));
       return;
     }
     if (!inPacket.getHeader().getType().equals(
         OFPFlowMatch.class.getSimpleName())) {
-      log.info(LogMessage.buildLogMessage(10053, LogMessage.getTxid(), ">> InPacket is not 'OFPInPacket'."));
+      log.info(LogMessage.buildLogMessage(10053, LogMessage.getSavedTxid(), ">> InPacket is not 'OFPInPacket'."));
       return;
     }
     OFPFlowMatch header =
@@ -711,7 +711,7 @@ public class LearningSwitch extends Logic {
         || header.getInPort() == null
         || header.getEthDst() == null
         || header.getEthSrc() == null) {
-      log.info(LogMessage.buildLogMessage(10053, LogMessage.getTxid(), ">> Invalid InPacket's header."));
+      log.info(LogMessage.buildLogMessage(10053, LogMessage.getSavedTxid(), ">> Invalid InPacket's header."));
       return;
     }
     // Delete Network's InPacket.
@@ -799,7 +799,7 @@ public class LearningSwitch extends Logic {
     try {
       header = (OFPFlowMatch) inPacket.getHeader();
     } catch (ClassCastException e) {
-      log.error(LogMessage.buildLogMessage(50043, LogMessage.getTxid(), "Recieved Message ClassCastException."), e);
+      log.error(LogMessage.buildLogMessage(50043, LogMessage.getSavedTxid(), "Recieved Message ClassCastException."), e);
       return null;
     }
 
@@ -958,7 +958,7 @@ public class LearningSwitch extends Logic {
         }
       }
     } catch (Exception ex) {
-      log.warn(LogMessage.buildLogMessage(50044, LogMessage.getTxid(), "Receive Exception."), ex);
+      log.warn(LogMessage.buildLogMessage(50044, LogMessage.getSavedTxid(), "Receive Exception."), ex);
       return false;
     }
     return false;

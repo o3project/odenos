@@ -177,7 +177,7 @@ public class Actor implements Closeable {
               try {
                 mail.via.publishResponseAsync(mail.sno, mail.from, mail.request, response);
               } catch (IOException e) {
-                log.error(LogMessage.buildLogMessage(50035, LogMessage.getTxid(), "unable to send response"), e);
+                log.error(LogMessage.buildLogMessage(50035, LogMessage.getSavedTxid(), "unable to send response"), e);
               }
             } else if (mail.event != null) {
               localObject.dispatchEvent(mail.event);

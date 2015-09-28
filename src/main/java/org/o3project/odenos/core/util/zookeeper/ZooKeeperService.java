@@ -77,7 +77,7 @@ public final class ZooKeeperService {
     try {
       PurgeTxnLog.purge(new File(zk_dir), new File(zk_dir), 3);
     } catch (IOException e) {
-      log.error(LogMessage.buildLogMessage(50009, LogMessage.getTxid(), "Unable to clea up ZooKeeper transction logs"));
+      log.error(LogMessage.buildLogMessage(50009, LogMessage.getSavedTxid(), "Unable to clea up ZooKeeper transction logs"));
     }
   }
 
@@ -114,7 +114,7 @@ public final class ZooKeeperService {
             // Start the server.
             zkServer.runFromConfig(zkServerConfig);
           } catch (IOException e) {
-            log.warn(LogMessage.buildLogMessage(10014, LogMessage.getTxid(), "Retrying to start ZooKeeper server..."));
+            log.warn(LogMessage.buildLogMessage(10014, LogMessage.getSavedTxid(), "Retrying to start ZooKeeper server..."));
           }
         }
       };
@@ -122,7 +122,7 @@ public final class ZooKeeperService {
       zkServerThread.start();
 
     } else {
-      log.warn(LogMessage.buildLogMessage(10015, LogMessage.getTxid(), "ZooKeeper server already started"));
+      log.warn(LogMessage.buildLogMessage(10015, LogMessage.getSavedTxid(), "ZooKeeper server already started"));
     }
 
     waitForServerToBeUp();
@@ -146,20 +146,20 @@ public final class ZooKeeperService {
     try {
       shutdown = ZooKeeperServerMain.class.getDeclaredMethod("shutdown");
     } catch (Exception e) {
-      log.error(LogMessage.buildLogMessage(50010, LogMessage.getTxid(), "shutdown error"), e);
+      log.error(LogMessage.buildLogMessage(50010, LogMessage.getSavedTxid(), "shutdown error"), e);
     }
     shutdown.setAccessible(true);
     try {
       shutdown.invoke(zkServer);
     } catch (Exception e) {
-      log.error(LogMessage.buildLogMessage(50010, LogMessage.getTxid(), "shutdown error"), e);
+      log.error(LogMessage.buildLogMessage(50010, LogMessage.getSavedTxid(), "shutdown error"), e);
     }
     try {
       zkServerThread.join(5000);
       zkServerThread = null;
     } catch (InterruptedException e) {
       Thread.currentThread().interrupt();
-      log.warn(LogMessage.buildLogMessage(10016, LogMessage.getTxid(), "interrupted"));
+      log.warn(LogMessage.buildLogMessage(10016, LogMessage.getSavedTxid(), "interrupted"));
       zkServerThread = null;
     }
   }
@@ -174,11 +174,11 @@ public final class ZooKeeperService {
           String child = iterator.next();
           zk.delete(path + "/" + child, -1);
         } catch (InterruptedException | KeeperException e) {
-          log.error(LogMessage.buildLogMessage(50011, LogMessage.getTxid(), "unable to delete children"), e);
+          log.error(LogMessage.buildLogMessage(50011, LogMessage.getSavedTxid(), "unable to delete children"), e);
         }
       }
     } catch (KeeperException | InterruptedException e) {
-      log.error(LogMessage.buildLogMessage(50012, LogMessage.getTxid(), "Unable to get children"), e);
+      log.error(LogMessage.buildLogMessage(50012, LogMessage.getSavedTxid(), "Unable to get children"), e);
     }
   }
 
@@ -198,7 +198,7 @@ public final class ZooKeeperService {
           zk = zooKeeper(60000, null);
         }
       } catch (InterruptedException e) {
-        log.error(LogMessage.buildLogMessage(50013, LogMessage.getTxid(), "ZooKeeperSerivce startup failed"));
+        log.error(LogMessage.buildLogMessage(50013, LogMessage.getSavedTxid(), "ZooKeeperSerivce startup failed"));
       }
       ZooKeeper.States st = zk.getState();
       if (st == ZooKeeper.States.CONNECTED) {
@@ -240,7 +240,7 @@ public final class ZooKeeperService {
     try {
       zk = new ZooKeeper(hostport, timeout, watcher);
     } catch (IOException e) {
-      log.error(LogMessage.buildLogMessage(50014, LogMessage.getTxid(), "Cannot connect to ZooKeeper server"), e);
+      log.error(LogMessage.buildLogMessage(50014, LogMessage.getSavedTxid(), "Cannot connect to ZooKeeper server"), e);
     }
     return zk;
   }

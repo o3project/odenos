@@ -101,7 +101,7 @@ public class RestServlet extends HttpServlet {
           Files.copy(path, out);
         } catch (IOException e) {
           // just ignore.
-          log.error(LogMessage.buildLogMessage(50025, LogMessage.getTxid(), "Failed serving {}", path), e);
+          log.error(LogMessage.buildLogMessage(50025, LogMessage.getSavedTxid(), "Failed serving {}", path), e);
           resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
         return;
@@ -126,7 +126,7 @@ public class RestServlet extends HttpServlet {
     }
     Object reqBody = JSONValue.parse(req.getReader());
 
-    LogMessage.createTxid(LogMessage.getSystemBaseTxid());
+    LogMessage.createTxid(LogMessage.TXID_SYSTEMMGR_OFFSET);
 
     RESTTranslator translator = (RESTTranslator) req.getServletContext()
         .getAttribute(Attributes.REST_TRANSLATOR);

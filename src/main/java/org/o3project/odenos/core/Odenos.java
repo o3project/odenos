@@ -251,7 +251,8 @@ public final class Odenos {
    * Start ODENOS.
    */
   public final void run() {
-    LogMessage.createTxid(0);
+    LogMessage.initParameters();
+    LogMessage.createTxid(LogMessage.TXID_OFFSET);
 
     try {
       EnumSet<MODE> mode = EnumSet.noneOf(MODE.class);
@@ -307,7 +308,7 @@ public final class Odenos {
 
       disp.join();
     } catch (Exception e) {
-      log.error(LogMessage.buildLogMessage(50000, LogMessage.getTxid(), "system start failed"), e);
+      log.error(LogMessage.buildLogMessage(50000, LogMessage.getSavedTxid(), "system start failed"), e);
     } finally {
       disp.close();
     }

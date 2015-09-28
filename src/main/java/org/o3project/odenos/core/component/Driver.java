@@ -44,7 +44,7 @@ public abstract class Driver extends Logic {
       final String baseUri,
       final MessageDispatcher dispatcher) throws Exception {
     super(objectId, baseUri, dispatcher);
-    log.info(LogMessage.buildLogMessage(10057, LogMessage.getTxid(), "created."));
+    log.info(LogMessage.buildLogMessage(10057, LogMessage.getSavedTxid(), "created."));
   }
 
   /**
@@ -56,7 +56,7 @@ public abstract class Driver extends Logic {
   public Driver(final String objectId,
       final MessageDispatcher dispatcher) throws Exception {
     super(objectId, dispatcher);
-    log.info(LogMessage.buildLogMessage(10057, LogMessage.getTxid(), "created."));
+    log.info(LogMessage.buildLogMessage(10057, LogMessage.getSavedTxid(), "created."));
   }
 
   /**

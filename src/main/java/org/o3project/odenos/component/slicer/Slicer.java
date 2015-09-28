@@ -388,7 +388,7 @@ public class Slicer extends Logic {
     try {
       applyEventSubscription();
     } catch (Exception e) {
-      log.error(LogMessage.buildLogMessage(50056, LogMessage.getTxid(), "Recieved Message Exception."), e);
+      log.error(LogMessage.buildLogMessage(50056, LogMessage.getSavedTxid(), "Recieved Message Exception."), e);
     }
   }
 
@@ -404,7 +404,7 @@ public class Slicer extends Logic {
     try {
       applyEventSubscription();
     } catch (Exception e) {
-      log.error(LogMessage.buildLogMessage(50056, LogMessage.getTxid(), "Recieved Message Exception."), e);
+      log.error(LogMessage.buildLogMessage(50056, LogMessage.getSavedTxid(), "Recieved Message Exception."), e);
     }
   }
 
@@ -446,7 +446,7 @@ public class Slicer extends Logic {
     try {
       applyEventSubscription();
     } catch (Exception e) {
-      log.error(LogMessage.buildLogMessage(50056, LogMessage.getTxid(), "Recieved Message Exception."), e);
+      log.error(LogMessage.buildLogMessage(50056, LogMessage.getSavedTxid(), "Recieved Message Exception."), e);
     }
   }
 
@@ -463,7 +463,7 @@ public class Slicer extends Logic {
     try {
       applyEventSubscription();
     } catch (Exception e) {
-      log.error(LogMessage.buildLogMessage(50056, LogMessage.getTxid(), "Recieved Message Exception."), e);
+      log.error(LogMessage.buildLogMessage(50056, LogMessage.getSavedTxid(), "Recieved Message Exception."), e);
     }
   }
 
@@ -629,7 +629,7 @@ public class Slicer extends Logic {
       // Get response.
       return callback.process(parsed);
     } catch (Exception e) {
-      log.error(LogMessage.buildLogMessage(50071, LogMessage.getTxid(), "Error unknown request"));
+      log.error(LogMessage.buildLogMessage(50071, LogMessage.getSavedTxid(), "Error unknown request"));
       return new Response(Response.BAD_REQUEST, "Error unknown request ");
     }
   }
@@ -824,7 +824,7 @@ public class Slicer extends Logic {
     NetworkInterface networkIf = networkInterfaces().get(networkId);
     InPacket body = delInPacket(networkIf, msg.getId());
     if (body == null) {
-      log.error(LogMessage.buildLogMessage(50067, LogMessage.getTxid(), "invalid DELETE Packet."));
+      log.error(LogMessage.buildLogMessage(50067, LogMessage.getSavedTxid(), "invalid DELETE Packet."));
       return;
     }
 
@@ -832,7 +832,7 @@ public class Slicer extends Logic {
     String connectionId = matchPriorityTable(match);
     if (connectionId == null) {
       // packet drop
-      log.info(LogMessage.buildLogMessage(10072, LogMessage.getTxid(), "dorp Packet."));
+      log.info(LogMessage.buildLogMessage(10072, LogMessage.getSavedTxid(), "dorp Packet."));
       return;
     }
 
@@ -856,7 +856,7 @@ public class Slicer extends Logic {
     NetworkInterface networkIf = networkInterfaces().get(networkId);
     OutPacket body = delOutPacket(networkIf, msg.getId());
     if (body == null) {
-      log.error(LogMessage.buildLogMessage(50067, LogMessage.getTxid(), "invalid DELETE Packet."));
+      log.error(LogMessage.buildLogMessage(50067, LogMessage.getSavedTxid(), "invalid DELETE Packet."));
       return;
     }
 
@@ -864,7 +864,7 @@ public class Slicer extends Logic {
     String connectionId = matchPriorityTable(match);
     if (connectionId == null) {
       // packet drop
-      log.info(LogMessage.buildLogMessage(10072, LogMessage.getTxid(), "dorp Packet."));
+      log.info(LogMessage.buildLogMessage(10072, LogMessage.getSavedTxid(), "dorp Packet."));
       return;
     }
 
@@ -898,7 +898,7 @@ public class Slicer extends Logic {
             orgNetworkIf.getNetworkId(), orgLinks.get(linkId));
       }
     } catch (Exception e) {
-      log.error(LogMessage.buildLogMessage(50056, LogMessage.getTxid(), "Recieved Message Exception."), e);
+      log.error(LogMessage.buildLogMessage(50056, LogMessage.getSavedTxid(), "Recieved Message Exception."), e);
     }
   }
 

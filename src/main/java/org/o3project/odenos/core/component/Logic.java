@@ -427,13 +427,13 @@ public abstract class Logic extends Component {
               event.getBody(OutPacketAdded.class));
           break;
         default:
-          log.info(LogMessage.buildLogMessage(10058, LogMessage.getTxid(), "Unexpected event: {}", event.eventType));
+          log.info(LogMessage.buildLogMessage(10058, LogMessage.getSavedTxid(), "Unexpected event: {}", event.eventType));
           break;
       }
     } catch (ParseBodyException e) {
-      log.error(LogMessage.buildLogMessage(50055, LogMessage.getTxid(), "Recieved Message which can't be parsed."), e);
+      log.error(LogMessage.buildLogMessage(50055, LogMessage.getSavedTxid(), "Recieved Message which can't be parsed."), e);
     } catch (Exception e) {
-      log.error(LogMessage.buildLogMessage(50056, LogMessage.getTxid(), "Recieved Message Exception."), e);
+      log.error(LogMessage.buildLogMessage(50056, LogMessage.getSavedTxid(), "Recieved Message Exception."), e);
     }
   }
 
@@ -981,7 +981,7 @@ public abstract class Logic extends Component {
               nwcId, port.getNode(), port.getId());
         }
       } catch (Exception e) {
-        log.error(LogMessage.buildLogMessage(50056, LogMessage.getTxid(), "Recieved Message Exception."), e);
+        log.error(LogMessage.buildLogMessage(50056, LogMessage.getSavedTxid(), "Recieved Message Exception."), e);
       }
     }
     return respList;
@@ -1006,7 +1006,7 @@ public abstract class Logic extends Component {
             networkId, port.getNode(), port.getId(),
             nwcId, body.getNode(), body.getId());
       } catch (Exception e) {
-        log.error(LogMessage.buildLogMessage(50056, LogMessage.getTxid(), "Recieved Message Exception."), e);
+        log.error(LogMessage.buildLogMessage(50056, LogMessage.getSavedTxid(), "Recieved Message Exception."), e);
       }
     }
     return respList;
@@ -1030,7 +1030,7 @@ public abstract class Logic extends Component {
         conversionTable.addEntryLink(
             networkId, link.getId(), nwcId, body.getId());
       } catch (Exception e) {
-        log.error(LogMessage.buildLogMessage(50056, LogMessage.getTxid(), "Recieved Message Exception."), e);
+        log.error(LogMessage.buildLogMessage(50056, LogMessage.getSavedTxid(), "Recieved Message Exception."), e);
       }
     }
     return respList;
@@ -1060,7 +1060,7 @@ public abstract class Logic extends Component {
         conversionTable.addEntryFlow(
           networkId, flow.getFlowId(), nwcId, convFlow.getFlowId());
       } else {
-        log.warn(LogMessage.buildLogMessage(10059, LogMessage.getTxid(), "There is no inheritance relationship with 'BasicFlow'."));
+        log.warn(LogMessage.buildLogMessage(10059, LogMessage.getSavedTxid(), "There is no inheritance relationship with 'BasicFlow'."));
       }
 
     }
@@ -1081,7 +1081,7 @@ public abstract class Logic extends Component {
 
       InPacket body = delInPacket(networkIf, msg.getId());
       if (body == null) {
-        log.error(LogMessage.buildLogMessage(50057, LogMessage.getTxid(), "invalid DELETE Packet."));
+        log.error(LogMessage.buildLogMessage(50057, LogMessage.getSavedTxid(), "invalid DELETE Packet."));
         return respList;
       }
 
@@ -1130,7 +1130,7 @@ public abstract class Logic extends Component {
             networkIfpost.postInPacket(body));
       }
     } catch (Exception e) {
-      log.error(LogMessage.buildLogMessage(50056, LogMessage.getTxid(), "Recieved Message Exception."), e);
+      log.error(LogMessage.buildLogMessage(50056, LogMessage.getSavedTxid(), "Recieved Message Exception."), e);
     }
     return respList;
   }
@@ -1148,7 +1148,7 @@ public abstract class Logic extends Component {
       }
       OutPacket body = delOutPacket(networkIf, msg.getId());
       if (body == null) {
-        log.error(LogMessage.buildLogMessage(50057, LogMessage.getTxid(), "invalid DELETE Packet."));
+        log.error(LogMessage.buildLogMessage(50057, LogMessage.getSavedTxid(), "invalid DELETE Packet."));
         return respList;
       }
 
@@ -1216,7 +1216,7 @@ public abstract class Logic extends Component {
       respList.put(networkIfpost.getNetworkId(),
           networkIfpost.postOutPacket(body));
     } catch (Exception e) {
-      log.error(LogMessage.buildLogMessage(50056, LogMessage.getTxid(), "Recieved Message Exception.", e));
+      log.error(LogMessage.buildLogMessage(50056, LogMessage.getSavedTxid(), "Recieved Message Exception.", e));
     }
     return respList;
   }
@@ -1706,7 +1706,7 @@ public abstract class Logic extends Component {
     try {
       return PacketObject.readInPacketFrom(resp.getBodyValue());
     } catch (Exception e) {
-      log.error(LogMessage.buildLogMessage(50056, LogMessage.getTxid(), "Recieved Message Exception."), e);
+      log.error(LogMessage.buildLogMessage(50056, LogMessage.getSavedTxid(), "Recieved Message Exception."), e);
       return null;
     }
   }
@@ -1720,7 +1720,7 @@ public abstract class Logic extends Component {
     try {
       return PacketObject.readOutPacketFrom(resp.getBodyValue());
     } catch (Exception e) {
-      log.error(LogMessage.buildLogMessage(50056, LogMessage.getTxid(), "Recieved Message Exception."), e);
+      log.error(LogMessage.buildLogMessage(50056, LogMessage.getSavedTxid(), "Recieved Message Exception."), e);
       return null;
     }
   }
@@ -1745,7 +1745,7 @@ public abstract class Logic extends Component {
           ArrayList<String> convPortId = conversionTable.getPort(
               networkId, match.getInNode(), match.getInPort());
           if (convPortId.size() == 0) {
-            log.error(LogMessage.buildLogMessage(50058, LogMessage.getTxid(), "not found conversion port (flow.match's in_port)."));
+            log.error(LogMessage.buildLogMessage(50058, LogMessage.getSavedTxid(), "not found conversion port (flow.match's in_port)."));
             continue;
           }
           String[] plist = convPortId.get(0).split("::");
@@ -1756,7 +1756,7 @@ public abstract class Logic extends Component {
           ArrayList<String> convNodeId = conversionTable.getNode(
               networkId, match.getInNode());
           if (convNodeId.size() == 0) {
-            log.error(LogMessage.buildLogMessage(50059, LogMessage.getTxid(), "not found conversion node (flow.match's in_node)."));
+            log.error(LogMessage.buildLogMessage(50059, LogMessage.getSavedTxid(), "not found conversion node (flow.match's in_node)."));
             continue;
           }
           String[] nlist = convNodeId.get(0).split("::");
@@ -1779,7 +1779,7 @@ public abstract class Logic extends Component {
         ArrayList<String> convNodeId = conversionTable.getNode(
             networkId, nodeId);
         if (convNodeId.size() == 0) {
-          log.error(LogMessage.buildLogMessage(50059, LogMessage.getTxid(), "not found conversion node (flow.action's edge_node)."));
+          log.error(LogMessage.buildLogMessage(50059, LogMessage.getSavedTxid(), "not found conversion node (flow.action's edge_node)."));
           continue;
         }
         String[] nlist = convNodeId.get(0).split("::");
@@ -1790,7 +1790,7 @@ public abstract class Logic extends Component {
             ArrayList<String> convPortId = conversionTable.getPort(
                 networkId, nodeId, outputAct.getOutput());
             if (convPortId.size() == 0) {
-              log.warn(LogMessage.buildLogMessage(10060, LogMessage.getTxid(), "not found conversion port (flow.action Drop)."));
+              log.warn(LogMessage.buildLogMessage(10060, LogMessage.getSavedTxid(), "not found conversion port (flow.action Drop)."));
               if (!convEdgeActions.containsKey(edgeNodeId)) {
                 convEdgeActions.put(edgeNodeId, new ArrayList<FlowAction>());
               }
@@ -1828,7 +1828,7 @@ public abstract class Logic extends Component {
           if (!getDescription().contains("Aggregator")) {
             // FIXME Dirty hack: If the Logic is Aggregator,
             // no corresponding Link is expected.
-            log.error(LogMessage.buildLogMessage(50060, LogMessage.getTxid(), "not found conversion link (flow.path's linkId)."));
+            log.error(LogMessage.buildLogMessage(50060, LogMessage.getSavedTxid(), "not found conversion link (flow.path's linkId)."));
           }
           continue;
         }
@@ -1848,7 +1848,7 @@ public abstract class Logic extends Component {
       convFlow.getPath().clear();
       convFlow.putPath(convPath);
     } catch (Exception ex) {
-      log.error(LogMessage.buildLogMessage(50061, LogMessage.getTxid(), "Received Exception, when Flow info conversion."), ex);
+      log.error(LogMessage.buildLogMessage(50061, LogMessage.getSavedTxid(), "Received Exception, when Flow info conversion."), ex);
     }
   }
 

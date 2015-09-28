@@ -101,7 +101,7 @@ public final class ComponentLoader {
         Class<?> clazz = classLoader.loadClass(className);
         if (RemoteObject.class.isAssignableFrom(clazz) &&
             !Modifier.isAbstract(clazz.getModifiers())) {
-          log.info(LogMessage.buildLogMessage(10050, LogMessage.getTxid(), "Loading... {}", className)); 
+          log.info(LogMessage.buildLogMessage(10050, LogMessage.getSavedTxid(), "Loading... {}", className)); 
           result.add((Class<? extends RemoteObject>) clazz);
         }
       }

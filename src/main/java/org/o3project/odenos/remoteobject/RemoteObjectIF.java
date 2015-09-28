@@ -84,7 +84,7 @@ public class RemoteObjectIF {
   public Response post(final String path, final Object body) {
     Response resp = this.sendRequest(Request.Method.POST, path, body);
     if (resp == null || resp.isError("POST")) {
-      log.error(LogMessage.buildLogMessage(50038, LogMessage.getTxid(), "invalid POST:{}", resp.statusCode));
+      log.error(LogMessage.buildLogMessage(50038, LogMessage.getSavedTxid(), "invalid POST:{}", resp.statusCode));
     }
     return resp;
   }
@@ -98,7 +98,7 @@ public class RemoteObjectIF {
   public Response put(final String path, final Object body) {
     Response resp = this.sendRequest(Request.Method.PUT, path, body);
     if (resp == null || resp.isError("PUT")) {
-      log.error(LogMessage.buildLogMessage(50039, LogMessage.getTxid(), "PUT failed:{}", resp.statusCode));
+      log.error(LogMessage.buildLogMessage(50039, LogMessage.getSavedTxid(), "PUT failed:{}", resp.statusCode));
     }
     return resp;
   }
@@ -111,7 +111,7 @@ public class RemoteObjectIF {
   public final Response get(final String path) {
     Response resp = this.sendRequest(Request.Method.GET, path, null);
     if (resp.isError("GET")) {
-      log.error(LogMessage.buildLogMessage(50040, LogMessage.getTxid(), "GET failed:{}", resp.statusCode));
+      log.error(LogMessage.buildLogMessage(50040, LogMessage.getSavedTxid(), "GET failed:{}", resp.statusCode));
     }
     return resp;
   }
@@ -129,7 +129,7 @@ public class RemoteObjectIF {
   public final Response delete(final String path, final Object body) {
     Response resp = this.sendRequest(Request.Method.DELETE, path, body);
     if (resp.isError("DELETE")) {
-      log.error(LogMessage.buildLogMessage(50041, LogMessage.getTxid(), "DELETE failed:{}", resp.statusCode));
+      log.error(LogMessage.buildLogMessage(50041, LogMessage.getSavedTxid(), "DELETE failed:{}", resp.statusCode));
     }
     return resp;
   }

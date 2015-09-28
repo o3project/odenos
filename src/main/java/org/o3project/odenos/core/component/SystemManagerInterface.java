@@ -127,7 +127,7 @@ public class SystemManagerInterface {
     try {
       return resp.getBody(ObjectProperty.class);
     } catch (Exception e) {
-      log.error(LogMessage.buildLogMessage(50056, LogMessage.getTxid(), "Recieved Message Exception."), e);
+      log.error(LogMessage.buildLogMessage(50056, LogMessage.getSavedTxid(), "Recieved Message Exception."), e);
       return null;
     }
   }
@@ -146,7 +146,7 @@ public class SystemManagerInterface {
     try {
       return resp.getBody(ObjectSettings.class);
     } catch (Exception e) {
-      log.error(LogMessage.buildLogMessage(50056, LogMessage.getTxid(), "Recieved Message Exception."), e);
+      log.error(LogMessage.buildLogMessage(50056, LogMessage.getSavedTxid(), "Recieved Message Exception."), e);
       return null;
     }
   }
@@ -165,7 +165,7 @@ public class SystemManagerInterface {
     try {
       return resp.getBody(ObjectPropertyList.class);
     } catch (Exception e) {
-      log.error(LogMessage.buildLogMessage(50056, LogMessage.getTxid(), "Recieved Message Exception."), e);
+      log.error(LogMessage.buildLogMessage(50056, LogMessage.getSavedTxid(), "Recieved Message Exception."), e);
       return null;
     }
   }
@@ -184,7 +184,7 @@ public class SystemManagerInterface {
     try {
       return resp.getBody(ObjectProperty.class);
     } catch (Exception e) {
-      log.error(LogMessage.buildLogMessage(50056, LogMessage.getTxid(), "Recieved Message Exception."), e);
+      log.error(LogMessage.buildLogMessage(50056, LogMessage.getSavedTxid(), "Recieved Message Exception."), e);
       return null;
     }
   }
@@ -203,7 +203,7 @@ public class SystemManagerInterface {
     try {
       return resp.getBody(ComponentTypesHash.class);
     } catch (Exception e) {
-      log.error(LogMessage.buildLogMessage(50056, LogMessage.getTxid(), "Recieved Message Exception."), e);
+      log.error(LogMessage.buildLogMessage(50056, LogMessage.getSavedTxid(), "Recieved Message Exception."), e);
       return null;
     }
   }
@@ -222,7 +222,7 @@ public class SystemManagerInterface {
     try {
       return resp.getBody(ObjectPropertiesHash.class);
     } catch (Exception e) {
-      log.error(LogMessage.buildLogMessage(50056, LogMessage.getTxid(), "Recieved Message Exception."), e);
+      log.error(LogMessage.buildLogMessage(50056, LogMessage.getSavedTxid(), "Recieved Message Exception."), e);
       return null;
     }
   }
@@ -241,7 +241,7 @@ public class SystemManagerInterface {
     try {
       return resp.getBodyAsMap(ComponentConnection.class);
     } catch (Exception e) {
-      log.error(LogMessage.buildLogMessage(50056, LogMessage.getTxid(), "Recieved Message Exception."), e);
+      log.error(LogMessage.buildLogMessage(50056, LogMessage.getSavedTxid(), "Recieved Message Exception."), e);
       return null;
     }
   }
@@ -262,7 +262,7 @@ public class SystemManagerInterface {
     try {
       return resp.getBody(ObjectProperty.class);
     } catch (Exception e) {
-      log.error(LogMessage.buildLogMessage(50056, LogMessage.getTxid(), "Recieved Message Exception."), e);
+      log.error(LogMessage.buildLogMessage(50056, LogMessage.getSavedTxid(), "Recieved Message Exception."), e);
       return null;
     }
   }
@@ -283,7 +283,7 @@ public class SystemManagerInterface {
     try {
       return resp.getBody(ObjectPropertyList.class);
     } catch (Exception e) {
-      log.error(LogMessage.buildLogMessage(50056, LogMessage.getTxid(), "Recieved Message Exception."), e);
+      log.error(LogMessage.buildLogMessage(50056, LogMessage.getSavedTxid(), "Recieved Message Exception."), e);
       return null;
     }
   }
@@ -304,7 +304,7 @@ public class SystemManagerInterface {
     try {
       return resp.getBody(ObjectProperty.class);
     } catch (Exception e) {
-      log.error(LogMessage.buildLogMessage(50056, LogMessage.getTxid(), "Recieved Message Exception."), e);
+      log.error(LogMessage.buildLogMessage(50056, LogMessage.getSavedTxid(), "Recieved Message Exception."), e);
       return null;
     }
   }
@@ -325,7 +325,7 @@ public class SystemManagerInterface {
     try {
       return resp.getBody(ComponentConnection.class);
     } catch (Exception e) {
-      log.error(LogMessage.buildLogMessage(50056, LogMessage.getTxid(), "Recieved Message Exception."), e);
+      log.error(LogMessage.buildLogMessage(50056, LogMessage.getSavedTxid(), "Recieved Message Exception."), e);
       return null;
     }
   }
@@ -346,7 +346,7 @@ public class SystemManagerInterface {
     try {
       return resp.getBody(ObjectProperty.class);
     } catch (Exception e) {
-      log.error(LogMessage.buildLogMessage(50056, LogMessage.getTxid(), "Recieved Message Exception."), e);
+      log.error(LogMessage.buildLogMessage(50056, LogMessage.getSavedTxid(), "Recieved Message Exception."), e);
       return null;
     }
   }
@@ -493,11 +493,11 @@ public class SystemManagerInterface {
     try {
       Response resp = sendRequest(Request.Method.POST, path, body);
       if (resp.isError("POST")) {
-        log.warn(LogMessage.buildLogMessage(50038, LogMessage.getTxid(), "invalid POST:{}", resp.statusCode));
+        log.warn(LogMessage.buildLogMessage(50038, LogMessage.getSavedTxid(), "invalid POST:{}", resp.statusCode));
       }
       return resp;
     } catch (Exception e) {
-      log.error(LogMessage.buildLogMessage(50056, LogMessage.getTxid(), "Recieved Message Exception."), e);
+      log.error(LogMessage.buildLogMessage(50056, LogMessage.getSavedTxid(), "Recieved Message Exception."), e);
       return new Response(Response.INTERNAL_SERVER_ERROR, null);
     }
   }
@@ -515,11 +515,11 @@ public class SystemManagerInterface {
     try {
       Response resp = sendRequest(Request.Method.PUT, path, body);
       if (resp.isError("PUT")) {
-        log.warn(LogMessage.buildLogMessage(50066, LogMessage.getTxid(), "invalid PUT:{}", resp.statusCode));
+        log.warn(LogMessage.buildLogMessage(50066, LogMessage.getSavedTxid(), "invalid PUT:{}", resp.statusCode));
       }
       return resp;
     } catch (Exception e) {
-      log.error(LogMessage.buildLogMessage(50056, LogMessage.getTxid(), "Recieved Message Exception."), e);
+      log.error(LogMessage.buildLogMessage(50056, LogMessage.getSavedTxid(), "Recieved Message Exception."), e);
       return new Response(Response.INTERNAL_SERVER_ERROR, null);
     }
   }
@@ -535,11 +535,11 @@ public class SystemManagerInterface {
     try {
       Response resp = sendRequest(Request.Method.DELETE, path, null);
       if (resp.isError("DELETE")) {
-        log.warn(LogMessage.buildLogMessage(50067, LogMessage.getTxid(), "invalid DELETE:{}", resp.statusCode));
+        log.warn(LogMessage.buildLogMessage(50067, LogMessage.getSavedTxid(), "invalid DELETE:{}", resp.statusCode));
       }
       return resp;
     } catch (Exception e) {
-      log.error(LogMessage.buildLogMessage(50056, LogMessage.getTxid(), "Recieved Message Exception."), e);
+      log.error(LogMessage.buildLogMessage(50056, LogMessage.getSavedTxid(), "Recieved Message Exception."), e);
       return new Response(Response.INTERNAL_SERVER_ERROR, null);
     }
   }
@@ -555,11 +555,11 @@ public class SystemManagerInterface {
     try {
       Response resp = sendRequest(Request.Method.GET, path, null);
       if (resp.isError("GET")) {
-        log.warn(LogMessage.buildLogMessage(50068, LogMessage.getTxid(), "invalid GET:{}", resp.statusCode));
+        log.warn(LogMessage.buildLogMessage(50068, LogMessage.getSavedTxid(), "invalid GET:{}", resp.statusCode));
       }
       return resp;
     } catch (Exception e) {
-      log.error(LogMessage.buildLogMessage(50056, LogMessage.getTxid(), "Recieved Message Exception."), e);
+      log.error(LogMessage.buildLogMessage(50056, LogMessage.getSavedTxid(), "Recieved Message Exception."), e);
       return new Response(Response.INTERNAL_SERVER_ERROR, null);
     }
   }
@@ -576,7 +576,7 @@ public class SystemManagerInterface {
       rsp = this.dispatcher.requestSync(req, sourceObjectId);
 
     } catch (Exception e) {
-      log.error(LogMessage.buildLogMessage(50056, LogMessage.getTxid(), "Recieved Message Exception."), e);
+      log.error(LogMessage.buildLogMessage(50056, LogMessage.getSavedTxid(), "Recieved Message Exception."), e);
       return new Response(Response.INTERNAL_SERVER_ERROR, null);
     }
     return rsp;

@@ -272,7 +272,7 @@ public class RemoteObject {
       try {
         response = callback.process(parsed);
       } catch (Exception e) {
-        log.error(LogMessage.buildLogMessage(50026, LogMessage.getTxid(), "Exception Request: {}, {}", request.method, request.path));
+        log.error(LogMessage.buildLogMessage(50026, LogMessage.getSavedTxid(), "Exception Request: {}, {}", request.method, request.path));
         response = new Response(Response.BAD_REQUEST, null);
       }
     }
@@ -434,7 +434,7 @@ public class RemoteObject {
     try {
       publishEvent(ObjectPropertyChanged.TYPE, msg);
     } catch (Exception e) {
-      log.error(LogMessage.buildLogMessage(50027, LogMessage.getTxid(), "Failed to ObjectPropertyChanged."), e);
+      log.error(LogMessage.buildLogMessage(50027, LogMessage.getSavedTxid(), "Failed to ObjectPropertyChanged."), e);
     }
   }
 
@@ -446,7 +446,7 @@ public class RemoteObject {
     try {
       publishEvent(ObjectSettingsChanged.TYPE, msg);
     } catch (Exception e) {
-      log.error(LogMessage.buildLogMessage(50027, LogMessage.getTxid(), "Failed to ObjectSettingsChanged."), e);
+      log.error(LogMessage.buildLogMessage(50027, LogMessage.getSavedTxid(), "Failed to ObjectSettingsChanged."), e);
     }
   }
 
@@ -511,7 +511,7 @@ public class RemoteObject {
    */
   public void zkDeletePath(final String path) {
     if (keepAliveClient == null) {
-      log.warn(LogMessage.buildLogMessage(10025, LogMessage.getTxid(), "No ZooKeeper connectivity"));
+      log.warn(LogMessage.buildLogMessage(10025, LogMessage.getSavedTxid(), "No ZooKeeper connectivity"));
     }
     keepAliveClient.deletePath(path);
   }

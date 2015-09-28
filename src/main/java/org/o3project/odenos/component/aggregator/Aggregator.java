@@ -255,7 +255,7 @@ public class Aggregator extends Logic {
       orgNwIf = networkInterfaces().get(orgNetworkId.get(0));
       aggNwIf = networkInterfaces().get(networkId);
     } else {
-      log.error(LogMessage.buildLogMessage(50070, LogMessage.getTxid(), "Unexpected network type: {}", type));
+      log.error(LogMessage.buildLogMessage(50070, LogMessage.getSavedTxid(), "Unexpected network type: {}", type));
       throw new IllegalArgumentException("Unexpected network type: " + type);
     }
     // Update conversionTable.
@@ -349,7 +349,7 @@ public class Aggregator extends Logic {
     try {
       applyEventSubscription();
     } catch (Exception e) {
-      log.error(LogMessage.buildLogMessage(50056, LogMessage.getTxid(), "Recieved Message Exception."), e);
+      log.error(LogMessage.buildLogMessage(50056, LogMessage.getSavedTxid(), "Recieved Message Exception."), e);
     }
   }
 
@@ -365,7 +365,7 @@ public class Aggregator extends Logic {
     try {
       this.applyEventSubscription();
     } catch (Exception e) {
-      log.error(LogMessage.buildLogMessage(50056, LogMessage.getTxid(), "Recieved Message Exception."), e);
+      log.error(LogMessage.buildLogMessage(50056, LogMessage.getSavedTxid(), "Recieved Message Exception."), e);
     }
   }
 
@@ -395,7 +395,7 @@ public class Aggregator extends Logic {
     try {
       applyEventSubscription();
     } catch (Exception e) {
-      log.error(LogMessage.buildLogMessage(50056, LogMessage.getTxid(), "Recieved Message Exception."), e);
+      log.error(LogMessage.buildLogMessage(50056, LogMessage.getSavedTxid(), "Recieved Message Exception."), e);
     }
   }
 
@@ -410,7 +410,7 @@ public class Aggregator extends Logic {
     try {
       applyEventSubscription();
     } catch (Exception e) {
-      log.error(LogMessage.buildLogMessage(50056, LogMessage.getTxid(), "Recieved Message Exception."), e);
+      log.error(LogMessage.buildLogMessage(50056, LogMessage.getSavedTxid(), "Recieved Message Exception."), e);
     }
   }
 
@@ -483,7 +483,7 @@ public class Aggregator extends Logic {
       // Get response.
       return callback.process(parsed);
     } catch (Exception e) {
-      log.error(LogMessage.buildLogMessage(50071, LogMessage.getTxid(), "Error unknown request"));
+      log.error(LogMessage.buildLogMessage(50071, LogMessage.getSavedTxid(), "Error unknown request"));
       return new Response(Response.BAD_REQUEST, "Error unknown request ");
     }
   }
@@ -742,7 +742,7 @@ public class Aggregator extends Logic {
       return;
     }
     if (!link.validate()) {
-      log.error(LogMessage.buildLogMessage(50072, LogMessage.getTxid(), ">> link[ {} ] is invalid.", link.getId()));
+      log.error(LogMessage.buildLogMessage(50072, LogMessage.getSavedTxid(), ">> link[ {} ] is invalid.", link.getId()));
       return;
     }
 
@@ -936,7 +936,7 @@ public class Aggregator extends Logic {
 
     BasicFlow aggFlow = getFlow(aggNetworkIf, flow.getFlowId());
     if (aggFlow == null) {
-      log.error(LogMessage.buildLogMessage(50073, LogMessage.getTxid(), "Invalid flow."));
+      log.error(LogMessage.buildLogMessage(50073, LogMessage.getSavedTxid(), "Invalid flow."));
       return;
     }
     BasicFlow orgFlow = aggFlow.clone();
@@ -1075,7 +1075,7 @@ public class Aggregator extends Logic {
       }
 
     } catch (Exception e) {
-      log.error(LogMessage.buildLogMessage(50056, LogMessage.getTxid(), "Recieved Message Exception."), e);
+      log.error(LogMessage.buildLogMessage(50056, LogMessage.getSavedTxid(), "Recieved Message Exception."), e);
     }
   }
 
@@ -1147,7 +1147,7 @@ public class Aggregator extends Logic {
       log.debug(">> PUT flow to Original Network.");
       orgNetworkIf.putFlow(orgFlow);
     } catch (Exception e) {
-      log.error(LogMessage.buildLogMessage(50056, LogMessage.getTxid(), "Recieved Message Exception."), e);
+      log.error(LogMessage.buildLogMessage(50056, LogMessage.getSavedTxid(), "Recieved Message Exception."), e);
       return false;
     }
     return true;
@@ -1216,7 +1216,7 @@ public class Aggregator extends Logic {
             this.getObjectId(), aggPortId);
       }
     } catch (Exception e) {
-      log.error(LogMessage.buildLogMessage(50056, LogMessage.getTxid(), "Recieved Message Exception."), e);
+      log.error(LogMessage.buildLogMessage(50056, LogMessage.getSavedTxid(), "Recieved Message Exception."), e);
     }
   }
 

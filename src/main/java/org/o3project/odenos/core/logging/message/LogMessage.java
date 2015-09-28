@@ -6,21 +6,36 @@ import java.util.Random;
 import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.nio.ByteBuffer;
+import javax.xml.bind.DatatypeConverter;
 
 /**
  * Logging message DTO builder.
  */
 public class LogMessage {
 
-  final static int txidNumberSystem = 1000000;
+  public static final int TXID_SYSTEMMGR_OFFSET = 1000000;
+  private static int txidSystemMgrSerial = 0;
 
-  static int txidSerial = 0;
-  static String txidStack = "";
+  public static final int TXID_OFFSET = 0;
+  private static int txidSerial = 0;
+
+  private static String savedTxid = null;
+  private static Random rnd;
 
   int number = -1;
   private String txid = null;
   private Object[] parameters;
   private String format = null;
+
+  /**
+   * Init parameters.
+   *
+   * @param number
+   */
+  public static void initParameters() {
+    long now = System.currentTimeMillis();
+    rnd = new Random(now);
+  }
 
   /**
    * Sets a logging message number.
@@ -72,15 +87,8 @@ public class LogMessage {
   /**
    * Get a transactionID.
    */
-  public static String getTxid() {
-    return txidStack;
-  }
-
- /**
-   * Get a base of transactionID (systemManager).
-   */
-  public static int getSystemBaseTxid() {
-    return txidNumberSystem;
+  public static String getSavedTxid() {
+    return savedTxid;
   }
 
  /**
@@ -89,35 +97,37 @@ public class LogMessage {
   * @param offset
   */
   public static void createTxid(int offset) {
-    long now = System.currentTimeMillis();
-    Random rnd = new Random(now);
-    long rLong = rnd.nextLong() % 0x10000_0000_0000L;
-    byte[] padd = {(byte)0,(byte)0};
-    String uuid = Long.toHexString(rLong);
+    String uuid = "";
 
-    String serial = "";
-    if( offset != 0) {
-      int serial_int = offset + txidSerial;
-      serial = serial + serial_int;
+    int serial = 0;
+    if( offset == TXID_SYSTEMMGR_OFFSET) {
+      serial = offset + txidSystemMgrSerial;
+      txidSystemMgrSerial++;
+    } else { // TXID_OFFSET
+      serial = offset + txidSerial;
       txidSerial++;
-    } else {
-      serial = "0000000";
     }
 
-    int ethNum = 10;
+    int ethNum = 9;
     try {
-      for(int i = 0; i < ethNum; i++) {
+      for(int i = 0; i <= ethNum; i++) {
         NetworkInterface nic = NetworkInterface.getByName("eth" + i);
         if(nic != null) {
-          uuid = Long.toHexString(ByteBuffer.allocate(8).put(padd).put(nic.getHardwareAddress()).getLong(0));
-        }
+          uuid = DatatypeConverter.printHexBinary(nic.getHardwareAddress());
+          break;
+        } 
       }
     } catch (SocketException ex) {
+    } finally {
+      if(uuid == ""){
+        long rLong = rnd.nextLong() % 0x10000_0000_0000L;
+        uuid = Long.toHexString(rLong);
+      }
     }
 
     String uuid_str = new String();
-    uuid_str = uuid + "-" + serial;
-    txidStack = uuid_str;
+    uuid_str = uuid.toLowerCase() + "-" + String.format("%07d", serial);
+    savedTxid = uuid_str;
   }
 
   /**

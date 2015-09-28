@@ -86,7 +86,7 @@ public class LearningSwitchVlan extends LearningSwitch {
     try {
       header = (OFPFlowMatch) inPacket.getHeader();
     } catch (ClassCastException e) {
-      log.error(LogMessage.buildLogMessage(50043, LogMessage.getTxid(), "Recieved Message ClassCastException."), e);
+      log.error(LogMessage.buildLogMessage(50043, LogMessage.getSavedTxid(), "Recieved Message ClassCastException."), e);
       return null;
     }
 

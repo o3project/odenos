@@ -75,7 +75,7 @@ public class LinkLayerizerBoundaryTable {
       throws LinkLayerizerBoundaryException {
 
     if (boundary == null) {
-      log.error(LogMessage.buildLogMessage(50075, LogMessage.getTxid(), "boundary is null"));
+      log.error(LogMessage.buildLogMessage(50075, LogMessage.getSavedTxid(), "boundary is null"));
       throw new IllegalArgumentException("boundary is null");
     }
 
@@ -110,16 +110,16 @@ public class LinkLayerizerBoundaryTable {
       throws LinkLayerizerBoundaryException {
 
     if (boundaryId == null) {
-      log.error(LogMessage.buildLogMessage(50075, LogMessage.getTxid(), "boundaryId is null"));
+      log.error(LogMessage.buildLogMessage(50075, LogMessage.getSavedTxid(), "boundaryId is null"));
       throw new IllegalArgumentException("boundaryId is null");
     }
     if (boundary == null) {
-      log.error(LogMessage.buildLogMessage(50075, LogMessage.getTxid(), "boundary is null"));
+      log.error(LogMessage.buildLogMessage(50075, LogMessage.getSavedTxid(), "boundary is null"));
       throw new IllegalArgumentException("boundary is null");
     }
 
     if (!boundaryId.equals(boundary.getId())) {
-      log.warn(LogMessage.buildLogMessage(10061, LogMessage.getTxid(), "set boundaryId: {}", boundaryId));
+      log.warn(LogMessage.buildLogMessage(10061, LogMessage.getSavedTxid(), "set boundaryId: {}", boundaryId));
       boundary.setId(boundaryId);
     }
 
