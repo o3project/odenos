@@ -54,7 +54,7 @@ manager.disabled
 PROCESS    romgr1,java,apps/java/sample_components/target/classes
 #PROCESS    romgr2,python,apps/python/sample_components
      :
-#rest.host                      172.17.42.2
+rest.host                       172.17.42.2
      :
 pubsub.server.host              172.17.42.1
      :
@@ -62,10 +62,10 @@ zookeeper.host                  172.17.42.1
 #zookeeper.embed
 ```
 
-Please uncomment the variables, manager.disabled,
-pubsub.server.host and zookeeper.host, and set IP-address of host1
-to pubsub.server.host and zookeeper.host.
-And comment out the variables zookeeper.embed.
+Please uncomment the variables, manager.disabled, rest.host,
+pubsub.server.host and zookeeper.host, and set IP-address of
+host2 or host1 to rest.host, pubsub.server.host and zookeeper.host,
+respectively. And comment out the variables zookeeper.embed.
 
 ##Run odenos processes!
 
