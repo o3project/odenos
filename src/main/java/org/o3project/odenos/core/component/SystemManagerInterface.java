@@ -570,7 +570,7 @@ public class SystemManagerInterface {
 
     Response rsp = null;
     Request req = new Request(
-        this.dispatcher.getSystemManagerId(), method, path, body);
+        this.dispatcher.getSystemManagerId(), method, path, LogMessage.getSavedTxid(), body);
     log.debug("   {}", req.getBodyValue());
     try {
       rsp = this.dispatcher.requestSync(req, sourceObjectId);

@@ -124,6 +124,7 @@ public class SystemManager extends RemoteObject {
 
   @Override
   protected void onEvent(Event event) {
+    LogMessage.setSavedTxid(event.txid);
     log.debug("onEvent: {}", event.eventType);
     if (event.eventType.equals(ObjectPropertyChanged.TYPE)) {
       ObjectPropertyChanged message = event.getBody2(ObjectPropertyChanged.class);
@@ -306,7 +307,7 @@ public class SystemManager extends RemoteObject {
     public void run() {
       for (String key : componentStateList.keySet()) {
         try {
-          Response res = request(key, Method.GET, this.baseUri, null);
+          Response res = request(key, Method.GET, this.baseUri, LogMessage.getSavedTxid(), null);
           if (!res.statusCode.equals(Response.OK)) {
             componentStateList.put(key, ObjectProperty.State.ERROR);
           }
@@ -328,6 +329,7 @@ public class SystemManager extends RemoteObject {
 
   @Override
   protected Response onRequest(final Request req) {
+    LogMessage.setSavedTxid(req.txid);
     log.debug("onRequest: {}, {}", req.method, req.path);
 
     RequestParser<IActionCallback>.ParsedRequest parsed = parser.parse(req);
@@ -338,7 +340,7 @@ public class SystemManager extends RemoteObject {
         String compId = getDestinationCompId(req.path);
         String command = getDestinationPath(req.path);
         return transferComponent(compId, command,
-            req.method, req.getBodyValue());
+            req.method, LogMessage.getSavedTxid(), req.getBodyValue());
       }
 
       return new Response(Response.BAD_REQUEST, null);
@@ -803,7 +805,7 @@ public class SystemManager extends RemoteObject {
    */
   private Response getComponentTypes(String compmgrId) {
     try {
-      Response resp = request(compmgrId, Method.GET, "component_types", null);
+      Response resp = request(compmgrId, Method.GET, "component_types", LogMessage.getSavedTxid(), null);
       if (resp.isError("GET")) {
         log.warn(LogMessage.buildLogMessage(10032, LogMessage.getSavedTxid(), "invalid GET:{}", resp.statusCode));
         return resp;
@@ -962,7 +964,7 @@ public class SystemManager extends RemoteObject {
 
       String path = String.format("components/%s", body.getObjectId());
       Response resp =
-          request(compMgrId, Method.PUT, path, body);
+        request(compMgrId, Method.PUT, path, LogMessage.getSavedTxid(), body);
       if (!resp.statusCode.equals(Response.CREATED)) {
         log.warn(LogMessage.buildLogMessage(10034, LogMessage.getSavedTxid(), "Failed to create Component Type:{} StatusCode:{}",
             createdType, resp.statusCode));
@@ -1058,7 +1060,7 @@ public class SystemManager extends RemoteObject {
 
       String path = String.format("components/%s", body.getObjectId());
       Response resp =
-          request(compMgrId, Method.PUT, path, body);
+        request(compMgrId, Method.PUT, path, LogMessage.getSavedTxid(), body);
       if (!resp.statusCode.equals(Response.CREATED)) {
         log.warn(LogMessage.buildLogMessage(10034, LogMessage.getSavedTxid(), "Failed to create Component Type:{} StatusCode:{}",
             createdType, resp.statusCode));
@@ -1136,6 +1138,8 @@ public class SystemManager extends RemoteObject {
    *            Destination path.
    * @param method
    *            Request method.
+   * @param txid
+   *            Transaction ID.
    * @param bodyValue
    *            Request body.
    * @return res ResponseObject.
@@ -1144,10 +1148,11 @@ public class SystemManager extends RemoteObject {
       final String id,
       final String path,
       final Request.Method method,
+      final String txid,
       final Value bodyValue) {
     if (componentStateList.containsKey(id)) {
       try {
-        return this.request(id, method, path, bodyValue);
+        return this.request(id, method, path, txid, bodyValue);
       } catch (Exception e) {
         log.error(LogMessage.buildLogMessage(50031, LogMessage.getSavedTxid(),
             "Exception to message transfer Dest ID:{} Path:{} Method:{}",
@@ -1191,7 +1196,7 @@ public class SystemManager extends RemoteObject {
     Response resp = null;
     try {
       resp = request(compMgrId, Method.DELETE, "components/" + compId,
-          null);
+          LogMessage.getSavedTxid(), null);
       if (!resp.statusCode.equals(Response.OK)) {
         log.warn(LogMessage.buildLogMessage(10041, LogMessage.getSavedTxid(), 
             "Failed to delete component from ComponentManager:{} ComponentID:{} StatusCode:{}",

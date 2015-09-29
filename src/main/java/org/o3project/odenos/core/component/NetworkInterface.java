@@ -735,7 +735,7 @@ public class NetworkInterface {
     try {
       flow.setEnabled(false);
       Response resp = sendRequest(this.networkId,
-          Request.Method.DELETE, path, flow);
+          Request.Method.DELETE, path, LogMessage.getSavedTxid(), flow);
       if (resp.isError("DELETE")) {
         log.warn(LogMessage.buildLogMessage(50067, LogMessage.getSavedTxid(), "invalid DELETE:{}", resp.statusCode));
       }
@@ -1219,7 +1219,7 @@ public class NetworkInterface {
     log.debug(">>  [networkId : '{}']", this.networkId);
 
     try {
-      Response resp = sendRequest(nwcId, Request.Method.POST, path, body);
+      Response resp = sendRequest(nwcId, Request.Method.POST, path, LogMessage.getSavedTxid(), body);
       if (resp.isError("POST")) {
         log.warn(LogMessage.buildLogMessage(50069, LogMessage.getSavedTxid(), "invalid POST({}) to {}: '{}' {}",
             resp.statusCode, nwcId, path, resp.getBodyValue()));
@@ -1236,7 +1236,7 @@ public class NetworkInterface {
     log.debug(">>  [networkId : '{}']", this.networkId);
 
     try {
-      Response resp = sendRequest(nwcId, Request.Method.PUT, path, body);
+      Response resp = sendRequest(nwcId, Request.Method.PUT, path, LogMessage.getSavedTxid(), body);
       if (resp.isError("PUT")) {
         log.warn(LogMessage.buildLogMessage(50066, LogMessage.getSavedTxid(), "invalid PUT({}) to {}: '{}' {}",
             resp.statusCode, nwcId, path, resp.getBodyValue()));
@@ -1254,7 +1254,7 @@ public class NetworkInterface {
     log.debug(">>  [networkId : '{}']", this.networkId);
 
     try {
-      Response resp = sendRequest(nwcId, Request.Method.DELETE, path,
+      Response resp = sendRequest(nwcId, Request.Method.DELETE, LogMessage.getSavedTxid(), path,
           null);
       if (resp.isError("DELETE")) {
         log.warn(LogMessage.buildLogMessage(50067, LogMessage.getSavedTxid(), "invalid DELETE({}) to {}: '{}' {}",
@@ -1272,7 +1272,7 @@ public class NetworkInterface {
     log.debug(">>  [networkId : '{}']", this.networkId);
 
     try {
-      Response resp = sendRequest(nwcId, Request.Method.GET, path, null);
+      Response resp = sendRequest(nwcId, Request.Method.GET, path, LogMessage.getSavedTxid(), null);
       if (resp.isError("GET")) {
         log.warn(LogMessage.buildLogMessage(50068, LogMessage.getSavedTxid(), "invalid GET({}) to {}: '{}' {}",
             resp.statusCode, nwcId, path, resp.getBodyValue()));
@@ -1286,11 +1286,11 @@ public class NetworkInterface {
   }
 
   private Response sendRequest(final String objId,
-      final Request.Method method, final String path, final Object body) {
+      final Request.Method method, final String path, final String txid, final Object body) {
     log.debug(">>  [networkId : '{}']", this.networkId);
 
     Response rsp = null;
-    Request req = new Request(objId, method, path, body);
+    Request req = new Request(objId, method, path, txid, body);
     try {
       rsp = this.dispatcher.requestSync(req, sourceObjectId);
     } catch (Exception e) {

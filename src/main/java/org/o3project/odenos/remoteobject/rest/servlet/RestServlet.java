@@ -126,14 +126,14 @@ public class RestServlet extends HttpServlet {
     }
     Object reqBody = JSONValue.parse(req.getReader());
 
-    String txid = LogMessage.createTxid(LogMessage.TXID_SYSTEMMGR_OFFSET);
+    String txid = LogMessage.createTxid();
     LogMessage.setSavedTxid(txid);
 
     RESTTranslator translator = (RESTTranslator) req.getServletContext()
         .getAttribute(Attributes.REST_TRANSLATOR);
     Response odenosResp;
     try {
-      odenosResp = translator.request(objectId, method, path, reqBody);
+      odenosResp = translator.request(objectId, method, path, txid, reqBody);
     } catch (Exception e) {
       this.log.debug("Failed to request [{}, {}, {}, {}]",
           objectId, method, path, reqBody, e);

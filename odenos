@@ -64,6 +64,9 @@ ZOOKEEPER_LOG=var/zookeeper
 # log file size 100KBytes, snapshot per 100 transactions
 ZOOKEEPER_OPT="-Dzookeeper.preAllocSize=100 -Dzookeeper.snapCount=100"
 
+TXOFFSET_SYSTEM=0000000
+TXOFFSET_ROMGR1=1000000
+
 ##########################################################################
 # common functions                                                       #
 ##########################################################################
@@ -175,7 +178,7 @@ start_system() {
 	-Dapp.log=${ODENOS_LOG}/odenos_system.log \
 	-Dlog4j2_app.log=${ODENOS_LOG}/log4j2_odenos_system.log \
 	$ODENOS_MAIN -s -S $MANAGER -o ${REST_PORT} -h ${REST_ROOT} \
-	-i $HOST -p $PORT -I $HOST_B -P $PORT_B \
+	-i $HOST -p $PORT -I $HOST_B -P $PORT_B -t $TXOFFSET_SYSTEM \
 	-m $MONITOR $MONITOR_LOGGING $ZOOKEEPER_HOST $ZOOKEEPER_PORT \
 	$ZOOKEEPER_EMBED &
     echo $! > $FILE_ODENOS_SYSTEM_PID
@@ -217,7 +220,7 @@ start_process() {
 		-Dapp.log=${ODENOS_LOG}/odenos_${PROC_NAME}.log \
 		-Dlog4j2_app.log=${ODENOS_LOG}/log4j2_odenos_${PROC_NAME}.log \
 		$ODENOS_MAIN -r ${PROC_NAME} -d ${PROC_DIR} \
-		-S $MANAGER -i $HOST -p $PORT -I $HOST_B -P $PORT_B \
+		-S $MANAGER -i $HOST -p $PORT -I $HOST_B -P $PORT_B -t $TXOFFSET_ROMGR1 \
 		-m $MONITOR $MONITOR_LOGGING $ZOOKEEPER_HOST $ZOOKEEPER_PORT &
 
 	    echo $! > $ODENOS_TMP/odenos_${PROC_NAME}.pid

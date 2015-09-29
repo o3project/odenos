@@ -85,6 +85,7 @@ public final class Odenos {
   private CommandParser parser = new CommandParser();
   private int restport;
   private String restroot;
+  private int txoffset;
   private boolean monitorEnabled;
   private Collection<String> objectIds;
   private static boolean zooKeeperEmbedded = false;
@@ -106,6 +107,7 @@ public final class Odenos {
       options.addOption("S", "system_with_name", true, "start core system with specified id");
       options.addOption("o", "restport", true, "port number of RestPort");
       options.addOption("h", "restroot", true, "Directory of Rest root");
+      options.addOption("t", "txoffset", true, "base number of transaction ID to logging");
       options.addOption("m", "monitor", true, "Output message to monitor");
       options.addOption("l", "monitor_logging", true, "Output message to logger");
       options.addOption("z", "zookeeper_host", true, "ZooKeeper server host name or IP address");
@@ -172,6 +174,11 @@ public final class Odenos {
 
     public final String getRestRoot() {
       return line.hasOption("restroot") ? line.getOptionValue("restroot") : null;
+    }
+
+    public final int getTxOffset() {
+      return line.hasOption("txoffset")
+          ? Integer.parseInt(line.getOptionValue("txoffset")) : 0;
     }
 
     public final boolean getMonitor() {
@@ -243,6 +250,7 @@ public final class Odenos {
     }
     restport = parser.getRestPort();
     restroot = parser.getRestRoot();
+    txoffset = parser.getTxOffset();
     monitorEnabled = parser.getMonitor();
     objectIds = parser.getMonitorLogging();
   }
@@ -251,10 +259,6 @@ public final class Odenos {
    * Start ODENOS.
    */
   public final void run() {
-    LogMessage.initParameters();
-    String txid = LogMessage.createTxid(LogMessage.TXID_OFFSET);
-    LogMessage.setSavedTxid(txid);
-
     try {
       EnumSet<MODE> mode = EnumSet.noneOf(MODE.class);
       mode.add(MODE.RESEND_SUBSCRIBE_ON_RECONNECTED);
@@ -290,6 +294,10 @@ public final class Odenos {
       log.info("--  o   o |  /  |    |  \\| o   o     |  ");
       log.info("--   o-o  o-o   o--o o   o  o-o  o--o   ");
       log.info("--                                      ");
+
+      LogMessage.initParameters(txoffset);
+      String txid = LogMessage.createTxid();
+      LogMessage.setSavedTxid(txid);
 
       disp = new MessageDispatcher(config);
       disp.start();

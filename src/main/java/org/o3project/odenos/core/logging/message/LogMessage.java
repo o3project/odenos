@@ -13,10 +13,7 @@ import javax.xml.bind.DatatypeConverter;
  */
 public class LogMessage {
 
-  public static final int TXID_SYSTEMMGR_OFFSET = 1000000;
-  private static int txidSystemMgrSerial = 0;
-
-  public static final int TXID_OFFSET = 0;
+  private static int txidOffset = 0;
   private static int txidSerial = 0;
 
   private static Random rnd;
@@ -42,7 +39,8 @@ public class LogMessage {
    *
    * @param number
    */
-  public static void initParameters() {
+  public static void initParameters(int offset) {
+    txidOffset = offset;
     long now = System.currentTimeMillis();
     rnd = new Random(now);
   }
@@ -113,17 +111,11 @@ public class LogMessage {
   *
   * @param offset
   */
-  public static String createTxid(int offset) {
+  public static String createTxid() {
     String uuid = "";
 
-    int serial = 0;
-    if( offset == TXID_SYSTEMMGR_OFFSET) {
-      serial = offset + txidSystemMgrSerial;
-      txidSystemMgrSerial++;
-    } else { // TXID_OFFSET
-      serial = offset + txidSerial;
-      txidSerial++;
-    }
+    txidSerial++;
+    int serial = txidOffset + txidSerial;
 
     int ethNum = 9;
     try {

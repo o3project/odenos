@@ -865,6 +865,7 @@ public class MessageDispatcher implements Closeable, IMessageListener {
     } else {
       pk.write(getSourceDispatcherId());
     }
+
     // write delivery body.
     pk.write(request);
     byte[] message = pk.toByteArray();
@@ -943,6 +944,7 @@ public class MessageDispatcher implements Closeable, IMessageListener {
     Request request = new Request(getEventManagerId(),
         Request.Method.PUT,
         "settings/event_subscriptions/" + subscriberId,
+        LogMessage.getSavedTxid(),
         eventSubscription);
     if (!eventManagerQueue.offer(request)) {
       log.warn(LogMessage.buildLogMessage(10008, LogMessage.getSavedTxid(), "EventManager request queue is full"));

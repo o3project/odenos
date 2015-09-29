@@ -28,9 +28,10 @@ import java.io.IOException;
  */
 public class Event extends MessageBodyUnpacker {
 
-  private static final int MSG_NUM = 3;
+  private static final int MSG_NUM = 4;
   public String publisherId;
   public String eventType;
+  public String txid;
 
   /**
    * Constructor.
@@ -38,9 +39,10 @@ public class Event extends MessageBodyUnpacker {
    * @param eventType type of events.
    * @param body Contents of events.
    */
-  public Event(String publisherId, String eventType, Object body) {
+  public Event(String publisherId, String eventType, String txid, Object body) {
     this.publisherId = publisherId;
     this.eventType = eventType;
+    this.txid = txid;
     this.body = body;
   }
 
@@ -82,11 +84,28 @@ public class Event extends MessageBodyUnpacker {
     this.eventType = eventType;
   }
 
+  /**
+   * Set a transaction ID.
+   * @return txid transaction ID.
+   */
+  public String getEventTxid() {
+    return txid;
+  }
+
+  /**
+   * Returns a transaction ID..
+   * @param txid transaction ID.
+   */
+  public void setEventTxid(String txid) {
+    this.txid = txid;
+  }
+
   @Override
   public void readFrom(Unpacker unpacker) throws IOException {
     unpacker.readArrayBegin();
     publisherId = unpacker.readString();
     eventType = unpacker.readString();
+    txid      = unpacker.readString();
     bodyValue = unpacker.readValue();
     unpacker.readArrayEnd();
   }
@@ -96,6 +115,7 @@ public class Event extends MessageBodyUnpacker {
     packer.writeArrayBegin(MSG_NUM);
     packer.write(publisherId);
     packer.write(eventType);
+    packer.write(txid);
     if (bodyValue != null) {
       packer.write(bodyValue);
     } else {

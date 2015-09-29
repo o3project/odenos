@@ -52,6 +52,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class PublisherClient extends RedisClient {
 
   private static final Logger log = LogManager.getLogger(PublisherClient.class);
+  private static String txid = null;
 
   private Thread sendThread = null;
   private Thread receiveThread = null;
@@ -148,6 +149,7 @@ public class PublisherClient extends RedisClient {
   }
 
   protected void send() {
+    txid = LogMessage.getSavedTxid();
     sendThread = new Thread(new SendThread(), "PublisherClient-send");
     sendThread.setPriority(Thread.MAX_PRIORITY - 2);
     sendThread.setDaemon(true);
@@ -155,6 +157,7 @@ public class PublisherClient extends RedisClient {
   }
 
   protected void receive() {
+    txid = LogMessage.getSavedTxid();
     receiveThread = new Thread(new ReceiveThread(), "PublisherClient-receive");
     receiveThread.start();
   }
@@ -162,6 +165,7 @@ public class PublisherClient extends RedisClient {
   protected class SendThread implements Runnable {
     @Override
     public void run() {
+      LogMessage.setSavedTxid(txid);
       while (true) {
         int count = publisherQueue.size();
         if (count <= 1) {
@@ -194,6 +198,8 @@ public class PublisherClient extends RedisClient {
   private class ReceiveThread implements Runnable {
     @Override
     public void run() {
+      LogMessage.setSavedTxid(txid);
+
       Object object;
       while (true) {
         try {

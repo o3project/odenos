@@ -187,15 +187,17 @@ public class RemoteObject {
    *            method for the path
    * @param path
    *            path of the RemoteObject
+   * @param txid
+   *            transaction ID
    * @param body
    *            requested data
    * @return Future object to obtain the response of the request
    * @throws Exception if an error occurs.
    */
   protected Response requestSync(String objectId, Request.Method method,
-      String path, Object body) throws Exception {
+      String path, String txid, Object body) throws Exception {
     return messageDispatcher.requestSync(new Request(objectId, method,
-        path, body), this.getObjectId());
+        path, txid,  body), this.getObjectId());
   }
 
   /**
@@ -207,14 +209,16 @@ public class RemoteObject {
    *            method for the path
    * @param path
    *            path of the RemoteObject
+   * @param txid
+   *            transaction ID
    * @param body
    *            requested data
    * @return a response of the request
    * @throws Exception if an error occurs.
    */
   public Response request(String objectId, Request.Method method,
-      String path, Object body) throws Exception {
-    return requestSync(objectId, method, path, body);
+      String path, String txid, Object body) throws Exception {
+    return requestSync(objectId, method, path, txid, body);
   }
 
   /**
@@ -228,7 +232,7 @@ public class RemoteObject {
    */
   protected void publishEvent(String eventType, Object body)
       throws Exception {
-    Event event = new Event(getObjectId(), eventType, body);
+    Event event = new Event(getObjectId(), eventType, LogMessage.getSavedTxid(), body);
     messageDispatcher.publishEventAsync(event);
   }
 

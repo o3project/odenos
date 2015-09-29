@@ -47,6 +47,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class SubscriberClient extends RedisClient {
 
   private static final Logger log = LogManager.getLogger(SubscriberClient.class);
+  private static String txid = null;
 
   private PubSubDriverImpl listener;
 
@@ -195,6 +196,7 @@ public class SubscriberClient extends RedisClient {
   }
 
   private void receive() {
+    txid = LogMessage.getSavedTxid();
     thread = new Thread(new RecieveThread(), "SubscriberClient-receive");
     thread.setPriority(Thread.MAX_PRIORITY);
     thread.setDaemon(true);
@@ -203,6 +205,7 @@ public class SubscriberClient extends RedisClient {
 
   private class RecieveThread implements Runnable {
     public void run() {
+      LogMessage.setSavedTxid(txid);
       receiveLoop();
     }
   }

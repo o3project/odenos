@@ -82,7 +82,7 @@ public class RemoteObjectIF {
    * @return response body.
    */
   public Response post(final String path, final Object body) {
-    Response resp = this.sendRequest(Request.Method.POST, path, body);
+    Response resp = this.sendRequest(Request.Method.POST, path, LogMessage.getSavedTxid(), body);
     if (resp == null || resp.isError("POST")) {
       log.error(LogMessage.buildLogMessage(50038, LogMessage.getSavedTxid(), "invalid POST:{}", resp.statusCode));
     }
@@ -96,7 +96,7 @@ public class RemoteObjectIF {
    * @return response body.
    */
   public Response put(final String path, final Object body) {
-    Response resp = this.sendRequest(Request.Method.PUT, path, body);
+    Response resp = this.sendRequest(Request.Method.PUT, path, LogMessage.getSavedTxid(), body);
     if (resp == null || resp.isError("PUT")) {
       log.error(LogMessage.buildLogMessage(50039, LogMessage.getSavedTxid(), "PUT failed:{}", resp.statusCode));
     }
@@ -109,7 +109,7 @@ public class RemoteObjectIF {
    * @return response body.
    */
   public final Response get(final String path) {
-    Response resp = this.sendRequest(Request.Method.GET, path, null);
+    Response resp = this.sendRequest(Request.Method.GET, path, LogMessage.getSavedTxid(), null);
     if (resp.isError("GET")) {
       log.error(LogMessage.buildLogMessage(50040, LogMessage.getSavedTxid(), "GET failed:{}", resp.statusCode));
     }
@@ -127,15 +127,15 @@ public class RemoteObjectIF {
    * @return response body.
    */
   public final Response delete(final String path, final Object body) {
-    Response resp = this.sendRequest(Request.Method.DELETE, path, body);
+    Response resp = this.sendRequest(Request.Method.DELETE, path, LogMessage.getSavedTxid(), body);
     if (resp.isError("DELETE")) {
       log.error(LogMessage.buildLogMessage(50041, LogMessage.getSavedTxid(), "DELETE failed:{}", resp.statusCode));
     }
     return resp;
   }
 
-  private Response sendRequest(final Request.Method method, final String path, final Object body) {
-    Request req = new Request(this.id(), method, path, body);
+  private Response sendRequest(final Request.Method method, final String path, final String txid, final Object body) {
+    Request req = new Request(this.id(), method, path, txid, body);
     try {
       return this.dispatcher().requestSync(req, sourceObjectId);
     } catch (Exception e) {

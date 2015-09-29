@@ -28,11 +28,12 @@ import java.io.IOException;
  */
 public class Request extends MessageBodyUnpacker {
 
-  private static final int MSG_NUM = 4;
+  private static final int MSG_NUM = 5;
 
   public String objectId;
   public Method method;
   public String path;
+  public String txid;
 
   public enum Method {
     GET, PUT, POST, DELETE
@@ -51,14 +52,25 @@ public class Request extends MessageBodyUnpacker {
    * @param objectId object ID.
    * @param method a method.
    * @param path a path.
+   * @param txid transaction ID.
    * @param body contents.
    */
-  public Request(String objectId, Method method, String path, Object body) {
+  public Request(String objectId, Method method, String path, String txid, Object body) {
     this.objectId = objectId;
     this.method = method;
     this.path = path;
+    this.txid = txid;
     this.body = body;
   }
+
+  /**
+   * Set txid in request object.
+   * @param txid transaction ID.
+   */
+  public void setRequestTxid(String txid) {
+    this.txid = txid;
+  }
+
 
   @Override
   public void readFrom(Unpacker unpacker) throws IOException {
@@ -66,6 +78,7 @@ public class Request extends MessageBodyUnpacker {
     objectId = unpacker.readString();
     method = Method.valueOf(unpacker.readString());
     path = unpacker.readString();
+    txid = unpacker.readString();
     bodyValue = unpacker.readValue();
     unpacker.readArrayEnd();
   }
@@ -76,6 +89,7 @@ public class Request extends MessageBodyUnpacker {
     packer.write(objectId);
     packer.write(method.name());
     packer.write(path);
+    packer.write(txid);
     if (bodyValue != null) {
       packer.write(bodyValue);
     } else {

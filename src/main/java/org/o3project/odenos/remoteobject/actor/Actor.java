@@ -92,6 +92,8 @@ public class Actor implements Closeable {
 
   private static volatile Actor actor = null;
 
+  private static String txid = null;
+
   /**
    * Adjust these parameters to gain the best performance for your
    * environment.
@@ -163,16 +165,21 @@ public class Actor implements Closeable {
               head.via.getSourceDispatcherId(), path);
     }
 
+    txid = LogMessage.getSavedTxid();
+
     // Picks up a worker thread and assigns it to RemoteObject.
     threadPoolExecutor.execute(new Runnable() {
       @Override
       public void run() {
+        LogMessage.setSavedTxid(txid);
+
         Queue<Mail> mailbox = localObject.getMailbox();
         Mail mail = mailbox.poll();
         if (mail != null) {
           // synchronized with MessageDispatcher#requestSync().
           synchronized (localObject) {
             if (mail.request != null) {
+              txid = mail.request.txid;
               Response response = localObject.dispatchRequest(mail.request);
               try {
                 mail.via.publishResponseAsync(mail.sno, mail.from, mail.request, response);
@@ -180,6 +187,7 @@ public class Actor implements Closeable {
                 log.error(LogMessage.buildLogMessage(50035, LogMessage.getSavedTxid(), "unable to send response"), e);
               }
             } else if (mail.event != null) {
+              txid = mail.event.txid;
               localObject.dispatchEvent(mail.event);
             }
           }
