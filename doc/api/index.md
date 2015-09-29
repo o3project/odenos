@@ -24,6 +24,17 @@ You can control these components by REST-API
     * [LinkLayerizer](./LinkLayerizer.md)
     * [LearningSwitch](./LearningSwitch.md)
 
+  * Table of Typical Status Code
+    * 200  -- OK
+    * 201  -- Created
+    * 204  -- No Content  (DELETE)
+    * 400  -- Bad Request
+    * 403  -- Forbidden
+    * 404  -- Not Found
+    * 409  -- Conflict
+      - **If encounterd this error, repeat again from GET.**
+    * 500  -- Internal Server Error
+
 ----
 ### Java APIs
 
