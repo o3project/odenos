@@ -166,7 +166,7 @@ public class FederatorTest {
      * setting
      */
     Request request = new Request("ObjectId", Method.GET,
-        "settings/boundaries",
+        "settings/boundaries", "txid",
         new Object());
 
     /*

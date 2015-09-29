@@ -145,7 +145,7 @@ public class RemoteTransactionsTest {
   @Test
   public final void testSignalResponse() throws Exception {
     if (!skip) {
-      Request request = new Request("object1", Request.Method.GET, "/test", null);
+      Request request = new Request("object1", Request.Method.GET, "/test", "txid", null);
       Response mockResponse = Mockito.mock(Response.class);
       ConcurrentHashMap<Integer, SynchronousQueue<Response>> responseMap =
           (ConcurrentHashMap<Integer, SynchronousQueue<Response>>) Whitebox
@@ -170,7 +170,7 @@ public class RemoteTransactionsTest {
   @Test
   public final void testSignalResponseWithInitialTimeoutException() throws Exception {
     if (!skip) {
-      Request request = new Request("object1", Request.Method.GET, "/test", null);
+      Request request = new Request("object1", Request.Method.GET, "/test", "txid", null);
       Response mockResponse = Mockito.mock(Response.class);
       @SuppressWarnings("unchecked")
       ConcurrentHashMap<Integer, SynchronousQueue<Response>> responseMap =
@@ -202,7 +202,7 @@ public class RemoteTransactionsTest {
   //@Test(expected = TimeoutException.class)
   public final void testSignalResponseWithSecondTimeoutException() throws Exception {
     if (!skip) {
-      Request request = new Request("object1", Request.Method.GET, "/test", null);
+      Request request = new Request("object1", Request.Method.GET, "/test", "txid", null);
       MessageDispatcher disp = Mockito.mock(MessageDispatcher.class);
       IPubSubDriver checker = Mockito.mock(IPubSubDriver.class);
       Mockito.when(checker.channelExist(anyString())).thenReturn(true);

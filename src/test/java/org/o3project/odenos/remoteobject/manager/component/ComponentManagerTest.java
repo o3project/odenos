@@ -115,10 +115,12 @@ public class ComponentManagerTest {
     String destId = "componentXXX";
     Request.Method method = Request.Method.GET;
     String path = "component_types";
+    String txid = "txid";
     Object body = null;
     Request request = new Request(destId,
         method,
         path,
+        txid, 
         body);
 
     Response result = target.onRequest(request);
@@ -136,10 +138,12 @@ public class ComponentManagerTest {
     String destId = "componentXXX";
     Request.Method method = Request.Method.PUT;
     String path = "components/aaa";
+    String txid = "txid";
     Object body = "aaa";
     Request request = new Request(destId,
         method,
         path,
+        txid, 
         body);
 
     Response result = target.onRequest(request);
@@ -165,7 +169,7 @@ public class ComponentManagerTest {
             prev,
             curr);
     String type = ComponentManagerChanged.TYPE;
-    Event event = new Event(objectId, type, msg);
+    Event event = new Event(objectId, type, "txid", msg);
     target = PowerMockito.spy(new ComponentManager(objectId, dispatcher));
 
     target.onEvent(event);
@@ -192,7 +196,7 @@ public class ComponentManagerTest {
             prev,
             curr);
     String type = ComponentManagerChanged.TYPE;
-    Event event = new Event(objectId, type, msg);
+    Event event = new Event(objectId, type, "txid", msg);
     target = PowerMockito.spy(new ComponentManager(objectId, dispatcher));
 
     target.onEvent(event);
@@ -218,7 +222,7 @@ public class ComponentManagerTest {
         prev,
         curr);
     String type = ComponentChanged.TYPE;
-    Event event = new Event(objectId, type, msg);
+    Event event = new Event(objectId, type, "txid", msg);
 
     target.onEvent(event);
   }
@@ -241,7 +245,7 @@ public class ComponentManagerTest {
             prev,
             curr);
     String type = ComponentManagerChanged.TYPE;
-    Event event = new Event(objectId, type, msg);
+    Event event = new Event(objectId, type, "txid", msg);
     target = PowerMockito.spy(new ComponentManager(objectId, dispatcher));
 
     PowerMockito.doThrow(new Exception()).when(target,
@@ -601,20 +605,20 @@ public class ComponentManagerTest {
             "createParser");
 
     Request req = new Request(objectId, Request.Method.GET,
-        "component_types", null);
+        "component_types", "txid", null);
     assertThat(result.parse(req), is(notNullValue()));
-    req = new Request(objectId, Request.Method.GET, "components", null);
+    req = new Request(objectId, Request.Method.GET, "components", "txid", null);
     assertThat(result.parse(req), is(notNullValue()));
     req = new Request(objectId, Request.Method.GET, "components/<comp_id>",
-        null);
+        "txid", null);
     assertThat(result.parse(req), is(notNullValue()));
-    req = new Request(objectId, Request.Method.PUT, "components/<comp_id>", null);
+    req = new Request(objectId, Request.Method.PUT, "components/<comp_id>", "txid", null);
     assertThat(result.parse(req), is(notNullValue()));
     req = new Request(objectId, Request.Method.DELETE,
-        "components/<comp_id>", null);
+        "components/<comp_id>", "txid", null);
     assertThat(result.parse(req), is(notNullValue()));
     req = new Request(objectId, Request.Method.PUT, "components/<comp_id>",
-        null);
+        "txid", null);
     assertThat(result.parse(req), is(notNullValue()));
   }
 

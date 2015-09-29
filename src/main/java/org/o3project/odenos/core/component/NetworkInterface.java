@@ -1254,7 +1254,7 @@ public class NetworkInterface {
     log.debug(">>  [networkId : '{}']", this.networkId);
 
     try {
-      Response resp = sendRequest(nwcId, Request.Method.DELETE, LogMessage.getSavedTxid(), path,
+      Response resp = sendRequest(nwcId, Request.Method.DELETE, path, LogMessage.getSavedTxid(),
           null);
       if (resp.isError("DELETE")) {
         log.warn(LogMessage.buildLogMessage(50067, LogMessage.getSavedTxid(), "invalid DELETE({}) to {}: '{}' {}",

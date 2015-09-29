@@ -88,7 +88,7 @@ public class RequestParserTest {
     map.put("testKey", "testVal");
     RequestParser<String>.ParsedRequest parsed =
         target.new ParsedRequest(new Request("testID", Method.GET,
-            "testPath", "testBody"),
+            "testPath", "txid", "testBody"),
             "testResult", map, "testQuery");
 
     Request request = Whitebox.getInternalState(parsed, "original");
@@ -124,7 +124,7 @@ public class RequestParserTest {
     map.put("testKey", "testVal");
     RequestParser<String>.ParsedRequest parsed =
         target.new ParsedRequest(new Request("testID", Method.GET,
-            "testPath", "testBody"),
+            "testPath", "txid", "testBody"),
             "testResult", map, "testQuery");
 
     assertThat(parsed.getRequest().objectId, is("testID"));
@@ -145,11 +145,11 @@ public class RequestParserTest {
     map.put("testKey", "testVal");
     RequestParser<String>.ParsedRequest parsed =
         target.new ParsedRequest(new Request("testID", Method.GET,
-            "testPath", "testBody"),
+            "testPath", "txid", "testBody"),
             "testResult", map, "testQuery");
 
     parsed.setRequest(new Request("testID2", Method.PUT, "testPath2",
-        "testBody2"));
+        "txid", "testBody2"));
 
     assertThat(parsed.getRequest().objectId, is("testID2"));
     assertThat(parsed.getRequest().method, is(Method.PUT));
@@ -169,7 +169,7 @@ public class RequestParserTest {
     map.put("testKey", "testVal");
     RequestParser<String>.ParsedRequest parsed =
         target.new ParsedRequest(new Request("testID", Method.GET,
-            "testPath", "testBody"),
+            "testPath", "txid", "testBody"),
             "testResult", map, "testQuery");
 
     assertThat(parsed.getResult(), is("testResult"));
@@ -186,7 +186,7 @@ public class RequestParserTest {
     map.put("testKey", "testVal");
     RequestParser<String>.ParsedRequest parsed =
         target.new ParsedRequest(new Request("testID", Method.GET,
-            "testPath", "testBody"),
+            "testPath", "txid", "testBody"),
             "testResult", map, "testQuery");
 
     assertThat(parsed.getParam("testKey"), is("testVal"));
@@ -203,7 +203,7 @@ public class RequestParserTest {
     map.put("testKey", "testVal");
     RequestParser<String>.ParsedRequest parsed =
         target.new ParsedRequest(new Request("testID", Method.GET,
-            "testPath", "testBody"),
+            "testPath", "txid", "testBody"),
             "testResult", map, "testQuery");
 
     assertNull(parsed.getParam("noKey"));
@@ -220,7 +220,7 @@ public class RequestParserTest {
     map.put("testKey", "testVal");
     RequestParser<String>.ParsedRequest parsed =
         target.new ParsedRequest(new Request("testID", Method.GET,
-            "testPath", "testBody"),
+            "testPath", "txid", "testBody"),
             "testResult", map, "testQuery");
     parsed.setParam("testKey2", "testVal2");
 
@@ -238,7 +238,7 @@ public class RequestParserTest {
     map.put("testKey", "testVal");
     RequestParser<String>.ParsedRequest parsed =
         target.new ParsedRequest(new Request("testID", Method.GET,
-            "testPath", "testBody"),
+            "testPath", "txid", "testBody"),
             "testResult", map, "testQuery");
     parsed.setParam("testKey", "testVal2");
 
@@ -256,7 +256,7 @@ public class RequestParserTest {
     map.put("testKey", "testVal");
     RequestParser<String>.ParsedRequest parsed =
         target.new ParsedRequest(new Request("testID", Method.GET,
-            "testPath", "testBody"),
+            "testPath", "txid", "testBody"),
             "testResult", map, "testQuery");
     Map<String, String> params = parsed.getParams();
 
@@ -276,7 +276,7 @@ public class RequestParserTest {
     map.put("testKey", "testVal");
     RequestParser<String>.ParsedRequest parsed =
         target.new ParsedRequest(new Request("testID", Method.GET,
-            "testPath", "testBody"),
+            "testPath", "txid", "testBody"),
             "testResult", map, "testQuery");
 
     assertThat(parsed.getQueriesString(), is("testQuery"));
@@ -292,7 +292,7 @@ public class RequestParserTest {
     map.put("testKey", "testVal");
     RequestParser<String>.ParsedRequest parsed =
         target.new ParsedRequest(new Request("testID", Method.GET,
-            "testPath", "testBody"),
+            "testPath", "txid", "testBody"),
             "testResult", map, "testQuery");
 
     assertTrue(parsed.hasQuery());
@@ -308,7 +308,7 @@ public class RequestParserTest {
     map.put("testKey", "testVal");
     RequestParser<String>.ParsedRequest parsed =
         target.new ParsedRequest(new Request("testID", Method.GET,
-            "testPath", "testBody"),
+            "testPath", "txid", "testBody"),
             "testResult", map, "");
 
     assertTrue(parsed.hasQuery());
@@ -324,7 +324,7 @@ public class RequestParserTest {
     map.put("testKey", "testVal");
     RequestParser<String>.ParsedRequest parsed =
         target.new ParsedRequest(new Request("testID", Method.GET,
-            "testPath", "testBody"),
+            "testPath", "txid", "testBody"),
             "testResult", map, null);
 
     assertFalse(parsed.hasQuery());
@@ -402,7 +402,7 @@ public class RequestParserTest {
     target.addRule(Method.GET, "path/to/<param>", "result");
     RequestParser<String>.ParsedRequest result =
         target.parse(new Request("testID", Method.GET, "path/to/abc",
-            "testBody"));
+            "txid", "testBody"));
 
     assertThat(result, is(notNullValue()));
     assertThat(result.getParam("param"), is("abc"));
@@ -424,7 +424,7 @@ public class RequestParserTest {
     target.addRule(Method.GET, "path/to/<param>", "result");
     RequestParser<String>.ParsedRequest result =
         target.parse(new Request("testID", Method.GET,
-            "path/to/abc?q=v", "testBody"));
+            "path/to/abc?q=v", "txid", "testBody"));
 
     assertThat(result, is(notNullValue()));
     assertThat(result.getParam("param"), is("abc"));
@@ -446,7 +446,7 @@ public class RequestParserTest {
     target.addRule(Method.GET, "path/to/<param>", "result");
     RequestParser<String>.ParsedRequest result =
         target.parse(new Request("testID", Method.GET,
-            "path/to/abc?q=v?q2=v2", "testBody"));
+            "path/to/abc?q=v?q2=v2", "txid", "testBody"));
 
     assertNull(result);
   }
@@ -463,7 +463,7 @@ public class RequestParserTest {
     target.addRule(Method.GET, "path/to/<param>", "result");
     RequestParser<String>.ParsedRequest result =
         target.parse(new Request("testID", Method.DELETE,
-            "path/to/abc", "testBody"));
+            "path/to/abc", "txid", "testBody"));
 
     assertNull(result);
   }

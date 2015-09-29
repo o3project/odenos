@@ -67,7 +67,7 @@ public class RequestTest {
   public void setUp() throws Exception {
     body = Mockito.mock(Object.class);
     target = Mockito.spy(new Request("objectId", Request.Method.GET,
-        "path", body));
+        "path", "txid", body));
   }
 
   /**
@@ -86,11 +86,12 @@ public class RequestTest {
   public final void testRequestStringMethodStringObject() {
     body = Mockito.mock(Object.class);
     target = Mockito.spy(new Request("objectId", Request.Method.GET,
-        "path", body));
+        "path", "txid", body));
 
     assertThat(target.objectId, is("objectId"));
     assertThat(target.method, is(Request.Method.GET));
     assertThat(target.path, is("path"));
+    assertThat(target.txid, is("txid"));
     assertThat(target.body, is(body));
 
   }
@@ -106,6 +107,7 @@ public class RequestTest {
     assertThat(target.objectId, is(nullValue()));
     assertThat(target.method, is(nullValue()));
     assertThat(target.path, is(nullValue()));
+    assertThat(target.txid, is(nullValue()));
     assertThat(target.body, is(nullValue()));
   }
 
@@ -122,7 +124,7 @@ public class RequestTest {
     target.readFrom(unpacker);
 
     verify(unpacker).readArrayBegin();
-    verify(unpacker, times(3)).readString();
+    verify(unpacker, times(4)).readString();
     verify(unpacker).readValue();
     verify(unpacker).readArrayEnd();
 
@@ -155,10 +157,11 @@ public class RequestTest {
 
     target.writeTo(packer);
 
-    verify(packer).writeArrayBegin(4);
+    verify(packer).writeArrayBegin(5);
     verify(packer).write("objectId");
     verify(packer).write("GET");
     verify(packer).write("path");
+    verify(packer).write("txid");
     verify(packer).write(body);
     verify(packer).writeArrayEnd();
 
@@ -176,10 +179,11 @@ public class RequestTest {
 
     target.writeTo(packer);
 
-    verify(packer).writeArrayBegin(4);
+    verify(packer).writeArrayBegin(5);
     verify(packer).write("objectId");
     verify(packer).write("GET");
     verify(packer).write("path");
+    verify(packer).write("txid");
     verify(packer).write(target.bodyValue);
     verify(packer).writeArrayEnd();
 
@@ -209,7 +213,7 @@ public class RequestTest {
     /*
      * setting
      */
-    target = new Request("ObjectId", Method.GET, "path", "body");
+    target = new Request("ObjectId", Method.GET, "path", "txid", "body");
 
     /*
      * test

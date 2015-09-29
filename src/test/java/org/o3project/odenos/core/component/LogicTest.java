@@ -254,7 +254,7 @@ public class LogicTest {
     doNothing().when(target).onNodeAdded(eq(publisherId),
         (Node) anyObject());
 
-    Event event = Mockito.spy(new Event(publisherId, eventType, body));
+    Event event = Mockito.spy(new Event(publisherId, eventType, "txid", body));
     doReturn(null).when(event).getBody(NodeChanged.class);
 
     /*

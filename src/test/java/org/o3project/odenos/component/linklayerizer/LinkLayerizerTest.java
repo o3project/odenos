@@ -1091,7 +1091,7 @@ public class LinkLayerizerTest {
      * setting
      */
     Request request = new Request("ObjectId", Method.GET,
-        "settings/boundaries",
+        "settings/boundaries", "txid",
         new Object());
 
     /*

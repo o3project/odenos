@@ -128,22 +128,22 @@ public class EventManagerTest {
     Request req = new Request(OBJECT_ID,
         Request.Method.PUT,
         "settings/event_subscriptions/<subscriber_id>",
-        null);
+        "txid", null);
     assertThat(result.parse(req), is(notNullValue()));
     req = new Request(OBJECT_ID,
         Request.Method.GET,
         "settings/event_subscriptions",
-        null);
+        "txid", null);
     assertThat(result.parse(req), is(notNullValue()));
     req = new Request(OBJECT_ID,
         Request.Method.GET,
         "settings/event_subscriptions/<subscriber_id>",
-        null);
+        "txid", null);
     assertThat(result.parse(req), is(notNullValue()));
     req = new Request(OBJECT_ID,
         Request.Method.GET,
         "settings/event_subscription",
-        null);
+        "txid", null);
     assertThat(result.parse(req), is(nullValue()));
   }
 
@@ -159,7 +159,7 @@ public class EventManagerTest {
     Request req = new Request(OBJECT_ID,
         Request.Method.PUT,
         "settings/event_subscriptions/subscriber_id=SubscriberId",
-        evtSubscription);
+        "txid", evtSubscription);
     Response dummyResp = new Response(Response.OK,
         evtSubscription);
     PowerMockito.doReturn(dummyResp).when(target,
@@ -184,7 +184,7 @@ public class EventManagerTest {
     Request req = new Request(OBJECT_ID,
         Request.Method.PUT,
         "settings/event_subscription/subscriber_id=SubscriberId",
-        evtSubscription);
+        "txid", evtSubscription);
 
     Response resp = target.onRequest(req);
 
@@ -213,7 +213,7 @@ public class EventManagerTest {
     Request req = new Request(OBJECT_ID,
         Request.Method.PUT,
         "settings/event_subscriptions/subscriber_id=SubscriberId",
-        evtSubscription);
+        "txid", evtSubscription);
 
     Response resp = target.onRequest(req);
 
@@ -232,7 +232,7 @@ public class EventManagerTest {
     Request req = new Request(OBJECT_ID,
         Request.Method.GET,
         "settings/event_subscriptions/subscriber_id",
-        evtSubscription);
+        "txid", evtSubscription);
     PowerMockito.doThrow(new Exception()).when(target,
         "getSubscription",
         "subscriber_id");

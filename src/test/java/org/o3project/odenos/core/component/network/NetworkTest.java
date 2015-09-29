@@ -160,7 +160,7 @@ public class NetworkTest {
     Whitebox.invokeMethod(target, "createParser");
 
     Request request = new Request("ObjectId", Request.Method.GET,
-        "settings/verbose_event/port",
+        "settings/verbose_event/port", "txid", 
         ValueFactory.createRawValue("body"));
 
     /*
@@ -184,7 +184,7 @@ public class NetworkTest {
   public void testOnRequestWithNullPath() {
 
     Request request = Mockito.spy(new Request("objectId",
-        Request.Method.GET, "", null));
+        Request.Method.GET, "", "txid", null));
 
     Response result = target.onRequest(request);
 
@@ -202,7 +202,7 @@ public class NetworkTest {
 
     Request request =
         Mockito.spy(new Request("objectId", Request.Method.GET, "/",
-            new Object()));
+            "txid", new Object()));
 
     Response result = target.onRequest(request);
 

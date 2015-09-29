@@ -134,7 +134,7 @@ public class SlicerTest {
      * setting
      */
     Request request = new Request("ObjectId", Method.GET,
-        "settings/slice_condition_table",
+        "settings/slice_condition_table", "txid",
         new Object());
 
     /*

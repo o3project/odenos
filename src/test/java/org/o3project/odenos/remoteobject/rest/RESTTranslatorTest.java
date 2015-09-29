@@ -523,7 +523,7 @@ public class RESTTranslatorTest {
      * test
      */
     Event event =
-        new Event("PublisherId", "EventType",
+        new Event("PublisherId", "EventType", "txid", 
             ValueFactory.createRawValue("aEventBody"));
     target.onEvent(event);
 
@@ -560,7 +560,7 @@ public class RESTTranslatorTest {
     Whitebox.setInternalState(target, "eventSubscription",
         eventSubscription);
 
-    Event event = new Event("PublisherId", "EventType", new Object());
+    Event event = new Event("PublisherId", "EventType", "txid", new Object());
 
     /*
      * test

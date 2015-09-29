@@ -286,7 +286,7 @@ public class RestServletTest {
     settingOdenosResponse.statusCode = Response.OK;
     doReturn(settingOdenosResponse).when(translator).request(
         eq("ObjectId"),
-        eq(Request.Method.POST), eq("Path/c"), anyObject());
+        eq(Request.Method.POST), eq("Path/c"), anyString(), anyObject());
 
     PrintWriter printWriter = Mockito.mock(PrintWriter.class);
     doReturn(printWriter).when(response).getWriter();
@@ -303,7 +303,7 @@ public class RestServletTest {
     verify(response).setStatus(Response.OK);
 
     verify(translator).request(eq("ObjectId"), eq(Request.Method.POST),
-        eq("Path/c"),
+        eq("Path/c"), anyString(), 
         anyObject());
 
   }

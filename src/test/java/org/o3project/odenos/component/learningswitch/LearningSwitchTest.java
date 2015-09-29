@@ -612,7 +612,7 @@ public class LearningSwitchTest {
     Method method = Request.Method.GET;
     Object body = new Object();
     Request request = new Request("ObjectId", method,
-        "settings/default_idle_timer", body);
+        "settings/default_idle_timer", "txid", body);
 
     /*
      * test

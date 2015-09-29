@@ -222,7 +222,7 @@ public class NetworkInterfaceTest {
         new Object()));
     PowerMockito.doReturn(mockResponse).when(target, "sendRequest",
         anyString(), anyObject(),
-        anyString(), anyObject());
+        anyString(), anyString(), anyObject());
     doReturn(new Topology()).when(mockResponse).getBody(Topology.class);
 
     /*
@@ -335,7 +335,7 @@ public class NetworkInterfaceTest {
         new Object()));
     PowerMockito.doReturn(mockResponse).when(target, "sendRequest",
         anyString(), anyObject(),
-        anyString(),
+        anyString(), anyString(),
         anyObject());
     doReturn(new HashMap<String, Node>()).when(mockResponse).getBodyAsMap(
         Node.class);
@@ -377,7 +377,7 @@ public class NetworkInterfaceTest {
         new Object()));
     PowerMockito.doReturn(mockResponse).when(target, "sendRequest",
         anyString(), anyObject(),
-        anyString(),
+        anyString(), anyString(),
         anyObject());
     doReturn(new Node()).when(mockResponse).getBody(Node.class);
 
@@ -665,7 +665,7 @@ public class NetworkInterfaceTest {
         new Object()));
     PowerMockito.doReturn(mockResponse).when(target, "sendRequest",
         anyString(), anyObject(),
-        anyString(),
+        anyString(), anyString(),
         anyObject());
     doReturn(new Port()).when(mockResponse).getBody(Port.class);
 
@@ -911,7 +911,7 @@ public class NetworkInterfaceTest {
         new Object()));
     PowerMockito.doReturn(mockResponse).when(target, "sendRequest",
         anyString(), anyObject(),
-        anyString(),
+        anyString(), anyString(),
         anyObject());
     doReturn(new HashMap<String, Link>()).when(mockResponse).getBodyAsMap(
         Link.class);
@@ -953,7 +953,7 @@ public class NetworkInterfaceTest {
         new Object()));
     PowerMockito.doReturn(mockResponse).when(target, "sendRequest",
         anyString(), anyObject(),
-        anyString(),
+        anyString(), anyString(),
         anyObject());
     doReturn(new Link()).when(mockResponse).getBody(Link.class);
 
@@ -1098,7 +1098,7 @@ public class NetworkInterfaceTest {
         new FlowSet()));
     PowerMockito.doReturn(mockResponse).when(target, "sendRequest",
         anyString(), anyObject(),
-        anyString(),
+        anyString(), anyString(),
         anyObject());
     doReturn(new FlowSet()).when(mockResponse).getBody(FlowSet.class);
 
@@ -1144,6 +1144,7 @@ public class NetworkInterfaceTest {
         anyString(),
         eq(Request.Method.GET),
         anyString(),
+        anyString(),
         eq(null));
 
     /*
@@ -1184,6 +1185,7 @@ public class NetworkInterfaceTest {
     PowerMockito.doReturn(mockResponse).when(target, "sendRequest",
         anyString(),
         eq(Request.Method.GET),
+        anyString(),
         anyString(),
         eq(null));
 
@@ -1233,7 +1235,7 @@ public class NetworkInterfaceTest {
     PowerMockito.doReturn(mockResponse).when(target, "sendRequest",
         anyString(),
         eq(Request.Method.PUT),
-        eq("flows/FlowId"), anyObject());
+        eq("flows/FlowId"), anyString(), anyObject());
 
     /*
      * test
@@ -1272,7 +1274,7 @@ public class NetworkInterfaceTest {
     PowerMockito.doReturn(settingResponse).when(target, "sendRequest",
         "NetworkId",
         Request.Method.DELETE,
-        "flows/FlowId", settingFlow);
+        "flows/FlowId", "", settingFlow);
 
     /*
      * test
@@ -1284,7 +1286,7 @@ public class NetworkInterfaceTest {
      * check
      */
     PowerMockito.verifyPrivate(target).invoke("sendRequest", "NetworkId",
-        Request.Method.DELETE, "flows/FlowId",
+        Request.Method.DELETE, "flows/FlowId", "",  
         settingFlow);
 
     assertThat(result.statusCode, is(Response.OK));
@@ -1313,7 +1315,7 @@ public class NetworkInterfaceTest {
     Response mockResponse = Mockito.mock(Response.class);
     PowerMockito.doReturn(mockResponse).when(target, "sendRequest",
         anyString(), anyObject(),
-        anyString(),
+        anyString(), anyString(),
         anyObject());
     doReturn(new PacketStatus()).when(mockResponse).getBody(
         PacketStatus.class);
@@ -1552,7 +1554,7 @@ public class NetworkInterfaceTest {
         .writeValue()));
     PowerMockito.doReturn(mockResponse).when(target, "sendRequest",
         anyString(), anyObject(),
-        anyString(), anyObject());
+        anyString(), anyString(), anyObject());
     doReturn(new InPacket()).when(mockResponse).getBody(InPacket.class);
 
     /*
@@ -1803,7 +1805,7 @@ public class NetworkInterfaceTest {
         .writeValue()));
     PowerMockito.doReturn(mockResponse).when(target, "sendRequest",
         anyString(), anyObject(),
-        anyString(), anyObject());
+        anyString(), anyString(), anyObject());
     doReturn(new OutPacket()).when(mockResponse).getBody(OutPacket.class);
 
     /*
@@ -2126,7 +2128,7 @@ public class NetworkInterfaceTest {
     PowerMockito.doReturn(new Response(Response.OK, "Body")).when(target,
         "sendRequest",
         "NetworkId",
-        Request.Method.POST, "Path", "Body");
+        Request.Method.POST, "Path", "", "Body");
 
     /*
      * test
@@ -2140,7 +2142,7 @@ public class NetworkInterfaceTest {
      */
     PowerMockito.verifyPrivate(target).invoke("sendRequest", "NetworkId",
         Request.Method.POST,
-        "Path", "Body");
+        "Path", "", "Body");
 
     assertThat(result.statusCode, is(Response.OK));
 
@@ -2161,7 +2163,7 @@ public class NetworkInterfaceTest {
      */
     PowerMockito.doThrow(new RuntimeException()).when(target,
         "sendRequest", "NetworkId",
-        Request.Method.POST, "Path", "Body");
+        Request.Method.POST, "Path", "", "Body");
 
     /*
      * test
@@ -2175,7 +2177,7 @@ public class NetworkInterfaceTest {
      */
     PowerMockito.verifyPrivate(target).invoke("sendRequest", "NetworkId",
         Request.Method.POST,
-        "Path", "Body");
+        "Path", "", "Body");
 
     assertThat(result.statusCode, is(Response.INTERNAL_SERVER_ERROR));
 
@@ -2197,7 +2199,7 @@ public class NetworkInterfaceTest {
     PowerMockito.doReturn(new Response(Response.OK, "Body")).when(target,
         "sendRequest",
         "NetworkId",
-        Request.Method.PUT, "Path", "Body");
+        Request.Method.PUT, "Path", "", "Body");
 
     /*
      * test
@@ -2211,7 +2213,7 @@ public class NetworkInterfaceTest {
      */
     PowerMockito.verifyPrivate(target).invoke("sendRequest", "NetworkId",
         Request.Method.PUT,
-        "Path", "Body");
+        "Path", "", "Body");
 
     assertThat(result.statusCode, is(Response.OK));
   }
@@ -2231,21 +2233,21 @@ public class NetworkInterfaceTest {
      */
     PowerMockito.doThrow(new RuntimeException()).when(target,
         "sendRequest", "NetworkId",
-        Request.Method.PUT, "Path", "Body");
+        Request.Method.PUT, "Path", "", "Body");
 
     /*
      * test
      */
     Response result =
         Whitebox.invokeMethod(target, "putObjectToNetwork",
-            "NetworkId", "Path", "Body");
+        "NetworkId", "Path", "Body");
 
     /*
      * check
      */
     PowerMockito.verifyPrivate(target).invoke("sendRequest", "NetworkId",
         Request.Method.PUT,
-        "Path", "Body");
+        "Path", "", "Body");
 
     assertThat(result.statusCode, is(Response.INTERNAL_SERVER_ERROR));
   }
@@ -2266,7 +2268,7 @@ public class NetworkInterfaceTest {
     PowerMockito.doReturn(new Response(Response.OK, "Body")).when(target,
         "sendRequest",
         "NetworkId",
-        Request.Method.DELETE, "Path", null);
+        Request.Method.DELETE, "Path", "", null);
 
     /*
      * test
@@ -2278,7 +2280,7 @@ public class NetworkInterfaceTest {
      * check
      */
     PowerMockito.verifyPrivate(target).invoke("sendRequest", "NetworkId",
-        Request.Method.DELETE, "Path", null);
+        Request.Method.DELETE, "Path", "", null);
 
     assertThat(result.statusCode, is(Response.OK));
   }
@@ -2298,7 +2300,7 @@ public class NetworkInterfaceTest {
      */
     PowerMockito.doThrow(new RuntimeException()).when(target,
         "sendRequest", "NetworkId",
-        Request.Method.DELETE, "Path", null);
+        Request.Method.DELETE, "Path", "", null);
 
     /*
      * test
@@ -2310,7 +2312,7 @@ public class NetworkInterfaceTest {
      * check
      */
     PowerMockito.verifyPrivate(target).invoke("sendRequest", "NetworkId",
-        Request.Method.DELETE, "Path", null);
+        Request.Method.DELETE, "Path", "", null);
 
     assertThat(result.statusCode, is(Response.INTERNAL_SERVER_ERROR));
   }
@@ -2331,7 +2333,7 @@ public class NetworkInterfaceTest {
     PowerMockito.doReturn(new Response(Response.OK, "Body")).when(target,
         "sendRequest",
         "NetworkId",
-        Request.Method.GET, "Path", null);
+        Request.Method.GET, "Path", "", null);
 
     /*
      * test
@@ -2344,7 +2346,7 @@ public class NetworkInterfaceTest {
      */
     PowerMockito.verifyPrivate(target).invoke("sendRequest", "NetworkId",
         Request.Method.GET,
-        "Path", null);
+        "Path", "", null);
 
     assertThat(result.statusCode, is(Response.OK));
   }
@@ -2364,7 +2366,7 @@ public class NetworkInterfaceTest {
      */
     PowerMockito.doThrow(new RuntimeException()).when(target,
         "sendRequest", "NetworkId",
-        Request.Method.GET, "Path", null);
+        Request.Method.GET, "Path", "", null);
 
     /*
      * test
@@ -2377,7 +2379,7 @@ public class NetworkInterfaceTest {
      */
     PowerMockito.verifyPrivate(target).invoke("sendRequest", "NetworkId",
         Request.Method.GET,
-        "Path", null);
+        "Path", "", null);
 
     assertThat(result.statusCode, is(Response.INTERNAL_SERVER_ERROR));
   }
@@ -2406,7 +2408,7 @@ public class NetworkInterfaceTest {
     Response result =
         Whitebox.invokeMethod(target, "sendRequest", "NetworkId",
             Request.Method.GET,
-            "Path", "Body");
+            "Path", "txid", "Body");
 
     /*
      * check
