@@ -40,6 +40,7 @@ ODENOS_CONF_FILE_TMP=$ODENOS_CONF/odenos.conf.tmp
 ODENOS_LIB=$ODENOS_ROOT/lib
 ODENOS_LOG=var/log
 ODENOS_TMP=var/tmp
+REST_HOST=localhost
 REST_PORT=10080
 REST_ROOT=.
 
@@ -50,8 +51,8 @@ FILE_ODENOS_SYSTEM_PID=$ODENOS_TMP/odenos_system.pid
 SYSTEM_MANAGER_ID=systemmanager
 MANAGER=$SYSTEM_MANAGER_ID
 MANAGER_ENABLED=true
-HOST=localhost
-PORT=6379
+HOST_M=localhost
+PORT_M=6379
 HOST_B=null
 PORT_B=0
 MONITOR=false
@@ -102,10 +103,10 @@ read_config_file() {
                 unset MANAGER_ENABLED
                 ;;
             "pubsub.server.host")
-                HOST=`echo $line | awk '{print $2}'`
+                HOST_M=`echo $line | awk '{print $2}'`
                 ;;
             "pubsub.server.port")
-                PORT=`echo $line | awk '{print $2}'`
+                PORT_M=`echo $line | awk '{print $2}'`
                 ;;
             "pubsub.server.host.backup")
                 HOST_B=`echo $line | awk '{print $2}'`
@@ -113,8 +114,11 @@ read_config_file() {
             "pubsub.server.port.backup")
                 PORT_B=`echo $line | awk '{print $2}'`
                 ;;
-            "rest.port")
-                REST_PORT=`echo $line | awk '{print $2}'`
+            "rest.host")
+                REST_HOST=`echo $line | awk '{print $2}'`
+                ;;
+            "rest.root")
+                REST_ROOT=`echo $line | awk '{print $2}'`
                 ;;
             "rest.root")
                 REST_ROOT=`echo $line | awk '{print $2}'`
@@ -178,7 +182,7 @@ start_system() {
 	-Dapp.log=${ODENOS_LOG}/odenos_system.log \
 	-Dlog4j2_app.log=${ODENOS_LOG}/log4j2_odenos_system.log \
 	$ODENOS_MAIN -s -S $MANAGER -o ${REST_PORT} -h ${REST_ROOT} \
-	-i $HOST -p $PORT -I $HOST_B -P $PORT_B -t $TXOFFSET_SYSTEM \
+	-i $HOST_M -p $PORT_M -I $HOST_B -P $PORT_B -t $TXOFFSET_SYSTEM \
 	-m $MONITOR $MONITOR_LOGGING $ZOOKEEPER_HOST $ZOOKEEPER_PORT \
 	$ZOOKEEPER_EMBED &
     echo $! > $FILE_ODENOS_SYSTEM_PID
@@ -220,7 +224,7 @@ start_process() {
 		-Dapp.log=${ODENOS_LOG}/odenos_${PROC_NAME}.log \
 		-Dlog4j2_app.log=${ODENOS_LOG}/log4j2_odenos_${PROC_NAME}.log \
 		$ODENOS_MAIN -r ${PROC_NAME} -d ${PROC_DIR} \
-		-S $MANAGER -i $HOST -p $PORT -I $HOST_B -P $PORT_B -t $TXOFFSET_ROMGR1 \
+		-S $MANAGER -i $HOST_M -p $PORT_M -I $HOST_B -P $PORT_B -t $TXOFFSET_ROMGR1 \
 		-m $MONITOR $MONITOR_LOGGING $ZOOKEEPER_HOST $ZOOKEEPER_PORT &
 
 	    echo $! > $ODENOS_TMP/odenos_${PROC_NAME}.pid
@@ -231,7 +235,7 @@ start_process() {
 		LOGGING_CONF=${ODENOS_CONF}/log_python.conf \
 		APP_LOG=${ODENOS_LOG}/odenos_${PROC_NAME}.log \
 		$PYTHON ${ODENOS_LIB}/python/org/o3project/odenos/core/odenos.py \
-		-r ${PROC_NAME} -d ${PROC_DIR} -S $MANAGER -i $HOST -p $PORT -m \
+		-r ${PROC_NAME} -d ${PROC_DIR} -S $MANAGER -i $HOST_M -p $PORT_M -m \
 		MONITOR $ZOOKEEPER_HOST $ZOOKEEPER_PORT &
 
 	    echo $! > $ODENOS_TMP/odenos_${PROC_NAME}.pid
@@ -261,7 +265,7 @@ check_start() {
 	ret_val=0
 	cnt=$(( cnt + 1 ))
 	for proc in ${proc_list} ;do
-	    reply_code=`curl http://${HOST}:${REST_PORT}/systemmanager/component_managers/${proc} -w "\n%{response_code}\n" 2>/dev/null | grep '^[0-5][0-9][0-9]$'`
+	    reply_code=`curl http://${REST_HOST}:${REST_PORT}/systemmanager/component_managers/${proc} -w "\n%{response_code}\n" 2>/dev/null | grep '^[0-5][0-9][0-9]$'`
 	    case "${reply_code}" in
 	    200)
 		echo "Started Compnent Manager :: ${proc}"

@@ -341,8 +341,8 @@ public final class Odenos {
     // Let others know that the system manager has just started.
     sysmgr.zkCreatePath("/system_manager", CreateMode.PERSISTENT);
     sysmgr.zkCreatePath("/system_manager/" + systemMgrId, CreateMode.EPHEMERAL);
-    System.out.println("\nStart-up completion: " + systemMgrId);
-    System.out.println("Start-up completion: " + REST_TRANSLATOR_ID);
+    log.info("Start-up completion: {}", systemMgrId);
+    log.info("Start-up completion: {}", REST_TRANSLATOR_ID);
   }
 
   private final void runComponentManager(final String romgrId, final String dir) throws Exception {
@@ -371,7 +371,7 @@ public final class Odenos {
     romgr.zkCreatePath(RemoteObjectManager.ZK_CMPMGR_PATH, CreateMode.PERSISTENT);
     romgr.zkCreatePath(RemoteObjectManager.ZK_CMPMGR_PATH + "/" + romgrId, CreateMode.EPHEMERAL);
     romgr.zkCreatePath(RemoteObjectManager.ZK_CMP_PATH, CreateMode.PERSISTENT);
-    System.out.println("\nStart-up completion: " + romgrId);
+    log.info("Start-up completion: {}", romgrId);
   }
 
   private Set<Class<? extends RemoteObject>> findComponents(String rootOfPackages) {
