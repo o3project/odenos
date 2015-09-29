@@ -385,6 +385,7 @@ public abstract class Logic extends Component {
   // //////////////////////////////////////////////////
   @Override
   protected void onEvent(final Event event) {
+    LogMessage.setSavedTxid(event.txid);
     log.debug("onEvent : objectId = '{}'.", this.getObjectId());
 
     try {

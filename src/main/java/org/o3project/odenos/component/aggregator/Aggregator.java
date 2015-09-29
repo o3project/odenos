@@ -466,6 +466,7 @@ public class Aggregator extends Logic {
   @Override
   protected Response onRequest(
       final Request request) {
+    LogMessage.setSavedTxid(request.txid);
     log.debug("");
     log.debug("received {}", request.path);
     RequestParser<IActionCallback>.ParsedRequest parsed = parser

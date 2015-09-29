@@ -92,6 +92,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class MessageDispatcher implements Closeable, IMessageListener {
 
   private static final Logger log = LogManager.getLogger(MessageDispatcher.class);
+  private static String txid = null;
 
   protected static final byte TYPE_REQUEST = 0;
   protected static final byte TYPE_RESPONSE = 1;
@@ -452,9 +453,11 @@ public class MessageDispatcher implements Closeable, IMessageListener {
 
     // This thread feeds subscription info to EventManager
     // in an eventually-consistent manner.
+    txid = LogMessage.getSavedTxid();
     subscriptionFeeder = new Thread(new Runnable() {
       @Override
       public void run() {
+        LogMessage.setSavedTxid(txid);
         do {
           Request request = null;
           try {

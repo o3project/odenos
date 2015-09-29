@@ -116,6 +116,7 @@ public class EventManager extends RemoteObject {
 
   @Override
   protected final Response onRequest(final Request request) {
+    LogMessage.setSavedTxid(request.txid);
     log.debug("received {}", request.path);
 
     try {

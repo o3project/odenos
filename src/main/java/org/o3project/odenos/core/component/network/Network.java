@@ -185,6 +185,7 @@ public class Network extends Component {
 
   @Override
   public Response onRequest(Request request) {
+    LogMessage.setSavedTxid(request.txid);
     log.debug("");
 
     try {

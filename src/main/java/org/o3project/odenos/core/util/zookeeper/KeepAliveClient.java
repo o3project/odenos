@@ -39,6 +39,7 @@ import org.o3project.odenos.core.logging.message.LogMessage;
 public class KeepAliveClient {
 
   private static final Logger log = LogManager.getLogger(KeepAliveClient.class);
+  private static String txid = null;
 
   ZooKeeper zk = null;
   Set<String> paths = new ConcurrentSkipListSet<>();
@@ -140,10 +141,12 @@ public class KeepAliveClient {
    * @param path
    */
   public void watchPath(final String path, final String message) {
+    txid = LogMessage.getSavedTxid();
     try {
       zk.exists(path, new Watcher() {
         @Override
         public void process(WatchedEvent event) {
+          LogMessage.setSavedTxid(txid);
           String path = event.getPath();
           switch (event.getType()) {
           case NodeCreated:

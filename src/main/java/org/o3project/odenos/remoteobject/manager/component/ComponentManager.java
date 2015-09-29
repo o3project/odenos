@@ -189,6 +189,7 @@ public class ComponentManager extends RemoteObject {
 
   @Override
   protected Response onRequest(Request request) {
+    LogMessage.setSavedTxid(request.txid);
     log.debug("onRequest: {}, {}", request.method, request.path);
 
     RequestParser<IActionCallback>.ParsedRequest parsed = parser
@@ -404,6 +405,7 @@ public class ComponentManager extends RemoteObject {
 
   @Override
   protected void onEvent(Event event) {
+    LogMessage.setSavedTxid(event.txid);
     if (event.eventType.equals(
         ComponentManagerChanged.TYPE)) {
       try {

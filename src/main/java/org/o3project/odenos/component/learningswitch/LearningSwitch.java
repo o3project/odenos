@@ -386,6 +386,8 @@ public class LearningSwitch extends Logic {
     if (request == null) {
       return new Response(Response.BAD_REQUEST, "Error unknown request ");
     }
+
+    LogMessage.setSavedTxid(request.txid);
     log.debug("received {}", request.path);
     RequestParser<IActionCallback>.ParsedRequest parsed =
         parser.parse(request);

@@ -87,12 +87,11 @@ import java.util.concurrent.TimeUnit;
 public class Actor implements Closeable {
 
   private static final Logger log = LogManager.getLogger(Actor.class);
+  private static String txid = null;
 
   private static ThreadPoolExecutor threadPoolExecutor = null;
 
   private static volatile Actor actor = null;
-
-  private static String txid = null;
 
   /**
    * Adjust these parameters to gain the best performance for your

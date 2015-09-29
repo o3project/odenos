@@ -493,6 +493,7 @@ public class Federator extends Logic {
 
   @Override
   protected Response onRequest(Request request) {
+    LogMessage.setSavedTxid(request.txid);
     log.debug("received {}", request.path);
 
     try {
