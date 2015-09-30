@@ -25,7 +25,7 @@ class TestRequest < MiniTest::Test
   include Odenos::Core
   
   def setup
-    array = Array["remote_object_id", :GET, "path", "body"]
+    array = Array["remote_object_id", :GET, "path", "*", "body"]
     @target = Request.new(array)
   end
   
@@ -34,41 +34,41 @@ class TestRequest < MiniTest::Test
   end
   
   def test_initialize_with_success
-    @target = Request.new("remote_object_id", :DELETE, "path", "body")
+    @target = Request.new("remote_object_id", :DELETE, "path", "*", "body")
     assert_instance_of(Odenos::Core::Request, @target)
     assert_equal(:DELETE, @target.request_method)
   end
   
   def test_initialize_with_success_array
-    array = Array["remote_object_id", :GET, "path", "body"]
+    array = Array["remote_object_id", :GET, "path", "*", "body"]
     @target = Request.new(array)
     assert_instance_of(Odenos::Core::Request, @target)
     assert_equal(:GET, @target.request_method)
   end
 
   def test_initialize_with_success_action_string_get
-    array = Array["remote_object_id", "GET", "path", nil]
+    array = Array["remote_object_id", "GET", "path", "*", nil]
     @target = Request.new(array)
     assert_instance_of(Odenos::Core::Request, @target)
     assert_equal(:GET, @target.request_method)
   end
 
   def test_initialize_with_success_action_string_put
-    array = Array["remote_object_id", "PUT", "path", "body"]
+    array = Array["remote_object_id", "PUT", "path", "*", "body"]
     @target = Request.new(array)
     assert_instance_of(Odenos::Core::Request, @target)
     assert_equal(:PUT, @target.request_method)
   end
 
   def test_initialize_with_success_action_string_post
-    array = Array["remote_object_id", "POST", "path", "body"]
+    array = Array["remote_object_id", "POST", "path", "*", "body"]
     @target = Request.new(array)
     assert_instance_of(Odenos::Core::Request, @target)
     assert_equal(:POST, @target.request_method)
   end
 
   def test_initialize_with_success_action_string_delete
-    array = Array["remote_object_id", "DELETE", "path", nil]
+    array = Array["remote_object_id", "DELETE", "path", "*", nil]
     @target = Request.new(array)
     assert_instance_of(Odenos::Core::Request, @target)
     assert_equal(:DELETE, @target.request_method)
@@ -82,13 +82,13 @@ class TestRequest < MiniTest::Test
   def test_initialize_with_few_array
     array = Array["remote_object_id", :PUT, "path"]
     assert_raises(ArgumentError){Request.new(array)}
-    assert_raises(ArgumentError, "expect Request Array(4)"){Request.new(array)}
+    assert_raises(ArgumentError, "expect Request Array(5)"){Request.new(array)}
   end
   
   def test_initialize_with_more_array
-    array = Array["remote_object_id", "POST", "path", "body", "test"]
+    array = Array["remote_object_id", "POST", "path", "*", "body", "test"]
     assert_raises(ArgumentError){Request.new(array)}
-    assert_raises(ArgumentError, "expect Request Array(4)"){Request.new(array)}
+    assert_raises(ArgumentError, "expect Request Array(5)"){Request.new(array)}
   end
   
   def test_initialize_with_illegal_method

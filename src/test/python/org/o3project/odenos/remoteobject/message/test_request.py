@@ -32,11 +32,12 @@ class RequestTest(unittest.TestCase):
                   "latency": "10msec", "req_latency": "11msec"}
     Publisher_id = 'Id1'
     Event_type = 'flow'
+    txid = '*'
     value = {"type": Type, "version": Version,
              "flow_id": Flow_id, "owner": Owner,
              "enabled": Enabled, "priority": Priority,
              "status": Status, "attributes": Attributes}
-    Packed = ["FlowId2", Request.Method.GET, "flows/FlowId2", value]
+    Packed = ["FlowId2", Request.Method.GET, "flows/FlowId2", txid, value]
 
     flow_target = Flow(Type, Version, Flow_id, Owner,
                        Enabled, Priority, Status,
@@ -85,6 +86,8 @@ class RequestTest(unittest.TestCase):
                          Request.Method.GET)
         self.assertEqual(self.result.path,
                          "flows/FlowId2")
+        self.assertEqual(self.result.txid,
+                         self.txid)
         self.assertEqual(self.result.body,
                          self.value)
 
@@ -94,8 +97,9 @@ class RequestTest(unittest.TestCase):
                          ("FlowId1",
                           Request.Method.GET,
                           "flows/FlowId1",
+                          self.txid,
                           self.value))
-        self.assertEqual(len(self.result), 4)
+        self.assertEqual(len(self.result), 5)
 
 if __name__ == '__main__':
     unittest.main()

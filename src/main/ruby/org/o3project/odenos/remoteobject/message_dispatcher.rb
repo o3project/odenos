@@ -292,6 +292,7 @@ module Odenos
 
         request = Request.new(event_manager_id, :PUT,
                               "settings/event_subscriptions/#{event_manager_id}",
+                              "*",
                               event_subscription)
         request_sync(request)
 

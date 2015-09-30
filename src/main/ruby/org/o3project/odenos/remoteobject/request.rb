@@ -21,7 +21,8 @@ module Odenos
       array_accessor :object, :remote_object_id,      0
       array_accessor :object, :request_method, 1
       array_accessor :object, :path,           2
-      array_accessor :object, :request_body,   3
+      array_accessor :object, :txid,           3
+      array_accessor :object, :request_body,   4
 
       alias_method :body, :request_body
 
@@ -38,8 +39,8 @@ module Odenos
           unless ary.first.is_a?(Array)
             fail ArgumentError, 'expect Array'
           end
-          if ary.first.length != 4
-            fail ArgumentError, 'expect Request Array(4)'
+          if ary.first.length != 5
+            fail ArgumentError, 'expect Request Array(5)'
           end
 
           super(ary.first)
@@ -58,10 +59,10 @@ module Odenos
               fail ArgumentError, "Invalid method: #{request_method}"
             end
           end
-        when 4
+        when 5
           super(ary)
         else
-          fail ArgumentError, 'expect 1 or 4 arguments'
+          fail ArgumentError, 'expect 1 or 5 arguments'
         end
         unless remote_object_id.is_a?(String)
           fail ArgumentError, 'remote_object_id is a String'

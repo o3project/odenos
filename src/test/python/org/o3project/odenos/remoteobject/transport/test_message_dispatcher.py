@@ -372,7 +372,7 @@ class MessageDispatcherTest(unittest.TestCase):
             self.result = self.target._MessageDispatcher__pubsqueue.get()
 
             mock_request.assert_called_once_with(
-                ["object_id", "method", "path", None])
+                ["object_id", "method", "path", "*", None])
             self.assertEqual(mock_submit.call_count, 1)
 
             self.assertEqual(
@@ -466,7 +466,7 @@ class MessageDispatcherTest(unittest.TestCase):
             self.target._MessageDispatcher__redisSubscriberRunnable()
 
             mock_event.assert_called_once_with(
-                ["publisher_id", "event_type", "event_body"])
+                ["publisher_id", "event_type", "*", "event_body"])
 
     def test_redisSubscriberRunnable_except(self):
         event = Event("publisher_id", "event_type", "event_body")

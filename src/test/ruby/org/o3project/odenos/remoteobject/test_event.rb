@@ -27,7 +27,7 @@ class TestEvent < MiniTest::Test
   include Odenos::Core
   
   def setup
-    array = Array["publisher_id", "event_type", "body"]
+    array = Array["publisher_id", "event_type", "*", "body"]
     @event = Event.new(array)
     hash = {"action" => :add, "prev" => {}, "curr" => {}}
     @base = ObjectChangeEventBase.new(hash)
@@ -43,13 +43,13 @@ class TestEvent < MiniTest::Test
   end
   
   def test_event_initialize_with_success_array
-    array = Array["publisher_id", "event_type", "body"]
+    array = Array["publisher_id", "event_type", "*", "body"]
     @event = Event.new(array)
     assert_instance_of(Odenos::Core::Event, @event)
   end
   
   def test_event_initialize_with_success
-    @event = Event.new("publisher_id", "event_type", "body")
+    @event = Event.new("publisher_id", "event_type", "*", "body")
     assert_instance_of(Odenos::Core::Event, @event)
   end
   
@@ -66,19 +66,19 @@ class TestEvent < MiniTest::Test
   
   def test_event_initialize_with_few_arguments
     assert_raises(ArgumentError){Event.new("publisher_id", "body")}
-    assert_raises(ArgumentError, "expect 1 or 3 arguments"){Event.new("publisher_id", "body")}
+    assert_raises(ArgumentError, "expect 1 or 4 arguments"){Event.new("publisher_id", "body")}
   end
   
   def test_event_initialize_with_more_arguments_array
-    array = Array[200, "publisher_id", "event_type", "body"]
+    array = Array[200, "publisher_id", "event_type", "*", "body"]
     assert_raises(ArgumentError){Event.new(array)}
-    assert_raises(ArgumentError, "expect Event Array(3)"){Event.new(array)}
+    assert_raises(ArgumentError, "expect Event Array(4)"){Event.new(array)}
   end
   
   def test_event_initialize_with_more_arguments
-    array = Array[200, "publisher_id", "event_type", "body"]
-    assert_raises(ArgumentError){Event.new(200, "publisher_id", "event_type", "body")}
-    assert_raises(ArgumentError, "expect 1 or 3 arguments"){Event.new(200, "publisher_id", "event_type", "body")}
+    array = Array[200, "publisher_id", "event_type", "*", "body"]
+    assert_raises(ArgumentError){Event.new(200, "publisher_id", "event_type", "*", "body")}
+    assert_raises(ArgumentError, "expect 1 or 4 arguments"){Event.new(200, "publisher_id", "event_type", "*", "body")}
   end
   
   def test_object_change_event_base_initialize_with_success_symbol

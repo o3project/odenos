@@ -205,7 +205,7 @@ class TestComponentManager < MiniTest::Test
   end
 
   def test_on_request
-    request = Request.new("object_id", :GET, "components", nil)
+    request = Request.new("object_id", :GET, "components", "*", nil)
 
     response = @target.on_request(request)
 
@@ -354,6 +354,7 @@ class TestComponentManager < MiniTest::Test
   def test_on_event_component_manager_changed_success
     event = Event.new("systemmanager",
                       ComponentManagerChanged::TYPE,
+                      "*", 
                       {"action" => "delete",
                        "prev" => {"type" => "ComonentManager", "id" => "compmgr_python"},
                        "curr" => nil})
@@ -366,6 +367,7 @@ class TestComponentManager < MiniTest::Test
   def test_on_event_component_manager_changed_failure_invalid_message
     event = Event.new("systemmanager",
                       ComponentManagerChanged::TYPE,
+                      "*",
                       {"action" => "del",
                        "prev" => nil,
                        "curr" => nil})
@@ -378,6 +380,7 @@ class TestComponentManager < MiniTest::Test
   def test_on_event_not_component_manager_changed
     event = Event.new("systemmanager",
                       ComponentChanged::TYPE,
+                      "*",
                       {"action" => "del",
                        "prev" => nil,
                        "curr" => nil})
@@ -390,6 +393,7 @@ class TestComponentManager < MiniTest::Test
   def test_on_component_manager_changed_add
     event = Event.new("systemmanager",
                       ComponentManagerChanged::TYPE,
+                      "*",
                       {"action" => "add",
                        "prev" => nil,
                        "curr" => {"type" => "ComonentManager", "id" => "compmgr_python"}})
@@ -404,6 +408,7 @@ class TestComponentManager < MiniTest::Test
   def test_on_component_manager_changed_delete
     event = Event.new("systemmanager",
                       ComponentManagerChanged::TYPE,
+                      "*",
                       {"action" => "delete",
                        "prev" => {"type" => "ComonentManager", "id" => "compmgr_python"},
                        "curr" => nil})

@@ -261,7 +261,7 @@ class TestOpenFlowDriver < MiniTest::Test
   end
 
   def test_on_request_get_flow_types
-    request = Request.new("object_id", :GET, "flow_types", nil)
+    request = Request.new("object_id", :GET, "flow_types", "*", nil)
     response = @base_driver.on_request(request)
     assert_equal(response.status_code, Response::OK)
     assert_includes(response.body, "OFPFlow")
@@ -269,7 +269,7 @@ class TestOpenFlowDriver < MiniTest::Test
   end
 
   def test_on_request_get_node_maps
-    request = Request.new("object_id", :GET, "node_maps", nil)
+    request = Request.new("object_id", :GET, "node_maps", "*", nil)
 
     resp_body = mock() 
     @controller.expects(:sync_call).with(:on_get_node_maps).returns(resp_body).once
@@ -279,7 +279,7 @@ class TestOpenFlowDriver < MiniTest::Test
   end
   
   def test_on_request_get_port_maps
-    request = Request.new("object_id", :GET, "port_maps", nil)
+    request = Request.new("object_id", :GET, "port_maps", "*", nil)
 
     resp_body = mock() 
     @controller.expects(:sync_call).with(:on_get_port_maps).returns(resp_body).once
@@ -289,7 +289,7 @@ class TestOpenFlowDriver < MiniTest::Test
   end
   
   def test_on_request_get_link_maps
-    request = Request.new("object_id", :GET, "link_maps", nil)
+    request = Request.new("object_id", :GET, "link_maps", "*", nil)
 
     resp_body = mock() 
     @controller.expects(:sync_call).with(:on_get_link_maps).returns(resp_body).once
@@ -299,7 +299,7 @@ class TestOpenFlowDriver < MiniTest::Test
   end
   
   def test_on_request_get_flow_maps
-    request = Request.new("object_id", :GET, "flow_maps", nil)
+    request = Request.new("object_id", :GET, "flow_maps", "*", nil)
 
     resp_body = mock() 
     @controller.expects(:sync_call).with(:on_get_flow_maps).returns(resp_body).once

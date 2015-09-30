@@ -28,6 +28,7 @@ class RemoteObjectInterfaceTest(unittest.TestCase):
     def setUp(self):
         self.Disppatcher = Mock()
         self.object_id = "ObjectId"
+        self.txid = "*"
         self.target = RemoteObjectInterface(self.Disppatcher,
                                             self.object_id)
 
@@ -331,6 +332,7 @@ class RemoteObjectInterfaceTest(unittest.TestCase):
         Path = RemoteObjectInterface.PROPETY_PATH
         method = Request.Method.GET
         _object_id = self.object_id
+        _txid = self.txid
         value = "propertyBody"
         dmy_request_sync = self.Disppatcher.request_sync
         dmy_request_sync.return_value = "result_request_sync"
@@ -343,7 +345,7 @@ class RemoteObjectInterfaceTest(unittest.TestCase):
             self.assertEqual(dmy_request_sync.call_count, 1)
             self.assertEqual(dmy_request_sync.call_args[0][0].
                              packed_object(),
-                             (_object_id, method, Path, value))
+                             (_object_id, method, Path, _txid, value))
             self.assertEqual(m_log_error[0].call_count, 0)
             self.assertEqual(self.result, "result_request_sync")
 
@@ -351,6 +353,7 @@ class RemoteObjectInterfaceTest(unittest.TestCase):
         Path = RemoteObjectInterface.PROPETY_PATH
         method = Request.Method.GET
         _object_id = self.object_id
+        _txid = self.txid
         value = "propertyBody"
         dmy_request_sync = self.Disppatcher.request_sync
         dmy_request_sync.side_effect = KeyError(1)
@@ -368,7 +371,7 @@ class RemoteObjectInterfaceTest(unittest.TestCase):
                 self.assertEqual(dmy_request_sync.call_count, 1)
                 self.assertEqual(dmy_request_sync.call_args[0][0].
                                  packed_object(),
-                                 (_object_id, method, Path, value))
+                                 (_object_id, method, Path, _txid, value))
                 self.assertEqual(m_log_error[0].call_count, 2)
                 m_log_error[0].assert_any_call(debug_log)
                 self.assertNotEqual(self.result, "result_request_sync")

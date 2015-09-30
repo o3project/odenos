@@ -62,7 +62,7 @@ class TestRequestParser < MiniTest::Test
             {"pattern"=> regex_path, "method"=> :POST,
              "func"=> proc_obj, "params"=> 0}]
     @target.add_rule(rule)
-    request = Odenos::Core::Request.new("objectId", :POST, "Path", "body")
+    request = Odenos::Core::Request.new("objectId", :POST, "Path", "*", "body")
     result = @target.action(request)
     assert_equal("PARAMS: 0", result)
   end
@@ -76,7 +76,7 @@ class TestRequestParser < MiniTest::Test
     rule = [{"pattern"=> regex_path, "method"=> :POST,
       "func"=> proc_obj, "params"=> 1}]
     @target.add_rule(rule)
-    request = Odenos::Core::Request.new("objectId", :POST, "Path", "body")
+    request = Odenos::Core::Request.new("objectId", :POST, "Path", "*", "body")
     result = @target.action(request)
     assert_equal(["body"], result)
   end
@@ -90,7 +90,7 @@ class TestRequestParser < MiniTest::Test
     rule = [{"pattern"=> regex_path, "method"=> :POST,
       "func"=> proc_obj, "params"=> 1}]
     @target.add_rule(rule)
-    request = Odenos::Core::Request.new("objectId", :POST, "Path", nil)
+    request = Odenos::Core::Request.new("objectId", :POST, "Path", "*", nil)
     result = @target.action(request)
     assert_equal(["Path"], result)
   end
@@ -104,7 +104,7 @@ class TestRequestParser < MiniTest::Test
     rule = [{"pattern"=> regex_path, "method"=> :POST,
       "func"=> proc_obj, "params"=> 2}]
     @target.add_rule(rule)
-    request = Odenos::Core::Request.new("objectId", :POST, "Path", 200)
+    request = Odenos::Core::Request.new("objectId", :POST, "Path", "*", 200)
     result = @target.action(request)
     assert_equal(200, result.status_code)
     assert_equal("Path", result.body)
@@ -119,7 +119,7 @@ class TestRequestParser < MiniTest::Test
     rule = [{"pattern"=> regex_path, "method"=> :POST,
       "func"=> proc_obj, "params"=> 2}]
     @target.add_rule(rule)
-    request = Odenos::Core::Request.new("objectId", :POST, "Path", nil)
+    request = Odenos::Core::Request.new("objectId", :POST, "Path", "*", nil)
     result = @target.action(request)
     assert_equal(200, result.status_code)
     assert_equal("Path", result.body)
@@ -131,7 +131,7 @@ class TestRequestParser < MiniTest::Test
     rule = [{"pattern"=> regex_path, "method"=> :GET,
              "func"=> "Func", "params"=> 0}]
     @target.add_rule(rule)
-    request = Odenos::Core::Request.new("objectId", :POST, "Path", "body")
+    request = Odenos::Core::Request.new("objectId", :POST, "Path", "*", "body")
     result = @target.action(request)
     assert_equal(405, result.status_code)
     assert_equal(nil, result.body)
@@ -143,7 +143,7 @@ class TestRequestParser < MiniTest::Test
     rule = [{"pattern"=> regex_None, "method"=> :POST,
              "func"=> "Func", "params"=> 0}]
     @target.add_rule(rule)
-    request = Odenos::Core::Request.new("objectId", :POST, "Path", "body")
+    request = Odenos::Core::Request.new("objectId", :POST, "Path", "*", "body")
     result = @target.action(request)
     assert_equal(404, result.status_code)
     assert_equal(nil, result.body)

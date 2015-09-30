@@ -103,7 +103,7 @@ class TestMessageDispatcher < MiniTest::Test
     msg.write(MessageDispatcher::TYPE_REQUEST)
     msg.write(1)
     msg.write("remote_object_id")
-    msg.write(Request.new('remote_object_id', :GET, 'property', nil))
+    msg.write(Request.new('remote_object_id', :GET, 'property', "*", nil))
     msg.flush
     on.stubs(:message).yields('aaa', msg)
     mock_redis.stubs(:subscribe).yields(on)
@@ -168,7 +168,7 @@ class TestMessageDispatcher < MiniTest::Test
     msg.write(MessageDispatcher::TYPE_EVENT)
     msg.write(1)
     msg.write("publisher_id")
-    msg.write(Event.new("publisher_id", "event_type", "body"))
+    msg.write(Event.new("publisher_id", "event_type", "*", "body"))
     msg.flush
     on.stubs(:message).yields('aaa', msg)
     mock_redis.stubs(:subscribe).yields(on)
@@ -465,7 +465,7 @@ class TestMessageDispatcher < MiniTest::Test
   end  
   
   def test_request_sync
-    @request = Odenos::Core::Request.new("obj_id", :GET, "test/request", "body")
+    @request = Odenos::Core::Request.new("obj_id", :GET, "test/request", "*", "body")
     @mockclient = Minitest::Mock.new
     @mockclient.expect(:send_request_message, nil, [@request])
     @target.stub(:get_message_client, @mockclient) do
@@ -475,8 +475,8 @@ class TestMessageDispatcher < MiniTest::Test
 
   def test_publish_event_async
     @mockevent = Minitest::Mock.new
-    @event = Event.new("publisher_id", "event_type", "body")
-    @request = Odenos::Core::Request.new("obj_id", :POST, "event", @event)
+    @event = Event.new("publisher_id", "event_type", "*", "body")
+    @request = Odenos::Core::Request.new("obj_id", :POST, "event", "*", @event)
     @request.stubs(:to_msgpack).returns(nil)
     @target.expects(:push_publish_queue)
     @target.publish_event_async(@event)     
@@ -521,7 +521,7 @@ class TestMessageDispatcher < MiniTest::Test
   end
 
   def test_dispatch_request_with_local_objects
-    request = Request.new("obj_id", :GET, "test/request", "body")
+    request = Request.new("obj_id", :GET, "test/request", "*", "body")
     response = Response.new(200, "body")
 
     obj = mock()
@@ -533,7 +533,7 @@ class TestMessageDispatcher < MiniTest::Test
   end
   
   def test_dispatch_request_without_local_object
-    request = Request.new("obj_id", :GET, "test/request", "body")
+    request = Request.new("obj_id", :GET, "test/request", "*", "body")
     
     response = @target.dispatch_request(request)
     
@@ -542,7 +542,7 @@ class TestMessageDispatcher < MiniTest::Test
   end
 
   def test_dispatch_event_with_local_object
-    event = Event.new("publisher_id", "event_type", "body")
+    event = Event.new("publisher_id", "event_type", "*", "body")
 
     @map = Odenos::Core::MessageDispatcher::EventSubscriptionMap.new()
     subscription = EventSubscription.new(:subscriber_id => "remote_object_id")
@@ -558,7 +558,7 @@ class TestMessageDispatcher < MiniTest::Test
   end
   
   def test_dispatch_event_with_local_object_nil
-    event = Event.new("publisher_id", "event_type", "body")
+    event = Event.new("publisher_id", "event_type", "*", "body")
 
     @map = Odenos::Core::MessageDispatcher::EventSubscriptionMap.new()
     subscription = EventSubscription.new(:subscriber_id => "remote_object_id")
@@ -576,7 +576,7 @@ class TestMessageDispatcher < MiniTest::Test
   end
   
   def test_dispatch_event_without_local_object
-    event = Event.new("publisher_id", "event_type", "body")
+    event = Event.new("publisher_id", "event_type", "*", "body")
 
     @map = Odenos::Core::MessageDispatcher::EventSubscriptionMap.new()
     subscription = EventSubscription.new(:subscriber_id => "remote_object_id")

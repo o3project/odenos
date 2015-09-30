@@ -341,8 +341,8 @@ public final class Odenos {
     // Let others know that the system manager has just started.
     sysmgr.zkCreatePath("/system_manager", CreateMode.PERSISTENT);
     sysmgr.zkCreatePath("/system_manager/" + systemMgrId, CreateMode.EPHEMERAL);
-    log.info("Start-up completion: {}", systemMgrId);
-    log.info("Start-up completion: {}", REST_TRANSLATOR_ID);
+    log.info(LogMessage.buildLogMessage(10089, LogMessage.getSavedTxid(), "Start-up completion: {}", systemMgrId));
+    log.info(LogMessage.buildLogMessage(10089, LogMessage.getSavedTxid(), "Start-up completion: {}", REST_TRANSLATOR_ID));
   }
 
   private final void runComponentManager(final String romgrId, final String dir) throws Exception {

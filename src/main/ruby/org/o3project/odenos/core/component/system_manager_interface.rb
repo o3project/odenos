@@ -325,7 +325,7 @@ module Odenos
 
       def send_request(obj_id, method, path, body)
         resp = Response.new(Response::INTERNAL_SERVER_ERROR, nil)
-        req = Request.new(obj_id, method, path, body)
+        req = Request.new(obj_id, method, path, "*", body)
         begin
           resp = @dispatcher.request_sync(req)
         rescue => ex
