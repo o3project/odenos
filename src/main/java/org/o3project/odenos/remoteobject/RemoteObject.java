@@ -499,7 +499,7 @@ public class RemoteObject {
    * Creates a znode on ZooKeeper server. 
    * 
    * @param path znode path
-   * @param mode
+   * @param mode ZooKeeper mode
    */
   public void zkCreatePath(final String path, CreateMode mode) {
     if (keepAliveClient == null) {
@@ -524,6 +524,7 @@ public class RemoteObject {
    * Sets a watch on a znode path.
    * 
    * @param path znode path
+   * @param message catched message
    */
   public void zkWatchPath(final String path, final String message) {
     if (keepAliveClient == null) {

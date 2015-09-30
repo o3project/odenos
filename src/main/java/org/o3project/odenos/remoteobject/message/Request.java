@@ -41,7 +41,7 @@ public class Request extends MessageBodyUnpacker {
 
   /**
    * Constructor.
-   * @deprecated {@link #Request(String, Method, String, Object)}.
+   * @deprecated {@link #Request(String, Method, String, String, Object)}.
    */
   @Deprecated
   public Request() {

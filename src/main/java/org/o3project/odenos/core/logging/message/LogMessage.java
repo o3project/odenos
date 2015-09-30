@@ -37,7 +37,7 @@ public class LogMessage {
   /**
    * Init parameters.
    *
-   * @param number
+   * @param offset base number of transactioin ID
    */
   public static void initParameters(int offset) {
     txidOffset = offset;
@@ -48,7 +48,8 @@ public class LogMessage {
   /**
    * Sets a logging message number.
    * 
-   * @param number
+   * @param number message number
+   * @return LogMessage
    */
   public LogMessage setNumber(int number) {
     this.number = number;
@@ -58,7 +59,8 @@ public class LogMessage {
   /**
    * Sets a transaction ID (txid).
    * 
-   * @param txid
+   * @param txid a transaction ID
+   * @return LogMessage
    */
   public LogMessage setTxid(String txid) {
     this.txid = txid;
@@ -68,7 +70,8 @@ public class LogMessage {
   /**
    * Sets a log message as a plain text.
    * 
-   * @param msg
+   * @param msg string of log message
+   * @return LogMessage
    */
   public LogMessage setMessage(String msg) {
     this.parameters = new Object[1];
@@ -80,7 +83,8 @@ public class LogMessage {
    * Sets a formatted log message.
    * 
    * @param fmt format
-   * @param msg
+   * @param msg message parameter
+   * @return LogMessage
    */
   public LogMessage setFormatedMessage(String fmt, Object... msg) {
     this.format = fmt;
@@ -94,6 +98,7 @@ public class LogMessage {
 
   /**
    * Set a transactionID.
+   * @param id transaction ID
    */
   public static void setSavedTxid(String id) {
     savedTxid.set(id);
@@ -101,16 +106,18 @@ public class LogMessage {
 
   /**
    * Get a transactionID.
+   *
+   * @return saved transaction ID
    */
   public static String getSavedTxid() {
     return savedTxid.get();
   }
 
- /**
-  * Create a transactionID (txid).
-  *
-  * @param offset
-  */
+  /**
+   * Create a transactionID (txid).
+   *
+   * @return created transaction ID
+   */
   public static String createTxid() {
     String uuid = "";
 
@@ -140,6 +147,8 @@ public class LogMessage {
 
   /**
    * Generates DTO to be sent to log4j appenders. 
+   *
+   * @return ILogMessage
    */
   public ILogMessage build() {
     

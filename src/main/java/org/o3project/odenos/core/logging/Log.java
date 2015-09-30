@@ -7,6 +7,7 @@ public class Log {
   
   /**
    * [1] Class load error.
+   * @return Message
    */
   public static Message errorClassLoad() {
     return new LogMessage()
@@ -17,6 +18,7 @@ public class Log {
   
   /**
    * [2] Message Dispatcher started. 
+   * @return Message
    */
   public static Message infoMessageDispatcherStarted() {
     return new LogMessage()
@@ -29,6 +31,8 @@ public class Log {
    * [101] Buffer Overflow
    * 
    * Explanation: ...
+   * @param cause message parameter
+   * @return Message
    */
   public static Message bufferOverflow(String cause) {
     return new LogMessage()
@@ -41,6 +45,8 @@ public class Log {
    * [102] Race Condition 
    * 
    * Explanation: ...
+   * @param txid set txid
+   * @return Message
    */
   public static Message raceCondition(String txid) {
     return new LogMessage()

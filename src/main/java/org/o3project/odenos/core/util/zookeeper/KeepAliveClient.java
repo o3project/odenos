@@ -68,8 +68,8 @@ public class KeepAliveClient {
   /**
    * Creates a znode on ZooKeeper server.
    * 
-   * @param path
-   * @param mode
+   * @param path znode path
+   * @param mode create mode
    */
   public synchronized void createPath(final String path, CreateMode mode) {
     if (mode == CreateMode.PERSISTENT) {
@@ -90,7 +90,7 @@ public class KeepAliveClient {
   /**
    * Deletes a znode on ZooKeeper server.
    * 
-   * @param path
+   * @param path znode path
    */
   public synchronized void deletePath(final String path) {
     try {
@@ -138,7 +138,8 @@ public class KeepAliveClient {
   /**
    * Sets a watcher on a znode path to detect its disappearance.
    * 
-   * @param path
+   * @param path znode path
+   * @param message catched message
    */
   public void watchPath(final String path, final String message) {
     txid = LogMessage.getSavedTxid();
@@ -174,8 +175,8 @@ public class KeepAliveClient {
   /**
    * Sets a watcher on a znode path. 
    * 
-   * @param path
-   * @param watcher
+   * @param path znode path
+   * @param watcher watcher
    */
   public void watchPath(final String path, Watcher watcher) {
     try {

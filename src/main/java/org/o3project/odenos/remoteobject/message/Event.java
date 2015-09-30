@@ -37,6 +37,7 @@ public class Event extends MessageBodyUnpacker {
    * Constructor.
    * @param publisherId publisher ID.
    * @param eventType type of events.
+   * @param txid transaction ID.
    * @param body Contents of events.
    */
   public Event(String publisherId, String eventType, String txid, Object body) {
