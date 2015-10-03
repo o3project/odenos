@@ -411,7 +411,6 @@ case "$1" in
 	;;
     restart)
 	stop
-        echo `pwd`
         set_conf $@
 	start
 	;;

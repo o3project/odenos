@@ -26,22 +26,15 @@ Python or Ruby environment, please see "Appendix A".
 
 ### 1-2. Java Environment
 
-1. Install jdk and maven
+1. Install java-1.8 and maven
 
    ```
-   $ sudo apt-get install git maven openjdk-7-jdk curl
-   $ export JAVA_HOME=/usr/lib/jvm/java-7-openjdk-amd64
-   ```
-
-   If using java-1.8, please use Oracle JDK instead of OpenJDK.
-   The first, download a JDK-8 archive from
-   [Java SE - Downloads](http://www.oracle.com/technetwork/java/javase/downloads/index.html),
-   and then install its.
-
-   ```
-   $ tar xf jdk-8u25-linux-x64.tar.gz -C /usr/lib/jvm
-   $ ln -s jdk1.8.0_25 /usr/lib/jvm/java-8-oracle
+   $ sudo add-apt-repository ppa:webupd8team/java
+   $ sudo apt-get update
+   $ sudo apt-get install oracle-java8-installer
+   $ sudo apt-get install oracle-java8-set-default
    $ export JAVA_HOME=/usr/lib/jvm/java-8-oracle
+   $ sudo apt-get install maven curl
    ```
 
 ## 2. Build, Run, Test
@@ -49,6 +42,7 @@ Python or Ruby environment, please see "Appendix A".
 1. git clone
 
    ```
+   $ sudo apt-get install git 
    $ git clone https://github.com/o3project/odenos.git
    $ cd odenos
    ```
