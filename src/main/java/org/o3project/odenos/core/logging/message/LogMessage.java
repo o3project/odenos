@@ -19,7 +19,6 @@ public class LogMessage {
 
   private static Random rnd;
 
-  int number = -1;
   private String txid = null;
   private Object[] parameters;
   private String format = null;
@@ -44,17 +43,6 @@ public class LogMessage {
     txidOffset = offset;
     long now = System.currentTimeMillis();
     rnd = new Random(now);
-  }
-
-  /**
-   * Sets a logging message number.
-   * 
-   * @param number message number
-   * @return LogMessage
-   */
-  public LogMessage setNumber(int number) {
-    this.number = number;
-    return this;
   }
 
   /**
@@ -163,21 +151,14 @@ public class LogMessage {
     class LogMessageImmutable implements ILogMessage {
 
       private static final long serialVersionUID = 1L;
-      private final int number;
       private final String txid;
       private final Object[] parameters;
       private final String format;
       
-      LogMessageImmutable(int number, String txid, String format, Object[] parameters) {
-        this.number = number;
+      LogMessageImmutable(String txid, String format, Object[] parameters) {
         this.txid = txid;
         this.format = format;
         this.parameters = parameters;
-      }
-
-      @Override
-      public int getNumber() {
-        return this.number;
       }
 
       @Override
@@ -218,7 +199,7 @@ public class LogMessage {
 
     }
 
-    return new LogMessageImmutable(number, txid, format, parameters);
+    return new LogMessageImmutable(txid, format, parameters);
     
   }
 
@@ -230,7 +211,6 @@ public class LogMessage {
     }
 
     return new LogMessage()
-      .setNumber(10001)
       .setFormatedMessage(fmt, parameters)
       .setTxid(txid)
       .build();
