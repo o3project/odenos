@@ -16,7 +16,24 @@ configuration:
       name: File
       fileName: "${sys:log4j2_app.log}"
       PatternLayout:
-        Pattern: "%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"
+        Pattern: "%d{HH:mm:ss.SSS} %-5level [%t] %logger{36}.%M - %msg%n"
+
+    Syslog:
+      name: Syslog
+      Host: "localhost"
+      Protocol: UDP
+      Port: 514
+      Facility: "LOCAL1"
+      Format: "RFC5424"
+      mdcId: "mdc"
+      includeMDC: "true"
+      LoggerFields:
+#        - KeyValuePair:
+#            key: "thread"
+#            value: "%t"
+        - KeyValuePair:
+            key: "method"
+            value: "%c.%M"
 
 #   CassandraAppender:
 #      name: CassandraAppender
@@ -29,5 +46,6 @@ configuration:
       AppenderRef:
 #        - ref: Console
         - ref: File
+#        - ref: Syslog
 #        - ref: CassandraAppender
 
