@@ -16,7 +16,7 @@ configuration:
       name: File
       fileName: "${sys:log4j2_app.log}"
       PatternLayout:
-        Pattern: "%d{HH:mm:ss.SSS} %-5level [%t] %logger{36}.%M - %msg%n"
+        Pattern: "%d %-5level [%t] %logger{36}.%M - %msg%n"
 
     Syslog:
       name: Syslog
