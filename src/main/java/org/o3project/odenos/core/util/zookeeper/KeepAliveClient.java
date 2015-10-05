@@ -54,7 +54,7 @@ public class KeepAliveClient {
       public void process(WatchedEvent event) {
         switch (event.getState()) {
         case Expired:
-          log.warn(LogMessage.buildLogMessage(10019, LogMessage.getSavedTxid(), "ZooKeeper session exipired"));
+          log.warn(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "ZooKeeper session exipired"));
           connect();
           createPaths(paths, CreateMode.EPHEMERAL);
           break;
@@ -78,12 +78,12 @@ public class KeepAliveClient {
           zk.create(path, new byte[0], ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT);
         }
       } catch (KeeperException | InterruptedException e) {
-        log.error(LogMessage.buildLogMessage(50020, LogMessage.getSavedTxid(), "Unable to create a path: {}", path), e);
+        log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Unable to create a path: {}", path), e);
       }
     } else if (mode == CreateMode.EPHEMERAL) {
       zk.create(path, new byte[0], ZooDefs.Ids.OPEN_ACL_UNSAFE, mode, createPathCallback, new byte[0]);
     } else {
-      log.warn(LogMessage.buildLogMessage(10020, LogMessage.getSavedTxid(), "Unsupported mode: {}", mode.toString()));
+      log.warn(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Unsupported mode: {}", mode.toString()));
     }
   }
 
@@ -97,7 +97,7 @@ public class KeepAliveClient {
       zk.delete(path, -1);
       paths.remove(path);
     } catch (InterruptedException | KeeperException e) {
-      log.error(LogMessage.buildLogMessage(50021, LogMessage.getSavedTxid(), "Unable to delete a path: {}", path));
+      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Unable to delete a path: {}", path));
     }
   }
 
@@ -116,10 +116,10 @@ public class KeepAliveClient {
         paths.add(path);
         break;
       case NODEEXISTS:
-        log.warn(LogMessage.buildLogMessage(10021, LogMessage.getSavedTxid(), "node exists: {}", path));
+        log.warn(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "node exists: {}", path));
         break;
       default:
-        log.error(LogMessage.buildLogMessage(50022, LogMessage.getSavedTxid(), "process result: {}", code.toString()));
+        log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "process result: {}", code.toString()));
         break;
       }
     }
@@ -151,24 +151,24 @@ public class KeepAliveClient {
           String path = event.getPath();
           switch (event.getType()) {
           case NodeCreated:
-            log.info(LogMessage.buildLogMessage(10022, LogMessage.getSavedTxid(), "znode created: {}", path));
+            log.info(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "znode created: {}", path));
             watchPath(path, message);
             break;
           case NodeDeleted:
             if (message == null) {
-              log.warn(LogMessage.buildLogMessage(10023, LogMessage.getSavedTxid(), "znode deleted: {}", path));
+              log.warn(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "znode deleted: {}", path));
             } else {
-              log.warn(LogMessage.buildLogMessage(10024, LogMessage.getSavedTxid(), "{}: {}", message, path));
+              log.warn(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "{}: {}", message, path));
             }
             break;
           default:
-            log.error(LogMessage.buildLogMessage(50023, LogMessage.getSavedTxid(), "Unidentified watch event: {}", event.toString()));
+            log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Unidentified watch event: {}", event.toString()));
             break;
           }
         }
       });
     } catch (KeeperException | InterruptedException e) {
-      log.error(LogMessage.buildLogMessage(50024, LogMessage.getSavedTxid(), "ZooKeeper operation error"));
+      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "ZooKeeper operation error"));
     }
   }
   
@@ -182,7 +182,7 @@ public class KeepAliveClient {
     try {
       zk.exists(path, watcher);
     } catch (KeeperException | InterruptedException e) {
-      log.error(LogMessage.buildLogMessage(50024, LogMessage.getSavedTxid(), "ZooKeeper operation error"));
+      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "ZooKeeper operation error"));
     }
   }
 }

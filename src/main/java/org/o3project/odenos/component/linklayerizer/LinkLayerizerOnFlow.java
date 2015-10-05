@@ -146,7 +146,7 @@ public class LinkLayerizerOnFlow {
               layLink.getSrcNode(), layLink.getSrcPort(),
               layLink.getDstNode(), layLink.getDstPort());
           if (compLink.equals(upperLink)) {
-            log.debug("replace flow's path.");
+            log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "replace flow's path."));
             int index = upperFlow.getPath().indexOf(layerizedLinkId);
             upperFlow.getPath().set(index, upperLinkId);
             notExistPath = false;
@@ -154,7 +154,7 @@ public class LinkLayerizerOnFlow {
           }
         }
         if (notExistPath) {
-          log.debug("not exist path's link_id to upper_nw.");
+          log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "not exist path's link_id to upper_nw."));
           return;
         }
       }
@@ -182,7 +182,7 @@ public class LinkLayerizerOnFlow {
     boolean enable = basicFlow.getEnabled();
 
     if (!(FlowStatus.ESTABLISHING.toString().equals(status) && enable)) {
-      log.info(LogMessage.buildLogMessage(10074, LogMessage.getSavedTxid(), "invalid lower flow. [status: {}, enable: {}].", status, enable));
+      log.info(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "invalid lower flow. [status: {}, enable: {}].", status, enable));
       return;
     }
 
@@ -440,18 +440,18 @@ public class LinkLayerizerOnFlow {
     if ((FlowStatus.NONE.toString().equals(status))
       ||(FlowStatus.TEARDOWN.toString().equals(status))
       ||(FlowStatus.FAILED.toString().equals(status))) {
-      log.warn(LogMessage.buildLogMessage(10075, LogMessage.getSavedTxid(), "invalid flow's status."));
+      log.warn(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "invalid flow's status."));
         return;
     }
 
     if (!enable) {
-      log.warn(LogMessage.buildLogMessage(10076, LogMessage.getSavedTxid(), "invalid flow's disable."));
+      log.warn(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "invalid flow's disable."));
       return;
     }
 
     String lowerNwId = getNetworkIdByType(LinkLayerizer.LOWER_NETWORK);
     if (lowerNwId == null) {
-      log.warn(LogMessage.buildLogMessage(10077, LogMessage.getSavedTxid(), "lower_nw not exist."));
+      log.warn(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "lower_nw not exist."));
       return;
     }
 
@@ -460,7 +460,7 @@ public class LinkLayerizerOnFlow {
     LinkLayerizerBoundary dstBoundary =
         getBoundaryByActions(lowerNwId, basicFlow.getEdgeActions());
     if (srcBoundary == null || dstBoundary == null) {
-      log.warn(LogMessage.buildLogMessage(10074, LogMessage.getSavedTxid(), "invalid lowerFlow."));
+      log.warn(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "invalid lowerFlow."));
       return;
     }
 
@@ -477,13 +477,13 @@ public class LinkLayerizerOnFlow {
     String layerizedId =
         getNetworkIdByType(LinkLayerizer.LAYERIZED_NETWORK);
     if (layerizedId == null) {
-      log.warn(LogMessage.buildLogMessage(10078, LogMessage.getSavedTxid(), "laerized_nw not exist."));
+      log.warn(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "laerized_nw not exist."));
       return;
     }
 
     Response resp = networkInterfaces.get(layerizedId).putLink(link);
     if (resp.isError("PUT")) {
-      log.warn(LogMessage.buildLogMessage(10079, LogMessage.getSavedTxid(), "failed PUT Link. response: {}", resp.getBodyValue()));
+      log.warn(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "failed PUT Link. response: {}", resp.getBodyValue()));
       return;
     }
 
@@ -511,7 +511,7 @@ public class LinkLayerizerOnFlow {
     log.debug("");
 
     if ((link == null) || (flow == null)) {
-      log.warn(LogMessage.buildLogMessage(10080, LogMessage.getSavedTxid(), "parameter is null"));
+      log.warn(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "parameter is null"));
       return false;
     }
 
@@ -564,7 +564,7 @@ public class LinkLayerizerOnFlow {
         break;
 
       default:
-        log.warn(LogMessage.buildLogMessage(10081, LogMessage.getSavedTxid(), "unknown status: {}", status));
+        log.warn(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "unknown status: {}", status));
         return false;
     }
 
@@ -583,13 +583,13 @@ public class LinkLayerizerOnFlow {
 
     if (StringUtils.isEmpty(lowerNwId)
         || matches == null || matches.size() == 0) {
-      log.warn(LogMessage.buildLogMessage(10082, LogMessage.getSavedTxid(), "invalid parameter"));
+      log.warn(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "invalid parameter"));
       return null;
     }
     String inNode = matches.get(0).getInNode();
     String inPort = matches.get(0).getInPort();
-    log.debug("nwId : {}, inNode : {}, inPort : {}.",
-        lowerNwId, inNode, inPort);
+    log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "nwId : {}, inNode : {}, inPort : {}.",
+        lowerNwId, inNode, inPort));
 
     return boundaryTable.getBoundary(
         lowerNwId, inNode, inPort);
@@ -606,7 +606,7 @@ public class LinkLayerizerOnFlow {
     log.debug("");
 
     if (StringUtils.isEmpty(lowerNwId) || edgeActions == null) {
-      log.warn(LogMessage.buildLogMessage(10082, LogMessage.getSavedTxid(), "invalid parameter"));
+      log.warn(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "invalid parameter"));
       return null;
     }
     String outNode = null;
@@ -623,10 +623,10 @@ public class LinkLayerizerOnFlow {
         }
       }
     }
-    log.debug("nwId : {}, outNode : {}, outPort : {}.",
-        lowerNwId, outNode, outPort);
+    log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "nwId : {}, outNode : {}, outPort : {}.",
+        lowerNwId, outNode, outPort));
     if (outNode == null || outPort == null) {
-      log.warn(LogMessage.buildLogMessage(10083, LogMessage.getSavedTxid(), "invalid lowerFlow's actions."));
+      log.warn(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "invalid lowerFlow's actions."));
       return null;
     }
 
@@ -679,7 +679,7 @@ public class LinkLayerizerOnFlow {
         ignorekeys.remove(updatekey);
       }
     }
-    log.debug("ignore key_list:: {}", ignorekeys);
+    log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "ignore key_list:: {}", ignorekeys));
     return ignorekeys;
   }
 
@@ -693,7 +693,7 @@ public class LinkLayerizerOnFlow {
     log.debug("");
 
     if (StringUtils.isEmpty(networkId) || flow == null) {
-      log.warn(LogMessage.buildLogMessage(10082, LogMessage.getSavedTxid(), "invalid parameter"));
+      log.warn(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "invalid parameter"));
       return false;
     }
     return true;

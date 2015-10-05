@@ -15,6 +15,7 @@ public class LogMessage {
 
   private static int txidOffset = 0;
   private static int txidSerial = 0;
+  private static String txidOwn = "";
 
   private static Random rnd;
 
@@ -110,7 +111,11 @@ public class LogMessage {
    * @return saved transaction ID
    */
   public static String getSavedTxid() {
-    return savedTxid.get();
+    String txid = savedTxid.get();
+    if(txid == null || txid.length() == 0) {
+      txid = txidOwn;
+    }
+    return txid;
   }
 
   /**
@@ -142,6 +147,9 @@ public class LogMessage {
     }
 
     String uuid_str = uuid.toLowerCase() + "-" + String.format("%07d", serial);
+    if(txidOwn.length() == 0) {
+      txidOwn = uuid_str;
+    }
     return uuid_str;
   }
 
@@ -192,9 +200,9 @@ public class LogMessage {
         }
         if (this.txid != null) {
           formattedMessage =
-              MessageFormat.format("[{0}] txid: {1}, {2}", this.number, this.txid, formattedMessage);
+              MessageFormat.format("txid: {0}, {1}", this.txid, formattedMessage);
         } else {
-          formattedMessage = MessageFormat.format("[{0}] {1}", this.number, formattedMessage);
+          formattedMessage = MessageFormat.format("{0}", formattedMessage);
         }
         return formattedMessage;
       }
@@ -214,7 +222,7 @@ public class LogMessage {
     
   }
 
-  public static Message buildLogMessage(int msgid, String txid,
+  public static Message buildLogMessage(String txid,
                                         String fmt, Object... parameters) {
     int len = parameters.length;
     for(int i = 0; i < len; i++) {
@@ -222,7 +230,7 @@ public class LogMessage {
     }
 
     return new LogMessage()
-      .setNumber(msgid)
+      .setNumber(10001)
       .setFormatedMessage(fmt, parameters)
       .setTxid(txid)
       .build();

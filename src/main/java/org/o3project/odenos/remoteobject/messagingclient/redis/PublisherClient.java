@@ -105,7 +105,7 @@ public class PublisherClient extends RedisClient {
       try {
         this.sha1 = calcSha1(this.publishScript);
       } catch (NoSuchAlgorithmException e) {
-        log.error(LogMessage.buildLogMessage(50004, LogMessage.getSavedTxid(), "SHA-1 algorithm unavailable")); // This will never happen anyway.
+        log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "SHA-1 algorithm unavailable")); // This will never happen anyway.
       }
     }
     publisherQueue = new ArrayBlockingQueue<>(publisherQueueSize);
@@ -140,7 +140,7 @@ public class PublisherClient extends RedisClient {
     try {
       publisherQueue.put(new PublishData(SafeEncoder.encode(channel), data));
     } catch (InterruptedException e) {
-      log.error(LogMessage.buildLogMessage(50005, LogMessage.getSavedTxid(), "cannot put a request in publish queue"));
+      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "cannot put a request in publish queue"));
     }
   }
 
@@ -178,7 +178,7 @@ public class PublisherClient extends RedisClient {
               publish(publishData.channel, publishData.data);
             }
           } catch (InterruptedException e) {
-            log.debug(e.getMessage());
+            log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), e.getMessage()));
           }
         } else { // TODO: Redis multi, publish and exec
           while (count > 0) {
@@ -211,7 +211,7 @@ public class PublisherClient extends RedisClient {
           try {
             if (bridged) {
               if (sha1 == null || publishScript == null) {
-                log.error(LogMessage.buildLogMessage(50006, LogMessage.getSavedTxid(), "publish script is not set"));
+                log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "publish script is not set"));
               } else {
                 scriptExists(sha1);
                 List<Object> list = readObjectListFromInputStream();
@@ -230,13 +230,13 @@ public class PublisherClient extends RedisClient {
             }
             break;
           } catch (Exception e) {
-            log.error(LogMessage.buildLogMessage(50007, LogMessage.getSavedTxid(), "internal error"), e);
+            log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "internal error"), e);
           }
         } else {
           try {
             Thread.sleep(3000);
           } catch (InterruptedException e) {
-            log.error(LogMessage.buildLogMessage(50003, LogMessage.getSavedTxid(), "thread error"), e);
+            log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "thread error"), e);
           }
         }
       }
@@ -244,7 +244,7 @@ public class PublisherClient extends RedisClient {
         try {
           object = read();
           if (log.isDebugEnabled()) {
-            log.debug("reply from Redis server: {}", object.toString());
+            log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "reply from Redis server: {}", object.toString()));
           }
         } catch (JedisConnectionException e) {
           waitingReconnect = true;

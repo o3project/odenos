@@ -230,7 +230,7 @@ public class SubscriberClient extends RedisClient {
         try {
           Thread.sleep(3000);
         } catch (InterruptedException e) {
-          log.error(LogMessage.buildLogMessage(50003, LogMessage.getSavedTxid(), "thread error"), e);
+          log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "thread error"), e);
         }
       }
     }
@@ -239,7 +239,7 @@ public class SubscriberClient extends RedisClient {
         List<Object> reply = readObjectListFromInputStream(); // blocking here
         final Object firstObj = reply.get(0);
         if (!(firstObj instanceof byte[])) {
-          log.warn(LogMessage.buildLogMessage(10012, LogMessage.getSavedTxid(), "Unknown message type: {}", firstObj));
+          log.warn(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Unknown message type: {}", firstObj));
         }
         final byte[] response = (byte[]) firstObj;
         if (Arrays.equals(SUBSCRIBE.raw, response)) {
@@ -268,7 +268,7 @@ public class SubscriberClient extends RedisClient {
           final byte[] pattern = (byte[]) reply.get(1);
           onPunsubscribe(pattern, channelCount);
         } else {
-          log.warn(LogMessage.buildLogMessage(10013, LogMessage.getSavedTxid(), "Unsupported message type: {}", firstObj));
+          log.warn(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Unsupported message type: {}", firstObj));
         }
       } catch (JedisConnectionException e) {
         waitingReconnect = true;

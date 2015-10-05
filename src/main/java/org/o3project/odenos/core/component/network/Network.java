@@ -107,7 +107,7 @@ public class Network extends Component {
                     "false"))) {
           verbosePortEvent = Boolean.valueOf(value);
         } else {
-          log.error(LogMessage.buildLogMessage(50062, LogMessage.getSavedTxid(), 
+          log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), 
               "{} is wrong as a value of a key {}. expect true or false.",
               value, key));
         }
@@ -120,7 +120,7 @@ public class Network extends Component {
                     "false"))) {
           verboseLinkEvent = Boolean.valueOf(value);
         } else {
-          log.error(LogMessage.buildLogMessage(50062, LogMessage.getSavedTxid(),
+          log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(),
               "{} is wrong as a value of a key {}. expect true or false.",
               value, key));
         }
@@ -189,16 +189,16 @@ public class Network extends Component {
     log.debug("");
 
     try {
-      log.debug("Received request : {}, {} {}",
-          getObjectId(), request.method, request.path);
-      log.debug("Received body    : {}, {}", getObjectId(),
-          request.getBodyValue());
+      log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Received request : {}, {} {}",
+          getObjectId(), request.method, request.path));
+      log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Received body    : {}, {}", getObjectId(),
+          request.getBodyValue()));
       RequestParser<IActionCallback>.ParsedRequest parsed = parser
           .parse(request);
       IActionCallback callback = parsed.getResult();
       return callback.process(parsed);
     } catch (Exception e) {
-      log.error(LogMessage.buildLogMessage(50063, LogMessage.getSavedTxid(),
+      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(),
           "Exception in onRequest() : [case:{}] [msg:{}]",
           request.path, e.getClass().getSimpleName()));
       return createErrorResponse(Response.BAD_REQUEST,

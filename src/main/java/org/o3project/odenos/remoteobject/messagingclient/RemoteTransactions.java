@@ -79,7 +79,7 @@ class RemoteTransactions {
       try {
         rendezvousPool.put(new SynchronousQueue<Response>());
       } catch (InterruptedException e) {
-        log.error(LogMessage.buildLogMessage(50008, LogMessage.getSavedTxid(), "cannot return SynchronousQueue to rendezvous pool"));
+        log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "cannot return SynchronousQueue to rendezvous pool"));
       }
     }
   }
@@ -138,7 +138,7 @@ class RemoteTransactions {
 
     if (response == null) { // INITIAL_TIMEOUT expired
       if (log.isDebugEnabled()) {
-        log.debug("request timeout (initial)");
+        log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "request timeout (initial)"));
       }
       // Checks if the channel (i.e., object ID) exists)
       if (dispatcher.getChannelChecker().channelExist(request.objectId)) {
@@ -148,7 +148,7 @@ class RemoteTransactions {
         rendezvousPool.put(rendezvous);
         if (response == null) { // remoteRequestTimeout expired
           if (log.isDebugEnabled()) {
-            log.debug("request timeout (final)");
+            log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "request timeout (final)"));
           }
           responseMap.remove(sno);
           throw new TimeoutException("no reply from " + request.objectId);
@@ -157,7 +157,7 @@ class RemoteTransactions {
         rendezvousPool.put(rendezvous);
         responseMap.remove(sno);
         if (log.isDebugEnabled()) {
-          log.debug("non-existent channel");
+          log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "non-existent channel"));
         }
         throw new IllegalArgumentException("request to non-existent component: "
             + request.objectId);

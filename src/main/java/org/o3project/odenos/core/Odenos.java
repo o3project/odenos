@@ -317,7 +317,7 @@ public final class Odenos {
 
       disp.join();
     } catch (Exception e) {
-      log.error(LogMessage.buildLogMessage(50000, LogMessage.getSavedTxid(), "system start failed"), e);
+      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "system start failed"), e);
     } finally {
       disp.close();
     }
@@ -329,7 +329,7 @@ public final class Odenos {
     if (parser.getZooKeeperEmbed()) {
       ZooKeeperService.cleanUp();
       ZooKeeperService.startZkServer();
-      log.debug("ZooKeeper server started in embedded mode");
+      log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "ZooKeeper server started in embedded mode"));
       zooKeeperEmbedded = true;
     }
 
@@ -341,8 +341,8 @@ public final class Odenos {
     // Let others know that the system manager has just started.
     sysmgr.zkCreatePath("/system_manager", CreateMode.PERSISTENT);
     sysmgr.zkCreatePath("/system_manager/" + systemMgrId, CreateMode.EPHEMERAL);
-    log.info(LogMessage.buildLogMessage(10089, LogMessage.getSavedTxid(), "Start-up completion: {}", systemMgrId));
-    log.info(LogMessage.buildLogMessage(10089, LogMessage.getSavedTxid(), "Start-up completion: {}", REST_TRANSLATOR_ID));
+    log.info(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Start-up completion: {}", systemMgrId));
+    log.info(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Start-up completion: {}", REST_TRANSLATOR_ID));
   }
 
   private final void runComponentManager(final String romgrId, final String dir) throws Exception {
@@ -355,10 +355,10 @@ public final class Odenos {
     // Checks if the system manager has already been started.
     while (true) {
       if (zk.exists("/system_manager/" + systemMgrId, null) != null) {
-        log.debug("system manager is up: {}", systemMgrId);
+        log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "system manager is up: {}", systemMgrId));
         break;
       } else {
-        log.debug("waiting for system manager to be up...");
+        log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "waiting for system manager to be up..."));
         Thread.sleep(2000);
       }
     }
@@ -371,7 +371,7 @@ public final class Odenos {
     romgr.zkCreatePath(RemoteObjectManager.ZK_CMPMGR_PATH, CreateMode.PERSISTENT);
     romgr.zkCreatePath(RemoteObjectManager.ZK_CMPMGR_PATH + "/" + romgrId, CreateMode.EPHEMERAL);
     romgr.zkCreatePath(RemoteObjectManager.ZK_CMP_PATH, CreateMode.PERSISTENT);
-    log.info("Start-up completion: {}", romgrId);
+    log.info(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Start-up completion: {}", romgrId));
   }
 
   private Set<Class<? extends RemoteObject>> findComponents(String rootOfPackages) {

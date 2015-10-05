@@ -85,7 +85,7 @@ public class SubscriptionsServlet extends HttpServlet {
 
     Matcher matcher = PATH_PATTERN.matcher(req.getRequestURI());
     if (!matcher.find()) {
-      this.log.debug("The indicated path is not available. /{}", req.getRequestURI());
+      this.log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "The indicated path is not available. /{}", req.getRequestURI()));
       resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
       return;
     }
@@ -93,7 +93,7 @@ public class SubscriptionsServlet extends HttpServlet {
     HttpSession session = req.getSession(false);
     if (session == null) {
       // not start the session yet.
-      this.log.debug("The session is not started yet.");
+      this.log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "The session is not started yet."));
       resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
       return;
     }
@@ -101,8 +101,8 @@ public class SubscriptionsServlet extends HttpServlet {
     String subscriptionId = matcher.group(1);
     if (!session.getId().equals(subscriptionId)) {
       // mismatching the subscription_id.
-      this.log.debug("The Subscription ID ({}) is illegal. /Session ID: {}",
-          subscriptionId, session.getId());
+      this.log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "The Subscription ID ({}) is illegal. /Session ID: {}",
+          subscriptionId, session.getId()));
       resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
       return;
     }
@@ -128,7 +128,7 @@ public class SubscriptionsServlet extends HttpServlet {
     @SuppressWarnings("unchecked")
     Map<String, Set<String>> subscriptionTable = (Map<String, Set<String>>) obj;
     if (subscriptionTable == null) {
-      this.log.debug("A Subscription Table is not found. /{}", session.getId());
+      this.log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "A Subscription Table is not found. /{}", session.getId()));
       resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
       return;
     }
@@ -154,7 +154,7 @@ public class SubscriptionsServlet extends HttpServlet {
     @SuppressWarnings("unchecked")
     Map<String, Set<String>> origTable = (Map<String, Set<String>>) obj;
     if (origTable == null) {
-      this.log.debug("A Subscription Table is not found. /{}", session.getId());
+      this.log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "A Subscription Table is not found. /{}", session.getId()));
       resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
       return;
     }
@@ -162,7 +162,7 @@ public class SubscriptionsServlet extends HttpServlet {
     String reqBody = IOUtils.toString(req.getReader());
     Map<String, Set<String>> reqTable = this.deserialize(reqBody);
     if (reqTable == null) {
-      this.log.debug("Failed to deserialize the request body. /{}", reqBody);
+      this.log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Failed to deserialize the request body. /{}", reqBody));
       resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
       return;
     }

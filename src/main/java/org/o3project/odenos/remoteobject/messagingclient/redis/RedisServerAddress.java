@@ -82,7 +82,7 @@ public class RedisServerAddress {
     }
     sessionId++;
     if (log.isDebugEnabled()) {
-      log.debug("sessionId: {}, host: {}, port: {}", sessionId, host, port);
+      log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "sessionId: {}, host: {}, port: {}", sessionId, host, port));
     }
   }
   

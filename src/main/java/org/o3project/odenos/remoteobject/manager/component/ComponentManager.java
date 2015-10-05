@@ -105,14 +105,14 @@ public class ComponentManager extends RemoteObject {
 
     ObjectProperty eventMngObj = this.sysMngIf.getObject(eventManagerId);
     if (eventMngObj == null) {
-      log.error(LogMessage.buildLogMessage(50045, LogMessage.getSavedTxid(), "Internal Error to Get objects/{}", eventManagerId));
+      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Internal Error to Get objects/{}", eventManagerId));
       throw new Exception();
     }
 
     try {
       this.addRemoteObject(eventManagerId);
     } catch (IOException e) {
-      log.error(LogMessage.buildLogMessage(50046, LogMessage.getSavedTxid(), "Failure to addRemoteObject"));
+      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Failure to addRemoteObject"));
       throw new Exception();
     }
     return;
@@ -124,7 +124,7 @@ public class ComponentManager extends RemoteObject {
         ComponentManagerChanged.TYPE);
     Response rsp = this.applyEventSubscription();
     if (!rsp.statusCode.equals(Response.OK)) {
-      log.error(LogMessage.buildLogMessage(50047, LogMessage.getSavedTxid(), "Can't subscribe the ComponentManagerChanged."));
+      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Can't subscribe the ComponentManagerChanged."));
       throw new Exception();
     }
   }
@@ -132,7 +132,7 @@ public class ComponentManager extends RemoteObject {
   private void registerComponentManagers() throws Exception {
     ObjectPropertyList componentManagers = this.sysMngIf.getComponentMngs();
     if (componentManagers == null) {
-      log.error(LogMessage.buildLogMessage(50048, LogMessage.getSavedTxid(), "Internal Error to Get component_managers."));
+      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Internal Error to Get component_managers."));
       throw new Exception();
     }
     for (ObjectProperty componentManager : componentManagers) {
@@ -149,7 +149,7 @@ public class ComponentManager extends RemoteObject {
     try {
       this.addRemoteObject(componentManager.getObjectId());
     } catch (IOException e) {
-      log.error(LogMessage.buildLogMessage(50046, LogMessage.getSavedTxid(), "Failure to addRemoteObject"));
+      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Failure to addRemoteObject"));
       throw new Exception();
     }
     return;
@@ -159,7 +159,7 @@ public class ComponentManager extends RemoteObject {
     try {
       this.removeRemoteObject(objectId);
     } catch (IOException e) {
-      log.error(LogMessage.buildLogMessage(50049, LogMessage.getSavedTxid(), "Failure to unregisterComponentManager"));
+      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Failure to unregisterComponentManager"));
       throw new Exception();
     }
     return;
@@ -190,7 +190,7 @@ public class ComponentManager extends RemoteObject {
   @Override
   protected Response onRequest(Request request) {
     LogMessage.setSavedTxid(request.txid);
-    log.debug("onRequest: {}, {}", request.method, request.path);
+    log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "onRequest: {}, {}", request.method, request.path));
 
     RequestParser<IActionCallback>.ParsedRequest parsed = parser
         .parse(request);
@@ -203,7 +203,7 @@ public class ComponentManager extends RemoteObject {
     try {
       response = callback.process(parsed);
     } catch (Exception e) {
-      log.error(LogMessage.buildLogMessage(50026, LogMessage.getSavedTxid(), "Exception Request: {}, {}", request.method, request.path));
+      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Exception Request: {}, {}", request.method, request.path));
       response = new Response(Response.BAD_REQUEST, null);
     }
     if (response == null) {
@@ -399,7 +399,7 @@ public class ComponentManager extends RemoteObject {
     try {
       publishEvent(ComponentChanged.TYPE, msg);
     } catch (Exception e) {
-      log.error(LogMessage.buildLogMessage(50050, LogMessage.getSavedTxid(), "Failed to ComponentChanged"));
+      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Failed to ComponentChanged"));
     }
   }
 
@@ -419,7 +419,7 @@ public class ComponentManager extends RemoteObject {
           this.unregisterComponentManager(prop.prev().getObjectId());
         }
       } catch (Exception e) {
-        log.error(LogMessage.buildLogMessage(50051, LogMessage.getSavedTxid(), "Can't register ComponentManager."), e);
+        log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Can't register ComponentManager."), e);
       }
     }
   }

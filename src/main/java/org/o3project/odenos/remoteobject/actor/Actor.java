@@ -159,9 +159,9 @@ public class Actor implements Closeable {
       }
       // Include MODE.LOCAL_REQUESTS_TO_PUBSUB as MessageDispatcher config
       // to dump all incoming messages including local-loopback messages.
-      log.debug("{} mails: #{} \"{}\" <={}= \"{}\" via {}, {}",
+      log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "{} mails: #{} \"{}\" <={}= \"{}\" via {}, {}",
               mailbox.size(), head.serial, head.to, type, head.from,
-              head.via.getSourceDispatcherId(), path);
+              head.via.getSourceDispatcherId(), path));
     }
 
     txid = LogMessage.getSavedTxid();
@@ -183,7 +183,7 @@ public class Actor implements Closeable {
               try {
                 mail.via.publishResponseAsync(mail.sno, mail.from, mail.request, response);
               } catch (IOException e) {
-                log.error(LogMessage.buildLogMessage(50035, LogMessage.getSavedTxid(), "unable to send response"), e);
+                log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "unable to send response"), e);
               }
             } else if (mail.event != null) {
               txid = mail.event.txid;
