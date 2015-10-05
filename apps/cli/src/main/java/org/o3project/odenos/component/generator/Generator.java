@@ -84,13 +84,13 @@ public class Generator extends Driver {
     parser = createParser();
     resetEventSubscription();
     this.objectId = objectId;
-    log.info("created.");
+    log.info(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "created."));
   }
 
   private RequestParser<IActionCallback> createParser() {
     return new RequestParser<IActionCallback>() {
       {
-        log.info(">> {}", new Throwable().getStackTrace()[0].getMethodName());
+        log.info(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), ">> {}", new Throwable().getStackTrace()[0].getMethodName()));
 
         addRule(Method.PUT, "env/", new IActionCallback() {
           public Response process(RequestParser<IActionCallback>.ParsedRequest parsed)
@@ -216,16 +216,16 @@ public class Generator extends Driver {
 
   @Override
   public Response onRequest(Request request) {
-    log.debug(">> {}", new Throwable().getStackTrace()[0].getMethodName());
+    log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), ">> {}", new Throwable().getStackTrace()[0].getMethodName()));
 
     try {
-      log.debug("Received request : {}, {} {}", getObjectId(), request.method, request.path);
-      log.debug("Received body    : {}, {}", getObjectId(), request.getBodyValue());
+      log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Received request : {}, {} {}", getObjectId(), request.method, request.path));
+      log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Received body    : {}, {}", getObjectId(), request.getBodyValue()));
       RequestParser<IActionCallback>.ParsedRequest parsed = parser.parse(request);
       IActionCallback callback = parsed.getResult();
       return callback.process(parsed);
     } catch (Exception e) {
-      log.error("Exception in onRequest() : [case:{}] [msg:{}]", request.path, e.getMessage());
+      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Exception in onRequest() : [case:{}] [msg:{}]", request.path, e.getMessage()));
       e.printStackTrace();
       return createErrorResponse(Response.BAD_REQUEST, "Error while processing : ["
           + request.method + "] " + request.path);
@@ -233,14 +233,14 @@ public class Generator extends Driver {
   }
 
   private Response createErrorResponse(int code, Object body) {
-    log.debug(">> {}", new Throwable().getStackTrace()[0].getMethodName());
+    log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), ">> {}", new Throwable().getStackTrace()[0].getMethodName()));
     return createErrorResponse(code, body, body.toString());
   }
 
   private Response createErrorResponse(int code, Object body, String msg) {
-    log.debug(">> {}", new Throwable().getStackTrace()[0].getMethodName());
+    log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), ">> {}", new Throwable().getStackTrace()[0].getMethodName()));
     Response rsp = new Response(code, body);
-    log.debug("[{}] {}", code, msg);
+    log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "[{}] {}", code, msg));
     return rsp;
   }
 
@@ -413,7 +413,7 @@ public class Generator extends Driver {
   protected final void onOutPacketAdded(final String networkId, final OutPacketAdded msg) {
 
     String packetId = msg.getId();
-    // log.info("receive OutPacket: {}", packetId);
+    // log.info(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "receive OutPacket: {}", packetId));
 
     NetworkInterface networkIf = networkInterfaces().get(networkId);
 
@@ -439,7 +439,7 @@ public class Generator extends Driver {
         try {
           Response resp = networkIf.delOutPacket(packetId);
           if (resp.isError("DELETE")) {
-            log.error("invalid DELETE Packet:{}", resp.statusCode);
+            log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "invalid DELETE Packet:{}", resp.statusCode));
           }
         } catch (Exception e) {
           e.printStackTrace();
@@ -538,7 +538,7 @@ public class Generator extends Driver {
           inPacket.setPortId(adjPort);
           try {
             Response resp = request(adjDriver, Method.POST,
-                String.format("in_packet/%s/%s", adjNode, adjPort), inPacket);
+                String.format("in_packet/%s/%s", adjNode, adjPort), LogMessage.getSavedTxid(), inPacket);
             Util.dump(
                 String.format("postOutPacketToAdjacentNetwork: /in_packet/%s/%s", adjNode, adjPort),
                 objectId, inPacket.getPacketId(), adjNode, adjPort, header.getEthSrc(),
@@ -549,7 +549,7 @@ public class Generator extends Driver {
         }
 
         public void run() {
-          log.debug("run() in postOutPacketToAdjacentNetwork");
+          log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "run() in postOutPacketToAdjacentNetwork"));
           String inNode = header.getInNode();
           String inPort = header.getInPort();
           String outNode = outPacket.getNodeId();
@@ -564,41 +564,41 @@ public class Generator extends Driver {
 
           if (broadcast) { // Broadcast OutPacket to all the ports in adjacencies excluding
                            // inNode/inPort
-            log.debug("broadcast");
+            log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "broadcast"));
             for (int[] adjacency : adjacencies) {
               String gwNode = String.format(nodeFormat, adjacency[0]);
               String gwPort = String.format(portFormat, adjacency[1]);
               String adjDriver = String.format(driverFormat, adjacency[2]);
               String adjNode = String.format(nodeFormat, adjacency[3]);
               String adjPort = String.format(portFormat, adjacency[4]);
-              log.debug("gwNode:{}", gwNode);
-              log.debug("gwPort:{}", gwPort);
-              log.debug("inNode:{}", inNode);
-              log.debug("inPort:{}", inPort);
-              log.debug("adjDriver:{}", adjDriver);
-              log.debug("adjNode:{}", adjNode);
-              log.debug("adjPort:{}", adjPort);
+              log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "gwNode:{}", gwNode));
+              log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "gwPort:{}", gwPort));
+              log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "inNode:{}", inNode));
+              log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "inPort:{}", inPort));
+              log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "adjDriver:{}", adjDriver));
+              log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "adjNode:{}", adjNode));
+              log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "adjPort:{}", adjPort));
               if (gwNode.equals(inNode) && gwPort.equals(inPort)) {
                 // skip
               } else if (exceptOutPorts.contains(inPort)) {
                 System.out.println("exceptOutPorts: " + inPort);
-                // log.debug("exceptOutPorts: {}", inPort);
+                // log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "exceptOutPorts: {}", inPort));
                 // skip
               } else {
-                log.debug("postOutPacket");
+                log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "postOutPacket"));
                 postOutPacketToAdjacentNetwork(gwNode, gwPort, adjDriver, adjNode, adjPort,
                     outPacket);
               }
             }
           } else { // OutPacket to a specific port
-            log.debug("specific ports");
+            log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "specific ports"));
             for (String outPort : outPorts) {
               for (int[] adjacency : adjacencies) {
                 String gwNode = String.format(nodeFormat, adjacency[0]);
                 String gwPort = String.format(portFormat, adjacency[1]);
                 // if (!gwNode.equals(outNode) && !gwPort.equals(outPort)) {
                 if (gwNode.equals(outNode) && gwPort.equals(outPort)) {
-                  log.debug("postOutPacket");
+                  log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "postOutPacket"));
                   String adjDriver = String.format(driverFormat, adjacency[2]);
                   String adjNode = String.format(nodeFormat, adjacency[3]);
                   String adjPort = String.format(portFormat, adjacency[4]);
@@ -638,7 +638,7 @@ public class Generator extends Driver {
 
   @Override
   protected BasicFlow getFlow(final NetworkInterface nwIf, final String flowId) {
-    log.debug(">> {}", new Throwable().getStackTrace()[0].getMethodName());
+    log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), ">> {}", new Throwable().getStackTrace()[0].getMethodName()));
 
     if (nwIf == null || flowId == null) {
       return null;

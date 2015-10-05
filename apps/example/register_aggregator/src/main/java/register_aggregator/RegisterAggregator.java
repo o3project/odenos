@@ -34,6 +34,7 @@ import java.util.Map;
 
 public class RegisterAggregator extends SimpleControllerBase {
     private static Logger log = LogManager.getLogger(RegisterAggregator.class);
+    private static final int TXIDOFFSET = 9000000;
 
     // Object Id
     protected static final String ORIGINAL_NW_ID = "original_network";
@@ -52,7 +53,11 @@ public class RegisterAggregator extends SimpleControllerBase {
      * @param args
      */
     public static void main(String[] args) throws Exception {
-        log.debug("Start initialization...");
+        LogMessage.initParameters(TXIDOFFSET);
+        String txid = LogMessage.createTxid();
+        LogMessage.setSavedTxid(txid);
+
+        log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Start initialization..."));
 
         // /////////////////////////////////////
         // Set MessageDispatcher.
@@ -89,7 +94,7 @@ public class RegisterAggregator extends SimpleControllerBase {
         if (rsp == null || getProperty == null
                 || !getProperty.getObjectId().equals(
                         sendProperty.getObjectId())) {
-            log.error("Failed.");
+            log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Failed."));
             return;
         }
         outMsg("  -PUT Compoent(Original Netowrk). ");
@@ -113,7 +118,7 @@ public class RegisterAggregator extends SimpleControllerBase {
         if (rsp == null || getProperty == null
                 || !getProperty.getObjectId().equals(
                         sendProperty.getObjectId())) {
-            log.error("Failed.");
+            log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Failed."));
             return;
         }
         outMsg("  -PUT Compoent(Aggregated Netowrk). ");
@@ -139,7 +144,7 @@ public class RegisterAggregator extends SimpleControllerBase {
         if (rsp == null || getProperty == null
                 || !getProperty.getObjectId().equals(
                         sendProperty.getObjectId())) {
-            log.error("Failed.");
+            log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Failed."));
             return;
         }
         outMsg("  -PUT Compoent(Aggregator). ");
@@ -181,14 +186,14 @@ public class RegisterAggregator extends SimpleControllerBase {
         Map<String, ComponentConnection> getConns =
                 systemMngInterface.getConnections();
         if (getConns == null) {
-            log.error("Failed.");
+            log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Failed."));
             return;
         }
         for (String conId : getConns.keySet()) {
             ComponentConnection getConn =
                     systemMngInterface.getConnection(conId);
             if (getConn == null) {
-                log.error("Failed.");
+                log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Failed."));
                 return;
             }
         }

@@ -239,7 +239,7 @@ public class Bridge extends Component {
     @Override
     public void onPmessage(String pattern, String channel, byte[] message) {
       if (log.isDebugEnabled()) {
-        log.debug("pattern: {}, channel: {}, message{}", pattern, channel, new String(message));
+        log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "pattern: {}, channel: {}, message{}", pattern, channel, new String(message)));
         peer.publish(channel.replace("@bridge", ""), message);
       }
     }
@@ -327,7 +327,7 @@ public class Bridge extends Component {
     try {
       return callback.process(parsed);
     } catch (Exception e) {
-      log.error("request error", e);
+      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "request error"), e);
       return new Response(Response.BAD_REQUEST, "Error unknown request ");
     }
   }

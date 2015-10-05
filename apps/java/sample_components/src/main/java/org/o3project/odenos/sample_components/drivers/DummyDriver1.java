@@ -58,7 +58,7 @@ public class DummyDriver1 extends Driver {
       final MessageDispatcher dispatcher) throws Exception {
     super(objectId, baseUri, dispatcher);
     resetEventSubscription();
-    log.info("created.");
+    log.info(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "created."));
   }
 
   /**
@@ -72,7 +72,7 @@ public class DummyDriver1 extends Driver {
       final MessageDispatcher dispatcher) throws Exception {
     super(objectId, dispatcher);
     resetEventSubscription();
-    log.info("created.");
+    log.info(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "created."));
   }
 
   /**
@@ -242,12 +242,12 @@ public class DummyDriver1 extends Driver {
 
     // GET Packet to Drop
     String packetId = msg.getId();
-    log.info("receive OutPacket: {}", packetId);
+    log.info(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "receive OutPacket: {}", packetId));
     try {
       NetworkInterface networkIf = networkInterfaces().get(networkId);
       Response resp = networkIf.delOutPacket(packetId);
       if (resp.isError("DELETE")) {
-        log.error("invalid DELETE Packet:{}", resp.statusCode);
+        log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "invalid DELETE Packet:{}", resp.statusCode));
       }
     } catch (Exception e) {
       e.printStackTrace();

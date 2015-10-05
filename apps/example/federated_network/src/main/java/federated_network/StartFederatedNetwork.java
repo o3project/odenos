@@ -72,9 +72,14 @@ public class StartFederatedNetwork extends SimpleControllerBase {
     protected static final int WAIT_TIME = 500;   
     
     private static Logger log = LogManager.getLogger(StartFederatedNetwork.class);
+    private static final int TXIDOFFSET = 9000000;
 
     public static void main(String[] args) {
-        log.debug("Start initialization...");
+        LogMessage.initParameters(TXIDOFFSET);
+        String txid = LogMessage.createTxid();
+        LogMessage.setSavedTxid(txid);
+
+        log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Start initialization..."));
 
         // /////////////////////////////////////
         // Set MessageDispatcher.
@@ -341,7 +346,7 @@ public class StartFederatedNetwork extends SimpleControllerBase {
         if (sendProp == null || getProp == null
                 || !getProp.getObjectId().equals(
                         sendProp.getObjectId())) {
-            log.error("Failed.");
+            log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Failed."));
             return false;
         } 
         return true;
