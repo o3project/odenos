@@ -28,11 +28,10 @@ configuration:
       mdcId: "mdc"
       includeMDC: "true"
       LoggerFields:
-#        - KeyValuePair:
-#            key: "thread"
-#            value: "%t"
-        - KeyValuePair:
-            key: "method"
+        KeyValuePair: !!pairs
+          - key: "thread"
+            value: "%t"
+          - key: "method"
             value: "%c.%M"
 
 #   CassandraAppender:
