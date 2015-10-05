@@ -36,20 +36,24 @@ URI                                                     | GET                 | 
  \<base_uri>/topology                                   | [x](#GETtopology)   |                 | [x](#PUTproperty)          |               
  \<base_uri>/topology/nodes                             | [x](#GETnodes)      | [x](#POSTnodes) |                            |        
  \<base_uri>/topology/nodes/\<node_id>                  | [x](#GETnodes_id)   |                 | [x](#PUTnodes_id)          | [x](#DELETEnodes_id)
+ \<base_uri>/topology/nodes/\<node_id>/attributes       |                     |                 | [x](#PUTnodes_attributes)  |
  \<base_uri>/topology/physical_nodes/\<physical_id>     | [x](#GETnode_physical_id) |           | [x](#PUTnode_physical_id)  | [x](#DELETEnode_physical_id)      
  \<base_uri>/topology/nodes/\<node_id>/ports            | [x](#GETports)      | [x](#POSTports) |                            |   
  \<base_uri>/topology/nodes/\<node_id>/ports/\<port_id> | [x](#GETport_id)    |                 | [x](#PUTport_id)           | [x](#DELETEport_id)
+ \<base_uri>/topology/nodes/\<node_id>/ports/\<port_id>/attributes |          |                 | [x](#PUTport_attributes)   | 
  \<base_uri>/topology/physical_ports/\<physical_id>     | [x](#GETport_physical_id) |           | [x](#PUTport_physical_id)  | [x](#DELETEport_physical_id)
  \<base_uri>/topology/links                             | [x](#GETlinks)      | [x](#POSTlinks) |                            |
  \<base_uri>/topology/links/\<link_id>                  | [x](#GETlink_id)    |                 | [x](#PUTlink_id)           | [x](#DELETElink_id)
+ \<base_uri>/topology/links/\<link_id>/attributes       |                     |                 | [x](#PUTlink_attributes)   | 
 
 
  * Flows  
 
 URI                             | GET               | POST             |  PUT              | DELETE                             
 --------------------------------|-------------------|------------------|-------------------|-----------------  
-  \<base_uri>/flows             | [x](#GETflows)   | [x](#POSTflows) |                   |
-  \<base_uri>/flows/\<flow_id>  | [x](#GETflow_id) |                  | [x](#PUTflow_id) |[x](#DELETEflow_id)
+  \<base_uri>/flows             | [x](#GETflows)    | [x](#POSTflows)  |                   | 
+  \<base_uri>/flows/\<flow_id>  | [x](#GETflow_id)  |                  | [x](#PUTflow_id)  |[x](#DELETEflow_id)
+  \<base_uri>/flows/\<flow_id>/attributes   |       |                  | [x](#PUTflow_attributes)  | 
 
 
  * Packets  
@@ -77,6 +81,7 @@ URI                                    | GET                        | POST      
   * [GET \<base_uri>/topology/nodes](#GETnodes)
   * [GET \<base_uri>/topology/nodes/\<node_id>](#GETnodes_id)
   * [PUT \<base_uri>/topology/nodes/\<node_id>](#PUTnodes_id)
+  * [PUT \<base_uri>/topology/nodes/\<node_id>/attributes](#PUTnodes_attributes)
   * [DELETE \<base_uri>/topology/nodes/\<node_id>](#DELETEnodes_id)
   * [GET \<base_uri>/topology/physical_nodes/\<physical_id>](#GETnode_physical_id)
   * [PUT \<base_uri>/topology/physical_nodes/\<physical_id>](#PUTnode_physical_id)
@@ -87,6 +92,7 @@ URI                                    | GET                        | POST      
   * [GET \<base_uri>/topology/nodes/\<node_id>/ports](#GETports)
   * [GET \<base_uri>/topology/nodes/\<node_id>/ports/\<port_id>](#GETport_id)
   * [PUT \<base_uri>/topology/nodes/\<node_id>/ports/\<port_id>](#PUTport_id)
+  * [PUT \<base_uri>/topology/nodes/\<node_id>/ports/\<port_id>/attributes](#PUTport_attributes)
   * [DELETE \<base_uri>/topology/nodes/\<node_id>/ports/\<port_id>](#DELETEport_id)
   * [GET \<base_uri>/topology/physical_ports/\<physical_id>](#GETport_physical_id)
   * [PUT \<base_uri>/topology/physical_ports/\<physical_id>](#PUTport_physical_id)
@@ -97,6 +103,7 @@ URI                                    | GET                        | POST      
   * [GET \<base_uri>/topology/links](#GETlinks)
   * [GET \<base_uri>/topology/links/\<link_id>](#GETlink_id)
   * [PUT \<base_uri>/topology/links/\<link_id>](#PUTlink_id)
+  * [PUT \<base_uri>/topology/links/\<link_id>/attributes](#PUTlink_attributes)
   * [DELETE \<base_uri>/topology/links/\<link_id>](#DELETElink_id)
 
 ##### Flow
@@ -104,6 +111,7 @@ URI                                    | GET                        | POST      
   * [GET \<base_uri>/flows](#GETflows)
   * [GET \<base_uri>/flows/\<flow_id>](#GETflow_id)
   * [PUT \<base_uri>/flows/\<flow_id>](#PUTflow_id)
+  * [PUT \<base_uri>/flows/\<flow_id>/attributes](#PUTflow_attributes)
   * [DELETE \<base_uri>/flows/\<flow_id>](#DELETEflow_id)
 
 ##### Packet
@@ -219,6 +227,19 @@ create a new node if id does not exist.
 
 ##### [Response]\(Created):
   * **Status Code** : 201
+  * **Body** : [Node](./DataClass.md#Node)
+
+
+----
+#### <a name="PUTnodes_attributes">PUT \<base_uri>/topology/nodes/\<node_id>/attributes</a>
+update the node without check of the version. (specify the id that you want to update)
+using the one before updating, if any, as values of the attributes which aren't specified.
+
+##### [Request]:
+  * **Body** : attributes  dict{\<String>, \<String>} 
+
+##### [Response]\(Updated):
+  * **Status Code** : 200
   * **Body** : [Node](./DataClass.md#Node)
 
 
@@ -339,6 +360,20 @@ create a new port if id does not exist.
   * **Status Code** : 201
   * **Body** : [Port](./DataClass.md#Port)
 
+
+----
+#### <a name="PUTport_attributes">PUT \<base_uri>/topology/nodes/\<node_id>/ports/\<port_id>/attributes</a>
+update the port without check of the version. (specify the id that you want to update)
+using the one before updating, if any, as values of the attributes which aren't specified.
+
+##### [Request]:
+  * **Body** : attributes  dict{\<String>, \<String>} 
+
+##### [Response]\(Updated):
+  * **Status Code** : 200
+  * **Body** : [Port](./DataClass.md#Port)
+
+
 ----
 #### <a name="DELETEport_id">DELETE \<base_uri>/topology/nodes/\<node_id>/ports/\<port_id></a>  
 Delete the port. (specify the id that you want to delete)  
@@ -458,6 +493,19 @@ create a new link if id does not exist.
   * **Body** : [Link](./DataClass.md#Link)
 
 ----
+#### <a name="PUTlink_attributes">PUT \<base_uri>/topology/links/\<link_id>/attributes</a>
+update the link without check of the version. (specify the id that you want to update)
+using the one before updating, if any, as values of the attributes which aren't specified.
+
+##### [Request]:
+  * **Body** : attributes  dict{\<String>, \<String>}
+
+##### [Response]\(Updated):
+  * **Status Code** : 200
+  * **Body** : [Link](./DataClass.md#Link)
+
+
+----
 #### <a name="DELETElink_id">DELETE \<base_uri>/topology/links/\<link_id></a>  
 Delete the link. (specify the id that you want to delete)
 
@@ -539,6 +587,19 @@ create a new flow if id does not exist.
 
 ##### [Response]\(Created):
   * **Status Code** : 201
+  * **Body** : [Flow](./DataClass.md#Flow)
+
+
+----
+#### <a name="PUTflow_attributes">PUT \<base_uri>/flows/\<flow_id>/attributes</a>
+update the flow without check of the version. (specify the id that you want to update)
+using the one before updating, if any, as values of the attributes which aren't specified.
+
+##### [Request]:
+  * **Body** : attributes  dict{\<String>, \<String>}
+
+##### [Response]\(Updated):
+  * **Status Code** : 200
   * **Body** : [Flow](./DataClass.md#Flow)
 
 ----

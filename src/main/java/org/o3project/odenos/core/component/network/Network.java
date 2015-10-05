@@ -447,6 +447,20 @@ public class Network extends Component {
     return new Response(returnCode, node);
   }
 
+  protected Response putNodeAttributes(String nodeId, Map<String, String> addAttributes) throws Exception {
+    Node node = topology.getNode(nodeId);
+    Node nodeOld = node.clone();
+
+    // attributes copy (curr -> body)
+    for (String key : addAttributes.keySet()) {
+        node.putAttribute(key, addAttributes.get(key));
+    }
+
+    node.updateVersion();
+    notifyNodeChanged(nodeOld, node.clone(), NodeChanged.Action.update);
+    return new Response(Response.OK, node);
+  }
+
   protected Response deleteNode(String nodeId, Node msg) throws Exception {
     log.debug("");
     Node node = topology.getNode(nodeId);
@@ -605,6 +619,30 @@ public class Network extends Component {
 
     return new Response(returnCode, port);
   }
+
+  protected Response putPortAttributes(String nodeId, String portId,
+      Map<String, String> addAttributes) throws Exception {
+
+    Node node = topology.getNode(nodeId);
+    if (node == null) {
+      return createErrorResponse(Response.NOT_FOUND, null,
+          "node_id not found");
+    }
+
+    Port port = node.getPort(portId);
+    Port portOld = port.clone();
+
+    // attributes copy (curr -> body)
+    for (String key : addAttributes.keySet()) {
+      port.putAttribute(key, addAttributes.get(key));
+    }
+
+    port.updateVersion();
+    node.updateVersion();
+    notifyPortChanged(portOld, port.clone(), PortChanged.Action.update);
+    return new Response(Response.OK, port);
+  }
+
 
   protected Response deletePort(String nodeId, String portId,
       Port msg) throws Exception {
@@ -910,6 +948,20 @@ public class Network extends Component {
     return new Response(returnCode, link);
   }
 
+  protected Response putLinkAttributes(String linkId, Map<String, String> addAttributes) throws Exception {
+    Link link = topology.getLink(linkId);
+    Link linkOld = link.clone();
+
+    // attributes copy (curr -> body)
+    for (String key : addAttributes.keySet()) {
+        link.putAttribute(key, addAttributes.get(key));
+    }
+
+    link.updateVersion();
+    notifyLinkChanged(linkOld, link.clone(), LinkChanged.Action.update);
+    return new Response(Response.OK, link);
+  }
+
   protected Response deleteLink(String linkId, Link msg) throws Exception {
     log.debug("");
     Link link = topology.getLink(linkId);
@@ -1106,6 +1158,22 @@ public class Network extends Component {
       notifyFlowChanged(flowOld, flow.clone(), action);
     }
     return new Response(returnCode, flow);
+  }
+
+
+  protected Response putFlowAttributes(String flowId, Map<String, String> addAttributes) throws Exception {
+
+    Flow flow = flowset.getFlow(flowId);
+    Flow flowOld = flow.clone();
+
+    // attributes copy (curr -> body)
+    for (String key : addAttributes.keySet()) {
+      flow.putAttribute(key, addAttributes.get(key));
+    }
+
+    flow.updateVersion();
+    notifyFlowChanged(flowOld, flow.clone(), FlowChanged.Action.update);
+    return new Response(Response.OK, flow);
   }
 
   protected Response deleteFlow(String flowId, Flow msg) throws Exception {
@@ -1520,6 +1588,17 @@ public class Network extends Component {
               }
             });
 
+        addRule(Method.PUT, "topology/nodes/<node_id>/attributes",
+            new IActionCallback() {
+              @Override
+              public Response process(
+                  RequestParser<IActionCallback>.ParsedRequest parsed)
+                  throws Exception {
+                return putNodeAttributes(parsed.getParam("node_id"),
+                    parsed.getRequest().getBodyAsStringMap());
+              }
+            });
+
         addRule(Method.DELETE, "topology/nodes/<node_id>",
             new IActionCallback() {
               @Override
@@ -1575,6 +1654,18 @@ public class Network extends Component {
                 return putPort(parsed.getParam("node_id"),
                     parsed.getParam("port_id"),
                     parsed.getRequest().getBody(Port.class));
+              }
+            });
+
+        addRule(Method.PUT, "topology/nodes/<node_id>/ports/<port_id>/attributes",
+            new IActionCallback() {
+              @Override
+              public Response process(
+                  RequestParser<IActionCallback>.ParsedRequest parsed)
+                  throws Exception {
+                return putPortAttributes(parsed.getParam("node_id"),
+                    parsed.getParam("port_id"),
+                    parsed.getRequest().getBodyAsStringMap());
               }
             });
 
@@ -1700,6 +1791,17 @@ public class Network extends Component {
               }
             });
 
+        addRule(Method.PUT, "topology/links/<link_id>/attributes",
+            new IActionCallback() {
+              @Override
+              public Response process(
+                  RequestParser<IActionCallback>.ParsedRequest parsed)
+                  throws Exception {
+                return putLinkAttributes(parsed.getParam("link_id"),
+                    parsed.getRequest().getBodyAsStringMap());
+              }
+            });
+
         addRule(Method.DELETE, "topology/links/<link_id>",
             new IActionCallback() {
               @Override
@@ -1748,6 +1850,16 @@ public class Network extends Component {
             return putFlow(parsed.getParam("flow_id"),
                 FlowObject.readFlowMessageFrom(parsed
                     .getRequest().getBodyValue()));
+          }
+        });
+
+        addRule(Method.PUT, "flows/<flow_id>/attributes", new IActionCallback() {
+          @Override
+          public Response process(
+              RequestParser<IActionCallback>.ParsedRequest parsed)
+              throws Exception {
+            return putFlowAttributes(parsed.getParam("flow_id"),
+              parsed.getRequest().getBodyAsStringMap());
           }
         });
 
