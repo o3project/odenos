@@ -32,7 +32,7 @@
         <jdk>1.7</jdk>
       </activation>
       <properties>
-        <test.argLine>-XX:-UseSplitVerifier -XX:MaxPermSize=384m</test.argLine>
+        <test.argLine>-XX:-UseSplitVerifier -XX:MaxPermSize=512m</test.argLine>
       </properties>
     </profile>
   </profiles>
