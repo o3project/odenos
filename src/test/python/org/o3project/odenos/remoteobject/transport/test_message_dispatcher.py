@@ -448,20 +448,29 @@ class MessageDispatcherTest(unittest.TestCase):
         self.target._MessageDispatcher__redisSubscriber =\
             self.target._MessageDispatcher__redisSubscriber.pubsub()
 
+        def dummy_event_runnable(arg, event):
+            arg(event)
+
         with nested(
             patch("redis.client.PubSub.subscribe"),
                 patch("logging.error"),
                 patch("redis.client.PubSub.unsubscribe"),
                 patch("redis.client.PubSub.listen"),
+                patch("concurrent.futures.ThreadPoolExecutor.submit"),
+                patch(self.DISPATCHER_PATH + ".dispatch_event"),
                 patch(self.EVENT_PATH + ".create_from_packed")) as (
                 mock_subscribe,
                 logging_error,
                 mock_unsubscribe,
                 mock_listen,
+                mock_submit,
+                mock_dispatch_event,
                 mock_event):
             mock_subscribe.return_value = None
             mock_unsubscribe.return_value = None
             mock_listen.return_value = [self.value]
+            mock_dispatch_event.return_value = None
+            mock_submit.side_effect = dummy_event_runnable
 
             self.target._MessageDispatcher__redisSubscriberRunnable()
 
