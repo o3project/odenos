@@ -46,6 +46,8 @@ URI                                                     | GET                 | 
  \<base_uri>/topology/links/\<link_id>                  | [x](#GETlink_id)    |                 | [x](#PUTlink_id)           | [x](#DELETElink_id)
  \<base_uri>/topology/links/\<link_id>/attributes       |                     |                 | [x](#PUTlink_attributes)   | 
 
+  Here, \<base_uri> is http://\<hostname>:10080/\<remote_object_id>
+  such as http://localhost:10080/network1
 
  * Flows  
 

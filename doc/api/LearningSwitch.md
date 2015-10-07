@@ -16,6 +16,8 @@
   * [GET \<base_uri>/settings/default_hard_timer](#GETdefault_hard_timer)
   * [PUT \<base_uri>/settings/default_hard_timer](#PUTdefault_hard_timer)
 
+    Here, \<base_uri> is http://\<hostname>:10080/systemmanager/components/learning_switch
+    such as http://localhost:10080/systemmanager/components/learning_switch
 
 ----
 #### <a name="GETproperty"> GET \<base_uri>/property</a>

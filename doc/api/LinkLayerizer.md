@@ -1,4 +1,4 @@
-﻿
+
 ## LinkLayerizer
 
 LinkLayerizer integrates networks of different layers, to create a multi-layer network.
@@ -83,6 +83,8 @@ network_id       | \<String>              |Network ID
   * [GET \<base_uri>/layerized_links](#GETlayerized_links)
   * [GET \<base_uri>/layerized_links/\<flow_id>](#GETflow_id)
 
+    Here, \<base_uri> is http://\<hostname>:10080/systemmanager/components/\<comp_id>
+    such as http://localhost:10080/systemmanager/components/link-layerizer
 
 ----
 #### <a name="GETproperty"> GET \<base_uri>/property</a>  

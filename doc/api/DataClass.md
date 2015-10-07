@@ -689,7 +689,7 @@ represents Packet_out of BasicFlow.
 -------------|--------------|--------------------------------------------|-----------|----------
 packet_id    | \<String>    |Unique packet's Identifier in this network. | -         |  -
 type         | \<String>    |Type is "OutPacket"                         | Mandatory |  -
-node         |[Port](Port).node_id |node_id to output the packet.        | Mandatory |  -
+node         |[Port](#Port).node_id |node_id to output the packet.        | Mandatory |  -
 ports        |list[[Port](#port).port_id] |List of port for OutPacket. "ports" and "ports-except" can be specified only either.  | Optional |  -
 ports-except |list[[Port](#Port).port_id] |List of  except port for OutPacket. "ports" and "ports-except" can be specified only either.| Optional |  -
 header       |[BasicFlowMatch](#BasicFlowMatch) |header info.            | Mandatory |  -
@@ -705,7 +705,7 @@ represents Packet_out of OFPFlow.
 -------------|--------------|--------------------------------------------|-----------|----------
 packet_id    | \<String>    |Unique packet's Identifier in this network. | -         |  -
 type         | \<String>    |Type is "OutPacket"                         | Mandatory |  -
-node         |[Port](Port).node_id |node_id to output the packet.        | Mandatory |  -
+node         |[Port](#Port).node_id |node_id to output the packet.        | Mandatory |  -
 ports        |list[[Port](#port).port_id] |List of port for ignore OutPacket. "ports" and "ports-except" can be specified only either.  | Optional |  -
 ports-except |list[[Port](#Port).port_id] |List of  except port for OutPacket. "ports" and "ports-except" can be specified only either.| Optional |  -
 header       |[BasicFlowMatch](#BasicFlowMatch) |header info.            | Mandatory |  -

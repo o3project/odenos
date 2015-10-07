@@ -66,6 +66,8 @@ network_id       | \<String>                  |Network ID
   * [GET \<base_uri>/aggregated_nw_flow](#GETaggregated_nw_flow)
   * [GET \<base_uri>/original_nw_flow](#GEToriginal_nw_flow)
 
+    Here, \<base_uri> is http://\<hostname>:10080/systemmanager/components/aggregator
+    such as http://localhost:10080/systemmanager/components/aggregator
 
 ----
 #### <a name="GETproperty"> GET \<base_uri>/property</a>
