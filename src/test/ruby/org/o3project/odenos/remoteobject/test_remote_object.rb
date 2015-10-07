@@ -279,7 +279,7 @@ class TestRemoteObject < MiniTest::Test
   end
 
   def test_dispatch_request_internal_request_success
-    request = Request.new('object_id', :GET, 'property', nil)
+    request = Request.new('object_id', :GET, 'property', "*", nil)
 
     response = @target.dispatch_request(request)
 
@@ -288,7 +288,7 @@ class TestRemoteObject < MiniTest::Test
   end
 
   def test_dispatch_request_outside_request_success
-    request = Request.new('object_id', :GET, 'components', nil)
+    request = Request.new('object_id', :GET, 'components', "*", nil)
     ex_response = Response.new(Response::OK, nil)
     @target.expects(:on_request).with(request).returns(ex_response).once
 
@@ -299,7 +299,7 @@ class TestRemoteObject < MiniTest::Test
 
   def test_dispatch_request_exception
     @target.instance_variable_set(:@parser, nil)
-    request = Request.new('object_id', :GET, 'property', nil)
+    request = Request.new('object_id', :GET, 'property', "*", nil)
 
     response = @target.dispatch_request(request)
 
@@ -310,6 +310,7 @@ class TestRemoteObject < MiniTest::Test
   def test_dispatch_event
     event = Event.new("systemmanager",
                       ObjectPropertyChanged::TYPE,
+                      "*",
                       {"action" => "delete",
                        "prev" => @target.property,
                        "curr" => nil})
@@ -360,7 +361,7 @@ class TestRemoteObject < MiniTest::Test
   end
 
   def test_on_request
-    request = Request.new('object_id', :GET, 'property', nil)
+    request = Request.new('object_id', :GET, 'property', "*", nil)
 
     resp = @target.on_request(request)
 
@@ -370,6 +371,7 @@ class TestRemoteObject < MiniTest::Test
   def test_on_event
     event = Event.new("systemmanager",
                       ObjectPropertyChanged::TYPE,
+                      "*",
                       {"action" => "delete",
                        "prev" => @target.property,
                        "curr" => nil})
@@ -414,7 +416,7 @@ class TestRemoteObject < MiniTest::Test
                 "id" => "compmgr_ruby",
                 "state" => ObjectProperty::State::RUNNING,
                 "ext" => "extension"}
-    request = Request.new('object_id', :PUT, 'property', new_prop)
+    request = Request.new('object_id', :PUT, 'property', "*", new_prop)
     @target.expects(:on_property_changed).with('update',
                                                instance_of(ObjectProperty),
                                                @target.property).returns().once
@@ -429,7 +431,7 @@ class TestRemoteObject < MiniTest::Test
     new_prop = {"type" => "ComponentManager",
                 "id" => "compmgr_ruby",
                 "state" => ObjectProperty::State::FINALIZING}
-    request = Request.new('object_id', :PUT, 'property', new_prop)
+    request = Request.new('object_id', :PUT, 'property', "*", new_prop)
     @target.expects(:on_finalize).with().returns().once
 
     response = @target.send(:do_put_property, request)
@@ -444,7 +446,7 @@ class TestRemoteObject < MiniTest::Test
                 "state" => "initializing",
                 "description" => nil,
                 "connection_types" => nil}
-    request = Request.new('object_id', :PUT, 'property', new_prop)
+    request = Request.new('object_id', :PUT, 'property', "*", new_prop)
     @target.expects(:on_finalize).with().returns().never
     @target.expects(:on_property_changed).with('update',
                                                instance_of(ObjectProperty),
@@ -468,7 +470,7 @@ class TestRemoteObject < MiniTest::Test
                         :update => 2}
     new_settings = {:add => 3,
                     :update => 4}
-    request = Request.new('object_id', :PUT, 'settings', new_settings)
+    request = Request.new('object_id', :PUT, 'settings', "*", new_settings)
     @target.expects(:on_settings_changed).with(instance_of(Hash),
                                                @target.settings).returns().once
 
@@ -483,7 +485,7 @@ class TestRemoteObject < MiniTest::Test
                         :update => 2}
     new_settings = {:del => 1,
                     :update => 2}
-    request = Request.new('object_id', :PUT, 'settings', new_settings)
+    request = Request.new('object_id', :PUT, 'settings', "*", new_settings)
     @target.expects(:on_settings_changed).with(instance_of(Hash),
                                                @target.settings).returns().never
 
@@ -496,6 +498,7 @@ class TestRemoteObject < MiniTest::Test
   def test_do_post_event
     event = Event.new("systemmanager",
                       ObjectPropertyChanged::TYPE,
+                      "*", 
                       {"action" => "delete",
                        "prev" => @target.property,
                        "curr" => nil})

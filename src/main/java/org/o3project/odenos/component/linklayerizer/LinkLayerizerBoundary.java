@@ -26,8 +26,10 @@ import org.msgpack.type.MapValue;
 import org.msgpack.type.Value;
 import org.msgpack.type.ValueFactory;
 import org.o3project.odenos.core.component.Boundary;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.o3project.odenos.core.logging.message.LogMessage;
 
 import java.io.Serializable;
 import java.util.Map;
@@ -56,7 +58,7 @@ public class LinkLayerizerBoundary extends Boundary implements Serializable {
 
   /** logger. */
   @Ignore
-  private static final Logger log = LoggerFactory
+  private static final Logger log = LogManager
       .getLogger(LinkLayerizerBoundary.class);
 
   /** ID that is unique in the ODENOS. */
@@ -261,7 +263,7 @@ public class LinkLayerizerBoundary extends Boundary implements Serializable {
       return true;
 
     } catch (IllegalArgumentException ex) {
-      log.warn(ex.getMessage(), ex);
+      log.warn(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), ex.getMessage()), ex);
       return false;
     }
   }
@@ -321,7 +323,7 @@ public class LinkLayerizerBoundary extends Boundary implements Serializable {
       return true;
 
     } catch (IllegalArgumentException ex) {
-      log.error(ex.getMessage(), ex);
+      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), ex.getMessage()), ex);
       return false;
     }
   }
@@ -333,7 +335,7 @@ public class LinkLayerizerBoundary extends Boundary implements Serializable {
   @Override
   public boolean writeValueSub(Map<String, Value> values) {
     if (values == null) {
-      log.error("values is null");
+      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "values is null"));
       throw new IllegalArgumentException("values is null");
     }
 

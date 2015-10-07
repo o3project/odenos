@@ -27,8 +27,10 @@ import org.msgpack.type.ArrayValue;
 import org.msgpack.type.MapValue;
 import org.msgpack.type.Value;
 import org.msgpack.unpacker.Unpacker;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.o3project.odenos.core.logging.message.LogMessage;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -43,7 +45,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  *
  */
 public abstract class MessageBodyUnpacker implements MessagePackable {
-  private static final Logger log = LoggerFactory.getLogger(MessageBodyUnpacker.class);
+  private static final Logger log = LogManager.getLogger(MessageBodyUnpacker.class);
 
   @SuppressWarnings("serial")
   public static class ParseBodyException extends IOException {
@@ -150,7 +152,7 @@ public abstract class MessageBodyUnpacker implements MessagePackable {
         bodyValue = null;
       } catch (IOException e) {
         // throw new ParseBodyException(e);
-        log.error("IOException", e);
+        log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "IOException"), e);
         //e.printStackTrace();
       } finally {
         if (msgpack != null) {
@@ -171,7 +173,7 @@ public abstract class MessageBodyUnpacker implements MessagePackable {
     try {
       return this.getBody(clazz);
     } catch (ParseBodyException e) {
-      log.error("ParseBodyException", e);
+      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "ParseBodyException"), e);
       //e.printStackTrace();
       return null;
     }
@@ -191,7 +193,7 @@ public abstract class MessageBodyUnpacker implements MessagePackable {
         }
         bodyValue = msgpack.unconvert(body);
       } catch (IOException e) {
-        log.error("IOException", e);
+        log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "IOException"), e);
         //e.printStackTrace();
       } finally {
         if (msgpack != null) {
@@ -226,7 +228,7 @@ public abstract class MessageBodyUnpacker implements MessagePackable {
         }
         body = map;
       } catch (IOException e) {
-        log.error("IOException", e);
+        log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "IOException"), e);
         //e.printStackTrace();
       } finally {
         if (msgpack != null) {
@@ -259,7 +261,7 @@ public abstract class MessageBodyUnpacker implements MessagePackable {
         }
         body = list;
       } catch (IOException e) {
-        log.error("IOException", e);
+        log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "IOException"), e);
         //e.printStackTrace();
       } finally {
         if (msgpack != null) {

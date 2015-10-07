@@ -21,7 +21,8 @@ module Odenos
     class Event < Odenos::Util::ObjectArray
       array_accessor :object, :publisher_id,  0
       array_accessor :object, :event_type,    1
-      array_accessor :object, :body,          2
+      array_accessor :object, :txid,          2
+      array_accessor :object, :body,          3
 
       # @overload initialize(event_ary)
       #  @param [(String,String,#to_msgpack)] event_ary
@@ -33,13 +34,13 @@ module Odenos
         case ary.length
         when 1
           fail ArgumentError, 'expect Array' unless ary.first.is_a?(Array)
-          fail ArgumentError, 'expect Event Array(3)' if ary.first.length != 3
+          fail ArgumentError, 'expect Event Array(4)' if ary.first.length != 4
 
           super(ary.first)
-        when 3
+        when 4
           super(ary)
         else
-          fail ArgumentError, 'expect 1 or 3 arguments'
+          fail ArgumentError, 'expect 1 or 4 arguments'
         end
       end
     end

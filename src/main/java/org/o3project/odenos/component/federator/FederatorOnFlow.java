@@ -27,8 +27,10 @@ import org.o3project.odenos.core.component.network.flow.basic.FlowAction;
 import org.o3project.odenos.core.component.network.flow.basic.FlowActionOutput;
 import org.o3project.odenos.core.component.network.topology.Link;
 import org.o3project.odenos.remoteobject.message.Response;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.o3project.odenos.core.logging.message.LogMessage;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -41,7 +43,7 @@ import java.util.regex.Pattern;
  * Dispose onFlow in Federator class.
  */
 public class FederatorOnFlow {
-  private static final Logger log = LoggerFactory.getLogger(Federator.class);
+  private static final Logger log = LogManager.getLogger(Federator.class);
 
   protected ConversionTable conversionTable;
   protected Map<String, NetworkInterface> networkInterfaces;
@@ -117,11 +119,11 @@ public class FederatorOnFlow {
       NetworkInterface orgNwIf = networkInterfaces.get(flowId[0]);
       Flow orgFlow = orgNwIf.getFlow(flowId[1]);
       if (!FlowObject.FlowStatus.ESTABLISHED.toString().equalsIgnoreCase(orgFlow.getStatus())) {
-        log.debug("not flow's status established.");
+        log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "not flow's status established."));
         return false;
       }
     }
-    log.debug("next federate stauts:: established.");
+    log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "next federate stauts:: established."));
     return true;
   }
 
@@ -151,11 +153,11 @@ public class FederatorOnFlow {
 
       if (!FlowObject.FlowStatus.NONE.toString().equalsIgnoreCase(
           orgFlow.getStatus())) {
-        log.debug("not flow's status none.");
+        log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "not flow's status none."));
         return false;
       }
     }
-    log.debug("next federate stauts:: none");
+    log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "next federate stauts:: none"));
     return true;
   }
   
@@ -169,7 +171,7 @@ public class FederatorOnFlow {
     
     BasicFlowMatch flowMatch = flow.getMatches().get(0);
     if (flowMatch == null) {
-      log.warn("invalid federated flow.");
+      log.warn(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "invalid federated flow."));
       return;
     }
 
@@ -286,7 +288,7 @@ public class FederatorOnFlow {
         ignorekeys.remove(updatekey);
       }
     }
-    log.debug("ignore key_list:: {}", ignorekeys);
+    log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "ignore key_list:: {}", ignorekeys));
     return ignorekeys;
   }
 
@@ -305,7 +307,7 @@ public class FederatorOnFlow {
     try {
       orgNwId = convertMatch(fedNwId, orgFlow);
     } catch (Exception e) {
-      log.warn("failed convert flow's actions.");
+      log.warn(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "failed convert flow's actions."));
       return ;
     }
 
@@ -347,7 +349,7 @@ public class FederatorOnFlow {
       orgFlow.putEdgeActions(
           convertAction(fedNwId, edgeNode, orgFlow.getEdgeActions()));
     } catch (Exception e) {
-      log.warn("failed convert flow's actions.");
+      log.warn(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "failed convert flow's actions."));
     }
     doFlowAddedSetFlowRegister(orgNwId, orgFlow);
   }
@@ -450,7 +452,7 @@ public class FederatorOnFlow {
       FlowActionOutput output = (FlowActionOutput) action;
       String orgPorts = getConvPortId(nwId, fedNodeId, output.getOutput());
       if (orgPorts == null) {
-        log.error("edge action out port convert Error.");
+        log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "edge action out port convert Error."));
         continue ;
       }
       String[] orgPort = orgPorts.split(Federator.SEPARATOR);
@@ -615,12 +617,12 @@ public class FederatorOnFlow {
     log.debug("");
 
     if (networkId == null || nodeId == null) {
-      log.warn("invalid param");
+      log.warn(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "invalid param"));
       return null;
     }
     ArrayList<String> convNodeId = conversionTable.getNode(networkId, nodeId);
     if (convNodeId.size() == 0) {
-      log.warn("invalid convNodeId");
+      log.warn(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "invalid convNodeId"));
       return null;
     }
     return convNodeId.get(0);

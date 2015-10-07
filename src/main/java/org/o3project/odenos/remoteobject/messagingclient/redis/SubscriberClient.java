@@ -23,8 +23,9 @@ import static redis.clients.jedis.Protocol.Keyword.PUNSUBSCRIBE;
 import static redis.clients.jedis.Protocol.Keyword.SUBSCRIBE;
 import static redis.clients.jedis.Protocol.Keyword.UNSUBSCRIBE;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.o3project.odenos.core.logging.message.LogMessage;
 
 import redis.clients.jedis.exceptions.JedisConnectionException;
 import redis.clients.util.SafeEncoder;
@@ -45,7 +46,8 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public class SubscriberClient extends RedisClient {
 
-  private static final Logger log = LoggerFactory.getLogger(SubscriberClient.class);
+  private static final Logger log = LogManager.getLogger(SubscriberClient.class);
+  private static String txid = null;
 
   private PubSubDriverImpl listener;
 
@@ -194,6 +196,7 @@ public class SubscriberClient extends RedisClient {
   }
 
   private void receive() {
+    txid = LogMessage.getSavedTxid();
     thread = new Thread(new RecieveThread(), "SubscriberClient-receive");
     thread.setPriority(Thread.MAX_PRIORITY);
     thread.setDaemon(true);
@@ -202,6 +205,7 @@ public class SubscriberClient extends RedisClient {
 
   private class RecieveThread implements Runnable {
     public void run() {
+      LogMessage.setSavedTxid(txid);
       receiveLoop();
     }
   }
@@ -226,7 +230,7 @@ public class SubscriberClient extends RedisClient {
         try {
           Thread.sleep(3000);
         } catch (InterruptedException e) {
-          log.error("thread error", e);
+          log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "thread error"), e);
         }
       }
     }
@@ -235,7 +239,7 @@ public class SubscriberClient extends RedisClient {
         List<Object> reply = readObjectListFromInputStream(); // blocking here
         final Object firstObj = reply.get(0);
         if (!(firstObj instanceof byte[])) {
-          log.warn("Unknown message type: {}", firstObj);
+          log.warn(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Unknown message type: {}", firstObj));
         }
         final byte[] response = (byte[]) firstObj;
         if (Arrays.equals(SUBSCRIBE.raw, response)) {
@@ -264,7 +268,7 @@ public class SubscriberClient extends RedisClient {
           final byte[] pattern = (byte[]) reply.get(1);
           onPunsubscribe(pattern, channelCount);
         } else {
-          log.warn("Unsupported message type: {}", firstObj);
+          log.warn(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Unsupported message type: {}", firstObj));
         }
       } catch (JedisConnectionException e) {
         waitingReconnect = true;

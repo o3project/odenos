@@ -38,6 +38,7 @@ import org.o3project.odenos.remoteobject.message.Request;
 import org.o3project.odenos.remoteobject.message.Response;
 import org.o3project.odenos.remoteobject.rest.Attributes;
 import org.o3project.odenos.remoteobject.rest.RESTTranslator;
+import org.o3project.odenos.core.logging.message.LogMessage;
 
 import java.io.PrintWriter;
 
@@ -268,6 +269,8 @@ public class RestServletTest {
     /*
      * setting
      */
+    LogMessage.initParameters(0);
+
     HttpServletRequest request = Mockito.mock(HttpServletRequest.class);
     HttpServletResponse response = Mockito.mock(HttpServletResponse.class);
 
@@ -286,7 +289,7 @@ public class RestServletTest {
     settingOdenosResponse.statusCode = Response.OK;
     doReturn(settingOdenosResponse).when(translator).request(
         eq("ObjectId"),
-        eq(Request.Method.POST), eq("Path/c"), anyObject());
+        eq(Request.Method.POST), eq("Path/c"), anyString(), anyObject());
 
     PrintWriter printWriter = Mockito.mock(PrintWriter.class);
     doReturn(printWriter).when(response).getWriter();
@@ -303,7 +306,7 @@ public class RestServletTest {
     verify(response).setStatus(Response.OK);
 
     verify(translator).request(eq("ObjectId"), eq(Request.Method.POST),
-        eq("Path/c"),
+        eq("Path/c"), anyString(), 
         anyObject());
 
   }

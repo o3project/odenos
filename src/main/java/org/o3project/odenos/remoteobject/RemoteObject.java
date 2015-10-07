@@ -28,8 +28,10 @@ import org.o3project.odenos.remoteobject.message.MessageBodyUnpacker.ParseBodyEx
 import org.o3project.odenos.remoteobject.message.Request;
 import org.o3project.odenos.remoteobject.message.Response;
 import org.o3project.odenos.remoteobject.messagingclient.MessageDispatcher;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.o3project.odenos.core.logging.message.LogMessage;
 
 import java.io.IOException;
 import java.util.Queue;
@@ -40,7 +42,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  *
  */
 public class RemoteObject {
-  private static final Logger log = LoggerFactory.getLogger(RemoteObject.class);
+  private static final Logger log = LogManager.getLogger(RemoteObject.class);
 
   protected MessageDispatcher messageDispatcher = null;
   protected ObjectProperty objectProperty = null;
@@ -185,15 +187,17 @@ public class RemoteObject {
    *            method for the path
    * @param path
    *            path of the RemoteObject
+   * @param txid
+   *            transaction ID
    * @param body
    *            requested data
    * @return Future object to obtain the response of the request
    * @throws Exception if an error occurs.
    */
   protected Response requestSync(String objectId, Request.Method method,
-      String path, Object body) throws Exception {
+      String path, String txid, Object body) throws Exception {
     return messageDispatcher.requestSync(new Request(objectId, method,
-        path, body), this.getObjectId());
+        path, txid,  body), this.getObjectId());
   }
 
   /**
@@ -205,14 +209,16 @@ public class RemoteObject {
    *            method for the path
    * @param path
    *            path of the RemoteObject
+   * @param txid
+   *            transaction ID
    * @param body
    *            requested data
    * @return a response of the request
    * @throws Exception if an error occurs.
    */
   public Response request(String objectId, Request.Method method,
-      String path, Object body) throws Exception {
-    return requestSync(objectId, method, path, body);
+      String path, String txid, Object body) throws Exception {
+    return requestSync(objectId, method, path, txid, body);
   }
 
   /**
@@ -226,7 +232,7 @@ public class RemoteObject {
    */
   protected void publishEvent(String eventType, Object body)
       throws Exception {
-    Event event = new Event(getObjectId(), eventType, body);
+    Event event = new Event(getObjectId(), eventType, LogMessage.getSavedTxid(), body);
     messageDispatcher.publishEventAsync(event);
   }
 
@@ -251,7 +257,7 @@ public class RemoteObject {
    * @return response to the RemoteObject
    */
   public Response dispatchRequest(Request request) {
-    log.debug("dispatchRequest: {}, {}", request.method, request.path);
+    log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "dispatchRequest: {}, {}", request.method, request.path));
     if (StringUtils.stripToNull(request.path) == null) {
       return new Response(Response.BAD_REQUEST, null);
     }
@@ -270,7 +276,7 @@ public class RemoteObject {
       try {
         response = callback.process(parsed);
       } catch (Exception e) {
-        log.error("Exception Request: {}, {}", request.method, request.path);
+        log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Exception Request: {}, {}", request.method, request.path));
         response = new Response(Response.BAD_REQUEST, null);
       }
     }
@@ -432,7 +438,7 @@ public class RemoteObject {
     try {
       publishEvent(ObjectPropertyChanged.TYPE, msg);
     } catch (Exception e) {
-      log.error("Failed to ObjectPropertyChanged.", e);
+      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Failed to ObjectPropertyChanged."), e);
     }
   }
 
@@ -444,7 +450,7 @@ public class RemoteObject {
     try {
       publishEvent(ObjectSettingsChanged.TYPE, msg);
     } catch (Exception e) {
-      log.error("Failed to ObjectSettingsChanged.", e);
+      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Failed to ObjectSettingsChanged."), e);
     }
   }
 
@@ -493,7 +499,7 @@ public class RemoteObject {
    * Creates a znode on ZooKeeper server. 
    * 
    * @param path znode path
-   * @param mode
+   * @param mode ZooKeeper mode
    */
   public void zkCreatePath(final String path, CreateMode mode) {
     if (keepAliveClient == null) {
@@ -509,7 +515,7 @@ public class RemoteObject {
    */
   public void zkDeletePath(final String path) {
     if (keepAliveClient == null) {
-      log.warn("No ZooKeeper connectivity");
+      log.warn(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "No ZooKeeper connectivity"));
     }
     keepAliveClient.deletePath(path);
   }
@@ -518,6 +524,7 @@ public class RemoteObject {
    * Sets a watch on a znode path.
    * 
    * @param path znode path
+   * @param message catched message
    */
   public void zkWatchPath(final String path, final String message) {
     if (keepAliveClient == null) {

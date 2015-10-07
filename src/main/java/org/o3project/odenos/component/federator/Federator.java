@@ -39,8 +39,10 @@ import org.o3project.odenos.remoteobject.message.Request;
 import org.o3project.odenos.remoteobject.message.Request.Method;
 import org.o3project.odenos.remoteobject.message.Response;
 import org.o3project.odenos.remoteobject.messagingclient.MessageDispatcher;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.o3project.odenos.core.logging.message.LogMessage;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -56,7 +58,7 @@ import java.util.Set;
 public class Federator extends Logic {
 
   /** logger. */
-  private static final Logger log = LoggerFactory.getLogger(Federator.class);
+  private static final Logger log = LogManager.getLogger(Federator.class);
 
   /** ConnectionType: Original Network. */
   public static final String ORIGINAL_NETWORK = "original";
@@ -146,7 +148,7 @@ public class Federator extends Logic {
 
     ComponentConnection curr = msg.curr();
     if (curr == null) {
-      log.debug("curr is null");
+      log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "curr is null"));
       return false;
     }
 
@@ -193,7 +195,7 @@ public class Federator extends Logic {
 
     ComponentConnection curr = msg.curr();
     if (curr == null) {
-      log.debug("curr is null");
+      log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "curr is null"));
       return false;
     }
 
@@ -217,7 +219,7 @@ public class Federator extends Logic {
 
     ComponentConnection curr = msg.curr();
     if (curr == null) {
-      log.debug("curr is null");
+      log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "curr is null"));
       return false;
     }
 
@@ -283,7 +285,7 @@ public class Federator extends Logic {
         }
         break;
       default:
-        log.error("unknown type: {}", type);
+        log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "unknown type: {}", type));
     }
     // Changed ConectionProperty's status.
     systemMngInterface().putConnection(curr);
@@ -331,7 +333,7 @@ public class Federator extends Logic {
         break;
 
       default:
-        log.error("unknown type: {}", type);
+        log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "unknown type: {}", type));
         return;
     }
 
@@ -491,7 +493,8 @@ public class Federator extends Logic {
 
   @Override
   protected Response onRequest(Request request) {
-    log.debug("received {}", request.path);
+    LogMessage.setSavedTxid(request.txid);
+    log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "received {}", request.path));
 
     try {
       RequestParser<IActionCallback>.ParsedRequest parsed =
@@ -510,7 +513,7 @@ public class Federator extends Logic {
       return callback.process(parsed);
 
     } catch (Exception ex) {
-      log.error("Error unknown request", ex);
+      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Error unknown request"), ex);
       return new Response(Response.BAD_REQUEST, "Error unknown request ");
     }
 
@@ -724,7 +727,7 @@ public class Federator extends Logic {
     String portId = inPacket.getPortId();
     if (federatorBoundaryTable.isContainsLink(networkId, nodeId, portId)) {
       // drop packet.
-      log.debug("Drop Packet.");
+      log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Drop Packet."));
       return false;
     }
     
@@ -745,13 +748,13 @@ public class Federator extends Logic {
 
     OutPacket outPacket = delOutPacket(nwIf, msg.getId());
     if (outPacket == null) {
-      log.debug("outPacket not found.");
+      log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "outPacket not found."));
       return;
     }
 
     String nodeId = outPacket.getNodeId();
     if (nodeId == null) {
-      log.warn("invalid outPacket.");
+      log.warn(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "invalid outPacket."));
       return;
     }
 
@@ -763,12 +766,12 @@ public class Federator extends Logic {
 
     String srcNetwork = null;
     if (convPortId.size() == 0) {
-      log.warn("not found conversion inPort.");
+      log.warn(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "not found conversion inPort."));
       outPacket.getHeader().setInNode(IN_NODE_PORT_ANY);
       outPacket.getHeader().setInPort(IN_NODE_PORT_ANY);
     } else {
       String[] plist = convPortId.get(0).split("::");
-      log.debug("outPacket: inNode({}), inport({})", plist[1], plist[2]);
+      log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "outPacket: inNode({}), inport({})", plist[1], plist[2]));
       srcNetwork = plist[0];
       outPacket.getHeader().setInNode(plist[1]);
       outPacket.getHeader().setInPort(plist[2]);
@@ -789,13 +792,13 @@ public class Federator extends Logic {
    */
   @Override
   protected void onFlowAdded(String networkId, Flow flow) {
-    log.debug("nw:{} flow:{}" , networkId , flow);
+    log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "nw:{} flow:{}" , networkId , flow));
 
     try {
       verifyFlow(flow);
       federatorOnFlow.createOriginalFlow((BasicFlow)flow);
     } catch (FederatorException ex) {
-      log.warn("validate fail: {}", ex.getMessage(), ex);
+      log.warn(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "validate fail: {}", ex.getMessage()), ex);
       return;
     }
   }
@@ -808,7 +811,7 @@ public class Federator extends Logic {
     try {
       verifyFlow(curr);
     } catch (FederatorException ex) {
-      log.warn("validate fail: {}", ex.getMessage(), ex);
+      log.warn(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "validate fail: {}", ex.getMessage()), ex);
       return false;
     }
 
@@ -823,7 +826,7 @@ public class Federator extends Logic {
   protected void onFlowUpdate(String networkId, Flow prev, Flow curr,
       ArrayList<String> attributesList) {
 
-    log.debug("nw:{} prev:{} curr:{}" , networkId , prev, curr);
+    log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "nw:{} prev:{} curr:{}" , networkId , prev, curr));
     if (!onFlowUpdatePre(networkId, prev, curr, attributesList)) {
       return;
     }
@@ -847,7 +850,7 @@ public class Federator extends Logic {
     try {
       verifyFlow(curr);
     } catch (FederatorException ex) {
-      log.debug("validate: {}", ex.getMessage(), ex);
+      log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "validate: {}", ex.getMessage(), ex));
       return;
     }
 
@@ -889,7 +892,7 @@ public class Federator extends Logic {
 
   @Override
   protected void onFlowDelete( final String networkId, final Flow flow) {
-    log.debug("nw:{} flow:{}" , networkId , flow);
+    log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "nw:{} flow:{}" , networkId , flow));
     if (onFlowDeletePre(networkId, flow)) {
       HashMap<String, Response> respList = deleteConversion(networkId, flow);
       onFlowDeletePost(networkId, flow, respList);
@@ -959,7 +962,7 @@ public class Federator extends Logic {
    */
   protected Response putBoundaries(String boundaryId, FederatorBoundary boundary) {
     if (log.isDebugEnabled()) {
-      log.debug("boundaryId: {}", boundaryId);
+      log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "boundaryId: {}", boundaryId));
     }
 
     if (StringUtils.isEmpty(boundaryId)) {
@@ -1116,7 +1119,7 @@ public class Federator extends Logic {
       applyEventSubscription();
 
     } catch (Exception ex) {
-      log.error(ex.getMessage(), ex);
+      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), ex.getMessage()), ex);
     }
   }
 
@@ -1133,7 +1136,7 @@ public class Federator extends Logic {
       applyEventSubscription();
 
     } catch (Exception ex) {
-      log.error(ex.getMessage(), ex);
+      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), ex.getMessage()), ex);
     }
   }
 
@@ -1173,7 +1176,7 @@ public class Federator extends Logic {
       applyEventSubscription();
 
     } catch (Exception ex) {
-      log.error(ex.getMessage(), ex);
+      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), ex.getMessage()), ex);
     }
   }
 
@@ -1190,7 +1193,7 @@ public class Federator extends Logic {
       applyEventSubscription();
 
     } catch (Exception ex) {
-      log.error(ex.getMessage(), ex);
+      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), ex.getMessage()), ex);
     }
   }
 
@@ -1231,7 +1234,7 @@ public class Federator extends Logic {
       }
 
     } catch (Exception e) {
-      log.error("Recieved Message Exception.", e);
+      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Recieved Message Exception."), e);
     }
   }
 
@@ -1489,7 +1492,7 @@ public class Federator extends Logic {
     log.debug("");
 
     if (boundary == null || !boundary.validate()) {
-      log.warn("invalid boundary.");
+      log.warn(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "invalid boundary."));
       return false;
     }
     NetworkInterface nwIf1 = networkInterfaces()
@@ -1497,19 +1500,19 @@ public class Federator extends Logic {
     NetworkInterface nwIf2 = networkInterfaces()
         .get(boundary.getNetwork2());
     if (nwIf1 == null || nwIf2 == null) {
-      log.warn("invalid boundary.");
+      log.warn(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "invalid boundary."));
       return false;
     }
     Port port1 = nwIf1.getPort(boundary.getNode1(), boundary.getPort1());
     Port port2 = nwIf2.getPort(boundary.getNode2(), boundary.getPort2());
     if (port1 == null || port2 == null) {
-      log.warn("not exsist boundary's port.");
+      log.warn(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "not exsist boundary's port."));
       return false;
     }
 
     String fedNwId = getNetworkIdByType(FEDERATED_NETWORK);
     if (fedNwId == null) {
-      log.warn("is not connected to federated network.");
+      log.warn(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "is not connected to federated network."));
       return false;
     }
     List<String> fedPorts1 = conversionTable().getPort(
@@ -1520,7 +1523,7 @@ public class Federator extends Logic {
       return false;
     }
 
-    log.info("update boundary port attributes.");
+    log.info(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "update boundary port attributes."));
 
     String[] fedPortList1 = fedPorts1.get(0).split(SEPARATOR);
     String[] fedPortList2 = fedPorts2.get(0).split(SEPARATOR);
@@ -1622,7 +1625,7 @@ public class Federator extends Logic {
 
     String fedNwId = getNetworkIdByType(FEDERATED_NETWORK);
     if (fedNwId == null) {
-      log.warn("is not connected to federated network.");
+      log.warn(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "is not connected to federated network."));
       return false;
     }
     FederatorBoundary boundary =
@@ -2048,7 +2051,7 @@ public class Federator extends Logic {
     }
     String isBoudary = port.getAttribute(Logic.AttrElements.IS_BOUNDARY);
     if (isBoudary != null && Boolean.valueOf(isBoudary)) {
-      log.debug("already updated. port.attributes{'is_boundary':'true'}.");
+      log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "already updated. port.attributes{'is_boundary':'true'}."));
       return false;
     }
     port.putAttribute(Logic.AttrElements.IS_BOUNDARY, "true");

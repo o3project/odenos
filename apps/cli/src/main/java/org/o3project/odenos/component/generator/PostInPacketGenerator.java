@@ -20,8 +20,10 @@ import org.o3project.odenos.core.component.NetworkInterface;
 import org.o3project.odenos.core.component.network.flow.ofpflow.OFPFlowMatch;
 import org.o3project.odenos.core.component.network.packet.OFPInPacket;
 import org.o3project.odenos.remoteobject.message.Response;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.o3project.odenos.core.logging.message.LogMessage;
 
 import java.nio.ByteBuffer;
 import java.util.HashMap;
@@ -31,7 +33,7 @@ import java.util.HashMap;
  */
 public class PostInPacketGenerator implements Runnable {
 
-  private Logger log = LoggerFactory.getLogger(Generator.class);
+  private Logger log = LogManager.getLogger(Generator.class);
 
   Generator callback;
 

@@ -28,8 +28,10 @@ import org.o3project.odenos.remoteobject.message.MessageBodyUnpacker;
 import org.o3project.odenos.remoteobject.message.Request;
 import org.o3project.odenos.remoteobject.message.Response;
 import org.o3project.odenos.remoteobject.messagingclient.Config.MODE;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.o3project.odenos.core.logging.message.LogMessage;
 
 import java.io.Closeable;
 import java.io.IOException;
@@ -89,7 +91,8 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public class MessageDispatcher implements Closeable, IMessageListener {
 
-  private static final Logger log = LoggerFactory.getLogger(MessageDispatcher.class);
+  private static final Logger log = LogManager.getLogger(MessageDispatcher.class);
+  private static String txid = null;
 
   protected static final byte TYPE_REQUEST = 0;
   protected static final byte TYPE_RESPONSE = 1;
@@ -227,7 +230,7 @@ public class MessageDispatcher implements Closeable, IMessageListener {
         // NOP
       }
     } catch (Exception e) {
-      log.error("class load error", e);
+      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "class load error"), e);
     }
 
     // Remote Transactions pool
@@ -290,9 +293,9 @@ public class MessageDispatcher implements Closeable, IMessageListener {
           if (outputMessageToLogger) {
             if (objectIds.contains(channel) ||
                 objectIds.contains(sourceObjectId)) {
-              log.info("MONITOR|{}|{}|{}|{}|{}|/{}/{}|{}",
+              log.info(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "MONITOR|{}|{}|{}|{}|{}|/{}/{}|{}",
                   REQUEST, channel, sourceObjectId, sno, request.method.name(),
-                  channel, request.path, request.getBodyValue());
+                  channel, request.path, request.getBodyValue()));
             }
           }
 
@@ -341,9 +344,9 @@ public class MessageDispatcher implements Closeable, IMessageListener {
           if (outputMessageToLogger) {
             if (objectIds.contains(channel) ||
                 objectIds.contains(sourceObjectId)) {
-              log.info("MONITOR|{}|{}|{}|{}|{}|{}",
+              log.info(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "MONITOR|{}|{}|{}|{}|{}|{}",
                   RESPONSE, channel, sourceObjectId, sno, response.statusCode,
-                  response.getBodyValue());
+                  response.getBodyValue()));
             }
           }
 
@@ -363,7 +366,7 @@ public class MessageDispatcher implements Closeable, IMessageListener {
               subscribersMap.getSubscribers(channel);
           if (subscribers == null) { // No subscribers found on the channel
             if (log.isDebugEnabled()) {
-              log.debug("no subscribers subscribing the channel: {}", channel);
+              log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "no subscribers subscribing the channel: {}", channel));
             }
             return; // Silently discards the event
           }
@@ -390,10 +393,10 @@ public class MessageDispatcher implements Closeable, IMessageListener {
               if (outputMessageToLogger) {
                 if (objectIds.contains(subscriber) ||
                     objectIds.contains(event.publisherId)) {
-                  log.info("MONITOR|{}|{}|{}|{}:{}|{}",
+                  log.info(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "MONITOR|{}|{}|{}|{}:{}|{}",
                       EVENT, subscriber, event.publisherId,
                       event.publisherId, event.getEventType(),
-                      event.getBodyValue());
+                      event.getBodyValue()));
                 }
               }
 
@@ -417,7 +420,7 @@ public class MessageDispatcher implements Closeable, IMessageListener {
           break;
       }
     } catch (Exception e) {
-      log.error("onMessage failed", e);
+      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "onMessage failed"), e);
     }
   }
 
@@ -425,8 +428,8 @@ public class MessageDispatcher implements Closeable, IMessageListener {
   @Override
   public void onPmessage(String pattern, String channel, byte[] message) {
     if (log.isDebugEnabled()) {
-      log.debug("message received, pattern: {}, channel: {}, message: {}",
-          pattern, channel, new String(message));
+      log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "message received, pattern: {}, channel: {}, message: {}",
+           pattern, channel, new String(message)));
     }
   }
 
@@ -450,28 +453,30 @@ public class MessageDispatcher implements Closeable, IMessageListener {
 
     // This thread feeds subscription info to EventManager
     // in an eventually-consistent manner.
+    txid = LogMessage.getSavedTxid();
     subscriptionFeeder = new Thread(new Runnable() {
       @Override
       public void run() {
+        LogMessage.setSavedTxid(txid);
         do {
           Request request = null;
           try {
             request = eventManagerQueue.take();
             Response response = requestSync(request, getSourceDispatcherId());
             if (response == null || !response.statusCode.equals(Response.OK)) {
-              log.warn("Unsuccessful transaction to EventManager: {}", response.statusCode);
+              log.warn(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Unsuccessful transaction to EventManager: {}", response.statusCode));
             }
           } catch (InterruptedException e) {
-            log.warn("Unsuccessful transaction to EventManager due to some internal error");
+            log.warn(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Unsuccessful transaction to EventManager due to some internal error"));
           } catch (Exception e) {
-            log.warn("EventManager may be inactive");
+            log.warn(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "EventManager may be inactive"));
           }
         } while (true); // TODO: graceful thread termination
       }
     });
     subscriptionFeeder.start();
 
-    log.info("started");
+    log.info(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "started"));
   }
 
   /**
@@ -484,7 +489,7 @@ public class MessageDispatcher implements Closeable, IMessageListener {
   public void join() throws InterruptedException {
     // TODO:
     // initiate a graceful termination procedure (i.e., close()).
-    log.info("joining");
+    log.info(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "joining"));
     @SuppressWarnings("unused")
     Object object = dispatcherJoin.take();
   }
@@ -492,7 +497,7 @@ public class MessageDispatcher implements Closeable, IMessageListener {
   @Deprecated
   public void stop() {
     close();
-    log.info("stop");
+    log.info(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "stop"));
   }
 
   /**
@@ -508,7 +513,7 @@ public class MessageDispatcher implements Closeable, IMessageListener {
     driverImpl.close();
     remoteTransactions.onFinalize();
     subscribersMap.clear();
-    log.info("terminated");
+    log.info(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "terminated"));
   }
 
   /**
@@ -735,9 +740,9 @@ public class MessageDispatcher implements Closeable, IMessageListener {
       if (outputMessageToLogger) {
         if (objectIds.contains(objectId) ||
             objectIds.contains(sourceObjectId)) {
-          log.info("MONITOR|{}|{}|{}|{}|{}|/{}/{}|{}",
+          log.info(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "MONITOR|{}|{}|{}|{}|{}|/{}/{}|{}",
               REQUEST, objectId, sourceObjectId, sno, request.method.name(),
-              request.objectId, request.path, request.getBodyValue());
+              request.objectId, request.path, request.getBodyValue()));
         }
       }
 
@@ -766,9 +771,9 @@ public class MessageDispatcher implements Closeable, IMessageListener {
       if (outputMessageToLogger) {
         if (objectIds.contains(sourceObjectId) ||
             objectIds.contains(objectId)) {
-          log.info("MONITOR|{}|{}|{}|{}|{}|{}",
+          log.info(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "MONITOR|{}|{}|{}|{}|{}|{}",
               RESPONSE, sourceObjectId, objectId, sno, response.statusCode,
-              response.getBodyValue());
+              response.getBodyValue()));
         }
       }
 
@@ -863,6 +868,7 @@ public class MessageDispatcher implements Closeable, IMessageListener {
     } else {
       pk.write(getSourceDispatcherId());
     }
+
     // write delivery body.
     pk.write(request);
     byte[] message = pk.toByteArray();
@@ -928,7 +934,7 @@ public class MessageDispatcher implements Closeable, IMessageListener {
 
       } else {
         if (log.isDebugEnabled()) {
-          log.debug("calling this method with empty subscription must be avoided");
+          log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "calling this method with empty subscription must be avoided"));
         }
       }
 
@@ -941,9 +947,10 @@ public class MessageDispatcher implements Closeable, IMessageListener {
     Request request = new Request(getEventManagerId(),
         Request.Method.PUT,
         "settings/event_subscriptions/" + subscriberId,
+        LogMessage.getSavedTxid(),
         eventSubscription);
     if (!eventManagerQueue.offer(request)) {
-      log.warn("EventManager request queue is full");
+      log.warn(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "EventManager request queue is full"));
     }
   }
 
@@ -1031,7 +1038,7 @@ public class MessageDispatcher implements Closeable, IMessageListener {
 
   @Override
   public void onReconnected() {
-    log.info("reconnected");
+    log.info(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "reconnected"));
     if (mode.contains(MODE.RESEND_SUBSCRIBE_ON_RECONNECTED)) {
 
       Set<String> channels;
@@ -1074,7 +1081,7 @@ public class MessageDispatcher implements Closeable, IMessageListener {
 
   @Override
   public void onDisconnected() {
-    log.warn("disconnected");
+    log.warn(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "disconnected"));
     if (mode.contains(MODE.RESEND_SUBSCRIBE_ON_RECONNECTED)) {
       pubSubDriverSuspended = true; // Suspended
     } else {

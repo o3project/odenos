@@ -20,8 +20,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.o3project.odenos.core.logging.message.LogMessage;
 
 /**
  * Manage boundaries class.
@@ -31,7 +32,7 @@ public class LinkLayerizerBoundaryTable {
 
   /** logger. */
   private static final Logger log =
-      LoggerFactory.getLogger(LinkLayerizerBoundaryTable.class);
+      LogManager.getLogger(LinkLayerizerBoundaryTable.class);
 
   /**
    * Map of boundaries.
@@ -74,7 +75,7 @@ public class LinkLayerizerBoundaryTable {
       throws LinkLayerizerBoundaryException {
 
     if (boundary == null) {
-      log.error("boundary is null");
+      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "boundary is null"));
       throw new IllegalArgumentException("boundary is null");
     }
 
@@ -109,16 +110,16 @@ public class LinkLayerizerBoundaryTable {
       throws LinkLayerizerBoundaryException {
 
     if (boundaryId == null) {
-      log.error("boundaryId is null");
+      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "boundaryId is null"));
       throw new IllegalArgumentException("boundaryId is null");
     }
     if (boundary == null) {
-      log.error("boundary is null");
+      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "boundary is null"));
       throw new IllegalArgumentException("boundary is null");
     }
 
     if (!boundaryId.equals(boundary.getId())) {
-      log.warn("set boundaryId: {}", boundaryId);
+      log.warn(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "set boundaryId: {}", boundaryId));
       boundary.setId(boundaryId);
     }
 
@@ -134,7 +135,7 @@ public class LinkLayerizerBoundaryTable {
    */
   public LinkLayerizerBoundary getEntry(String boundaryId) {
     if (log.isDebugEnabled()) {
-      log.debug("getEntry: {}", boundaryId);
+      log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "getEntry: {}", boundaryId));
     }
 
     return boundaries.get(boundaryId);
@@ -198,7 +199,7 @@ public class LinkLayerizerBoundaryTable {
    */
   public LinkLayerizerBoundary deleteEntry(String boundaryId) {
     if (log.isDebugEnabled()) {
-      log.debug("deleteEntry: {}", boundaryId);
+      log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "deleteEntry: {}", boundaryId));
     }
 
     if (!boundaries.containsKey(boundaryId)) {

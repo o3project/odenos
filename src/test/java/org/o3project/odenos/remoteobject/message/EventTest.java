@@ -67,7 +67,7 @@ public class EventTest {
   @Before
   public void setUp() throws Exception {
     body = Mockito.mock(Object.class);
-    target = Mockito.spy(new Event("publisherId", "eventType", body));
+    target = Mockito.spy(new Event("publisherId", "eventType", "txid", body));
   }
 
   /**
@@ -84,7 +84,7 @@ public class EventTest {
    */
   @Test
   public final void testEventStringStringObject() {
-    target = Mockito.spy(new Event("publisherId", "eventType", body));
+    target = Mockito.spy(new Event("publisherId", "eventType", "txid", body));
 
     assertThat(target.publisherId, is("publisherId"));
     assertThat(target.eventType, is("eventType"));
@@ -198,7 +198,7 @@ public class EventTest {
     target.readFrom(unpacker);
 
     verify(unpacker).readArrayBegin();
-    verify(unpacker, times(2)).readString();
+    verify(unpacker, times(3)).readString();
     verify(unpacker).readValue();
     verify(unpacker).readArrayEnd();
   }
@@ -230,9 +230,10 @@ public class EventTest {
 
     target.writeTo(packer);
 
-    verify(packer).writeArrayBegin(3);
+    verify(packer).writeArrayBegin(4);
     verify(packer).write("publisherId");
     verify(packer).write("eventType");
+    verify(packer).write("txid");
     verify(packer).write(body);
     verify(packer).writeArrayEnd();
   }
@@ -249,9 +250,10 @@ public class EventTest {
 
     target.writeTo(packer);
 
-    verify(packer).writeArrayBegin(3);
+    verify(packer).writeArrayBegin(4);
     verify(packer).write("publisherId");
     verify(packer).write("eventType");
+    verify(packer).write("txid");
     verify(packer).write(target.bodyValue);
     verify(packer).writeArrayEnd();
   }
@@ -281,11 +283,11 @@ public class EventTest {
      * setting
      */
     Object body = new Object();
-    Event target1 = new Event("publisherId", "eventType", body);
-    Event target2 = new Event("publisherId", "eventType", body);
+    Event target1 = new Event("publisherId", "eventType", "txid", body);
+    Event target2 = new Event("publisherId", "eventType", "txid", body);
 
     Object eventBody = new Object(); // not body
-    Event target3 = new Event("publisherId", "eventType", eventBody);
+    Event target3 = new Event("publisherId", "eventType", "txid", eventBody);
 
     /*
      * test
@@ -311,10 +313,10 @@ public class EventTest {
      * setting
      */
     Object body = new Object();
-    Event target11 = new Event("publisherId", "eventType", body);
-    Event target12 = new Event("publisherId", "eventType2", body);
-    Event target21 = new Event("publisherId2", "eventType", body);
-    Event target22 = new Event("publisherId2", "eventType2", body);
+    Event target11 = new Event("publisherId", "eventType", "txid", body);
+    Event target12 = new Event("publisherId", "eventType2", "txid", body);
+    Event target21 = new Event("publisherId2", "eventType", "txid", body);
+    Event target22 = new Event("publisherId2", "eventType2", "txid", body);
 
     /*
      * test
@@ -348,11 +350,11 @@ public class EventTest {
      * setting
      */
     Object body = new Object();
-    Event target = new Event("publisherId", "eventType", body);
-    Event event2 = new Event("publisherId", "eventType", body);
+    Event target = new Event("publisherId", "eventType", "txid", body);
+    Event event2 = new Event("publisherId", "eventType", "txid", body);
 
     Object eventBody = new Object(); // not body
-    Event event3 = new Event("publisherId", "eventType", eventBody);
+    Event event3 = new Event("publisherId", "eventType", "txid", eventBody);
 
     /*
      * test
@@ -383,10 +385,10 @@ public class EventTest {
      * setting
      */
     Object body = new Object();
-    Event target11 = new Event("publisherId", "eventType", body);
-    Event event12 = new Event("publisherId", "eventType2", body);
-    Event event21 = new Event("publisherId2", "eventType", body);
-    Event event22 = new Event("publisherId2", "eventType2", body);
+    Event target11 = new Event("publisherId", "eventType", "txid", body);
+    Event event12 = new Event("publisherId", "eventType2", "txid", body);
+    Event event21 = new Event("publisherId2", "eventType", "txid", body);
+    Event event22 = new Event("publisherId2", "eventType2", "txid", body);
 
     /*
      * test

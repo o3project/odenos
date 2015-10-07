@@ -66,6 +66,7 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.powermock.reflect.Whitebox;
 import org.powermock.reflect.internal.WhiteboxImpl;
+import org.powermock.core.classloader.annotations.PowerMockIgnore;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -84,6 +85,7 @@ import java.util.Set;
 @PrepareForTest({ Aggregator.class, ConversionTable.class,
     PathCalculator.class,
     ComponentConnection.class, NetworkInterface.class })
+@PowerMockIgnore({"javax.management.*"})
 public class AggregatorTest {
 
   private Aggregator target;
@@ -983,19 +985,19 @@ public class AggregatorTest {
         .invokeMethod(target, "createParser");
 
     Request req = new Request(AGGREGATOR_ID, Request.Method.GET,
-        "aggregated_nw_port", null);
+        "aggregated_nw_port", "txid", null);
     assertThat(result.parse(req), is(notNullValue()));
     req = new Request(AGGREGATOR_ID, Request.Method.GET,
-        "original_nw_port", null);
+        "original_nw_port", "txid", null);
     assertThat(result.parse(req), is(notNullValue()));
     req = new Request(AGGREGATOR_ID, Request.Method.GET,
-        "aggregated_nw_flow", null);
+        "aggregated_nw_flow", "txid", null);
     assertThat(result.parse(req), is(notNullValue()));
     req = new Request(AGGREGATOR_ID, Request.Method.GET,
-        "original_nw_flow", null);
+        "original_nw_flow", "txid", null);
     assertThat(result.parse(req), is(notNullValue()));
     req = new Request(AGGREGATOR_ID, Request.Method.PUT,
-        "aggregated_nw_port", null);
+        "aggregated_nw_port", "txid", null);
     assertThat(result.parse(req), is(nullValue()));
   }
 
@@ -1009,7 +1011,7 @@ public class AggregatorTest {
     Request.Method method = Request.Method.GET;
     ObjectProperty body = null;
     Request request = new Request("Aggregator", method,
-        "aggregated_nw_port", body);
+        "aggregated_nw_port", "txid", body);
 
     Response result = target.onRequest(request);
 
@@ -1027,7 +1029,7 @@ public class AggregatorTest {
     Request.Method method = Request.Method.GET;
     Object body = new Object();
     Request request = new Request("ObjectId", method,
-        "settings/default_idle_timer", body);
+        "settings/default_idle_timer", "txid", body);
 
     Response result = target.onRequest(request);
 

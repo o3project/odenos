@@ -30,6 +30,7 @@ import org.msgpack.type.Value;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
+import org.powermock.core.classloader.annotations.PowerMockIgnore;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -42,6 +43,7 @@ import java.util.Map;
  */
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({ FlowAction.class })
+@PowerMockIgnore({"javax.management.*"})
 public class FlowActionTest {
 
   private FlowAction target = null;

@@ -73,7 +73,7 @@ class TestRemoteMessageTransport < MiniTest::Test
   
   def test_remote_send_request_message
     body = Object.new
-    @request = Request.new("object_id", :PUT, "path", body)
+    @request = Request.new("object_id", :PUT, "path", "*", body)
     @response = Response.new(200, body)
     @que = stub(:pop=>@response)
     @remote_transport.stubs(:add_request).returns(@que)
@@ -83,7 +83,7 @@ class TestRemoteMessageTransport < MiniTest::Test
 
   def test_remote_send_request_message_exception
     body = Object.new
-    @request = Request.new("object_id", :PUT, "path", body)
+    @request = Request.new("object_id", :PUT, "path", "*", body)
     @que = Queue.new
     @que.expects(:pop).with().raises()
     @remote_transport.stubs(:add_request).returns(@que)
@@ -95,7 +95,7 @@ class TestRemoteMessageTransport < MiniTest::Test
 
   def test_remote_send_request_message_with_notpush
     body = Object.new
-    @request = Request.new("object_id", :PUT, "path", body)
+    @request = Request.new("object_id", :PUT, "path", "*", body)
     @que = mock(:pop)
     @remote_transport.stubs(:add_request).returns(@que)
      
@@ -154,7 +154,7 @@ class TestRemoteMessageTransport < MiniTest::Test
     
     body = Object.new
     
-    @request = Request.new("object_id", :GET, "path", body)    
+    @request = Request.new("object_id", :GET, "path", "*", body)    
     @request.expects(:remote_object_id).once
     @request.stubs(:to_msgpack).returns(nil)
     
@@ -198,7 +198,7 @@ class TestLocalMessageTransport < MiniTest::Test
     
     body = Object.new
     
-    @request = Request.new("object_id", :GET, "path", body)    
+    @request = Request.new("object_id", :GET, "path", "*", body)    
     @request.stubs(:pack).returns(@packedrequest)    
     Request.stubs(:unpack).returns(@mockrequest)
     

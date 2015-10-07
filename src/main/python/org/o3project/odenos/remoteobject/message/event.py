@@ -20,14 +20,16 @@ class Event:
     def __init__(self, publisher_id, event_type, event_body):
         self.publisher_id = publisher_id
         self.event_type = event_type
+        self.txid = '*'
         self.body = event_body
 
     @classmethod
     def create_from_packed(cls, packed):
+        packed.pop(2)
         return cls(*packed)
 
     def packed_object(self):
         body = self.body
         if hasattr(body, "packed_object"):
             body = self.body.packed_object()
-        return (self.publisher_id, self.event_type, body)
+        return (self.publisher_id, self.event_type, self.txid, body)

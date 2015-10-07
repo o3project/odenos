@@ -9,13 +9,6 @@ import org.apache.logging.log4j.message.Message;
 public interface ILogMessage extends Message {
   
   /**
-   * Returns a log message number.
-   * 
-   * @return number
-   */
-  public int getNumber();
-
-  /**
    * Returns a transaction ID (txid).
    * 
    * @return txid

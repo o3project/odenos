@@ -37,6 +37,7 @@ import org.msgpack.unpacker.Unpacker;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.powermock.reflect.Whitebox;
+import org.powermock.core.classloader.annotations.PowerMockIgnore;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -49,6 +50,7 @@ import java.util.Map;
  */
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(Topology.class)
+@PowerMockIgnore({"javax.management.*"})
 public class TopologyTest {
 
   private Topology target;

@@ -21,8 +21,10 @@ import org.msgpack.MessagePackable;
 import org.msgpack.packer.Packer;
 import org.msgpack.type.ValueType;
 import org.msgpack.unpacker.Unpacker;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.o3project.odenos.core.logging.message.LogMessage;
 
 import java.io.IOException;
 
@@ -33,7 +35,7 @@ import java.io.IOException;
 public abstract class SliceCondition implements MessagePackable {
 
   /** logger. */
-  private static final Logger log = LoggerFactory.getLogger(SliceCondition.class);
+  private static final Logger log = LogManager.getLogger(SliceCondition.class);
 
   private String id;
   private String type;
@@ -129,7 +131,7 @@ public abstract class SliceCondition implements MessagePackable {
       }
 
     } catch (IOException ex) {
-      log.error("fail to read packer", ex);
+      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "fail to read packer"), ex);
       throw ex;
 
     } finally {
@@ -155,7 +157,7 @@ public abstract class SliceCondition implements MessagePackable {
       }
 
     } catch (IOException ex) {
-      log.error(ex.getMessage(), ex);
+      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), ex.getMessage()), ex);
       throw ex;
     }
   }
@@ -176,7 +178,7 @@ public abstract class SliceCondition implements MessagePackable {
         return str;
       }
     } catch (IOException ex) {
-      log.error(ex.getMessage(), ex);
+      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), ex.getMessage()), ex);
       throw ex;
     }
   }
@@ -197,7 +199,7 @@ public abstract class SliceCondition implements MessagePackable {
       doWriteTo(pk);
 
     } catch (IOException ex) {
-      log.error("fail to write packer", ex);
+      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "fail to write packer"), ex);
       throw ex;
 
     } finally {
@@ -218,7 +220,7 @@ public abstract class SliceCondition implements MessagePackable {
       pk.write(getConnection());
 
     } catch (IOException ex) {
-      log.error(ex.getMessage(), ex);
+      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), ex.getMessage()), ex);
       throw ex;
     }
 

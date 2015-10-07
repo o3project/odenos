@@ -59,6 +59,7 @@ import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.powermock.reflect.Whitebox;
+import org.powermock.core.classloader.annotations.PowerMockIgnore;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -72,6 +73,7 @@ import java.util.Map;
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({ Slicer.class, SliceConditionTable.class,
     ConversionTable.class, NetworkInterface.class })
+@PowerMockIgnore({"javax.management.*"})
 public class SlicerTest {
 
   private Slicer target;
@@ -132,7 +134,7 @@ public class SlicerTest {
      * setting
      */
     Request request = new Request("ObjectId", Method.GET,
-        "settings/slice_condition_table",
+        "settings/slice_condition_table", "txid",
         new Object());
 
     /*

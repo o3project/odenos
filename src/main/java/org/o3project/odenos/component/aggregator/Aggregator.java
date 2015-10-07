@@ -40,8 +40,10 @@ import org.o3project.odenos.remoteobject.message.Request;
 import org.o3project.odenos.remoteobject.message.Request.Method;
 import org.o3project.odenos.remoteobject.message.Response;
 import org.o3project.odenos.remoteobject.messagingclient.MessageDispatcher;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.o3project.odenos.core.logging.message.LogMessage;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -56,7 +58,7 @@ import java.util.Map;
  *
  */
 public class Aggregator extends Logic {
-  private static final Logger log = LoggerFactory.getLogger(Aggregator.class);
+  private static final Logger log = LogManager.getLogger(Aggregator.class);
 
   public static final String AGGREGATED = "aggregated";
   public static final String ORIGINAL = "original";
@@ -228,7 +230,7 @@ public class Aggregator extends Logic {
     NetworkInterface orgNwIf = null;
     NetworkInterface aggNwIf = null;
     if (type.equals(ORIGINAL)) {
-      log.debug("Add original_network.");
+      log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Add original_network."));
       subscribeOriginal(networkId);
       ArrayList<String> aggNetworkId =
           conversionTable().getConnectionList(AGGREGATED);
@@ -240,7 +242,7 @@ public class Aggregator extends Logic {
       orgNwIf = networkInterfaces().get(networkId);
       aggNwIf = networkInterfaces().get(aggNetworkId.get(0));
     } else if (type.equals(AGGREGATED)) {
-      log.debug("Add aggregated_network.");
+      log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Add aggregated_network."));
       subscribeAggregated(networkId);
 
       ArrayList<String> orgNetworkId = conversionTable()
@@ -253,7 +255,7 @@ public class Aggregator extends Logic {
       orgNwIf = networkInterfaces().get(orgNetworkId.get(0));
       aggNwIf = networkInterfaces().get(networkId);
     } else {
-      log.error("Unexpected network type: {}", type);
+      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Unexpected network type: {}", type));
       throw new IllegalArgumentException("Unexpected network type: " + type);
     }
     // Update conversionTable.
@@ -347,7 +349,7 @@ public class Aggregator extends Logic {
     try {
       applyEventSubscription();
     } catch (Exception e) {
-      log.error("Recieved Message Exception.", e);
+      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Recieved Message Exception."), e);
     }
   }
 
@@ -363,7 +365,7 @@ public class Aggregator extends Logic {
     try {
       this.applyEventSubscription();
     } catch (Exception e) {
-      log.error("Recieved Message Exception.", e);
+      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Recieved Message Exception."), e);
     }
   }
 
@@ -393,7 +395,7 @@ public class Aggregator extends Logic {
     try {
       applyEventSubscription();
     } catch (Exception e) {
-      log.error("Recieved Message Exception.", e);
+      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Recieved Message Exception."), e);
     }
   }
 
@@ -408,7 +410,7 @@ public class Aggregator extends Logic {
     try {
       applyEventSubscription();
     } catch (Exception e) {
-      log.error("Recieved Message Exception.", e);
+      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Recieved Message Exception."), e);
     }
   }
 
@@ -464,8 +466,9 @@ public class Aggregator extends Logic {
   @Override
   protected Response onRequest(
       final Request request) {
+    LogMessage.setSavedTxid(request.txid);
     log.debug("");
-    log.debug("received {}", request.path);
+    log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "received {}", request.path));
     RequestParser<IActionCallback>.ParsedRequest parsed = parser
         .parse(request);
     if (parsed == null) {
@@ -481,7 +484,7 @@ public class Aggregator extends Logic {
       // Get response.
       return callback.process(parsed);
     } catch (Exception e) {
-      log.error("Error unknown request");
+      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Error unknown request"));
       return new Response(Response.BAD_REQUEST, "Error unknown request ");
     }
   }
@@ -740,7 +743,7 @@ public class Aggregator extends Logic {
       return;
     }
     if (!link.validate()) {
-      log.error(">> link[ {} ] is invalid.", link.getId());
+      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), ">> link[ {} ] is invalid.", link.getId()));
       return;
     }
 
@@ -885,7 +888,7 @@ public class Aggregator extends Logic {
 
     FlowSet flowSet = orgNetworkIf.getFlowSet();
     for (String flowId : flowSet.flows.keySet()) {
-      log.debug(">> target flow : '{}'", flowId);
+      log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), ">> target flow : '{}'", flowId));
       BasicFlow orgFlow = (BasicFlow) flowSet.flows.get(flowId);
       // Get aggregated_network's flowId from orgFlowId.
       String aggFlowId = getConvFlowId(
@@ -896,7 +899,7 @@ public class Aggregator extends Logic {
         continue;
       }
       String[] list = aggFlowId.split("::");
-      log.debug(">> conversion flow : '{}'", list[1]);
+      log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), ">> conversion flow : '{}'", list[1]));
 
       orgFlow = getFlow(orgNetworkIf, flowId);
       BasicFlow aggFlow = getFlow(aggNetworkIf, list[1]);
@@ -934,7 +937,7 @@ public class Aggregator extends Logic {
 
     BasicFlow aggFlow = getFlow(aggNetworkIf, flow.getFlowId());
     if (aggFlow == null) {
-      log.error("Invalid flow.");
+      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Invalid flow."));
       return;
     }
     BasicFlow orgFlow = aggFlow.clone();
@@ -998,7 +1001,7 @@ public class Aggregator extends Logic {
       final InPacketAdded msg) {
     log.debug("");
 
-    log.debug("###Received InPacketAdded:id({})", msg.getId());
+    log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "###Received InPacketAdded:id({})", msg.getId()));
     String connType = conversionTable().getConnectionType(networkId);
     if (connType != null
         && connType.equals(AGGREGATED)) {
@@ -1012,8 +1015,7 @@ public class Aggregator extends Logic {
       final OutPacketAdded msg) {
     log.debug("");
 
-    log.debug("###Received OutPacketAdded:id({})",
-        msg.getId());
+    log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "###Received OutPacketAdded:id({})", msg.getId()));
     String connType = conversionTable().getConnectionType(networkId);
     if (connType != null
         && connType.equals(ORIGINAL)) {
@@ -1073,7 +1075,7 @@ public class Aggregator extends Logic {
       }
 
     } catch (Exception e) {
-      log.error("Recieved Message Exception.", e);
+      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Recieved Message Exception."), e);
     }
   }
 
@@ -1111,7 +1113,7 @@ public class Aggregator extends Logic {
     }
     if (aggFlow.getStatus() != null
         && aggFlow.getStatus().equals(FlowStatus.FAILED.toString())) {
-      log.debug(">> Invalid flow.");
+      log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), ">> Invalid flow."));
       return false;
     }
 
@@ -1132,7 +1134,7 @@ public class Aggregator extends Logic {
           || !setMatch(orgFlow.getMatches(), srcPort)) {
         aggFlow.setStatus(FlowStatus.FAILED.toString());
         // PUT aggregated_network's flow.
-        log.debug(">> PUT flow to Aggregated Network.");
+        log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), ">> PUT flow to Aggregated Network."));
         aggNetworkIf.putFlow(aggFlow);
         return false;
       }
@@ -1142,10 +1144,10 @@ public class Aggregator extends Logic {
           aggFlow.getEdgeActions(), orgFlow.getEdgeActions());
 
       // PUT original_netowrk's flow.
-      log.debug(">> PUT flow to Original Network.");
+      log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), ">> PUT flow to Original Network."));
       orgNetworkIf.putFlow(orgFlow);
     } catch (Exception e) {
-      log.error("Recieved Message Exception.", e);
+      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Recieved Message Exception."), e);
       return false;
     }
     return true;
@@ -1214,7 +1216,7 @@ public class Aggregator extends Logic {
             this.getObjectId(), aggPortId);
       }
     } catch (Exception e) {
-      log.error("Recieved Message Exception.", e);
+      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Recieved Message Exception."), e);
     }
   }
 

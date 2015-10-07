@@ -69,6 +69,7 @@ import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.powermock.reflect.Whitebox;
+import org.powermock.core.classloader.annotations.PowerMockIgnore;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -80,6 +81,7 @@ import java.util.Map;
  */
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({ Network.class, RequestParser.class })
+@PowerMockIgnore({"javax.management.*"})
 public class NetworkTest {
 
   private Network target;
@@ -158,7 +160,7 @@ public class NetworkTest {
     Whitebox.invokeMethod(target, "createParser");
 
     Request request = new Request("ObjectId", Request.Method.GET,
-        "settings/verbose_event/port",
+        "settings/verbose_event/port", "txid", 
         ValueFactory.createRawValue("body"));
 
     /*
@@ -182,7 +184,7 @@ public class NetworkTest {
   public void testOnRequestWithNullPath() {
 
     Request request = Mockito.spy(new Request("objectId",
-        Request.Method.GET, "", null));
+        Request.Method.GET, "", "txid", null));
 
     Response result = target.onRequest(request);
 
@@ -200,7 +202,7 @@ public class NetworkTest {
 
     Request request =
         Mockito.spy(new Request("objectId", Request.Method.GET, "/",
-            new Object()));
+            "txid", new Object()));
 
     Response result = target.onRequest(request);
 

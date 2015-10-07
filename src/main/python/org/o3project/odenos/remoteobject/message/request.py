@@ -27,13 +27,15 @@ class Request:
         self.object_id = object_id
         self.method = method
         self.path = path
+        self.txid = '*'
         if hasattr(body, "packed_object"):
             body = body.packed_object()
         self.body = body
 
     @classmethod
     def create_from_packed(cls, packed):
+        packed.pop(3)
         return cls(*packed)
 
     def packed_object(self):
-        return (self.object_id, self.method, self.path, self.body)
+        return (self.object_id, self.method, self.path, self.txid, self.body)

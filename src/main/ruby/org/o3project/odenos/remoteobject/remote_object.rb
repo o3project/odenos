@@ -199,7 +199,7 @@ module Odenos
       # @return [Response]
       def request_sync(remote_object_id, method, path, body)
         @dispatcher.request_sync(Request.new(remote_object_id,
-                                             method, path, body))
+                                             method, path, "*", body))
       end
 
       # @param [String] remote_object_id
@@ -216,7 +216,7 @@ module Odenos
       # @param [#to_msgpack] body
       def publish_event_async(event_type, body)
         @dispatcher.publish_event_async(Event.new(remote_object_id,
-                                                  event_type, body))
+                                                  event_type, "*", body))
       end
 
       #

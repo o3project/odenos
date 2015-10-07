@@ -39,8 +39,10 @@ import org.o3project.odenos.remoteobject.message.Request;
 import org.o3project.odenos.remoteobject.message.Request.Method;
 import org.o3project.odenos.remoteobject.message.Response;
 import org.o3project.odenos.remoteobject.messagingclient.MessageDispatcher;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.o3project.odenos.core.logging.message.LogMessage;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -57,7 +59,7 @@ import java.util.regex.Pattern;
 public class Slicer extends Logic {
 
   /** logger. */
-  private static final Logger log = LoggerFactory.getLogger(Slicer.class);
+  private static final Logger log = LogManager.getLogger(Slicer.class);
 
   protected static final String ORIGINAL = "original";
   protected static final String SLIVER = "sliver";
@@ -155,7 +157,7 @@ public class Slicer extends Logic {
     ComponentConnection compConn = msg.curr();
     if (compConn == null) {
       if (log.isDebugEnabled()) {
-        log.debug("curr is null");
+        log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "curr is null"));
       }
       return false;
     }
@@ -201,7 +203,7 @@ public class Slicer extends Logic {
     ComponentConnection curr = msg.curr();
     if (curr == null) {
       if (log.isDebugEnabled()) {
-        log.debug("curr is null");
+        log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "curr is null"));
       }
       return false;
     }
@@ -226,7 +228,7 @@ public class Slicer extends Logic {
     ComponentConnection curr = msg.curr();
     if (curr == null) {
       if (log.isDebugEnabled()) {
-        log.debug("curr is null");
+        log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "curr is null"));
       }
       return false;
     }
@@ -251,7 +253,7 @@ public class Slicer extends Logic {
     ComponentConnection curr = msg.curr();
     if (curr == null) {
       if (log.isDebugEnabled()) {
-        log.debug("curr is null");
+        log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "curr is null"));
       }
       return;
     }
@@ -386,7 +388,7 @@ public class Slicer extends Logic {
     try {
       applyEventSubscription();
     } catch (Exception e) {
-      log.error("Recieved Message Exception.", e);
+      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Recieved Message Exception."), e);
     }
   }
 
@@ -402,7 +404,7 @@ public class Slicer extends Logic {
     try {
       applyEventSubscription();
     } catch (Exception e) {
-      log.error("Recieved Message Exception.", e);
+      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Recieved Message Exception."), e);
     }
   }
 
@@ -444,7 +446,7 @@ public class Slicer extends Logic {
     try {
       applyEventSubscription();
     } catch (Exception e) {
-      log.error("Recieved Message Exception.", e);
+      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Recieved Message Exception."), e);
     }
   }
 
@@ -461,7 +463,7 @@ public class Slicer extends Logic {
     try {
       applyEventSubscription();
     } catch (Exception e) {
-      log.error("Recieved Message Exception.", e);
+      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Recieved Message Exception."), e);
     }
   }
 
@@ -610,9 +612,10 @@ public class Slicer extends Logic {
 
   @Override
   protected Response onRequest(final Request request) {
+    LogMessage.setSavedTxid(request.txid);
     log.debug("");
 
-    log.debug("received {}", request.path);
+    log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "received {}", request.path));
     RequestParser<IActionCallback>.ParsedRequest parsed = parser
         .parse(request);
     if (parsed == null) {
@@ -627,7 +630,7 @@ public class Slicer extends Logic {
       // Get response.
       return callback.process(parsed);
     } catch (Exception e) {
-      log.error("Error unknown request");
+      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Error unknown request"));
       return new Response(Response.BAD_REQUEST, "Error unknown request ");
     }
   }
@@ -668,7 +671,7 @@ public class Slicer extends Logic {
       final BasicSliceCondition body) {
 
     if (log.isDebugEnabled()) {
-      log.debug("priority {}", priority);
+      log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "priority {}", priority));
     }
 
     if (StringUtils.isEmpty(priority) || (body == null)) {
@@ -796,8 +799,8 @@ public class Slicer extends Logic {
     List<BasicFlowMatch> messageMatchs = basicFlow.getMatches();
     String connectionId = nwcToConnection.get(networkId);
     if (log.isDebugEnabled()) {
-      log.debug(
-          String.format("###FlowConnectionId(%s)", connectionId));
+      log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), 
+          "###FlowConnectionId({})", connectionId));
     }
 
     for (BasicFlowMatch match : messageMatchs) {
@@ -822,7 +825,7 @@ public class Slicer extends Logic {
     NetworkInterface networkIf = networkInterfaces().get(networkId);
     InPacket body = delInPacket(networkIf, msg.getId());
     if (body == null) {
-      log.error("invalid DELETE Packet.");
+      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "invalid DELETE Packet."));
       return;
     }
 
@@ -830,7 +833,7 @@ public class Slicer extends Logic {
     String connectionId = matchPriorityTable(match);
     if (connectionId == null) {
       // packet drop
-      log.info("dorp Packet.");
+      log.info(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "dorp Packet."));
       return;
     }
 
@@ -854,7 +857,7 @@ public class Slicer extends Logic {
     NetworkInterface networkIf = networkInterfaces().get(networkId);
     OutPacket body = delOutPacket(networkIf, msg.getId());
     if (body == null) {
-      log.error("invalid DELETE Packet.");
+      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "invalid DELETE Packet."));
       return;
     }
 
@@ -862,7 +865,7 @@ public class Slicer extends Logic {
     String connectionId = matchPriorityTable(match);
     if (connectionId == null) {
       // packet drop
-      log.info("dorp Packet.");
+      log.info(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "dorp Packet."));
       return;
     }
 
@@ -896,7 +899,7 @@ public class Slicer extends Logic {
             orgNetworkIf.getNetworkId(), orgLinks.get(linkId));
       }
     } catch (Exception e) {
-      log.error("Recieved Message Exception.", e);
+      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Recieved Message Exception."), e);
     }
   }
 
@@ -1017,7 +1020,7 @@ public class Slicer extends Logic {
     HashMap<String, ArrayList<String>> connectionsFlow = conversionTable()
         .getFlow();
     for (String flowId : connectionsFlow.keySet()) {
-      log.debug("####{} = {}", flowId, connectionsFlow.get(flowId));
+      log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "####{} = {}", flowId, connectionsFlow.get(flowId)));
 
       Matcher match = pattern.matcher(flowId);
       if (match.find()) {

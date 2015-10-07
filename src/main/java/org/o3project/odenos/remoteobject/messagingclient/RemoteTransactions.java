@@ -18,8 +18,10 @@ package org.o3project.odenos.remoteobject.messagingclient;
 
 import org.o3project.odenos.remoteobject.message.Request;
 import org.o3project.odenos.remoteobject.message.Response;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.o3project.odenos.core.logging.message.LogMessage;
 
 import java.io.IOException;
 import java.util.concurrent.ArrayBlockingQueue;
@@ -49,7 +51,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 class RemoteTransactions {
 
-  private static final Logger log = LoggerFactory.getLogger(RemoteTransactions.class);
+  private static final Logger log = LogManager.getLogger(RemoteTransactions.class);
 
   private AtomicInteger seqno = new AtomicInteger(0);
   private ConcurrentHashMap<Integer, SynchronousQueue<Response>> responseMap =
@@ -77,7 +79,7 @@ class RemoteTransactions {
       try {
         rendezvousPool.put(new SynchronousQueue<Response>());
       } catch (InterruptedException e) {
-        log.error("cannot return SynchronousQueue to rendezvous pool");
+        log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "cannot return SynchronousQueue to rendezvous pool"));
       }
     }
   }
@@ -136,7 +138,7 @@ class RemoteTransactions {
 
     if (response == null) { // INITIAL_TIMEOUT expired
       if (log.isDebugEnabled()) {
-        log.debug("request timeout (initial)");
+        log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "request timeout (initial)"));
       }
       // Checks if the channel (i.e., object ID) exists)
       if (dispatcher.getChannelChecker().channelExist(request.objectId)) {
@@ -146,7 +148,7 @@ class RemoteTransactions {
         rendezvousPool.put(rendezvous);
         if (response == null) { // remoteRequestTimeout expired
           if (log.isDebugEnabled()) {
-            log.debug("request timeout (final)");
+            log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "request timeout (final)"));
           }
           responseMap.remove(sno);
           throw new TimeoutException("no reply from " + request.objectId);
@@ -155,7 +157,7 @@ class RemoteTransactions {
         rendezvousPool.put(rendezvous);
         responseMap.remove(sno);
         if (log.isDebugEnabled()) {
-          log.debug("non-existent channel");
+          log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "non-existent channel"));
         }
         throw new IllegalArgumentException("request to non-existent component: "
             + request.objectId);

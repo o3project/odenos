@@ -28,15 +28,18 @@ import org.apache.zookeeper.WatchedEvent;
 import org.apache.zookeeper.Watcher;
 import org.apache.zookeeper.ZooDefs;
 import org.apache.zookeeper.ZooKeeper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.o3project.odenos.core.logging.message.LogMessage;
 
 /**
  * ZooKeeper client with a callback handler.
  */
 public class KeepAliveClient {
 
-  private static final Logger log = LoggerFactory.getLogger(KeepAliveClient.class);
+  private static final Logger log = LogManager.getLogger(KeepAliveClient.class);
+  private static String txid = null;
 
   ZooKeeper zk = null;
   Set<String> paths = new ConcurrentSkipListSet<>();
@@ -51,7 +54,7 @@ public class KeepAliveClient {
       public void process(WatchedEvent event) {
         switch (event.getState()) {
         case Expired:
-          log.warn("ZooKeeper session exipired");
+          log.warn(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "ZooKeeper session exipired"));
           connect();
           createPaths(paths, CreateMode.EPHEMERAL);
           break;
@@ -65,8 +68,8 @@ public class KeepAliveClient {
   /**
    * Creates a znode on ZooKeeper server.
    * 
-   * @param path
-   * @param mode
+   * @param path znode path
+   * @param mode create mode
    */
   public synchronized void createPath(final String path, CreateMode mode) {
     if (mode == CreateMode.PERSISTENT) {
@@ -75,26 +78,26 @@ public class KeepAliveClient {
           zk.create(path, new byte[0], ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT);
         }
       } catch (KeeperException | InterruptedException e) {
-        log.error("Unable to create a path: " + path, e);
+        log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Unable to create a path: {}", path), e);
       }
     } else if (mode == CreateMode.EPHEMERAL) {
       zk.create(path, new byte[0], ZooDefs.Ids.OPEN_ACL_UNSAFE, mode, createPathCallback, new byte[0]);
     } else {
-      log.warn("Unsupported mode: " + mode.toString());
+      log.warn(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Unsupported mode: {}", mode.toString()));
     }
   }
 
   /**
    * Deletes a znode on ZooKeeper server.
    * 
-   * @param path
+   * @param path znode path
    */
   public synchronized void deletePath(final String path) {
     try {
       zk.delete(path, -1);
       paths.remove(path);
     } catch (InterruptedException | KeeperException e) {
-      log.error("Unable to delete a path: " + path);
+      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Unable to delete a path: {}", path));
     }
   }
 
@@ -113,10 +116,10 @@ public class KeepAliveClient {
         paths.add(path);
         break;
       case NODEEXISTS:
-        log.warn("node exists: " + path);
+        log.warn(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "node exists: {}", path));
         break;
       default:
-        log.error("process result: " + code.toString());
+        log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "process result: {}", code.toString()));
         break;
       }
     }
@@ -135,48 +138,51 @@ public class KeepAliveClient {
   /**
    * Sets a watcher on a znode path to detect its disappearance.
    * 
-   * @param path
+   * @param path znode path
+   * @param message catched message
    */
   public void watchPath(final String path, final String message) {
+    txid = LogMessage.getSavedTxid();
     try {
       zk.exists(path, new Watcher() {
         @Override
         public void process(WatchedEvent event) {
+          LogMessage.setSavedTxid(txid);
           String path = event.getPath();
           switch (event.getType()) {
           case NodeCreated:
-            log.info("znode created: " + path);
+            log.info(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "znode created: {}", path));
             watchPath(path, message);
             break;
           case NodeDeleted:
             if (message == null) {
-              log.warn("znode deleted: " + path);
+              log.warn(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "znode deleted: {}", path));
             } else {
-              log.warn("{}: {}", message, path);
+              log.warn(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "{}: {}", message, path));
             }
             break;
           default:
-            log.error("Unidentified watch event: " + event.toString());
+            log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Unidentified watch event: {}", event.toString()));
             break;
           }
         }
       });
     } catch (KeeperException | InterruptedException e) {
-      log.error("ZooKeeper operation error");
+      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "ZooKeeper operation error"));
     }
   }
   
   /**
    * Sets a watcher on a znode path. 
    * 
-   * @param path
-   * @param watcher
+   * @param path znode path
+   * @param watcher watcher
    */
   public void watchPath(final String path, Watcher watcher) {
     try {
       zk.exists(path, watcher);
     } catch (KeeperException | InterruptedException e) {
-      log.error("ZooKeeper operation error");
+      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "ZooKeeper operation error"));
     }
   }
 }

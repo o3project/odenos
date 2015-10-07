@@ -51,6 +51,7 @@ import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.powermock.reflect.internal.WhiteboxImpl;
+import org.powermock.core.classloader.annotations.PowerMockIgnore;
 
 import java.io.IOException;
 import java.math.BigInteger;
@@ -66,6 +67,7 @@ import java.util.Map;
  */
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({ OFPInPacket.class })
+@PowerMockIgnore({"javax.management.*"})
 public class OFPInPacketTest {
 
   private OFPInPacket target;

@@ -43,6 +43,7 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.powermock.reflect.Whitebox;
 import org.powermock.reflect.internal.WhiteboxImpl;
+import org.powermock.core.classloader.annotations.PowerMockIgnore;
 
 /**
  *
@@ -50,6 +51,7 @@ import org.powermock.reflect.internal.WhiteboxImpl;
  */
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({ EventManager.class })
+@PowerMockIgnore({"javax.management.*"})
 public class EventManagerTest {
   public static final String OBJECT_ID = "object_id";
   MessageDispatcher mockDispatcher = PowerMockito
@@ -126,22 +128,22 @@ public class EventManagerTest {
     Request req = new Request(OBJECT_ID,
         Request.Method.PUT,
         "settings/event_subscriptions/<subscriber_id>",
-        null);
+        "txid", null);
     assertThat(result.parse(req), is(notNullValue()));
     req = new Request(OBJECT_ID,
         Request.Method.GET,
         "settings/event_subscriptions",
-        null);
+        "txid", null);
     assertThat(result.parse(req), is(notNullValue()));
     req = new Request(OBJECT_ID,
         Request.Method.GET,
         "settings/event_subscriptions/<subscriber_id>",
-        null);
+        "txid", null);
     assertThat(result.parse(req), is(notNullValue()));
     req = new Request(OBJECT_ID,
         Request.Method.GET,
         "settings/event_subscription",
-        null);
+        "txid", null);
     assertThat(result.parse(req), is(nullValue()));
   }
 
@@ -157,7 +159,7 @@ public class EventManagerTest {
     Request req = new Request(OBJECT_ID,
         Request.Method.PUT,
         "settings/event_subscriptions/subscriber_id=SubscriberId",
-        evtSubscription);
+        "txid", evtSubscription);
     Response dummyResp = new Response(Response.OK,
         evtSubscription);
     PowerMockito.doReturn(dummyResp).when(target,
@@ -182,7 +184,7 @@ public class EventManagerTest {
     Request req = new Request(OBJECT_ID,
         Request.Method.PUT,
         "settings/event_subscription/subscriber_id=SubscriberId",
-        evtSubscription);
+        "txid", evtSubscription);
 
     Response resp = target.onRequest(req);
 
@@ -211,7 +213,7 @@ public class EventManagerTest {
     Request req = new Request(OBJECT_ID,
         Request.Method.PUT,
         "settings/event_subscriptions/subscriber_id=SubscriberId",
-        evtSubscription);
+        "txid", evtSubscription);
 
     Response resp = target.onRequest(req);
 
@@ -230,7 +232,7 @@ public class EventManagerTest {
     Request req = new Request(OBJECT_ID,
         Request.Method.GET,
         "settings/event_subscriptions/subscriber_id",
-        evtSubscription);
+        "txid", evtSubscription);
     PowerMockito.doThrow(new Exception()).when(target,
         "getSubscription",
         "subscriber_id");

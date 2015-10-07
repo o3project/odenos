@@ -17,15 +17,17 @@
 package org.o3project.odenos.core.component;
 
 import org.o3project.odenos.remoteobject.messagingclient.MessageDispatcher;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.o3project.odenos.core.logging.message.LogMessage;
 
 /**
  * Driver class.
  *
  */
 public abstract class Driver extends Logic {
-  private static final Logger log = LoggerFactory.getLogger(Driver.class);
+  private static final Logger log = LogManager.getLogger(Driver.class);
 
   public static final String ORIGINAL = "original";
 
@@ -42,7 +44,7 @@ public abstract class Driver extends Logic {
       final String baseUri,
       final MessageDispatcher dispatcher) throws Exception {
     super(objectId, baseUri, dispatcher);
-    log.info("created.");
+    log.info(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "created."));
   }
 
   /**
@@ -54,7 +56,7 @@ public abstract class Driver extends Logic {
   public Driver(final String objectId,
       final MessageDispatcher dispatcher) throws Exception {
     super(objectId, dispatcher);
-    log.info("created.");
+    log.info(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "created."));
   }
 
   /**

@@ -22,15 +22,18 @@ import org.o3project.odenos.core.manager.system.ComponentConnectionLogicAndNetwo
 import org.o3project.odenos.remoteobject.ObjectProperty;
 import org.o3project.odenos.remoteobject.message.Response;
 import org.o3project.odenos.remoteobject.messagingclient.MessageDispatcher;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.o3project.odenos.core.logging.message.LogMessage;
 
 import simple_controller.SimpleControllerBase;
 
 import java.util.Map;
 
 public class StartSimpleL2Switch extends SimpleControllerBase {
-    private static Logger log = LoggerFactory.getLogger(StartSimpleL2Switch.class);
+    private static Logger log = LogManager.getLogger(StartSimpleL2Switch.class);
+    private static final int TXIDOFFSET = 9000000;
 
     // Object Id
     protected static final String NETWORK_ID = "netowrk1";
@@ -49,7 +52,11 @@ public class StartSimpleL2Switch extends SimpleControllerBase {
      * @throws Exception
      */
     public static void main(String[] args) throws Exception {
-        log.debug("Start initialization...");
+        LogMessage.initParameters(TXIDOFFSET);
+        String txid = LogMessage.createTxid();
+        LogMessage.setSavedTxid(txid);
+
+        log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Start initialization..."));
 
         // /////////////////////////////////////
         // Set MessageDispatcher.
@@ -86,7 +93,7 @@ public class StartSimpleL2Switch extends SimpleControllerBase {
         if (rsp == null || getProperty == null
                 || !getProperty.getObjectId().equals(
                         sendProperty.getObjectId())) {
-            log.error("Failed.");
+            log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Failed."));
             return;
         }
         outMsg("  -PUT Compoent(Netowrk). ");
@@ -112,7 +119,7 @@ public class StartSimpleL2Switch extends SimpleControllerBase {
         if (rsp == null || getProperty == null
                 || !getProperty.getObjectId().equals(
                         sendProperty.getObjectId())) {
-            log.error("Failed.");
+            log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Failed."));
             return;
         }
         outMsg("  -PUT Compoent(DummyDriver). ");
@@ -138,7 +145,7 @@ public class StartSimpleL2Switch extends SimpleControllerBase {
         if (rsp == null || getProperty == null
                 || !getProperty.getObjectId().equals(
                         sendProperty.getObjectId())) {
-            log.error("Failed.");
+            log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Failed."));
             return;
         }
         outMsg("  -PUT Compoent(LearningSwitch). ");
@@ -180,14 +187,14 @@ public class StartSimpleL2Switch extends SimpleControllerBase {
         Map<String, ComponentConnection> getConns =
                 systemMngInterface.getConnections();
         if (getConns == null || getConns.size() != 2) {
-            log.error("Failed.");
+            log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Failed."));
             return;
         }
         for (String conId : getConns.keySet()) {
             ComponentConnection getConn =
                     systemMngInterface.getConnection(conId);
             if (getConn == null) {
-                log.error("Failed.");
+                log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Failed."));
                 return;
             }
         }

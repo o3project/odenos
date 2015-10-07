@@ -32,6 +32,7 @@ class EventTest(unittest.TestCase):
                   "latency": "10msec", "req_latency": "11msec"}
     Publisher_id = 'Id1'
     Event_type = 'flowchanged'
+    txid = '*'
 
     flow_target = Flow(Type, Version, Flow_id, Owner,
                        Enabled, Priority, Status,
@@ -61,6 +62,7 @@ class EventTest(unittest.TestCase):
         Enabled = True
         Priority = "65535"
         Status = "none"
+        txid = "*"
         Attributes = {"bandwidth": "20Mbps", "req_bandwidth": "11Mbps",
                       "latency": "30msec", "req_latency": "11msec"}
         Publisher_id = 'Id1'
@@ -69,18 +71,20 @@ class EventTest(unittest.TestCase):
         flow_target = Flow(Type, Version, Flow_id, Owner,
                            Enabled, Priority, Status,
                            Attributes)
-        value = [Publisher_id, Event_type, flow_target]
+        value = [Publisher_id, Event_type, txid, flow_target]
         self.result = self.target.create_from_packed(value)
 
         self.assertEqual(self.result.publisher_id, self.Publisher_id)
         self.assertEqual(self.result.event_type, self.Event_type)
+        self.assertEqual(self.result.txid, self.txid)
         self.assertEqual(self.result.body, flow_target)
 
     def test_packed_object_hasattr_True(self):
         self.result = self.target.packed_object()
         self.assertEqual(self.result[0], self.Publisher_id)
         self.assertEqual(self.result[1], self.Event_type)
-        self.assertEqual(self.result[2], self.flow_target_packed_object)
+        self.assertEqual(self.result[2], self.txid)
+        self.assertEqual(self.result[3], self.flow_target_packed_object)
 
     def test_packed_object_hasattr_False(self):
         self.newtarget = Event(self.Publisher_id,
@@ -89,7 +93,8 @@ class EventTest(unittest.TestCase):
         self.result = self.newtarget.packed_object()
         self.assertEqual(self.result[0], self.Publisher_id)
         self.assertEqual(self.result[1], self.Event_type)
-        self.assertEqual(self.result[2], self.flow_target_packed_object)
+        self.assertEqual(self.result[2], self.txid)
+        self.assertEqual(self.result[3], self.flow_target_packed_object)
 
 
 if __name__ == '__main__':

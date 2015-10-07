@@ -184,6 +184,7 @@ If you want to output syslog, please configure syslog.
 
 6. Enable syslog configuration in the following files of ODENOS.
 
+   - *odenos/etc/log4j2_java.yaml*
    - *odenos/etc/log_java.conf*
    - *odenos/etc/log_python.conf*
    - *odenos/etc/log_ruby.conf*

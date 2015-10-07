@@ -544,7 +544,7 @@ class TestLogic < MiniTest::Test
       'prev'=> 'none',
       'curr'=> @logicAndNetwork_curr_obj}
     event_obj = Event.new(
-      'publisher_id', 'ComponentConnectionChanged',
+      'publisher_id', 'ComponentConnectionChanged', "*",
       componentConnectionChanged_body)
     @base_logic.expects(:on_connection_changed_added_pre).
       with(anything).returns(true).once
@@ -564,7 +564,7 @@ class TestLogic < MiniTest::Test
       'prev' =>'none',
       'curr' => @node_curr_body_obj}
 
-    event_obj = Event.new('publisher_id', 'NodeChanged', nodechg_body)
+    event_obj = Event.new('publisher_id', 'NodeChanged', "*", nodechg_body)
     @base_logic.expects(:on_node_changed).with('publisher_id', anything).once
 
     @base_logic.on_event(event_obj)
@@ -576,7 +576,7 @@ class TestLogic < MiniTest::Test
       'id'=>'PortId1', 'action' =>'add', 'version'=> '1',
       'prev' =>'none',
       'curr' => @port_curr_obj}
-    event_obj = Event.new('publisher_id', 'PortChanged', portchg_body)
+    event_obj = Event.new('publisher_id', 'PortChanged', "*", portchg_body)
     @base_logic.expects(:on_port_changed).with('publisher_id', anything).once
 
     @base_logic.on_event(event_obj)
@@ -588,7 +588,7 @@ class TestLogic < MiniTest::Test
       'id'=>'LinkId1', 'action' =>'add', 'version'=> '1',
       'prev' =>'none',
       'curr' => @link_curr__obj}
-    event_obj = Event.new('publisher_id', 'LinkChanged', linkchg_body)
+    event_obj = Event.new('publisher_id', 'LinkChanged', "*", linkchg_body)
     @base_logic.expects(:on_link_changed).with('publisher_id', anything).once
 
     @base_logic.on_event(event_obj)
@@ -600,7 +600,7 @@ class TestLogic < MiniTest::Test
       'id'=>'FlowId1', 'action' =>'add', 'version'=> '1',
       'prev' =>'none',
       'curr' => @flow_curr_obj}
-    event_obj = Event.new('publisher_id', 'FlowChanged',flowchg_body)
+    event_obj = Event.new('publisher_id', 'FlowChanged', "*", flowchg_body)
     @base_logic.expects(:on_flow_changed).with('publisher_id', anything).once
 
     @base_logic.on_event(event_obj)
@@ -610,7 +610,7 @@ class TestLogic < MiniTest::Test
     in_packetadded_body ={
       'publisher_id' =>'publisher_id', 'event_type' => 'InPacketAdded',
       'id'=> 'InPacketId'}
-    event_obj = Event.new('publisher_id', 'InPacketAdded',in_packetadded_body)
+    event_obj = Event.new('publisher_id', 'InPacketAdded', "*", in_packetadded_body)
     @base_logic.expects(:on_in_packet_added).with('publisher_id', anything).once
     @base_logic.on_event(event_obj)
   end
@@ -619,7 +619,7 @@ class TestLogic < MiniTest::Test
     out_packetadded_body ={
       'publisher_id' =>'publisher_id', 'event_type' => 'OutPacketAdded',
       'id'=> 'OutPacketId'}
-    event_obj = Event.new('publisher_id', 'OutPacketAdded', out_packetadded_body)
+    event_obj = Event.new('publisher_id', 'OutPacketAdded', "*", out_packetadded_body)
     @base_logic.expects(:on_out_packet_added).with('publisher_id', anything).once
     @base_logic.on_event(event_obj)
   end
@@ -628,14 +628,14 @@ class TestLogic < MiniTest::Test
     out_packetadded_body ={
       'publisher_id' =>'publisher_id','event_type' => 'OutPacketAdded',
       'id'=> 'OutPacketId'}
-    event_obj = Event.new('publisher_id', 'OutPacketAdded', out_packetadded_body)
+    event_obj = Event.new('publisher_id', 'OutPacketAdded', "*", out_packetadded_body)
     @base_logic.expects(:on_out_packet_added).with('publisher_id', anything).raises().once
 
     assert_equal(nil, @base_logic.on_event(event_obj))
   end
 
   def test_on_event_and_event_type_other
-    event_obj = Event.new('publisher_id', 'OutPacketAdded1',nil)
+    event_obj = Event.new('publisher_id', 'OutPacketAdded1', "*", nil)
     @base_logic.expects(:on_component_connection_changed).with('publisher_id', anything).never
     @base_logic.expects(:on_node_changed).with(anything, anything).never
     @base_logic.expects(:on_port_changed).with(anything, anything).never

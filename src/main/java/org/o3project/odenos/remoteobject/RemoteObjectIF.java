@@ -19,11 +19,13 @@ package org.o3project.odenos.remoteobject;
 import org.o3project.odenos.remoteobject.message.Request;
 import org.o3project.odenos.remoteobject.message.Response;
 import org.o3project.odenos.remoteobject.messagingclient.MessageDispatcher;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.o3project.odenos.core.logging.message.LogMessage;
 
 public class RemoteObjectIF {
-  private static final Logger log = LoggerFactory.getLogger(RemoteObjectIF.class);
+  private static final Logger log = LogManager.getLogger(RemoteObjectIF.class);
 
   public static final String PATH_PROPETY = "property";
   public static final String PATH_SETTINGS = "settings";
@@ -80,9 +82,9 @@ public class RemoteObjectIF {
    * @return response body.
    */
   public Response post(final String path, final Object body) {
-    Response resp = this.sendRequest(Request.Method.POST, path, body);
+    Response resp = this.sendRequest(Request.Method.POST, path, LogMessage.getSavedTxid(), body);
     if (resp == null || resp.isError("POST")) {
-      log.error("invalid POST:{}", resp.statusCode);
+      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "invalid POST:{}", resp.statusCode));
     }
     return resp;
   }
@@ -94,9 +96,9 @@ public class RemoteObjectIF {
    * @return response body.
    */
   public Response put(final String path, final Object body) {
-    Response resp = this.sendRequest(Request.Method.PUT, path, body);
+    Response resp = this.sendRequest(Request.Method.PUT, path, LogMessage.getSavedTxid(), body);
     if (resp == null || resp.isError("PUT")) {
-      log.error("PUT failed:{}", resp.statusCode);
+      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "PUT failed:{}", resp.statusCode));
     }
     return resp;
   }
@@ -107,9 +109,9 @@ public class RemoteObjectIF {
    * @return response body.
    */
   public final Response get(final String path) {
-    Response resp = this.sendRequest(Request.Method.GET, path, null);
+    Response resp = this.sendRequest(Request.Method.GET, path, LogMessage.getSavedTxid(), null);
     if (resp.isError("GET")) {
-      log.error("GET failed:{}", resp.statusCode);
+      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "GET failed:{}", resp.statusCode));
     }
     return resp;
   }
@@ -125,15 +127,15 @@ public class RemoteObjectIF {
    * @return response body.
    */
   public final Response delete(final String path, final Object body) {
-    Response resp = this.sendRequest(Request.Method.DELETE, path, body);
+    Response resp = this.sendRequest(Request.Method.DELETE, path, LogMessage.getSavedTxid(), body);
     if (resp.isError("DELETE")) {
-      log.error("DELETE failed:{}", resp.statusCode);
+      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "DELETE failed:{}", resp.statusCode));
     }
     return resp;
   }
 
-  private Response sendRequest(final Request.Method method, final String path, final Object body) {
-    Request req = new Request(this.id(), method, path, body);
+  private Response sendRequest(final Request.Method method, final String path, final String txid, final Object body) {
+    Request req = new Request(this.id(), method, path, txid, body);
     try {
       return this.dispatcher().requestSync(req, sourceObjectId);
     } catch (Exception e) {

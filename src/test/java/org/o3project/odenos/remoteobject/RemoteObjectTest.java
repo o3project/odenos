@@ -396,7 +396,7 @@ public class RemoteObjectTest {
     doReturn(dummyResp).when(dispatcher).requestSync((Request) anyObject(), anyString());
 
     Response result = target.requestSync(objectId, Request.Method.GET, "/",
-        "body");
+        "txid", "body");
 
     assertThat(result, is((Response) dummyResp));
   }
@@ -417,7 +417,7 @@ public class RemoteObjectTest {
     doThrow(new Exception()).when(dispatcher).requestSync(
         (Request) anyObject());
 
-    target.requestSync(objectId, Request.Method.GET, "/", "body");
+    target.requestSync(objectId, Request.Method.GET, "/", "txid", "body");
   }
 
   /**
@@ -438,7 +438,7 @@ public class RemoteObjectTest {
     doReturn(dummyResp).when(dispatcher).requestSync((Request) anyObject(), anyString());
 
     Response result = target.request(objectId, Request.Method.GET, "/",
-        "body");
+        "txid", "body");
 
     assertThat(result.statusCode, is(Response.OK));
     assertThat(result.getBody(String.class), is("aaa"));
@@ -460,7 +460,7 @@ public class RemoteObjectTest {
     doThrow(new Exception()).when(dispatcher).requestSync(
         (Request) anyObject());
 
-    target.request(objectId, Request.Method.GET, "/", "body");
+    target.request(objectId, Request.Method.GET, "/", "txid", "body");
   }
 
   /**
@@ -557,17 +557,17 @@ public class RemoteObjectTest {
             "createParser");
 
     Request req = new Request(objectId, Request.Method.GET, "property",
-        null);
+        "txid", null);
     assertThat(result.parse(req), is(notNullValue()));
-    req = new Request(objectId, Request.Method.PUT, "property", null);
+    req = new Request(objectId, Request.Method.PUT, "property", "txid", null);
     assertThat(result.parse(req), is(notNullValue()));
-    req = new Request(objectId, Request.Method.GET, "settings", null);
+    req = new Request(objectId, Request.Method.GET, "settings", "txid", null);
     assertThat(result.parse(req), is(notNullValue()));
-    req = new Request(objectId, Request.Method.PUT, "settings", null);
+    req = new Request(objectId, Request.Method.PUT, "settings", "txid", null);
     assertThat(result.parse(req), is(notNullValue()));
-    req = new Request(objectId, Request.Method.POST, "event", null);
+    req = new Request(objectId, Request.Method.POST, "event", "txid", null);
     assertThat(result.parse(req), is(notNullValue()));
-    req = new Request(objectId, Request.Method.GET, "event", null);
+    req = new Request(objectId, Request.Method.GET, "event", "txid", null);
     assertThat(result.parse(req), is(nullValue()));
   }
 
@@ -583,10 +583,12 @@ public class RemoteObjectTest {
     String destId = "componentXXX";
     Request.Method method = Request.Method.GET;
     String path = "property";
+    String txid = "txid";
     Object body = null;
     Request request = new Request(destId,
         method,
         path,
+        txid,
         body);
 
     Response result = target.dispatchRequest(request);
@@ -609,10 +611,12 @@ public class RemoteObjectTest {
     String destId = "componentXXX";
     Request.Method method = Request.Method.GET;
     String path = null;
+    String txid = "txid";
     Object body = null;
     Request request = new Request(destId,
         method,
         path,
+        txid,
         body);
 
     Response result = target.dispatchRequest(request);
@@ -634,10 +638,12 @@ public class RemoteObjectTest {
     String destId = "componentXXX";
     Request.Method method = Request.Method.GET;
     String path = "";
+    String txid = "txid";
     Object body = null;
     Request request = new Request(destId,
         method,
         path,
+        txid,
         body);
 
     Response result = target.dispatchRequest(request);
@@ -659,10 +665,12 @@ public class RemoteObjectTest {
     String destId = "componentXXX";
     Request.Method method = Request.Method.GET;
     String path = "aaa";
+    String txid = "txid";
     Object body = null;
     Request request = new Request(destId,
         method,
         path,
+        txid,
         body);
 
     Response result = target.dispatchRequest(request);
@@ -694,10 +702,12 @@ public class RemoteObjectTest {
     String destId = "componentXXX";
     Request.Method method = Request.Method.GET;
     String path = "property";
+    String txid = "txid";
     Object body = null;
     Request request = new Request(destId,
         method,
         path,
+        txid,
         body);
 
     Response result = target.dispatchRequest(request);
@@ -719,10 +729,12 @@ public class RemoteObjectTest {
     String destId = "componentXXX";
     Request.Method method = Request.Method.PUT;
     String path = "property";
+    String txid = "txid";
     String body = "body";
     Request request = new Request(destId,
         method,
         path,
+        txid,
         body);
 
     Response result = target.dispatchRequest(request);

@@ -18,8 +18,10 @@ package org.o3project.odenos.remoteobject.actor;
 
 import org.o3project.odenos.remoteobject.RemoteObject;
 import org.o3project.odenos.remoteobject.message.Response;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.o3project.odenos.core.logging.message.LogMessage;
 
 import java.io.Closeable;
 import java.io.IOException;
@@ -84,7 +86,8 @@ import java.util.concurrent.TimeUnit;
  */
 public class Actor implements Closeable {
 
-  private static final Logger log = LoggerFactory.getLogger(Actor.class);
+  private static final Logger log = LogManager.getLogger(Actor.class);
+  private static String txid = null;
 
   private static ThreadPoolExecutor threadPoolExecutor = null;
 
@@ -156,28 +159,34 @@ public class Actor implements Closeable {
       }
       // Include MODE.LOCAL_REQUESTS_TO_PUBSUB as MessageDispatcher config
       // to dump all incoming messages including local-loopback messages.
-      log.debug("{} mails: #{} \"{}\" <={}= \"{}\" via {}, {}",
+      log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "{} mails: #{} \"{}\" <={}= \"{}\" via {}, {}",
               mailbox.size(), head.serial, head.to, type, head.from,
-              head.via.getSourceDispatcherId(), path);
+              head.via.getSourceDispatcherId(), path));
     }
+
+    txid = LogMessage.getSavedTxid();
 
     // Picks up a worker thread and assigns it to RemoteObject.
     threadPoolExecutor.execute(new Runnable() {
       @Override
       public void run() {
+        LogMessage.setSavedTxid(txid);
+
         Queue<Mail> mailbox = localObject.getMailbox();
         Mail mail = mailbox.poll();
         if (mail != null) {
           // synchronized with MessageDispatcher#requestSync().
           synchronized (localObject) {
             if (mail.request != null) {
+              txid = mail.request.txid;
               Response response = localObject.dispatchRequest(mail.request);
               try {
                 mail.via.publishResponseAsync(mail.sno, mail.from, mail.request, response);
               } catch (IOException e) {
-                log.error("unable to send response", e);
+                log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "unable to send response"), e);
               }
             } else if (mail.event != null) {
+              txid = mail.event.txid;
               localObject.dispatchEvent(mail.event);
             }
           }

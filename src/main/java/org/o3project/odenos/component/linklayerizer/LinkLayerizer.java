@@ -42,8 +42,10 @@ import org.o3project.odenos.remoteobject.message.Request;
 import org.o3project.odenos.remoteobject.message.Request.Method;
 import org.o3project.odenos.remoteobject.message.Response;
 import org.o3project.odenos.remoteobject.messagingclient.MessageDispatcher;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.o3project.odenos.core.logging.message.LogMessage;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -60,7 +62,7 @@ import java.util.Set;
 public class LinkLayerizer extends Logic {
 
   /** logger. */
-  private static final Logger log = LoggerFactory.getLogger(LinkLayerizer.class);
+  private static final Logger log = LogManager.getLogger(LinkLayerizer.class);
 
   public static final String LAYERIZED_NETWORK = "layerized";
 
@@ -320,7 +322,7 @@ public class LinkLayerizer extends Logic {
 
       default:
         String errorMessage = "unknown type: " + connectionType;
-        log.error(errorMessage);
+        log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), errorMessage));
         throw new IllegalArgumentException(errorMessage);
     }
 
@@ -367,7 +369,7 @@ public class LinkLayerizer extends Logic {
         doOnConnectionChangedDeleteLayerized(networkId);
         break;
       default:
-        log.error("unknown type: {}", connectionType);
+        log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "unknown type: {}", connectionType));
         return;
     }
 
@@ -640,7 +642,7 @@ public class LinkLayerizer extends Logic {
       applyEventSubscription();
 
     } catch (Exception ex) {
-      log.error(ex.getMessage(), ex);
+      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), ex.getMessage()), ex);
     }
   }
 
@@ -688,7 +690,7 @@ public class LinkLayerizer extends Logic {
       applyEventSubscription();
 
     } catch (Exception ex) {
-      log.error(ex.getMessage(), ex);
+      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), ex.getMessage()), ex);
     }
   }
 
@@ -733,7 +735,7 @@ public class LinkLayerizer extends Logic {
       applyEventSubscription();
 
     } catch (Exception ex) {
-      log.error(ex.getMessage(), ex);
+      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), ex.getMessage()), ex);
     }
   }
 
@@ -750,7 +752,7 @@ public class LinkLayerizer extends Logic {
       applyEventSubscription();
 
     } catch (Exception ex) {
-      log.warn(ex.getMessage(), ex);
+      log.warn(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), ex.getMessage()), ex);
     }
   }
 
@@ -771,7 +773,7 @@ public class LinkLayerizer extends Logic {
       applyEventSubscription();
 
     } catch (Exception ex) {
-      log.warn(ex.getMessage(), ex);
+      log.warn(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), ex.getMessage()), ex);
     }
   }
 
@@ -792,7 +794,7 @@ public class LinkLayerizer extends Logic {
       applyEventSubscription();
 
     } catch (Exception ex) {
-      log.warn(ex.getMessage(), ex);
+      log.warn(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), ex.getMessage()), ex);
     }
   }
 
@@ -936,7 +938,8 @@ public class LinkLayerizer extends Logic {
    */
   @Override
   protected Response onRequest(Request request) {
-    log.debug("received {}", request.path);
+    LogMessage.setSavedTxid(request.txid);
+    log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "received {}", request.path));
 
     try {
       RequestParser<IActionCallback>.ParsedRequest parsed =
@@ -955,7 +958,7 @@ public class LinkLayerizer extends Logic {
       return callback.process(parsed);
 
     } catch (Exception ex) {
-      log.error("Error unknown request", ex);
+      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Error unknown request"), ex);
       return new Response(Response.BAD_REQUEST, "Error unknown request ");
     }
 
@@ -1054,7 +1057,7 @@ public class LinkLayerizer extends Logic {
 
     if (StringUtils.isBlank(networkId)) {
       String message = "invalid networkID: " + networkId;
-      log.error(message);
+      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), message));
       throw new IllegalArgumentException(message);
     }
 
@@ -1117,7 +1120,7 @@ public class LinkLayerizer extends Logic {
 
     if (StringUtils.isBlank(networkId)) {
       String message = "invalid networkID: " + networkId;
-      log.error(message);
+      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), message));
       throw new IllegalArgumentException(message);
     }
 
@@ -1136,7 +1139,7 @@ public class LinkLayerizer extends Logic {
     log.debug("");
 
     if (StringUtils.isBlank(networkId)) {
-      log.warn("invalid networkID: {}", networkId);
+      log.warn(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "invalid networkID: {}", networkId));
       return false;
     }
 
@@ -1155,7 +1158,7 @@ public class LinkLayerizer extends Logic {
     log.debug("");
 
     if ((StringUtils.isBlank(networkId)) || (flow == null)) {
-      log.error("invalid parameter");
+      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "invalid parameter"));
       throw new IllegalArgumentException("invalid parameter");
     }
 
@@ -1219,7 +1222,7 @@ public class LinkLayerizer extends Logic {
     log.debug("");
 
     if (flow == null || !(flow instanceof BasicFlow)) {
-      log.warn("invalid flow.");
+      log.warn(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "invalid flow."));
       return false;
     }
     BasicFlow basicFlow = (BasicFlow) flow;
@@ -1282,15 +1285,15 @@ public class LinkLayerizer extends Logic {
     // get lower flows.
     NetworkInterface lowerNwIf = getLowerNetworkIf();
     if (lowerNwIf == null) {
-      log.warn("not exist lower network interface.");
+      log.warn(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "not exist lower network interface."));
       return;
     }
     FlowSet lowerFlows = lowerNwIf.getFlowSet();
     if (lowerFlows == null) {
-      log.debug("not exist lower flows.");
+      log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "not exist lower flows."));
       return;
     }
-    log.debug("lower flows : {}", lowerFlows);
+    log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "lower flows : {}", lowerFlows));
 
     // reflect boundary links by lower flow.
     Map<String, LinkLayerizerBoundary> layerizerBoundaries =
@@ -1301,7 +1304,7 @@ public class LinkLayerizer extends Logic {
           && String.valueOf(boundary.getUpperNwPort()).equals(upperPort.getId())) {
         for (Flow lowFlow : lowerFlows.getFlows().values()) {
           if (!(lowFlow instanceof BasicFlow)) {
-            log.error("lower flow is not BasicFlow's instance.");
+            log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "lower flow is not BasicFlow's instance."));
             continue;
           }
           Port lowPort = lowerNwIf.getPort(
@@ -1341,12 +1344,12 @@ public class LinkLayerizer extends Logic {
      // get lower flows.
     NetworkInterface lowerNwIf = getLowerNetworkIf();
     if (lowerNwIf == null) {
-      log.warn("not exist lower network interface.");
+      log.warn(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "not exist lower network interface."));
       return;
     }
     FlowSet lowerFlows = lowerNwIf.getFlowSet();
     if (lowerFlows == null) {
-      log.debug("not exist lower flows.");
+      log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "not exist lower flows."));
       return;
     }
 
@@ -1359,7 +1362,7 @@ public class LinkLayerizer extends Logic {
           && String.valueOf(boundary.getUpperNwPort()).equals(upperPort.getId())) {
         for (Flow lowFlow : lowerFlows.getFlows().values()) {
           if (!(lowFlow instanceof BasicFlow)) {
-            log.error("lower flow is not BasicFlow's instance.");
+            log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "lower flow is not BasicFlow's instance."));
             continue;
           }
           Port lowPort = lowerNwIf.getPort(
@@ -1389,7 +1392,7 @@ public class LinkLayerizer extends Logic {
     // check match's in_node, in_port.
     BasicFlowMatch match = ((BasicFlow)basicFlow).getMatches().get(0);
     if (match == null) {
-      log.error("not exist lower flow's match.");
+      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "not exist lower flow's match."));
       return false;
     }
     if (nodeId.equals(String.valueOf(match.getInNode()))
@@ -1425,7 +1428,7 @@ public class LinkLayerizer extends Logic {
     log.debug("");
 
     if (sync == null) {
-      log.error("sync is null");
+      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "sync is null"));
       return new Response(Response.BAD_REQUEST, "sync is null");
     }
 
@@ -1488,7 +1491,7 @@ public class LinkLayerizer extends Logic {
     log.debug("");
 
     if (StringUtils.isBlank(boundaryId)) {
-      log.error("Boundary-ID is empty");
+      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Boundary-ID is empty"));
       return new Response(Response.BAD_REQUEST, "Boundary-ID is empty");
     }
 
@@ -1513,7 +1516,7 @@ public class LinkLayerizer extends Logic {
      * PUT <base_uri>/settings/boundaries/<boundary_id>
      */
     if (log.isDebugEnabled()) {
-      log.debug("boundaryId: {}", boundaryId);
+      log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "boundaryId: {}", boundaryId));
     }
 
     try {
@@ -1542,7 +1545,7 @@ public class LinkLayerizer extends Logic {
     log.debug("");
 
     if (StringUtils.isBlank(boundaryId)) {
-      log.error("Boundary-ID is empty");
+      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Boundary-ID is empty"));
       return new Response(Response.BAD_REQUEST, "Boundary-ID is empty");
     }
 
@@ -1581,7 +1584,7 @@ public class LinkLayerizer extends Logic {
     log.debug("");
 
     if (StringUtils.isBlank(linkId)) {
-      log.error("Link-ID is empty");
+      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Link-ID is empty"));
       return new Response(Response.BAD_REQUEST, "Link-ID is empty");
     }
 
@@ -1617,7 +1620,7 @@ public class LinkLayerizer extends Logic {
     log.debug("");
 
     if (StringUtils.isBlank(flowId)) {
-      log.error("Flow-ID is empty");
+      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Flow-ID is empty"));
       return new Response(Response.BAD_REQUEST, "Flow-ID is empty");
     }
 
@@ -1641,12 +1644,12 @@ public class LinkLayerizer extends Logic {
     log.debug("");
 
     if (StringUtils.isBlank(networkId)) {
-      log.error("Network ID is empty");
+      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Network ID is empty"));
       throw new IllegalArgumentException("Network ID is empty");
     }
 
     if (flow == null) {
-      log.error("flow is null");
+      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "flow is null"));
       throw new IllegalArgumentException("flow is null");
     }
 
@@ -1665,7 +1668,7 @@ public class LinkLayerizer extends Logic {
     log.debug("");
 
     if ((nwIf == null) || StringUtils.isBlank(flowId)) {
-      log.error("parameter is null");
+      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "parameter is null"));
       throw new IllegalArgumentException("parameter is null");
     }
 
@@ -1729,7 +1732,7 @@ public class LinkLayerizer extends Logic {
         }
 
       } catch (Exception ex) {
-        log.error("Receive Exception.", ex);
+        log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Receive Exception."), ex);
       }
     }
   }
@@ -1871,7 +1874,7 @@ public class LinkLayerizer extends Logic {
     log.debug("");
 
     if (CollectionUtils.isEmpty(ids)) {
-      log.error("ids is empty");
+      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "ids is empty"));
       throw new IllegalArgumentException("ids is empty");
     }
 

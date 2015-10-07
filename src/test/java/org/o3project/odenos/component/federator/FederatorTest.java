@@ -65,6 +65,7 @@ import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.powermock.reflect.Whitebox;
+import org.powermock.core.classloader.annotations.PowerMockIgnore;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -78,6 +79,7 @@ import java.util.Map;
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({ Federator.class, ConversionTable.class,
     NetworkInterface.class, SystemManagerInterface.class })
+@PowerMockIgnore({"javax.management.*"})
 public class FederatorTest {
 
   private MessageDispatcher dispatcher;
@@ -164,7 +166,7 @@ public class FederatorTest {
      * setting
      */
     Request request = new Request("ObjectId", Method.GET,
-        "settings/boundaries",
+        "settings/boundaries", "txid",
         new Object());
 
     /*

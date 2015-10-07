@@ -16,8 +16,9 @@
 
 package org.o3project.odenos.remoteobject.messagingclient.redis;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.o3project.odenos.core.logging.message.LogMessage;
 
 import java.net.ProtocolException;
 import java.util.List;
@@ -36,7 +37,7 @@ import java.util.StringTokenizer;
  */
 public class ChannelCheckerClient extends RedisClient {
 
-  private static final Logger log = LoggerFactory.getLogger(ChannelCheckerClient.class);
+  private static final Logger log = LogManager.getLogger(ChannelCheckerClient.class);
 
   private final RedisServerAddress redisServerAddress;
   
@@ -64,7 +65,7 @@ public class ChannelCheckerClient extends RedisClient {
       exist = (readPubsubNumsubReply(channel) > 0) ? true : false;
     } catch (ProtocolException e) {
       // TODO: exception handling
-      log.error("Redis protocol error", e);
+      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Redis protocol error"), e);
     }
     return exist;
   }

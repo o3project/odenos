@@ -25,8 +25,10 @@ import org.o3project.odenos.core.component.network.flow.ofpflow.OFPFlow;
 import org.o3project.odenos.core.component.network.flow.ofpflow.OFPFlowMatch;
 import org.o3project.odenos.core.component.network.packet.InPacket;
 import org.o3project.odenos.remoteobject.messagingclient.MessageDispatcher;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.o3project.odenos.core.logging.message.LogMessage;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -38,7 +40,7 @@ import java.util.Map;
  *
  */
 public class LearningSwitchVlan extends LearningSwitch {
-  private static final Logger log = LoggerFactory.getLogger(LearningSwitchVlan.class);
+  private static final Logger log = LogManager.getLogger(LearningSwitchVlan.class);
   /**
 
    * Constructors.
@@ -50,7 +52,7 @@ public class LearningSwitchVlan extends LearningSwitch {
       final String objectId,
       final MessageDispatcher dispatcher) throws Exception {
     super(objectId, dispatcher);
-    log.debug("created");
+    log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "created"));
   }
 
   /**
@@ -84,7 +86,7 @@ public class LearningSwitchVlan extends LearningSwitch {
     try {
       header = (OFPFlowMatch) inPacket.getHeader();
     } catch (ClassCastException e) {
-      log.error("Recieved Message ClassCastException.", e);
+      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Recieved Message ClassCastException."), e);
       return null;
     }
 

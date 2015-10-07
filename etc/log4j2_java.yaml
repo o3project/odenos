@@ -1,33 +1,50 @@
 configuration:
 
-  status: warn 
+  status: warn
   name: Odenos Logging
   packages: com.datastax.logging.appender
 
-  ThresholdFilter:
-    level: info 
-
   appenders:
     Console:
-      name: Console 
+      name: Console
       PatternLayout:
-#       Pattern: "%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"
-        pattern: "%d{HH:mm:ss.SSS} %msg%n"
+        Pattern: "%d{HH:mm:ss.SSS} %-5level %logger{2} - %msg%n"
+      ThresholdFilter:
+        level: error
+
     File:
       name: File
       fileName: "${sys:log4j2_app.log}"
       PatternLayout:
-        Pattern: "%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"
+        Pattern: "%d %-5level [%t] %logger{36}.%M - %msg%n"
+
+    Syslog:
+      name: Syslog
+      Host: "localhost"
+      Protocol: UDP
+      Port: 514
+      Facility: "LOCAL1"
+      Format: "RFC5424"
+      mdcId: "mdc"
+      includeMDC: "true"
+      LoggerFields:
+        KeyValuePair: !!pairs
+          - key: "thread"
+            value: "%t"
+          - key: "method"
+            value: "%c.%M"
+
 #   CassandraAppender:
 #      name: CassandraAppender
 #      ThresholdFilter:
-#        level: info 
+#        level: info
 
   loggers:
     root:
-      level: info 
+      level: info
       AppenderRef:
-        - ref: Console
+#        - ref: Console
         - ref: File
-#       - ref: CassandraAppender
+#        - ref: Syslog
+#        - ref: CassandraAppender
 

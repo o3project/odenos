@@ -45,8 +45,10 @@ import org.o3project.odenos.remoteobject.messagingclient.Config.MODE;
 import org.o3project.odenos.remoteobject.messagingclient.ConfigBuilder;
 import org.o3project.odenos.remoteobject.messagingclient.MessageDispatcher;
 import org.o3project.odenos.remoteobject.rest.RESTTranslator;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.o3project.odenos.core.logging.message.LogMessage;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -57,7 +59,7 @@ import java.util.Set;
 @SuppressWarnings("restriction")
 public final class Odenos {
 
-  private static final Logger log = LoggerFactory.getLogger(Odenos.class);
+  private static final Logger log = LogManager.getLogger(Odenos.class);
 
   public static final String MSGSV_IP = "127.0.0.1";
   public static final int MSGSV_PORT = 6379;
@@ -83,6 +85,7 @@ public final class Odenos {
   private CommandParser parser = new CommandParser();
   private int restport;
   private String restroot;
+  private int txoffset;
   private boolean monitorEnabled;
   private Collection<String> objectIds;
   private static boolean zooKeeperEmbedded = false;
@@ -104,6 +107,7 @@ public final class Odenos {
       options.addOption("S", "system_with_name", true, "start core system with specified id");
       options.addOption("o", "restport", true, "port number of RestPort");
       options.addOption("h", "restroot", true, "Directory of Rest root");
+      options.addOption("t", "txoffset", true, "base number of transaction ID to logging");
       options.addOption("m", "monitor", true, "Output message to monitor");
       options.addOption("l", "monitor_logging", true, "Output message to logger");
       options.addOption("z", "zookeeper_host", true, "ZooKeeper server host name or IP address");
@@ -170,6 +174,11 @@ public final class Odenos {
 
     public final String getRestRoot() {
       return line.hasOption("restroot") ? line.getOptionValue("restroot") : null;
+    }
+
+    public final int getTxOffset() {
+      return line.hasOption("txoffset")
+          ? Integer.parseInt(line.getOptionValue("txoffset")) : 0;
     }
 
     public final boolean getMonitor() {
@@ -241,6 +250,7 @@ public final class Odenos {
     }
     restport = parser.getRestPort();
     restroot = parser.getRestRoot();
+    txoffset = parser.getTxOffset();
     monitorEnabled = parser.getMonitor();
     objectIds = parser.getMonitorLogging();
   }
@@ -285,6 +295,10 @@ public final class Odenos {
       log.info("--   o-o  o-o   o--o o   o  o-o  o--o   ");
       log.info("--                                      ");
 
+      LogMessage.initParameters(txoffset);
+      String txid = LogMessage.createTxid();
+      LogMessage.setSavedTxid(txid);
+
       disp = new MessageDispatcher(config);
       disp.start();
 
@@ -303,7 +317,7 @@ public final class Odenos {
 
       disp.join();
     } catch (Exception e) {
-      log.error("system start failed", e);
+      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "system start failed"), e);
     } finally {
       disp.close();
     }
@@ -315,7 +329,7 @@ public final class Odenos {
     if (parser.getZooKeeperEmbed()) {
       ZooKeeperService.cleanUp();
       ZooKeeperService.startZkServer();
-      log.debug("ZooKeeper server started in embedded mode");
+      log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "ZooKeeper server started in embedded mode"));
       zooKeeperEmbedded = true;
     }
 
@@ -327,8 +341,8 @@ public final class Odenos {
     // Let others know that the system manager has just started.
     sysmgr.zkCreatePath("/system_manager", CreateMode.PERSISTENT);
     sysmgr.zkCreatePath("/system_manager/" + systemMgrId, CreateMode.EPHEMERAL);
-    log.info("Start-up completion: {}", systemMgrId);
-    log.info("Start-up completion: {}", REST_TRANSLATOR_ID);
+    log.info(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Start-up completion: {}", systemMgrId));
+    log.info(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Start-up completion: {}", REST_TRANSLATOR_ID));
   }
 
   private final void runComponentManager(final String romgrId, final String dir) throws Exception {
@@ -341,10 +355,10 @@ public final class Odenos {
     // Checks if the system manager has already been started.
     while (true) {
       if (zk.exists("/system_manager/" + systemMgrId, null) != null) {
-        log.debug("system manager is up: {}", systemMgrId);
+        log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "system manager is up: {}", systemMgrId));
         break;
       } else {
-        log.debug("waiting for system manager to be up...");
+        log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "waiting for system manager to be up..."));
         Thread.sleep(2000);
       }
     }
@@ -357,7 +371,7 @@ public final class Odenos {
     romgr.zkCreatePath(RemoteObjectManager.ZK_CMPMGR_PATH, CreateMode.PERSISTENT);
     romgr.zkCreatePath(RemoteObjectManager.ZK_CMPMGR_PATH + "/" + romgrId, CreateMode.EPHEMERAL);
     romgr.zkCreatePath(RemoteObjectManager.ZK_CMP_PATH, CreateMode.PERSISTENT);
-    log.info("Start-up completion: {}", romgrId);
+    log.info(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Start-up completion: {}", romgrId));
   }
 
   private Set<Class<? extends RemoteObject>> findComponents(String rootOfPackages) {

@@ -32,7 +32,7 @@
         <jdk>1.7</jdk>
       </activation>
       <properties>
-        <test.argLine>-XX:-UseSplitVerifier -XX:MaxPermSize=256m</test.argLine>
+        <test.argLine>-XX:-UseSplitVerifier -XX:MaxPermSize=512m</test.argLine>
       </properties>
     </profile>
   </profiles>
@@ -392,6 +392,7 @@
           <argLine>${test.argLine} ${argLine}</argLine>
           <systemPropertyVariables>
             <log4j.configuration>file:${basedir}/etc/log4j-silent.properties</log4j.configuration>
+            <log4j.configurationFile>file:${basedir}/etc/log4j2-silent.yaml</log4j.configurationFile>
           </systemPropertyVariables>
         </configuration>
       </plugin>

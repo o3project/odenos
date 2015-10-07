@@ -19,8 +19,10 @@ package org.o3project.odenos.component.federator;
 import org.apache.commons.collections15.Bag;
 import org.apache.commons.collections15.bag.HashBag;
 import org.apache.commons.lang.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.o3project.odenos.core.logging.message.LogMessage;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -34,7 +36,7 @@ public class FederatorBoundaryTable {
 
   /** logger. */
   private static final Logger log =
-      LoggerFactory.getLogger(FederatorBoundaryTable.class);
+      LogManager.getLogger(FederatorBoundaryTable.class);
 
   /**
    * Map of boundaries.
@@ -82,7 +84,7 @@ public class FederatorBoundaryTable {
       throws FederatorException {
 
     if (boundary == null) {
-      log.error("boundary is null");
+      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "boundary is null"));
       throw new IllegalArgumentException("boundary is null");
     }
 
@@ -91,11 +93,11 @@ public class FederatorBoundaryTable {
     }
 
     if (log.isDebugEnabled()) {
-      log.debug("addEntry: {}", boundaryId);
+      log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "addEntry: {}", boundaryId));
     }
 
     if (StringUtils.equals(boundaryId, boundary.getId())) {
-      log.warn("set boundaryId: {}", boundary);
+      log.warn(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "set boundaryId: {}", boundary));
       boundary.setId(boundaryId);
     }
 
@@ -121,7 +123,7 @@ public class FederatorBoundaryTable {
    */
   public FederatorBoundary getEntry(String boundaryId) {
     if (log.isDebugEnabled()) {
-      log.debug("getEntry: {}", boundaryId);
+      log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "getEntry: {}", boundaryId));
     }
     return boundaries.get(boundaryId);
   }
@@ -133,7 +135,7 @@ public class FederatorBoundaryTable {
    */
   public FederatorBoundary deleteEntry(String boundaryId) {
     if (log.isDebugEnabled()) {
-      log.debug("deleteEntry: {}", boundaryId);
+      log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "deleteEntry: {}", boundaryId));
     }
 
     if (!boundaries.containsKey(boundaryId)) {
