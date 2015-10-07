@@ -1,0 +1,183 @@
+log4j
+-----
+Apache log4j is a Java-based logging framework, arguably one of the most
+popular. To provide run-time application feedback to users, developers include
+log messages of varying levels (from DEBUG to FATAL) into the code. For example:
+
+   Logger logger = Logger.getLogger(SchemaTest.class);
+
+   logger.debug("This is debug message...");
+
+   logger.warn("This is warning message...");
+
+   logger.info("This is info message...");
+
+   try {
+      ...
+   }
+   catch(IOException ioEx) {
+      logger.error("IOException caught while communicating with server.", ioEx);
+   }
+
+The messages that appear in the associated log can then be controlled via
+an external properties file and hence can be changed to show more/less without
+requiring code changes. Additionally, logging can be controlled down to
+granularity of Java package and class levels. So for example, DEBUG messages from
+a particular class can be included in the log while messages from others remain at a higher
+level (helpful to reduce clutter and identify messages). The 'log' is most
+commonly a file and/or stdout, the format, behavior (such as file rolling), etc
+of which is also configurable at run-time. Log4j configuration is found in the
+file log4j.properties (which is included in the application's classpath).
+
+Below are sample log messages from starting up a Cassandra node:
+
+  INFO [main] 2012-02-10 09:15:33,112 DatabaseDescriptor.java (line 495) Found table data in data directories. Consider using the CLI to define your schema.
+  INFO [main] 2012-02-10 09:15:33,135 CommitLog.java (line 166) No commitlog files found; skipping replay
+  INFO [main] 2012-02-10 09:15:33,150 StorageService.java (line 400) Cassandra version: 1.0.7
+  INFO [main] 2012-02-10 09:15:33,150 StorageService.java (line 401) Thrift API version: 19.20.0
+  INFO [main] 2012-02-10 09:15:33,150 StorageService.java (line 414) Loading persisted ring state
+  INFO [main] 2012-02-10 09:15:33,156 StorageService.java (line 494) Starting up server gossip
+  INFO [main] 2012-02-10 09:15:33,196 ColumnFamilyStore.java (line 704) Enqueuing flush of Memtable-LocationInfo@1311711893(126/157 serialized/live bytes, 3 ops)
+  INFO [FlushWriter:1] 2012-02-10 09:15:33,198 Memtable.java (line 246) Writing Memtable-LocationInfo@1311711893(126/157 serialized/live bytes, 3 ops)
+  INFO [FlushWriter:1] 2012-02-10 09:15:33,347 Memtable.java (line 283) Completed flushing /tmp/cassandra/data/system/LocationInfo-hc-1-Data.db (234 bytes)
+  INFO [main] 2012-02-10 09:15:33,389 MessagingService.java (line 269) Starting Messaging Service on port 7000
+  INFO [main] 2012-02-10 09:15:33,400 StorageService.java (line 603) Saved token not found. Using 0 from configuration
+  INFO [main] 2012-02-10 09:15:33,401 ColumnFamilyStore.java (line 704) Enqueuing flush of Memtable-LocationInfo@169988667(38/47 serialized/live bytes, 2 ops)
+  INFO [FlushWriter:1] 2012-02-10 09:15:33,401 Memtable.java (line 246) Writing Memtable-LocationInfo@169988667(38/47 serialized/live bytes, 2 ops)
+  INFO [FlushWriter:1] 2012-02-10 09:15:33,434 Memtable.java (line 283) Completed flushing /tmp/cassandra/data/system/LocationInfo-hc-2-Data.db (148 bytes)
+  INFO [main] 2012-02-10 09:15:33,436 StorageService.java (line 988) Node /127.0.0.1 state jump to normal
+  INFO [main] 2012-02-10 09:15:33,437 StorageService.java (line 618) Bootstrap/Replace/Move completed! Now serving reads.
+  INFO [main] 2012-02-10 09:15:33,438 Mx4jTool.java (line 72) Will not load MX4J, mx4j-tools.jar is not in the classpath
+  INFO [main] 2012-02-10 09:15:33,505 DseDaemon.java (line 215) Binding thrift service to /0.0.0.0:9160
+
+Appenders
+---------
+Log4j Appenders provide the means by which messages are written to a particular
+destination type (e.g. file). Log messages are derived from log events,
+formatted as specified in the log4j.properties file (assuming the respective
+Appender honors formatting). In the above example messages appear the level,
+the thread name, the message timestamp, the source code file (if available) and
+line number, and the log message.
+
+CassandraAppender
+-----------------
+The CassandraAppender provides the capability to store log4j messages in a
+Cassandra column family. Once the cassandra-log4j-appender and cassandra-thrift
+jar files have been included in the application classpath, enabling this
+Appender is as simple as adding it to the log4j.properties file:
+
+   # Cassandra Appender
+   log4j.appender.CASS=com.datastax.logging.appender.CassandraAppender
+   log4j.appender.CASS.hosts = 127.0.0.1
+   log4j.appender.CASS.port = 9160
+   #log4j.appender.CASS.keyspaceName = "Logging"
+   #log4j.appender.CASS.columnFamily = "log_entries"
+   #log4j.appender.CASS.replicationFactor = 1
+   #log4j.appender.CASS.consistencyLevelWrite = "ONE"
+   #log4j.appender.CASS.maxBufferedRows = 256
+
+   log4j.logger.com.foo.bar= INFO, CASS
+
+The first non-comment line specifies the CassandraAppender class, assigning it
+the alias CASS, through which it is referenced in the last line. This last line
+indicates that all log messages of level INFO and higher generated from
+the classes and sub-packages of the package com.foo.bar are to be sent to the
+CassandraAppender. The lines in between specify configuration parameters to be
+consumed by the CassandraAppender (those preceded with a hash sign are commented
+out, included for reference and to demonstrate the default values). So by
+default, the CassandraAppender records log messages in the Column Family
+"log_entries" in the "Logging" keyspace. The definition of this
+Column Family is as follows:
+
+   cqlsh:Logging> describe columnfamily log_entries;
+
+   CREATE COLUMNFAMILY log_entries (
+     KEY uuid PRIMARY KEY,
+     app_start_time bigint,
+     app_name text,
+     host_name text,
+     host_ip text,
+     class_name text,
+     file_name text,
+     level text,
+     line_number text,
+     log_timestamp bigint,
+     logger_class_name text,
+     message text,
+     method_name text,
+     ndc text,
+     thread_name text,
+     throwable_str_rep text
+   ) WITH
+     comment='' AND
+     comparator=text AND
+row_cache_provider='ConcurrentLinkedHashCacheProvider' AND
+key_cache_size=200000.000000 AND
+     row_cache_size=0.000000 AND
+     read_repair_chance=1.000000 AND
+     gc_grace_seconds=864000 AND
+     default_validation=text AND
+     min_compaction_threshold=4 AND
+     max_compaction_threshold=32 AND
+     row_cache_save_period_in_seconds=0 AND
+     key_cache_save_period_in_seconds=14400 AND
+     replication_on_write=True;
+
+If they do not exist, the CassandraAppender will create the Keyspace and/or the
+Column Family upon initialization.
+
+Example
+-------
+Consider the following log snippet:
+
+   09:20:55,470  WARN SchemaTest:68 - This is warn message #163
+   09:20:55,470  INFO SchemaTest:71 - This is info message #489
+   09:20:55,471 ERROR SchemaTest:59 - Test exception.
+   java.io.IOException: Danger Will Robinson, Danger!
+	   at com.datastax.logging.SchemaTest.testSavedEntries(SchemaTest.java:58)
+	   at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	   at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	   at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	   at java.lang.reflect.Method.invoke(Method.java:597)
+	   at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:44)
+	   at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:15)
+	   at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:41)
+	   at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:20)
+	   at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:28)
+	   at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:76)
+	   at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:50)
+	   at org.junit.runners.ParentRunner$3.run(ParentRunner.java:193)
+	   at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:52)
+	   at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:191)
+	   at org.junit.runners.ParentRunner.access$000(ParentRunner.java:42)
+	   at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:184)
+	   at org.junit.runners.ParentRunner.run(ParentRunner.java:236)
+	   at org.apache.maven.surefire.junit4.JUnit4TestSet.execute(JUnit4TestSet.java:35)
+	   at org.apache.maven.surefire.junit4.JUnit4Provider.executeTestSet(JUnit4Provider.java:115)
+	   at org.apache.maven.surefire.junit4.JUnit4Provider.invoke(JUnit4Provider.java:97)
+	   at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) 
+	   at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39) 
+	   at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	   at java.lang.reflect.Method.invoke(Method.java:597)
+	   at org.apache.maven.surefire.booter.ProviderFactory$ClassLoaderProxy.invoke(ProviderFactory.java:103)
+	   at $Proxy0.invoke(Unknown Source)
+	   at org.apache.maven.surefire.booter.SurefireStarter.invokeProvider(SurefireStarter.java:150)
+	   at org.apache.maven.surefire.booter.SurefireStarter.runSuitesInProcess(SurefireStarter.java:91)
+	   at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:69)
+
+Note that the ERROR entry above includes the stack trace associated with an
+Exception. The associated rows in the log_entries Column Family appear as
+follows (as queried via cqlsh):
+
+KEY,eea1256e-db24-4cef-800b-843b3b2fb72c | app_start_time,1328894454774 | level,WARN | log_timestamp,1328894455391 | logger_class_name,org.apache.log4j.Category | message,This is warn message #163 | thread_name,main | 
+
+KEY,f7283a71-32a2-43cf-888a-0c1d3328548d | app_start_time,1328894454774 | level,INFO | log_timestamp,1328894455064 | logger_class_name,org.apache.log4j.Category | message,This is info message #489 | thread_name,main | 
+
+KEY,37ba6b9c-9fd5-4dba-8fbc-51c1696bd235 | app_start_time,1328894454774 | level,ERROR | log_timestamp,1328894455392 | logger_class_name,org.apache.log4j.Category | message,Test exception. | thread_name,main | throwable_str_rep,java.io.IOException: Danger Will Robinson, Danger!	at com.datastax.logging.SchemaTest.testSavedEntries(SchemaTest.java:58) at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39) at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25) at java.lang.reflect.Method.invoke(Method.java:597)	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:44) at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:15) at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:41) at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:20) at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:28) at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:76) at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:50) at org.junit.runners.ParentRunner$3.run(ParentRunner.java:193)	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:52)	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:191)	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:42)	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:184)	at org.junit.runners.ParentRunner.run(ParentRunner.java:236)	at org.apache.maven.surefire.junit4.JUnit4TestSet.execute(JUnit4TestSet.java:35) at org.apache.maven.surefire.junit4.JUnit4Provider.executeTestSet(JUnit4Provider.java:115) at org.apache.maven.surefire.junit4.JUnit4Provider.invoke(JUnit4Provider.java:97) at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39) at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25) at java.lang.reflect.Method.invoke(Method.java:597)	at org.apache.maven.surefire.booter.ProviderFactory$ClassLoaderProxy.invoke(ProviderFactory.java:103) at $Proxy0.invoke(Unknown Source)	at org.apache.maven.surefire.booter.SurefireStarter.invokeProvider(SurefireStarter.java:150) at org.apache.maven.surefire.booter.SurefireStarter.runSuitesInProcess(SurefireStarter.java:91) at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:69) | 
+
+Not all columns have values since the set of values in logging events varies
+depending on the manner in which the event was generated (i.e. the particular
+logging method that was used in the code) and the configuration.
+
+Storing logging information in Cassandra provides the capability to do in-depth
+analysis via the DataStax Enterprise platform, e.g. via Hadoop and Solr.
