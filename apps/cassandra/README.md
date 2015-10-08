@@ -27,7 +27,7 @@ $ mvn install
 
 Follow the following steps to install it: (for log4j2)
 ```
-$ cd apps/cassandra
+$ cd apps/cassandra/cassandra-log4j2-appender
 $ mvn -Dmaven.test.skip install
 ```
 
