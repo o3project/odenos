@@ -1,0 +1,75 @@
+## Cassandra appender for Log4j2
+
+This is a fork of [cassandra-log4j-appender](https://github.com/datastax/cassandra-log4j-appender).
+
+I made some modifications to support log4j2:
+- log4j APIs replaced with log4j2 APIs
+- log4j2 sample config in yaml: "log4j2-example-config.yaml"
+
+The original README is as follows:
+
+Motivation and usage.
+----------------------
+Log4j is widely used as logging tool. A Cassandra implementation
+used in Asynchronous way as well as having a local FileAppender
+would facilitate offline log exploration and analysis.
+
+An Asynchronous appender wrapping CassandraAppender is encourage
+to avoid slowing down the applicaction. 
+
+Adding appender to log4j.properties
+----------------------
+
+Add this appender to log4j.properties. See log4j-example.properties.
+
+    # Cassandra Appender
+    log4j.appender.CASS=com.datastax.logging.appender.CassandraAppender
+    
+    # Optional settings. The current values are the default ones
+    #log4j.appender.CASS.hosts = 127.0.0.1
+    #log4j.appender.CASS.port = 9160
+    #log4j.appender.CASS.keyspaceName = "Logging"
+    #log4j.appender.CASS.columnFamily = "log_entries"
+    #log4j.appender.CASS.replicationFactor = 1
+    #log4j.appender.CASS.consistencyLevelWrite = "ONE"
+    #log4j.appender.CASS.maxBufferedRows = 1
+
+
+How to build:
+----------------------
+
+  mvn install
+
+If you are a maven user, maven dependency plugin can resolve the dependencies.
+The following is an output of mvn dependency:list
+  
+Dependencies: mvn dependency:list
+----------------------
+
+	commons-codec:commons-codec:jar:1.3:compile
+	commons-lang:commons-lang:jar:2.4:compile
+	commons-logging:commons-logging:jar:1.1.1:compile
+	javax.servlet:servlet-api:jar:2.5:compile
+	junit:junit:jar:4.8.1:test
+	log4j:log4j:jar:1.2.16:compile
+	org.apache.cassandra:cassandra-thrift:jar:1.0.7:compile
+	org.apache.httpcomponents:httpclient:jar:4.0.1:compile
+	org.apache.httpcomponents:httpcore:jar:4.0.1:compile
+	org.apache.thrift:libthrift:jar:0.6.1:compile
+	org.slf4j:slf4j-api:jar:1.6.1:compile
+	org.slf4j:slf4j-log4j12:jar:1.6.1:compile
+
+mvn dependency:tree:
+---------------------
+
+	+- org.apache.cassandra:cassandra-thrift:jar:1.0.7:compile
+	|  +- commons-lang:commons-lang:jar:2.4:compile
+	|  +- org.slf4j:slf4j-api:jar:1.6.1:compile
+	|  \- org.apache.thrift:libthrift:jar:0.6.1:compile
+	|     +- javax.servlet:servlet-api:jar:2.5:compile
+	|     \- org.apache.httpcomponents:httpclient:jar:4.0.1:compile
+	|        +- org.apache.httpcomponents:httpcore:jar:4.0.1:compile
+	|        +- commons-logging:commons-logging:jar:1.1.1:compile
+	|        \- commons-codec:commons-codec:jar:1.3:compile
+	+- log4j:log4j:jar:1.2.16:compile
+	+- org.slf4j:slf4j-log4j12:jar:1.6.1:compile
