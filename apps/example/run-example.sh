@@ -18,6 +18,7 @@ JAVA=$JAVA_HOME/bin/java
 ODENOS_HOME_DIR=`pwd`/../../
 RUN_DIR=`pwd`
 LOG_CONF=../../etc/log_java.conf
+LOG4J2_CONF=../../etc/log4j2_java.yaml
 LOG_FILE=$ODENOS_HOME_DIR/var/log/example.log
 
 
@@ -55,6 +56,7 @@ aggregator() {
     -server \
     -Dlog4j.configuration=file:$LOG_CONF \
     -Dapp.log=$LOG_FILE \
+    -Dlog4j.configurationFile=file:${LOG4J2_CONF} \
     register_aggregator.RegisterAggregator
 
   /bin/echo -e "\033[0;32m---------------------------------------------\033[0;39m"
@@ -64,6 +66,7 @@ aggregator() {
     -server \
     -Dlog4j.configuration=file:$LOG_CONF \
     -Dapp.log=$LOG_FILE \
+    -Dlog4j.configurationFile=file:${LOG4J2_CONF} \
     register_aggregator.SettingNetwork
 
   /bin/echo -e "\033[0;32m---------------------------------------------\033[0;39m"
@@ -73,6 +76,7 @@ aggregator() {
     -server \
     -Dlog4j.configuration=file:$LOG_CONF \
     -Dapp.log=$LOG_FILE \
+    -Dlog4j.configurationFile=file:${LOG4J2_CONF} \
     register_aggregator.CleanUp 
 
 }
@@ -88,6 +92,7 @@ simple_l2switch() {
     -server \
     -Dlog4j.configuration=file:$LOG_CONF \
     -Dapp.log=$LOG_FILE \
+    -Dlog4j.configurationFile=file:${LOG4J2_CONF} \
     simple_l2switch.StartSimpleL2Switch 
 
   /bin/echo -e "\033[0;32m---------------------------------------------\033[0;39m"
@@ -97,6 +102,7 @@ simple_l2switch() {
     -server \
     -Dlog4j.configuration=file:$LOG_CONF \
     -Dapp.log=$LOG_FILE \
+    -Dlog4j.configurationFile=file:${LOG4J2_CONF} \
     simple_l2switch.SettingNetwork 
 
   /bin/echo -e "\033[0;32m---------------------------------------------\033[0;39m"
@@ -106,6 +112,7 @@ simple_l2switch() {
     -server \
     -Dlog4j.configuration=file:$LOG_CONF \
     -Dapp.log=$LOG_FILE \
+    -Dlog4j.configurationFile=file:${LOG4J2_CONF} \
     simple_l2switch.CleanUp 
 
 }
@@ -121,6 +128,7 @@ one_big_l2switch() {
     -server \
     -Dlog4j.configuration=file:$LOG_CONF \
     -Dapp.log=$LOG_FILE \
+    -Dlog4j.configurationFile=file:${LOG4J2_CONF} \
     one_big_l2switch.StartOneBigL2Switch 
 
   /bin/echo -e "\033[0;32m---------------------------------------------\033[0;39m"
@@ -130,6 +138,7 @@ one_big_l2switch() {
     -server \
     -Dlog4j.configuration=file:$LOG_CONF \
     -Dapp.log=$LOG_FILE \
+    -Dlog4j.configurationFile=file:${LOG4J2_CONF} \
     one_big_l2switch.SettingNetwork
 
   /bin/echo -e "\033[0;32m---------------------------------------------\033[0;39m"
@@ -139,6 +148,7 @@ one_big_l2switch() {
     -server \
     -Dlog4j.configuration=file:$LOG_CONF \
     -Dapp.log=$LOG_FILE \
+    -Dlog4j.configurationFile=file:${LOG4J2_CONF} \
     one_big_l2switch.CleanUp 
 
 }
@@ -154,6 +164,7 @@ sliver_network() {
     -server \
     -Dlog4j.configuration=file:$LOG_CONF \
     -Dapp.log=$LOG_FILE \
+    -Dlog4j.configurationFile=file:${LOG4J2_CONF} \
     sliver_network.StartSliverNetwork 
 
   /bin/echo -e "\033[0;32m---------------------------------------------\033[0;39m"
@@ -163,6 +174,7 @@ sliver_network() {
     -server \
     -Dlog4j.configuration=file:$LOG_CONF \
     -Dapp.log=$LOG_FILE \
+    -Dlog4j.configurationFile=file:${LOG4J2_CONF} \
     sliver_network.SettingNetwork 
 
   /bin/echo -e "\033[0;32m---------------------------------------------\033[0;39m"
@@ -172,6 +184,7 @@ sliver_network() {
     -server \
     -Dlog4j.configuration=file:$LOG_CONF \
     -Dapp.log=$LOG_FILE \
+    -Dlog4j.configurationFile=file:${LOG4J2_CONF} \
     sliver_network.CleanUp 
 
 }
@@ -187,6 +200,7 @@ federated_network() {
     -server \
     -Dlog4j.configuration=file:$LOG_CONF \
     -Dapp.log=$LOG_FILE \
+    -Dlog4j.configurationFile=file:${LOG4J2_CONF} \
     federated_network.StartFederatedNetwork 
 
   /bin/echo -e "\033[0;32m---------------------------------------------\033[0;39m"
@@ -196,6 +210,7 @@ federated_network() {
     -server \
     -Dlog4j.configuration=file:$LOG_CONF \
     -Dapp.log=$LOG_FILE \
+    -Dlog4j.configurationFile=file:${LOG4J2_CONF} \
     federated_network.SettingNetwork 
 
   /bin/echo -e "\033[0;32m---------------------------------------------\033[0;39m"
@@ -205,6 +220,7 @@ federated_network() {
     -server \
     -Dlog4j.configuration=file:$LOG_CONF \
     -Dapp.log=$LOG_FILE \
+    -Dlog4j.configurationFile=file:${LOG4J2_CONF} \
     federated_network.CleanUp 
 
 }
@@ -220,6 +236,7 @@ layerized_network() {
     -server \
     -Dlog4j.configuration=file:$LOG_CONF \
     -Dapp.log=$LOG_FILE \
+    -Dlog4j.configurationFile=file:${LOG4J2_CONF} \
     layerized_network.StartLayerizedNetwork 
 
   /bin/echo -e "\033[0;32m---------------------------------------------\033[0;39m"
@@ -229,6 +246,7 @@ layerized_network() {
     -server \
     -Dlog4j.configuration=file:$LOG_CONF \
     -Dapp.log=$LOG_FILE \
+    -Dlog4j.configurationFile=file:${LOG4J2_CONF} \
     layerized_network.SettingNetwork 
 
   /bin/echo -e "\033[0;32m---------------------------------------------\033[0;39m"
@@ -238,6 +256,7 @@ layerized_network() {
     -server \
     -Dlog4j.configuration=file:$LOG_CONF \
     -Dapp.log=$LOG_FILE \
+    -Dlog4j.configurationFile=file:${LOG4J2_CONF} \
     layerized_network.CleanUp 
 
 }
