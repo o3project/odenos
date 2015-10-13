@@ -315,6 +315,7 @@ public class Bridge extends Component {
   @Override
   protected Response onRequest(
       final Request request) {
+    LogMessage.setSavedTxid(request.txid);
     RequestParser<IActionCallback>.ParsedRequest parsed = parser
         .parse(request);
     if (parsed == null) {

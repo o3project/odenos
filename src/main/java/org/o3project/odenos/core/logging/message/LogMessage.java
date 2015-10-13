@@ -90,7 +90,11 @@ public class LogMessage {
    * @param id transaction ID
    */
   public static void setSavedTxid(String id) {
-    savedTxid.set(id);
+    String txid = id;
+    if(txid == null || txid.length() == 0) {
+      txid = createTxid();
+    }
+    savedTxid.set(txid);
   }
 
   /**

@@ -463,6 +463,7 @@ public class RemoteObject {
    * @return response to the RemoteObject
    */
   protected Response onRequest(Request request) {
+    LogMessage.setSavedTxid(request.txid);
     return new Response(Response.BAD_REQUEST, null);
   }
 

@@ -216,6 +216,7 @@ public class Generator extends Driver {
 
   @Override
   public Response onRequest(Request request) {
+    LogMessage.setSavedTxid(request.txid);
     log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), ">> {}", new Throwable().getStackTrace()[0].getMethodName()));
 
     try {
