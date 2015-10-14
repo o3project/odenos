@@ -17,7 +17,7 @@ public class LogMessage {
   private static int txidSerial = 0;
   private static String txidOwn = "";
 
-  private static Random rnd;
+  private static Random rnd = new Random(System.currentTimeMillis());
 
   private String txid = null;
   private Object[] parameters;
@@ -41,8 +41,6 @@ public class LogMessage {
    */
   public static void initParameters(int offset) {
     txidOffset = offset;
-    long now = System.currentTimeMillis();
-    rnd = new Random(now);
   }
 
   /**
