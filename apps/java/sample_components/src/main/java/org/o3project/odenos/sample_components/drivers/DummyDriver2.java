@@ -42,6 +42,7 @@ import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
+import java.nio.ByteBuffer;
 
 /**
  * DummyDriver2 class.
@@ -49,9 +50,13 @@ import java.util.concurrent.TimeUnit;
  */
 public class DummyDriver2 extends Driver {
   private static final Logger log = LogManager.getLogger(DummyDriver2.class);
-  private String network;
-  private final String description = "dummy driver";
-  private Timer timer;
+  private static String network;
+  private static final String description = "dummy driver 2";
+  private static Timer timer;
+
+  private static final long TIMER_PACKET_IN_START = 10000;	// msec
+  private static final long TIMER_PACKET_IN_INTERVAL = 5000;	// msec
+  private static final int TIMER_PACKET_IN_TIMES = 10;
 
   /**
    * Constructor.
@@ -134,16 +139,25 @@ public class DummyDriver2 extends Driver {
     this.network = curr.getProperty(
         ComponentConnectionLogicAndNetwork.NETWORK_ID);
 
+    // start dummy PacketIn
     try {
       timer = new Timer("timer-dummyPacketIn");
       TimerTask task = new TimerTask() {
+        private int cnt = 0;
         @Override
         public void run() {
-          dummyPacketIn();
-          timer.cancel();
+          cnt++;
+          dummyPacketIn(cnt);
+          if (cnt >= TIMER_PACKET_IN_TIMES) {
+            timer.cancel();
+          }
         }
       };
-      timer.schedule(task, TimeUnit.SECONDS.toMillis(3));
+      if ((TIMER_PACKET_IN_INTERVAL <= 0) || (TIMER_PACKET_IN_TIMES <= 1)) {
+        timer.schedule(task, TIMER_PACKET_IN_START);
+      } else {
+        timer.schedule(task, TIMER_PACKET_IN_START, TIMER_PACKET_IN_INTERVAL);
+      }
     } catch(Exception ex) {
     }
 
@@ -165,6 +179,8 @@ public class DummyDriver2 extends Driver {
 
     unsubscribeNetworkComponent();
     this.network = null;
+
+    timer.cancel();
 
     // Changed ConectionProperty's status.
     curr.setConnectionState(ComponentConnection.State.NONE);
@@ -202,29 +218,33 @@ public class DummyDriver2 extends Driver {
   // Event method override
   // //////////////////////////////////////////////////
 
-  private void dummyPacketIn() {
-    final String packetId = "0000000000";
-    final String nodeId = "node001";
-    final String portId = "port010";
-    /* final String networkId = "network1"; */
-    final String packetData = "data12345678";
+  private void dummyPacketIn(int count) {
+    String packetId;
+    String nodeId = "node01";	// @@ see rest_DummyDriver2.sh
+    String portId = "port010";	// @@ see rest_DummyDriver2.sh
+    ByteBuffer packetData = ByteBuffer.allocate(100);
+    packetData.put(("data4567890123456789012345678901"
+      + "23456789012345678901234567890123").getBytes());	// 64 bytes
+    packetData.putInt(0x10000001).putInt(0x10000002).putInt(0x10000003)
+      .putInt(0x10000004).putInt(0x10000005).putInt(0x10000006)
+      .putInt(0x10000007).putInt(0x10000008).putInt(count);	// 36 bytes
 
-    while (network == "") {
-      msleep(1000);	// TODO: @@@ pending
+    if (network == "") {
+      // not happen, perhaps, so setup at onConnectionChangedAdded()
+      log.error("dummyPacketIn: internal error: count={}", count);
+      return;
     }
 
-    log.info(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "dummyPacketIn: packetId={}", packetId));
+    packetId = String.format("%010d", count - 1);
+    log.info(LogMessage.buildLogMessage(LogMessage.getSavedTxid(),
+      "dummyPacketIn: packetId={}", packetId));
     BasicFlowMatch header = new BasicFlowMatch(nodeId, portId);
     NetworkInterface networkIf = networkInterfaces().get(network);
 
     Map<String, String> msgAttributes = new HashMap<>();
-    InPacket packet = new InPacket(packetId, nodeId, portId, packetData.getBytes(), msgAttributes, header);
+    InPacket packet = new InPacket(packetId, nodeId, portId, packetData.array(), msgAttributes, header);
 
     networkIf.postInPacket(packet);
-
-    InPacketAdded msg = new InPacketAdded(packet);
-
-    onInPacketAdded(network, msg);
   }
 
   @Override
@@ -302,7 +322,7 @@ public class DummyDriver2 extends Driver {
 
     if (onInPacketAddedPre(networkId, msg)) {
       String packetId = msg.getId();
-      log.info(LogMessage.buildLogMessage("receive InPacket: packetId={}", packetId));
+      log.info(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "receive InPacket: packetId={}", packetId));
       msleep(100);		// @@ for DEBUG
       HashMap<String, Response> respList = conversion(networkId, msg);
       onInPacketAddedPost(networkId, msg, respList);
