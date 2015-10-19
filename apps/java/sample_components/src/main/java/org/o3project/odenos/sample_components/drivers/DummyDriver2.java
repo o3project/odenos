@@ -192,6 +192,7 @@ public class DummyDriver2 extends Driver {
 
     addEntryEventSubscription(FLOW_CHANGED, this.network);
     addEntryEventSubscription(OUT_PACKET_ADDED, this.network);
+    // addEntryEventSubscription(IN_PACKET_ADDED, this.network);
 
     updateEntryEventSubscription(FLOW_CHANGED, this.network, null);
 
@@ -206,6 +207,7 @@ public class DummyDriver2 extends Driver {
     log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "called"));
     removeEntryEventSubscription(FLOW_CHANGED, this.network);
     removeEntryEventSubscription(OUT_PACKET_ADDED, this.network);
+    // removeEntryEventSubscription(IN_PACKET_ADDED, this.network);
 
     try {
       applyEventSubscription();
