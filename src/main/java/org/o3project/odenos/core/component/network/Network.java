@@ -187,6 +187,7 @@ public class Network extends Component {
   public Response onRequest(Request request) {
     LogMessage.setSavedTxid(request.txid);
     log.debug("");
+    Response res;
 
     try {
       log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Received request : {}, {} {}",
@@ -196,14 +197,18 @@ public class Network extends Component {
       RequestParser<IActionCallback>.ParsedRequest parsed = parser
           .parse(request);
       IActionCallback callback = parsed.getResult();
-      return callback.process(parsed);
+      res = callback.process(parsed);
+      LogMessage.delSavedTxid();
+      return res;
     } catch (Exception e) {
       log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(),
           "Exception in onRequest() : [case:{}] [msg:{}]",
           request.path, e.getClass().getSimpleName()));
-      return createErrorResponse(Response.BAD_REQUEST,
+      res = createErrorResponse(Response.BAD_REQUEST,
           "Error while processing : [" + request.method + "] "
               + request.path);
+      LogMessage.delSavedTxid();
+      return res;
     }
   }
 

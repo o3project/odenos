@@ -496,25 +496,34 @@ public class Federator extends Logic {
     LogMessage.setSavedTxid(request.txid);
     log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "received {}", request.path));
 
+    Response res;
     try {
       RequestParser<IActionCallback>.ParsedRequest parsed =
           parser.parse(request);
       if (parsed == null) {
-        return new Response(Response.BAD_REQUEST,
+        res = new Response(Response.BAD_REQUEST,
             "Error unknown request ");
+        LogMessage.delSavedTxid();
+        return res;
       }
 
       IActionCallback callback = parsed.getResult();
       if (callback == null) {
-        return new Response(Response.BAD_REQUEST,
+        res = new Response(Response.BAD_REQUEST,
             "Error unknown request ");
+        LogMessage.delSavedTxid();
+        return res;
       }
       // Get response.
-      return callback.process(parsed);
+      res = callback.process(parsed);
+      LogMessage.delSavedTxid();
+      return res;
 
     } catch (Exception ex) {
       log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Error unknown request"), ex);
-      return new Response(Response.BAD_REQUEST, "Error unknown request ");
+      res = new Response(Response.BAD_REQUEST, "Error unknown request ");
+      LogMessage.delSavedTxid();
+      return res;
     }
 
   }

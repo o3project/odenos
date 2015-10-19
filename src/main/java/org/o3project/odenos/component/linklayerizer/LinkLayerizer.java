@@ -940,26 +940,32 @@ public class LinkLayerizer extends Logic {
   protected Response onRequest(Request request) {
     LogMessage.setSavedTxid(request.txid);
     log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "received {}", request.path));
-
+    Response res;
     try {
       RequestParser<IActionCallback>.ParsedRequest parsed =
           parser.parse(request);
       if (parsed == null) {
-        return new Response(Response.BAD_REQUEST,
+        res = new Response(Response.BAD_REQUEST,
             "Error unknown request ");
+        LogMessage.delSavedTxid();
+        return res;
       }
 
       IActionCallback callback = parsed.getResult();
       if (callback == null) {
-        return new Response(Response.BAD_REQUEST,
+        res = new Response(Response.BAD_REQUEST,
             "Error unknown request ");
+        LogMessage.delSavedTxid();
+        return res;
       }
       // Get response.
       return callback.process(parsed);
 
     } catch (Exception ex) {
       log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Error unknown request"), ex);
-      return new Response(Response.BAD_REQUEST, "Error unknown request ");
+      res = new Response(Response.BAD_REQUEST, "Error unknown request ");
+      LogMessage.delSavedTxid();
+      return res;
     }
 
   }

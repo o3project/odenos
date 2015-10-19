@@ -616,22 +616,31 @@ public class Slicer extends Logic {
     log.debug("");
 
     log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "received {}", request.path));
+    Response res;
     RequestParser<IActionCallback>.ParsedRequest parsed = parser
         .parse(request);
     if (parsed == null) {
-      return new Response(Response.BAD_REQUEST, "Error unknown request ");
+      res = new Response(Response.BAD_REQUEST, "Error unknown request ");
+      LogMessage.delSavedTxid();
+      return res;
     }
 
     IActionCallback callback = parsed.getResult();
     if (callback == null) {
-      return new Response(Response.BAD_REQUEST, "Error unknown request ");
+      res = new Response(Response.BAD_REQUEST, "Error unknown request ");
+      LogMessage.delSavedTxid();
+      return res;
     }
     try {
       // Get response.
-      return callback.process(parsed);
+      res = callback.process(parsed);
+      LogMessage.delSavedTxid();
+      return res;
     } catch (Exception e) {
       log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Error unknown request"));
-      return new Response(Response.BAD_REQUEST, "Error unknown request ");
+      res = new Response(Response.BAD_REQUEST, "Error unknown request ");
+      LogMessage.delSavedTxid();
+      return res;
     }
   }
 

@@ -464,7 +464,9 @@ public class RemoteObject {
    */
   protected Response onRequest(Request request) {
     LogMessage.setSavedTxid(request.txid);
-    return new Response(Response.BAD_REQUEST, null);
+    Response res = new Response(Response.BAD_REQUEST, null);
+    LogMessage.delSavedTxid();
+    return res;
   }
 
   /**

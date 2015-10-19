@@ -332,6 +332,7 @@ public class SystemManager extends RemoteObject {
     LogMessage.setSavedTxid(req.txid);
     log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "onRequest: {}, {}", req.method, req.path));
 
+    Response response = null;
     RequestParser<IActionCallback>.ParsedRequest parsed = parser.parse(req);
     if (parsed == null) {
       // Transfer Other Component
@@ -339,18 +340,23 @@ public class SystemManager extends RemoteObject {
       if (pattern.matcher(req.path).matches()) {
         String compId = getDestinationCompId(req.path);
         String command = getDestinationPath(req.path);
-        return transferComponent(compId, command,
+        response = transferComponent(compId, command,
             req.method, LogMessage.getSavedTxid(), req.getBodyValue());
+        LogMessage.delSavedTxid();
+        return response;
       }
 
-      return new Response(Response.BAD_REQUEST, null);
+      response = new Response(Response.BAD_REQUEST, null);
+      LogMessage.delSavedTxid();
+      return response;
     }
 
-    Response response = null;
     try {
       IActionCallback callback = parsed.getResult();
       if (callback == null) {
-        return new Response(Response.BAD_REQUEST, null);
+        response = new Response(Response.BAD_REQUEST, null);
+        LogMessage.delSavedTxid();
+        return response;
       }
       response = callback.process(parsed);
     } catch (Exception e) {
@@ -360,6 +366,7 @@ public class SystemManager extends RemoteObject {
     if (response == null) {
       response = new Response(Response.BAD_REQUEST, null);
     }
+    LogMessage.delSavedTxid();
     return response;
   }
 

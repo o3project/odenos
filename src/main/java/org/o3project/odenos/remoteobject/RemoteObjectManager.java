@@ -83,7 +83,9 @@ public class RemoteObjectManager extends RemoteObject {
 
     IActionCallback callback = parsed.getResult();
     if (callback == null) {
-      return new Response(Response.BAD_REQUEST, null);
+      response = new Response(Response.BAD_REQUEST, null);
+      LogMessage.delSavedTxid();
+      return response;
     }
     try {
       response = callback.process(parsed);
@@ -94,6 +96,7 @@ public class RemoteObjectManager extends RemoteObject {
     if (response == null) {
       response = new Response(Response.BAD_REQUEST, null);
     }
+    LogMessage.delSavedTxid();
     return response;
   }
 
