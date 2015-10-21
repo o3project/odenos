@@ -270,7 +270,7 @@ public class DummyDriver2 extends Driver {
       // Driver needs to set Flow to physical switch here.
       // Setting of Flow After completing the physical switch,
       // to "Established".
-      log.info(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "added Flow: network={}, flow='{}'", networkId, targetFlow.toString()));
+      log.info(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "added Flow: network={}, flow=''{}''", networkId, targetFlow.toString()));
 
       targetFlow.setStatus(FlowObject.FlowStatus.ESTABLISHED.toString());
       networkIf.putFlow(targetFlow);
