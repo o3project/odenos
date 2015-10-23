@@ -274,7 +274,7 @@ public class NetworkInterface {
    */
   public final Response putNodeAttributes(final Node node, final Map<String, String> body) {
     String path = String.format(NODE_PATH + "/attributes", node.getId());
-    log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), ">>  [networkId : '{}']", this.networkId));
+    log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), ">>  [networkId : ''{}'']", this.networkId));
     return putObjectToNetwork(this.networkId, path, body);
   }
 
@@ -354,7 +354,7 @@ public class NetworkInterface {
   public final Response putPhysicalNodeAttributes(final Node node, final Map<String, String> body) {
     String path = String.format(PHYSICAL_NODES_PATH + "/attributes",
                                 node.getAttribute(Logic.AttrElements.PHYSICAL_ID));
-    log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), ">>  [networkId : '{}']", this.networkId));
+    log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), ">>  [networkId : ''{}'']", this.networkId));
     return putObjectToNetwork(this.networkId, path, body);
   }
 
@@ -485,7 +485,7 @@ public class NetworkInterface {
   public final Response putPortAttributes(final Port port, final Map<String, String> body) {
     String path =
         String.format(PORT_PATH + "/attributes", port.getNode(), port.getId());
-    log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), ">>  [networkId : '{}']", this.networkId));
+    log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), ">>  [networkId : ''{}'']", this.networkId));
     return putObjectToNetwork(this.networkId, path, body);
   }
 
@@ -567,7 +567,7 @@ public class NetworkInterface {
   public final Response putPhysicalPortAttributes(final Port port, final Map<String, String> body) {
     String path = String.format(PHYSICAL_PORTS_PATH + "/attributes",
         port.getAttribute(Logic.AttrElements.PHYSICAL_ID));
-    log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), ">>  [networkId : '{}']", this.networkId));
+    log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), ">>  [networkId : ''{}'']", this.networkId));
     return putObjectToNetwork(this.networkId, path, body);
   }
 
@@ -694,7 +694,7 @@ public class NetworkInterface {
    */
   public final Response putLinkAttributes(final Link link, final Map<String, String> body) {
     String path = String.format(LINK_PATH + "/attributes", link.getId());
-    log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), ">>  [networkId : '{}']", this.networkId));
+    log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), ">>  [networkId : ''{}'']", this.networkId));
     return putObjectToNetwork(this.networkId, path, body);
   }
 
@@ -820,7 +820,7 @@ public class NetworkInterface {
    */
   public final Response putFlowAttributes(final Flow flow, final Map<String, String> body) {
     String path = String.format(FLOW_PATH + "/attributes", flow.getFlowId());
-    log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), ">>  [networkId : '{}'] {}", this.networkId, flow.getFlowId()));
+    log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), ">>  [networkId : ''{}''] {}", this.networkId, flow.getFlowId()));
     return putObjectToNetwork(this.networkId, path, body);
   }
 

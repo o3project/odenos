@@ -445,6 +445,12 @@ public class NetworkInterfaceTest {
     Node node = new Node("nodeId");
     Map<String, String> attributes = new HashMap<String, String>();
     attributes.put("attr123", "val123");
+
+    PowerMockito.doReturn(new Response(Response.OK, node)).when(target,
+        "putObjectToNetwork",
+        "NetworkId",
+        "topology/nodes/nodeId/attributes", attributes);
+
     /*
      * test
      */
@@ -458,6 +464,7 @@ public class NetworkInterfaceTest {
         "topology/nodes/nodeId/attributes",
         attributes);
 
+    assertThat(result.statusCode, is(Response.OK));
     assertThat(result, is(notNullValue()));
 
   }
@@ -806,6 +813,11 @@ public class NetworkInterfaceTest {
     Map<String, String> attributes = new HashMap<String, String>();
     attributes.put("attr123", "val123");
 
+    PowerMockito.doReturn(new Response(Response.OK, port)).when(target,
+        "putObjectToNetwork",
+        "NetworkId",
+        "topology/nodes/nodeId/ports/portId/attributes", attributes);
+
     /*
      * test
      */
@@ -818,6 +830,7 @@ public class NetworkInterfaceTest {
         "putObjectToNetwork", "NetworkId",
         "topology/nodes/nodeId/ports/portId/attributes", attributes);
 
+    assertThat(result.statusCode, is(Response.OK));
     assertThat(result, is(notNullValue()));
 
   }
@@ -1167,6 +1180,11 @@ public class NetworkInterfaceTest {
     Map<String, String> attributes = new HashMap<String, String>();
     attributes.put("attr123", "val123");
 
+    PowerMockito.doReturn(new Response(Response.OK, link)).when(target,
+        "putObjectToNetwork",
+        "NetworkId",
+        "topology/links/linkId/attributes", attributes);
+
     /*
      * test
      */
@@ -1180,6 +1198,7 @@ public class NetworkInterfaceTest {
         "topology/links/linkId/attributes",
         attributes);
 
+    assertThat(result.statusCode, is(Response.OK));
     assertThat(result, is(notNullValue()));
 
   }
