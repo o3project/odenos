@@ -269,7 +269,7 @@ public class NetworkInterface {
    * }
    * </pre>
    * @param node a node
-   * @param body a attributes Map<String, String>
+   * @param body a attributes {@literal Map<String, String>}
    * @return response object.
    */
   public final Response putNodeAttributes(final Node node, final Map<String, String> body) {
@@ -348,7 +348,7 @@ public class NetworkInterface {
    * }
    * </pre>
    * @param node a node
-   * @param body a attributes Map<String, String>.
+   * @param body a attributes {@literal Map<String, String>}
    * @return response object.
    */
   public final Response putPhysicalNodeAttributes(final Node node, final Map<String, String> body) {
@@ -479,7 +479,7 @@ public class NetworkInterface {
    * }
    * </pre>
    * @param port a port.
-   * @param body a attributes Map<String, String>.
+   * @param body a attributes {@literal Map<String, String>}
    * @return response object.
    */
   public final Response putPortAttributes(final Port port, final Map<String, String> body) {
@@ -561,7 +561,7 @@ public class NetworkInterface {
    * }
    * </pre>
    * @param port a port.
-   * @param body a attributes Map<String, String>.
+   * @param body a attributes {@literal Map<String, String>}
    * @return response object.
    */
   public final Response putPhysicalPortAttributes(final Port port, final Map<String, String> body) {
@@ -689,7 +689,7 @@ public class NetworkInterface {
    * }
    * </pre>
    * @param link a link.
-   * @param body a attributes Map<String, String>.
+   * @param body a attributes {@literal Map<String, String>}
    * @return response object.
    */
   public final Response putLinkAttributes(final Link link, final Map<String, String> body) {
@@ -815,7 +815,7 @@ public class NetworkInterface {
    * }
    * </pre>
    * @param flow a flow.
-   * @param body a attributes Map<String, String>.
+   * @param body a attributes {@literal Map<String, String>}
    * @return response object.
    */
   public final Response putFlowAttributes(final Flow flow, final Map<String, String> body) {
