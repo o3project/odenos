@@ -38,10 +38,12 @@ URI                                                     | GET                 | 
  \<base_uri>/topology/nodes/\<node_id>                  | [x](#GETnodes_id)   |                 | [x](#PUTnodes_id)          | [x](#DELETEnodes_id)
  \<base_uri>/topology/nodes/\<node_id>/attributes       |                     |                 | [x](#PUTnodes_attributes)  |
  \<base_uri>/topology/physical_nodes/\<physical_id>     | [x](#GETnode_physical_id) |           | [x](#PUTnode_physical_id)  | [x](#DELETEnode_physical_id)      
+ \<base_uri>/topology/physical_nodes/\<physical_id>/attributes  |             |                 | [x](#PUTnode_physical_attributes)  |
  \<base_uri>/topology/nodes/\<node_id>/ports            | [x](#GETports)      | [x](#POSTports) |                            |   
  \<base_uri>/topology/nodes/\<node_id>/ports/\<port_id> | [x](#GETport_id)    |                 | [x](#PUTport_id)           | [x](#DELETEport_id)
  \<base_uri>/topology/nodes/\<node_id>/ports/\<port_id>/attributes |          |                 | [x](#PUTport_attributes)   | 
  \<base_uri>/topology/physical_ports/\<physical_id>     | [x](#GETport_physical_id) |           | [x](#PUTport_physical_id)  | [x](#DELETEport_physical_id)
+ \<base_uri>/topology/physical_ports/\<physical_id>/attributes |              |                 | [x](#PUTport_physical_attributes)  |
  \<base_uri>/topology/links                             | [x](#GETlinks)      | [x](#POSTlinks) |                            |
  \<base_uri>/topology/links/\<link_id>                  | [x](#GETlink_id)    |                 | [x](#PUTlink_id)           | [x](#DELETElink_id)
  \<base_uri>/topology/links/\<link_id>/attributes       |                     |                 | [x](#PUTlink_attributes)   | 
@@ -87,6 +89,7 @@ URI                                    | GET                        | POST      
   * [DELETE \<base_uri>/topology/nodes/\<node_id>](#DELETEnodes_id)
   * [GET \<base_uri>/topology/physical_nodes/\<physical_id>](#GETnode_physical_id)
   * [PUT \<base_uri>/topology/physical_nodes/\<physical_id>](#PUTnode_physical_id)
+  * [PUT \<base_uri>/topology/physical_nodes/\<physical_id>/attributes](#PUTnode_physical_attributes)
   * [DELETE \<base_uri>/topology/physical_nodes/\<physical_id>](#DELETEnode_physical_id)
 
 ##### Port
@@ -98,6 +101,7 @@ URI                                    | GET                        | POST      
   * [DELETE \<base_uri>/topology/nodes/\<node_id>/ports/\<port_id>](#DELETEport_id)
   * [GET \<base_uri>/topology/physical_ports/\<physical_id>](#GETport_physical_id)
   * [PUT \<base_uri>/topology/physical_ports/\<physical_id>](#PUTport_physical_id)
+  * [PUT \<base_uri>/topology/physical_ports/\<physical_id>/attributes](#PUTport_physical_attributes)
   * [DELETE \<base_uri>/topology/physical_ports/\<physical_id>](#DELETEport_physical_id)
 
 ##### Link
@@ -291,6 +295,18 @@ create a new node if id does not exist.
   * **Body** : [Node](./DataClass.md#Node)
 
 ----
+#### <a name="PUTnode_physical_attributes">PUT \<base_uri>/topology/physical_nodes/\<physical_id>/attributes</a>
+update the node without check of the version. (specify the physical id that you want to update)
+using the one before updating, if any, as values of the attributes which aren't specified.
+
+##### [Request]:
+  * **Body** : attributes  dict{\<String>, \<String>}
+
+##### [Response]\(Updated):
+  * **Status Code** : 200
+  * **Body** : [Node](./DataClass.md#Node)
+
+----
 #### <a name="DELETEnode_physical_id">DELETE \<base_uri>/topology/physical_nodes/\<physical_id></a>  
 Delete the Node. (specify the physical id that you want to delete)  
 can not delete if the link is set to port.
@@ -421,6 +437,18 @@ create a new port if id does not exist.
 
 ##### [Response]\(Created):
   * **Status Code** : 201
+  * **Body** : [Port](./DataClass.md#Port)
+
+----
+#### <a name="PUTport_physical_attributes">PUT \<base_uri>/topology/physical_ports/\<physical_id>/attributes</a>
+update the port without check of the version. (specify the physical id that you want to update)
+using the one before updating, if any, as values of the attributes which aren't specified.
+
+##### [Request]:
+  * **Body** : attributes  dict{\<String>, \<String>}
+
+##### [Response]\(Updated):
+  * **Status Code** : 200
   * **Body** : [Port](./DataClass.md#Port)
 
 ----

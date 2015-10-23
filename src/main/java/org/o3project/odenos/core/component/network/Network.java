@@ -694,6 +694,19 @@ public class Network extends Component {
     return putNode(nodeId, msg);
   }
 
+  protected Response putNodePhysicalIdAttributes(String physicalId, Map<String, String> addAttributes)
+      throws Exception {
+    log.debug("");
+
+    String nodeId = getNodeByPhysicalId(physicalId);
+    if (nodeId == null) {
+      return createErrorResponse(Response.NOT_FOUND, null,
+          "physical_id not found");
+    }
+
+    return putNodeAttributes(nodeId, addAttributes);
+  }
+
   protected Response deleteNodePhysicalId(String physicalId, Node msg)
       throws Exception {
     log.debug("");
@@ -722,6 +735,20 @@ public class Network extends Component {
       return putPort(msg.getNode(), msg.getId(), msg);
     }
     return putPort(port.getNode(), port.getId(), msg);
+  }
+
+  protected Response putPortPhysicalIdAttributes(String physicalId,
+      Map<String, String> addAttributes) throws Exception {
+    log.debug("");
+
+    Port port = getPortByPhysicalId(physicalId);
+    if (port == null) {
+      return createErrorResponse(Response.NOT_FOUND, null,
+          "physical_id not found");
+    }
+
+    Node node = topology.getNode(port.getNode());
+    return putPortAttributes(node.getId(), port.getId(), addAttributes);
   }
 
   protected Response deletePortPhysicalId(String physicalId, Port msg)
@@ -1706,6 +1733,18 @@ public class Network extends Component {
               }
             });
 
+        addRule(Method.PUT, "topology/physical_nodes/<physical_id>/attributes",
+            new IActionCallback() {
+              @Override
+              public Response process(
+                  RequestParser<IActionCallback>.ParsedRequest parsed)
+                  throws Exception {
+                return putNodePhysicalIdAttributes(
+                    parsed.getParam(Logic.AttrElements.PHYSICAL_ID),
+                    parsed.getRequest().getBodyAsStringMap());
+              }
+            });
+
         addRule(Method.DELETE, "topology/physical_nodes/<physical_id>",
             new IActionCallback() {
               @Override
@@ -1737,6 +1776,18 @@ public class Network extends Component {
                 return putPortPhysicalId(
                     parsed.getParam(Logic.AttrElements.PHYSICAL_ID),
                     parsed.getRequest().getBody(Port.class));
+              }
+            });
+
+        addRule(Method.PUT, "topology/physical_ports/<physical_id>/attributes",
+            new IActionCallback() {
+              @Override
+              public Response process(
+                  RequestParser<IActionCallback>.ParsedRequest parsed)
+                  throws Exception {
+                return putPortPhysicalIdAttributes(
+                    parsed.getParam(Logic.AttrElements.PHYSICAL_ID),
+                    parsed.getRequest().getBodyAsStringMap());
               }
             });
 
