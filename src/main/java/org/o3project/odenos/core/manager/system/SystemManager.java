@@ -42,6 +42,7 @@ import org.o3project.odenos.core.logging.message.LogMessage;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Map;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -83,6 +84,10 @@ public class SystemManager extends RemoteObject {
 
   // (Key: componentId, Value:BaseUri)
   private HashMap<String, String> baseUriMap = new HashMap<String, String>();
+
+  // Sequence Storage
+  private HashMap<String, Map<String, Long>> SequenceMap
+      = new HashMap<String, Map<String, Long>>();
 
   // Note : Request and response procedures are synchronized now.
   @Deprecated
@@ -354,7 +359,7 @@ public class SystemManager extends RemoteObject {
       }
       response = callback.process(parsed);
     } catch (Exception e) {
-      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Exception Request: {}, {}", req.method, req.path), e);
+      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Bad Request: {}, {}", req.method, req.path));
       response = new Response(Response.BAD_REQUEST, null);
     }
     if (response == null) {
@@ -548,6 +553,62 @@ public class SystemManager extends RemoteObject {
                   final RequestParser<IActionCallback>.ParsedRequest parsed) {
                 return deleteConnections(parsed
                     .getParam("conn_id"));
+              }
+            });
+        addRule(Request.Method.POST, "sequence",
+            new IActionCallback() {
+              @Override
+              public Response process(
+                  final RequestParser<IActionCallback>.ParsedRequest parsed)
+                  throws ParseBodyException {
+                return postSequence(
+                    parsed.getRequest().getBodyAsStringMap());
+              }
+            });
+        addRule(Request.Method.PUT, "sequence/<seq_id>",
+            new IActionCallback() {
+              @Override
+              public Response process(
+                  final RequestParser<IActionCallback>.ParsedRequest parsed)
+                  throws ParseBodyException {
+                return putSequence(parsed.getParam("seq_id"),
+                    parsed.getRequest().getBodyAsStringMap());
+              }
+            });
+        addRule(Request.Method.GET, "sequence/<seq_id>",
+            new IActionCallback() {
+              @Override
+              public Response process(
+                  final RequestParser<IActionCallback>.ParsedRequest parsed)
+                  throws ParseBodyException {
+                return getSequence(parsed.getParam("seq_id"), true);
+              }
+            });
+        addRule(Request.Method.GET, "sequence/<seq_id>/next",
+            new IActionCallback() {
+              @Override
+              public Response process(
+                  final RequestParser<IActionCallback>.ParsedRequest parsed)
+                  throws ParseBodyException {
+                return getSequence(parsed.getParam("seq_id"), true);
+              }
+            });
+        addRule(Request.Method.GET, "sequence/<seq_id>/curr",
+            new IActionCallback() {
+              @Override
+              public Response process(
+                  final RequestParser<IActionCallback>.ParsedRequest parsed)
+                  throws ParseBodyException {
+                return getSequence(parsed.getParam("seq_id"), false);
+              }
+            });
+        addRule(Request.Method.DELETE, "sequence/<seq_id>",
+            new IActionCallback() {
+              @Override
+              public Response process(
+                  final RequestParser<IActionCallback>.ParsedRequest parsed)
+                  throws ParseBodyException {
+                return deleteSequence(parsed.getParam("seq_id"));
               }
             });
         addRule(Request.Method.GET,
@@ -1529,6 +1590,130 @@ public class SystemManager extends RemoteObject {
     }
   }
 
+  private Response postSequence(final Map<String, String> spec) {
+    return putSequence(getUniqueID(), spec);
+  }
+
+  private Response putSequence(final String seqId, final Map<String, String> spec) {
+    String msg;
+    Map<String, Long> ent = SequenceMap.get(seqId);
+    if (ent == null) {
+      ent = new HashMap<String, Long>();
+      ent.put("start", 1L);
+      ent.put("end", Long.MAX_VALUE);
+      ent.put("step", 1L);
+      ent.put("curr", null);
+      msg = "created: seqId='" + seqId + "'";
+    } else {
+      msg = "reseted: seqId='" + seqId + "'";
+    }
+
+    if (spec != null) {
+      Long valueStart = null;
+      Long valueEnd = null;
+      Long valueStep = null;
+      Long valueCurr = ent.get("curr");
+      String value;
+
+      try {
+        if ((value = spec.get("start")) != null) {
+          valueStart = Long.valueOf(value);
+        }
+        if ((value = spec.get("end")) != null) {
+          valueEnd = Long.valueOf(value);
+        }
+        if ((value = spec.get("step")) != null) {
+          valueStep = Long.valueOf(value);
+        }
+        if ((value = spec.get("curr")) != null) {
+          valueCurr = Long.valueOf(value);
+        }
+      } catch (Exception ex) {
+        log.warn(LogMessage.buildLogMessage(LogMessage.getSavedTxid(),
+            "Bad Sequence Spec: seqId=''{}'', {}", seqId, spec), ex);
+        return new Response(Response.BAD_REQUEST, "Bad Sequence Spec");
+      }
+
+      if (valueStart != null) {
+        ent.put("start", valueStart);
+      }
+      if (valueEnd != null) {
+        ent.put("end", valueEnd);
+      }
+      if (valueStep != null) {
+        ent.put("step", valueStep);
+      }
+      if (valueCurr != null) {
+        if ((valueCurr < ent.get("start")) || (valueCurr > ent.get("end"))) {
+          valueCurr = null;
+        }
+        ent.put("curr", valueCurr);
+      }
+    }
+
+    SequenceMap.put(seqId, ent);
+    log.info(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "{}: by {}", msg, ent));
+
+    HashMap<String,String> resp = new HashMap<String, String>();
+    resp.put("seq_id",  seqId);
+    resp.put("start",  String.valueOf(ent.get("start")));
+    resp.put("end",  String.valueOf(ent.get("end")));
+    resp.put("step",  String.valueOf(ent.get("step")));
+    if (ent.get("curr") != null) {
+      resp.put("curr",  String.valueOf(ent.get("curr")));
+    }
+    return new Response(Response.OK, resp);
+  }
+
+  private Response getSequence(final String seqId, boolean isNext) {
+    Long valuePrev, valueCurr;
+    Map<String, Long> ent = SequenceMap.get(seqId);
+    if (ent == null) {
+      log.warn(LogMessage.buildLogMessage(LogMessage.getSavedTxid(),
+          "Not Exsists Sequence ID: seqId=''{}''", seqId));
+      return new Response(Response.NOT_FOUND, "Not Exsists Sequence ID");
+    }
+    if (isNext) {
+      valuePrev = ent.get("curr");
+      if (valuePrev == null) {
+        valueCurr = ent.get("start");
+      } else {
+        valueCurr = valuePrev + ent.get("step");
+        if ((valueCurr > ent.get("end")) || (valueCurr < ent.get("start"))) {
+          if (ent.get("step") > 0) {
+            valueCurr = ent.get("start");
+          } else {
+            valueCurr = ent.get("end");
+          }
+        }
+      }
+      ent.put("curr", valueCurr);
+      log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(),
+          "get next value: seqId=''{}'', prev={}, curr={}", seqId, valuePrev, valueCurr));
+    } else {
+      valueCurr = ent.get("curr");
+      if (valueCurr == null) {
+        valueCurr = ent.get("start");
+      }
+      log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(),
+          "get curr value: seqId=''{}'', curr={}", seqId, valueCurr));
+    }
+    return new Response(Response.OK, String.valueOf(valueCurr));
+  }
+
+  private Response deleteSequence(final String seqId) {
+    Map<String, Long> ent = SequenceMap.get(seqId);
+    if (ent == null) {
+      log.warn(LogMessage.buildLogMessage(LogMessage.getSavedTxid(),
+          "Not Exsists Sequence ID: seqId=''{}''", seqId));
+      return new Response(Response.NOT_FOUND, "Not Exsists Sequence ID");
+    }
+    SequenceMap.remove(seqId);
+    log.info(LogMessage.buildLogMessage(LogMessage.getSavedTxid(),
+        "removed: seqId=''{}''", seqId));
+    return new Response(Response.OK, null);
+  }
+
   /**
    * Method for assigned generating UUID to ComponentConnectionID.
    *
@@ -1542,4 +1727,6 @@ public class SystemManager extends RemoteObject {
         || componentStateList.containsKey(id));
     return id;
   }
+
 }
+

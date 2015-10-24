@@ -43,6 +43,7 @@ import org.o3project.odenos.remoteobject.manager.ObjectPropertiesHash;
 import org.o3project.odenos.remoteobject.manager.ObjectPropertyList;
 import org.o3project.odenos.remoteobject.message.Request;
 import org.o3project.odenos.remoteobject.message.Response;
+import org.o3project.odenos.remoteobject.message.MessageBodyUnpacker.StringMap;
 import org.o3project.odenos.remoteobject.messagingclient.MessageDispatcher;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
@@ -1998,6 +1999,46 @@ public class SystemManagerInterfaceTest {
 
     assertThat(result.statusCode, is(Response.OK));
 
+  }
+
+  /**
+   * Test method for
+   * {@link org.o3project.odenos.core.component.SystemManagerInterface#putSequence(java.lang.String, java.util.Map<java.lnag.String. java.lnag.Long>)}.
+   *
+   * @throws Exception
+   */
+  @Test
+  public final void testPutSequence() throws Exception {
+    Map<String, String> spec = Mockito.mock(StringMap.class);
+    doReturn(new Response(Response.OK, spec)).when(target).putObjectToSystemMng(
+        "sequence/offset", spec);
+    Response resp = Whitebox.invokeMethod(target, "putSequence",
+        "offset", spec);
+    assertThat(resp.statusCode, is(Response.OK));
+  }
+
+  /**
+   * Test method for
+   * {@link org.o3project.odenos.core.component.SystemManagerInterface#getSequence(java.lang.String, java.util.Map<java.lnag.String. java.lnag.Long>)}.
+   *
+   * @throws Exception
+   */
+  @Test
+  public final void testGetSequence() throws Exception {
+    doReturn(new Response(Response.OK, "1001")).when(target).getObjectToSystemMng(
+        "sequence/offset/next");
+    doReturn(new Response(Response.OK, "1002")).when(target).getObjectToSystemMng(
+        "sequence/offset/curr");
+    Response resp;
+    resp = Whitebox.invokeMethod(target, "getSequence", "offset");
+    assertThat(resp.statusCode, is(Response.OK));
+    assertThat(resp.getBody(String.class), is(String.valueOf("1001")));
+    resp = Whitebox.invokeMethod(target, "getSequence", "offset", true);
+    assertThat(resp.statusCode, is(Response.OK));
+    assertThat(resp.getBody(String.class), is(String.valueOf("1001")));
+    resp = Whitebox.invokeMethod(target, "getSequence", "offset", false);
+    assertThat(resp.statusCode, is(Response.OK));
+    assertThat(resp.getBody(String.class), is(String.valueOf("1002")));
   }
 
   /**
