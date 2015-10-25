@@ -20,6 +20,7 @@ import org.msgpack.type.Value;
 import org.o3project.odenos.core.manager.ComponentManager2;
 import org.o3project.odenos.core.manager.system.event.ComponentConnectionChanged;
 import org.o3project.odenos.core.manager.system.event.ComponentManagerChanged;
+import org.o3project.odenos.core.component.SystemManagerInterface;
 import org.o3project.odenos.remoteobject.ObjectProperty;
 import org.o3project.odenos.remoteobject.RemoteObject;
 import org.o3project.odenos.remoteobject.RemoteObjectManager;
@@ -63,6 +64,7 @@ public class SystemManager extends RemoteObject {
 
   private static final int AliveIntervalTime = 5;
   private static final int WAIT_SUBSCRIPTION_TIME = 100;
+  private static final long TXOFFSET_STEP = 1000000L;
   // Data for component managers. (Value:Set[compMgrId])
   private HashSet<String> componentMgrsSet = new HashSet<String>();
   private ObjectPropertiesHash compMgrsObjProps = new ObjectPropertiesHash();
@@ -114,6 +116,12 @@ public class SystemManager extends RemoteObject {
     this.getProperty().setObjectState(ObjectProperty.State.RUNNING);
 
     this.parser = this.createParser();
+
+    SystemManagerInterface systemMngInterface = new SystemManagerInterface(dispatcher);
+    Map<String, String> spec = new HashMap<String, String>();
+    spec.put("start", String.valueOf(TXOFFSET_STEP));
+    spec.put("step", String.valueOf(TXOFFSET_STEP));
+    systemMngInterface.putSequence("offset", spec);
   }
 
 

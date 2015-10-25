@@ -70,7 +70,8 @@ TXOFFSET_SYSTEM=0000000
 ##########################################################################
 # common functions                                                       #
 ##########################################################################
-check_pid_file() {
+check_pid_file()
+{
     pid_file=$1
     if [ -f $pid_file ]; then
 	pid=`cat $pid_file`
@@ -80,10 +81,12 @@ check_pid_file() {
     fi
 }
 
-read_config_file() {
+read_config_file()
+{
     [ -f $ODENOS_CONF_FILE_TMP ] || return 1
 
     count=0
+    odenos_process=
     while read line; do
         KEY=`echo $line | cut -d " " -f 1 | tr -d " "`
         case "$KEY" in
@@ -145,18 +148,19 @@ read_config_file() {
     for proc in ${odenos_process[@]}
     do
 	PROC_NAME=`echo $proc | cut -d "," -f 1 | tr -d " "`
-	PROC_TXOFFSET=`echo $proc | cut -d "," -f 2 | tr -d " "`
-	PROC_TYPE=`echo $proc | cut -d "," -f 3 | tr -d " "`
-	PROC_DIR=`echo $proc | cut -d "," -f 4 | tr -d " "`
-	#echo "DEBUG: $PROC_NAME, $PROC_TXOFFSET, $PROC_TYPE, $PROC_DIR"
+	PROC_TYPE=`echo $proc | cut -d "," -f 2 | tr -d " "`
+	PROC_DIR=`echo $proc | cut -d "," -f 3 | tr -d " "`
+	#echo "DEBUG: $PROC_NAME, $PROC_TYPE, $PROC_DIR"
     done
 }
 
-set_classpath() {
+set_classpath()
+{
     CLASSPATH=.:`echo \`ls lib/java/*\` | tr " " :`:$CLASSPATH
 }
 
-purge_zk_log() {
+purge_zk_log()
+{
     # Purges ZooKeeper's transaction logs 
     $JAVA -classpath $CLASSPATH \
           -Dlog4j.configuration=file:${ODENOS_CONF}/log_java.conf \
@@ -166,11 +170,36 @@ purge_zk_log() {
 	  ${ZOOKEEPER_LOG} ${ZOOKEEPER_LOG} -n 3 
 }
 
+get_txoffset()
+{
+    local ret_val txoffset reply_code
+
+    ret_val=0
+    txoffset="$( curl http://${REST_HOST}:${REST_PORT}/systemmanager/sequence/offset -w ":%{response_code}\n" 2>/dev/null )"
+    reply_code="${txoffset##*:}"
+    txoffset="${txoffset%:${reply_code}}" ; txoffset="${txoffset#\"}" ; txoffset="${txoffset%\"}"
+    case "${reply_code}" in
+    200)
+	echo "${txoffset}"
+	;;
+    000|404)    # 000 is not connected
+	ret_val=10
+	;;
+    *)
+	echo "Failed get TXID offset: ${reply_code}" >&2
+	ret_val=1
+	;;
+    esac
+
+    return ${ret_val}
+}
+
 
 ##########################################################################
 # main functions                                                         #
 ##########################################################################
-start_system() {
+start_system()
+{
     if check_pid_file $FILE_ODENOS_SYSTEM_PID; then
         echo "odenos core system is already running"
         return 1
@@ -186,9 +215,47 @@ start_system() {
 	-m $MONITOR $MONITOR_LOGGING $ZOOKEEPER_HOST $ZOOKEEPER_PORT \
 	$ZOOKEEPER_EMBED &
     echo $! > $FILE_ODENOS_SYSTEM_PID
+    return 0
 }
 
-stop_system() {
+check_start_system()
+{
+    local ret_val reply_code cnt
+
+    cnt=0
+    while [ ${cnt} -lt ${MAX_WAIT_COUNT} ] ;do
+        cnt=$(( cnt + 1 ))
+        ret_val=0
+	reply_code=`curl http://${REST_HOST}:${REST_PORT}/systemmanager/property -w "\n%{response_code}\n" 2>/dev/null | grep '^[0-5][0-9][0-9]$'`
+	case "${reply_code}" in
+	200)
+	    echo "Started System Manager" >&2
+	    ;;
+	000|404)    # 000 is not connected
+	    ret_val=10
+	    ;;
+	*)
+	    echo "Failed System Manager: ${reply_code}" >&2
+	    ret_val=1
+	    break
+	    ;;
+	esac
+	if [ ${ret_val} -eq 10 ] ;then
+	    #echo "Starting ODENOS Please wait ...${proc_list}" >&2
+	    sleep 1
+	else
+	    break
+	fi
+    done
+
+    if [ ${ret_val} -eq 10 ] ;then
+	echo "Met Timeout Starting ODENOS" >&2
+    fi
+    return ${ret_val}
+}
+
+stop_system()
+{
     if check_pid_file $FILE_ODENOS_SYSTEM_PID; then
 	kill `cat $FILE_ODENOS_SYSTEM_PID`  > /dev/null 2>&1
 	unlink $FILE_ODENOS_SYSTEM_PID      > /dev/null 2>&1
@@ -197,16 +264,17 @@ stop_system() {
     fi
 }
 
-start_process() {
+start_process()
+{
     local res proc_list
 
     proc_list=""
     for proc in ${odenos_process[@]}
     do
 	PROC_NAME=`echo $proc | cut -d "," -f 1 | tr -d " "`
-	PROC_TXOFFSET=`echo $proc | cut -d "," -f 2 | tr -d " "`
-	PROC_TYPE=`echo $proc | cut -d "," -f 3 | tr -d " "`
-	PROC_DIR=`echo $proc | cut -d "," -f 4 | tr -d " "`
+	PROC_TYPE=`echo $proc | cut -d "," -f 2 | tr -d " "`
+	PROC_DIR=`echo $proc | cut -d "," -f 3 | tr -d " "`
+	PROC_TXOFFSET=`get_txoffset`
 
 	file=$ODENOS_TMP/odenos_${PROC_NAME}.pid
 
@@ -249,7 +317,7 @@ start_process() {
 
     done
 
-    check_start ${proc_list}
+    check_start_process ${proc_list}
     res=$?
     if [ ${res} -ne 0 ] ;then
 	return 1
@@ -257,33 +325,34 @@ start_process() {
     return 0
 }
 
-check_start() {
+check_start_process()
+{
     local ret_val proc_list proc reply_code cnt
 
     proc_list=" $* "
     cnt=0
     while [ -n "${proc_list% }" -a ${cnt} -lt ${MAX_WAIT_COUNT} ] ;do
-	ret_val=0
 	cnt=$(( cnt + 1 ))
+	ret_val=0
 	for proc in ${proc_list} ;do
 	    reply_code=`curl http://${REST_HOST}:${REST_PORT}/systemmanager/component_managers/${proc} -w "\n%{response_code}\n" 2>/dev/null | grep '^[0-5][0-9][0-9]$'`
 	    case "${reply_code}" in
 	    200)
-		echo "Started Compnent Manager :: ${proc}"
+		echo "Started Compnent Manager :: ${proc}" >&2
 		proc_list="${proc_list% ${proc} *} ${proc_list#* ${proc} }"
 		;;
 	    000|404)	# 000 is not connected
 		ret_val=10
 		;;
 	    *)
-		echo "Failed Compnent Manager :: ${proc}: ${reply_code}"
+		echo "Failed Compnent Manager :: ${proc}: ${reply_code}" >&2
 		ret_val=1
 		break
 		;;
 	    esac
 	done
 	if [ ${ret_val} -eq 10 ] ;then
-	    #echo "Starting ODENOS Please wait ...${proc_list}"
+	    #echo "Starting ODENOS Please wait ...${proc_list}" >&2
 	    sleep 1
 	elif [ ${ret_val} -ne 0 ] ;then
 	    break
@@ -291,18 +360,18 @@ check_start() {
     done
 
     if [ ${ret_val} -eq 10 ] ;then
-	echo "Met Timeout Starting ODENOS"
+	echo "Met Timeout Starting ODENOS" >&2
     fi
     return ${ret_val}
 }
 
-stop_process() {
+stop_process()
+{
     for proc in ${odenos_process[@]}
     do
 	PROC_NAME=`echo $proc | cut -d "," -f 1 | tr -d " "`
-	PROC_TXOFFSET=`echo $proc | cut -d "," -f 2 | tr -d " "`
-	PROC_TYPE=`echo $proc | cut -d "," -f 3 | tr -d " "`
-	PROC_DIR=`echo $proc | cut -d "," -f 4 | tr -d " "`
+	PROC_TYPE=`echo $proc | cut -d "," -f 2 | tr -d " "`
+	PROC_DIR=`echo $proc | cut -d "," -f 3 | tr -d " "`
 
 	file=$ODENOS_TMP/odenos_${PROC_NAME}.pid
 	if check_pid_file ${file}; then
@@ -317,7 +386,8 @@ stop_process() {
     done
 }
 
-start() {
+start()
+{
     local res
     echo "--  ----------------------------------> "
     echo "--   o-o  o-o   o--o o   o  o-o   o-o   "
@@ -342,16 +412,25 @@ start() {
     if [ -n "${MANAGER_ENABLED}" ]; then
         start_system
     fi
+    check_start_system
+    res=$?
+    if [ ${res} -ne 0 ] ;then
+	return 1
+    fi
+
     start_process
     res=$?
     if [ ${res} -ne 0 ] ;then   
 	echo "ODENOS Start-up failed!"
+	return 1
     else
 	echo "ODENOS Start-up completion."
+	return 0
     fi
 }
 
-stop() {
+stop()
+{
     echo "stop ODENOS"
     read_config_file
     rm $ODENOS_CONF_FILE_TMP > /dev/null 2>&1
@@ -361,9 +440,11 @@ stop() {
         sleep 1
         stop_system
     fi
+    return 0
 }
 
-status() {
+status()
+{
     read_config_file
     if check_pid_file $FILE_ODENOS_SYSTEM_PID; then
 	echo "odenos core system is running"
@@ -374,9 +455,8 @@ status() {
     for proc in ${odenos_process[@]}
     do
 	PROC_NAME=`echo $proc | cut -d "," -f 1 | tr -d " "`
-	PROC_TXOFFSET=`echo $proc | cut -d "," -f 2 | tr -d " "`
-	PROC_TYPE=`echo $proc | cut -d "," -f 3 | tr -d " "`
-	PROC_DIR=`echo $proc | cut -d "," -f 4 | tr -d " "`
+	PROC_TYPE=`echo $proc | cut -d "," -f 2 | tr -d " "`
+	PROC_DIR=`echo $proc | cut -d "," -f 3 | tr -d " "`
 
 	file=$ODENOS_TMP/odenos_${PROC_NAME}.pid
 	if check_pid_file ${file}; then
@@ -385,9 +465,11 @@ status() {
 	    echo "odenos $PROC_NAME is not running"
 	fi
     done
+    return 0
 }
 
-set_conf() {
+set_conf()
+{
   if [ $# = 3 ]; then
     case "$2" in
     -c)
@@ -397,7 +479,8 @@ set_conf() {
   fi
 }
 
-show_help() {
+show_help()
+{
     echo >&2 "usage : $0 [start|stop|restart|status]"
     echo >&2 ">$0 start     (./etc/odenos.conf is loaded by default.)"
     echo >&2 ">$0 start -c [FILE]     (loaded original config file.)"
