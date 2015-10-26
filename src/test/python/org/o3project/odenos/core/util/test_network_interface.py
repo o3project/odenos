@@ -1150,6 +1150,23 @@ class NetworkInterfaceTest(unittest.TestCase):
                                                  NODE_PATH % 'NodeId1',
                                                  Node_body)
 
+    def test_put_node_attributes(self):
+        Port1 = Port('Port', '1', 'PortId1', 'NodeId1', 'LinkId1', None, {})
+        Node_body = Node('Node', '1', 'NodeId1', {'PortId1': Port1}, {})
+        attributes = {'attr123': 'val123'}
+        with patch('org.o3project.odenos.core.util.remote_object_interface.'
+                   'RemoteObjectInterface._put_object_to_remote_object',
+                   return_value=Response(Response.StatusCode.OK, Node_body)
+                   ) as m_put_object:
+
+            self.result = self.target.put_node_attributes(Node_body, attributes)
+
+            self.assertNotEqual(self.result, None)
+            self.assertEqual(m_put_object.call_count, 1)
+            m_put_object.assert_called_once_with(NetworkInterface.
+                                                 NODE_PATH % 'NodeId1' + '/attributes',
+                                                 attributes)
+
     def test_put_port(self):
         Port_body = Port('Port', '1', 'PortId1',
                          'NodeId1', 'LinkId1', None, {})
@@ -1167,6 +1184,24 @@ class NetworkInterfaceTest(unittest.TestCase):
                                                  ('NodeId1',
                                                   'PortId1'),
                                                  Port_body)
+
+    def test_put_port_attributes(self):
+        Port_body = Port('Port', '1', 'PortId1',
+                         'NodeId1', 'LinkId1', None, {})
+        attributes = {'attr123': 'val123'}
+        with patch('org.o3project.odenos.core.util.remote_object_interface.'
+                   'RemoteObjectInterface._put_object_to_remote_object',
+                   return_value=Response(Response.StatusCode.OK, Port_body)
+                   ) as m_put_object:
+
+            self.result = self.target.put_port_attributes(Port_body, attributes)
+            self.assertNotEqual(self.result, None)
+            self.assertEqual(m_put_object.call_count, 1)
+            m_put_object.assert_called_once_with(NetworkInterface.
+                                                 PORT_PATH %
+                                                 ('NodeId1',
+                                                  'PortId1') + '/attributes',
+                                                 attributes)
 
     def test_del_port(self):
         Port_body = Port('Port', '1', 'PortId1',
@@ -1201,6 +1236,23 @@ class NetworkInterfaceTest(unittest.TestCase):
                                                  LINK_PATH % 'LinkId1',
                                                  link1_body)
 
+    def test_put_link_attributes(self):
+        link1_body = Link('Link', '1', 'LinkId1',
+                          'NodeId1', 'PortId1',
+                          'NodeId2', 'PortId3', {})
+        attributes = {'attr123': 'val123'}
+        with patch('org.o3project.odenos.core.util.remote_object_interface.'
+                   'RemoteObjectInterface._put_object_to_remote_object',
+                   return_value=Response(Response.StatusCode.OK, link1_body)
+                   ) as m_put_object:
+
+            self.result = self.target.put_link_attributes(link1_body, attributes)
+            self.assertNotEqual(self.result, None)
+            self.assertEqual(m_put_object.call_count, 1)
+            m_put_object.assert_called_once_with(NetworkInterface.
+                                                 LINK_PATH % 'LinkId1' + '/attributes',
+                                                 attributes)
+
     def test_put_flow(self):
         flow_body = Flow("BasicFlow", "v01",
                          "FlowId1",
@@ -1217,6 +1269,24 @@ class NetworkInterfaceTest(unittest.TestCase):
             m_put_object.assert_called_once_with(NetworkInterface.
                                                  FLOW_PATH % 'FlowId1',
                                                  flow_body)
+
+    def test_put_flow_attributes(self):
+        flow_body = Flow("BasicFlow", "v01",
+                         "FlowId1",
+                         "Owner", True,
+                         65535, "none", {})
+        attributes = {'attr123': 'val123'}
+        with patch('org.o3project.odenos.core.util.remote_object_interface.'
+                   'RemoteObjectInterface._put_object_to_remote_object',
+                   return_value=Response(Response.StatusCode.OK, flow_body)
+                   ) as m_put_object:
+
+            self.result = self.target.put_flow_attributes(flow_body, attributes)
+            self.assertNotEqual(self.result, None)
+            self.assertEqual(m_put_object.call_count, 1)
+            m_put_object.assert_called_once_with(NetworkInterface.
+                                                 FLOW_PATH % 'FlowId1' + '/attributes',
+                                                 attributes)
 
     def test_post_in_packet(self):
         InPacket_head = BasicFlowMatch("BasicFlowMatch", "InNodeId1",
@@ -1783,6 +1853,26 @@ class NetworkInterfaceTest(unittest.TestCase):
                                                      Node_body)
                 self.assertNotEqual(self.result, None)
 
+    def test_put_physical_node_attributes_InNode(self):
+        NodeAttributes1 = {"oper_status": "UP", "physical_id": "Physicalid1",
+                           "vendor": "Vendor1"}
+        Port1 = Port('Port', '1', 'PortId1', 'NodeId1', 'LinkId1', None, {})
+        Node_body = Node('Node', '1', 'NodeId1', {'PortId1': Port1},
+                         NodeAttributes1)
+        attributes = {'attr123': 'val123'}
+        with patch('org.o3project.odenos.core.util.remote_object_interface.'
+                   'RemoteObjectInterface._put_object_to_remote_object',
+                   return_value=Response(Response.StatusCode.OK, Node_body)
+                   ) as m_put_object:
+
+                self.result = self.target.put_physical_node_attributes(Node_body, attributes)
+                self.assertEqual(m_put_object.call_count, 1)
+                m_put_object.assert_called_once_with(NetworkInterface.
+                                                     PHYSICAL_NODES_PATH %
+                                                     "Physicalid1" + '/attributes',
+                                                     attributes)
+                self.assertNotEqual(self.result, None)
+
     def test_del_physical_node_Inphysical_id(self):
         with patch('org.o3project.odenos.core.util.remote_object_interface.'
                    'RemoteObjectInterface._del_object_to_remote_object',
@@ -2008,6 +2098,27 @@ class NetworkInterfaceTest(unittest.TestCase):
                                                      PHYSICAL_PORTS_PATH %
                                                      "PhysicalId1",
                                                      Port1)
+                self.assertNotEqual(self.result, None)
+
+    def test_put_physical_port_attributes_InPort(self):
+        Portattributes = {"oper_status": "UP", "max_bandwidth": 128,
+                          "unreserved_bandwidth": 129,
+                          "physical_id": "PhysicalId1", "vendor": "Vendor1",
+                          "is_boundary": True}
+        Port1 = Port('Port', '1', 'PortId1', 'NodeId1',
+                     'LinkId1', None, Portattributes)
+        attributes = {'attr123': 'val123'}
+        with patch('org.o3project.odenos.core.util.remote_object_interface.'
+                   'RemoteObjectInterface._put_object_to_remote_object',
+                   return_value=Response(Response.StatusCode.OK, Port1)
+                   ) as m_put_object:
+
+                self.result = self.target.put_physical_port_attributes(Port1, attributes)
+                self.assertEqual(m_put_object.call_count, 1)
+                m_put_object.assert_called_once_with(NetworkInterface.
+                                                     PHYSICAL_PORTS_PATH %
+                                                     "PhysicalId1" + '/attributes',
+                                                     attributes)
                 self.assertNotEqual(self.result, None)
 
     def test_del_physical_port_InPhysical_id(self):
