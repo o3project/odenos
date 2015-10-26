@@ -138,6 +138,14 @@ module Odenos
         put_object_to_network(@nwc_id, path, node)
       end
 
+      # PUT Node attributes.
+      # ( PUT <base_uri>/topology/nodes/<node_id>/attributes )
+      def put_node_attributes(node, attributes)
+        debug ">> #{__method__}"
+        path = NODE_PATH % node.node_id + "/attributes"
+        put_object_to_network(@nwc_id, path, attributes)
+      end
+
       # DELETE Node.
       # ( DELETE <base_uri>/topology/nodes/<node_id> )
       def del_node(node_id)
@@ -170,6 +178,14 @@ module Odenos
         debug ">> #{__method__}"
         path = PHYSICAL_NODES_PATH % node.attributes[Node::ATTR_KEY_PHYSICAL_ID]
         put_object_to_network(@nwc_id, path, node)
+      end
+
+      # PUT PhysicalNode attributes.
+      # ( PUT <base_uri>/topology/physical_nodes/<physical_id>/attributes )
+      def put_physical_node_attributes(node, attributes)
+        debug ">> #{__method__}"
+        path = PHYSICAL_NODES_PATH % node.attributes[Node::ATTR_KEY_PHYSICAL_ID] + "/attributes"
+        put_object_to_network(@nwc_id, path, attributes)
       end
 
       # DELETE PhysicalNode.
@@ -237,6 +253,14 @@ module Odenos
         put_object_to_network(@nwc_id, path, port)
       end
 
+      # PUT Port attributes.
+      # ( PUT <base_uri>/topology/nodes/<node_id>/ports/<port_id>/attributes )
+      def put_port_attributes(port, attributes)
+        debug ">> #{__method__}"
+        path = format(PORT_PATH, port.node_id, port.port_id) + "/attributes"
+        put_object_to_network(@nwc_id, path, attributes)
+      end
+
       # DELETE Port.
       # ( DELETE <base_uri>/topology/nodes/<node_id>/ports/<port_id> )
       def del_port(node_id, port_id)
@@ -269,6 +293,14 @@ module Odenos
         debug ">> #{__method__}"
         path = PHYSICAL_PORTS_PATH % port.attributes[Port::ATTR_KEY_PHYSICAL_ID]
         put_object_to_network(@nwc_id, path, port)
+      end
+
+      # PUT PhysicalPort attributes.
+      # ( PUT <base_uri>/topology/physical_ports/<physical_id>/attributes )
+      def put_physical_port_attributes(port, attributes)
+        debug ">> #{__method__}"
+        path = PHYSICAL_PORTS_PATH % port.attributes[Port::ATTR_KEY_PHYSICAL_ID] + "/attributes"
+        put_object_to_network(@nwc_id, path, attributes)
       end
 
       # DELETE PhysicalPort.
@@ -336,6 +368,14 @@ module Odenos
         put_object_to_network(@nwc_id, path, link)
       end
 
+      # PUT Link attributes.
+      # ( PUT <base_uri>/topology/links/<link_id>/attributes )
+      def put_link_attributes(link, attributes)
+        debug ">> #{__method__}"
+        path = LINK_PATH % link.link_id + "/attributes"
+        put_object_to_network(@nwc_id, path, attributes)
+      end
+
       # DELETE Link.
       # ( DELETE <base_uri>/topology/links/<link_id> )
       def del_link(link_id)
@@ -395,6 +435,14 @@ module Odenos
         debug ">> #{__method__}"
         path = FLOW_PATH % flow.flow_id
         put_object_to_network(@nwc_id, path, flow)
+      end
+
+      # PUT Flow attributes.
+      # ( PUT <base_uri>/flows/<flow_id>/attributes )
+      def put_flow_attributes(flow, attributes)
+        debug ">> #{__method__}"
+        path = FLOW_PATH % flow.flow_id + "/attributes"
+        put_object_to_network(@nwc_id, path, attributes)
       end
 
       # DELETE Flow.

@@ -261,6 +261,24 @@ public class NetworkInterface {
   }
 
   /**
+   * Requests a "PUT Node" to update attributes.
+   * <pre>
+   * {@literal
+   * PUT Node attributes.
+   * ( PUT <base_uri>/topology/nodes/<node_id>/attributes )
+   * }
+   * </pre>
+   * @param node a node
+   * @param body a attributes {@literal Map<String, String>}
+   * @return response object.
+   */
+  public final Response putNodeAttributes(final Node node, final Map<String, String> body) {
+    String path = String.format(NODE_PATH + "/attributes", node.getId());
+    log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), ">>  [networkId : ''{}'']", this.networkId));
+    return putObjectToNetwork(this.networkId, path, body);
+  }
+
+  /**
    * Requests a "DELETE Node".
    * <pre>
    * {@literal
@@ -318,6 +336,25 @@ public class NetworkInterface {
     String path = String.format(PHYSICAL_NODES_PATH,
         body.getAttribute(Logic.AttrElements.PHYSICAL_ID));
     log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), ">>  [networkId : '{}']", this.networkId));
+    return putObjectToNetwork(this.networkId, path, body);
+  }
+
+  /**
+   * Requests a "PUT PhysicalNode" to update attributes.
+   * <pre>
+   * {@literal
+   * PUT PhysicalNode attributes.
+   * ( PUT <base_uri>/topology/physical_nodes/<physical_id>/attributes )
+   * }
+   * </pre>
+   * @param node a node
+   * @param body a attributes {@literal Map<String, String>}
+   * @return response object.
+   */
+  public final Response putPhysicalNodeAttributes(final Node node, final Map<String, String> body) {
+    String path = String.format(PHYSICAL_NODES_PATH + "/attributes",
+                                node.getAttribute(Logic.AttrElements.PHYSICAL_ID));
+    log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), ">>  [networkId : ''{}'']", this.networkId));
     return putObjectToNetwork(this.networkId, path, body);
   }
 
@@ -434,6 +471,25 @@ public class NetworkInterface {
   }
 
   /**
+   * Requests a "PUT Port" to update attributes.
+   * <pre>
+   * PUT Port attributes.
+   * {@literal
+   * ( PUT <base_uri>/topology/nodes/<node_id>/ports/<port_id>/attributes )
+   * }
+   * </pre>
+   * @param port a port.
+   * @param body a attributes {@literal Map<String, String>}
+   * @return response object.
+   */
+  public final Response putPortAttributes(final Port port, final Map<String, String> body) {
+    String path =
+        String.format(PORT_PATH + "/attributes", port.getNode(), port.getId());
+    log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), ">>  [networkId : ''{}'']", this.networkId));
+    return putObjectToNetwork(this.networkId, path, body);
+  }
+
+  /**
    * Requests a "DELETE Port".
    * <pre>
    * {@literal
@@ -493,6 +549,25 @@ public class NetworkInterface {
     String path = String.format(PHYSICAL_PORTS_PATH,
         body.getAttribute(Logic.AttrElements.PHYSICAL_ID));
     log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), ">>  [networkId : '{}']", this.networkId));
+    return putObjectToNetwork(this.networkId, path, body);
+  }
+
+  /**
+   * Requests a "PUT PhysicalPort" to update attributes.
+   * <pre>
+   * {@literal
+   * PUT PhysicalPort attributes.
+   * ( PUT <base_uri>/topology/physical_ports/<physical_id>/attributes )
+   * }
+   * </pre>
+   * @param port a port.
+   * @param body a attributes {@literal Map<String, String>}
+   * @return response object.
+   */
+  public final Response putPhysicalPortAttributes(final Port port, final Map<String, String> body) {
+    String path = String.format(PHYSICAL_PORTS_PATH + "/attributes",
+        port.getAttribute(Logic.AttrElements.PHYSICAL_ID));
+    log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), ">>  [networkId : ''{}'']", this.networkId));
     return putObjectToNetwork(this.networkId, path, body);
   }
 
@@ -606,6 +681,24 @@ public class NetworkInterface {
   }
 
   /**
+   * Requests a "PUT Link" to update attributes.
+   * <pre>
+   * {@literal
+   * PUT Link attributes.
+   * ( PUT <base_uri>/topology/links/<link_id>/attributes )
+   * }
+   * </pre>
+   * @param link a link.
+   * @param body a attributes {@literal Map<String, String>}
+   * @return response object.
+   */
+  public final Response putLinkAttributes(final Link link, final Map<String, String> body) {
+    String path = String.format(LINK_PATH + "/attributes", link.getId());
+    log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), ">>  [networkId : ''{}'']", this.networkId));
+    return putObjectToNetwork(this.networkId, path, body);
+  }
+
+  /**
    * Requests a "DELETE Link".
    * <pre>
    * {@literal
@@ -710,6 +803,24 @@ public class NetworkInterface {
   public final Response putFlow(final Flow body) {
     String path = String.format(FLOW_PATH, body.getFlowId());
     log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), ">>  [networkId : '{}'] {}", this.networkId, body.getFlowId()));
+    return putObjectToNetwork(this.networkId, path, body);
+  }
+
+  /**
+   * Requests a "PUT Flow" to update attributes.
+   * <pre>
+   * {@literal
+   * PUT Flow attributes.
+   * ( PUT <base_uri>/flows/<flow_id>/attributes )
+   * }
+   * </pre>
+   * @param flow a flow.
+   * @param body a attributes {@literal Map<String, String>}
+   * @return response object.
+   */
+  public final Response putFlowAttributes(final Flow flow, final Map<String, String> body) {
+    String path = String.format(FLOW_PATH + "/attributes", flow.getFlowId());
+    log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), ">>  [networkId : ''{}''] {}", this.networkId, flow.getFlowId()));
     return putObjectToNetwork(this.networkId, path, body);
   }
 

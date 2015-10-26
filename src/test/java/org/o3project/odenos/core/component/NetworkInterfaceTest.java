@@ -431,6 +431,46 @@ public class NetworkInterfaceTest {
 
   /**
    * Test method for
+   * {@link org.o3project.odenos.core.component.NetworkInterface#putNodeAttributes(org.o3project.odenos.component.network.topology.TopologyObject.NodeMessage, java.util.Map<java.lang.String, java.lang.String>)}
+   * .
+   *
+   * @throws Exception
+   */
+  @Test
+  public void testPutNodeAttributes() throws Exception {
+
+    /*
+     * setting
+     */
+    Node node = new Node("nodeId");
+    Map<String, String> attributes = new HashMap<String, String>();
+    attributes.put("attr123", "val123");
+
+    PowerMockito.doReturn(new Response(Response.OK, node)).when(target,
+        "putObjectToNetwork",
+        "NetworkId",
+        "topology/nodes/nodeId/attributes", attributes);
+
+    /*
+     * test
+     */
+    Response result = target.putNodeAttributes(node, attributes);
+
+    /*
+     * check
+     */
+    PowerMockito.verifyPrivate(target, times(1)).invoke(
+        "putObjectToNetwork", "NetworkId",
+        "topology/nodes/nodeId/attributes",
+        attributes);
+
+    assertThat(result.statusCode, is(Response.OK));
+    assertThat(result, is(notNullValue()));
+
+  }
+
+  /**
+   * Test method for
    * {@link org.o3project.odenos.core.component.NetworkInterface#delNode(java.lang.String)}
    * .
    *
@@ -526,6 +566,46 @@ public class NetworkInterfaceTest {
     PowerMockito.verifyPrivate(target).invoke("putObjectToNetwork",
         "NetworkId",
         "topology/physical_nodes/PhysicalId", node);
+
+    assertThat(result.statusCode, is(Response.OK));
+
+    assertThat(result.getBody(Node.class), is(node));
+  }
+
+  /**
+   * Test method for
+   * {@link org.o3project.odenos.core.component.NetworkInterface#putPhysicalNodeAttributes(org.o3project.odenos.core.component.network.topology.Node, java.util.Map<java.lang.String, java.lang.String>)}
+   * .
+   *
+   * @throws Exception
+   */
+  @Test
+  public void testPutPhysicalNodeAttributes() throws Exception {
+
+    /*
+     * setting
+     */
+    Node node = new Node("NodeId");
+    node.putAttribute("physical_id", "PhysicalId");
+    Map<String, String> attributes = new HashMap<String, String>();
+    attributes.put("attr123", "val123");
+
+    PowerMockito.doReturn(new Response(Response.OK, node)).when(target,
+        "putObjectToNetwork",
+        "NetworkId",
+        "topology/physical_nodes/PhysicalId/attributes", attributes);
+
+    /*
+     * test
+     */
+    Response result = target.putPhysicalNodeAttributes(node, attributes);
+
+    /*
+     * check
+     */
+    PowerMockito.verifyPrivate(target).invoke("putObjectToNetwork",
+        "NetworkId",
+        "topology/physical_nodes/PhysicalId/attributes", attributes);
 
     assertThat(result.statusCode, is(Response.OK));
 
@@ -718,6 +798,45 @@ public class NetworkInterfaceTest {
 
   /**
    * Test method for
+   * {@link org.o3project.odenos.core.component.NetworkInterface#putPortAttributes(org.o3project.odenos.component.network.topology.TopologyObject.PortMessage, java.util.Map<java.lang.String, java.lang.String>)}
+   * .
+   *
+   * @throws Exception
+   */
+  @Test
+  public void testPutPortAttributes() throws Exception {
+
+    /*
+     * setting
+     */
+    Port port = new Port("portId", "nodeId");
+    Map<String, String> attributes = new HashMap<String, String>();
+    attributes.put("attr123", "val123");
+
+    PowerMockito.doReturn(new Response(Response.OK, port)).when(target,
+        "putObjectToNetwork",
+        "NetworkId",
+        "topology/nodes/nodeId/ports/portId/attributes", attributes);
+
+    /*
+     * test
+     */
+    Response result = target.putPortAttributes(port, attributes);
+
+    /*
+     * check
+     */
+    PowerMockito.verifyPrivate(target, times(1)).invoke(
+        "putObjectToNetwork", "NetworkId",
+        "topology/nodes/nodeId/ports/portId/attributes", attributes);
+
+    assertThat(result.statusCode, is(Response.OK));
+    assertThat(result, is(notNullValue()));
+
+  }
+
+  /**
+   * Test method for
    * {@link org.o3project.odenos.core.component.NetworkInterface#delPort(java.lang.String, java.lang.String)}
    * .
    *
@@ -813,6 +932,45 @@ public class NetworkInterfaceTest {
     PowerMockito.verifyPrivate(target).invoke("putObjectToNetwork",
         "NetworkId",
         "topology/physical_ports/PhysicalId", port);
+
+    assertThat(result.statusCode, is(Response.OK));
+
+  }
+
+  /**
+   * Test method for
+   * {@link org.o3project.odenos.core.component.NetworkInterface#putPhysicalPortAttributes(org.o3project.odenos.core.component.network.topology.Port, java.util.Map<java.lang.String, java.lang.String>)}
+   * .
+   *
+   * @throws Exception
+   */
+  @Test
+  public void testPutPhysicalPortAttributes() throws Exception {
+
+    /*
+     * setting
+     */
+    Port port = new Port("PortId", "NodeId");
+    port.putAttribute("physical_id", "PhysicalId");
+    Map<String, String> attributes = new HashMap<String, String>();
+    attributes.put("attr123", "val123");
+
+    PowerMockito.doReturn(new Response(Response.OK, port)).when(target,
+        "putObjectToNetwork",
+        "NetworkId",
+        "topology/physical_ports/PhysicalId/attributes", attributes);
+
+    /*
+     * test
+     */
+    Response result = target.putPhysicalPortAttributes(port, attributes);
+
+    /*
+     * check
+     */
+    PowerMockito.verifyPrivate(target).invoke("putObjectToNetwork",
+        "NetworkId",
+        "topology/physical_ports/PhysicalId/attributes", attributes);
 
     assertThat(result.statusCode, is(Response.OK));
 
@@ -1001,6 +1159,46 @@ public class NetworkInterfaceTest {
         "topology/links/linkId",
         link);
 
+    assertThat(result, is(notNullValue()));
+
+  }
+
+  /**
+   * Test method for
+   * {@link org.o3project.odenos.core.component.NetworkInterface#putLinkAttributes(org.o3project.odenos.component.network.topology.TopologyObject.LinkMessage, java.util.Map<java.lang.String, java.lang.String>)}
+   * .
+   *
+   * @throws Exception
+   */
+  @Test
+  public void testPutLinkAttributes() throws Exception {
+
+    /*
+     * setting
+     */
+    Link link = new Link("linkId");
+    Map<String, String> attributes = new HashMap<String, String>();
+    attributes.put("attr123", "val123");
+
+    PowerMockito.doReturn(new Response(Response.OK, link)).when(target,
+        "putObjectToNetwork",
+        "NetworkId",
+        "topology/links/linkId/attributes", attributes);
+
+    /*
+     * test
+     */
+    Response result = target.putLinkAttributes(link, attributes);
+
+    /*
+     * check
+     */
+    PowerMockito.verifyPrivate(target, times(1)).invoke(
+        "putObjectToNetwork", "NetworkId",
+        "topology/links/linkId/attributes",
+        attributes);
+
+    assertThat(result.statusCode, is(Response.OK));
     assertThat(result, is(notNullValue()));
 
   }
@@ -1248,6 +1446,57 @@ public class NetworkInterfaceTest {
     PowerMockito.verifyPrivate(target, times(1)).invoke(
         "putObjectToNetwork", "NetworkId",
         "flows/FlowId", flow);
+
+    assertThat(result.statusCode, is(Response.OK));
+
+  }
+
+  /**
+   * Test method for
+   * {@link org.o3project.odenos.core.component.NetworkInterface#putFlowAttributes(org.o3project.odenos.core.component.network.flow.FlowObject.FlowMessage, java.util.Map<java.lang.String, java.lang.String>)}
+   * .
+   *
+   * @throws Exception
+   */
+  @Test
+  public void testPutFlowAttributes() throws Exception {
+
+    /*
+     * setting
+     */
+    Flow flow = new Flow("FlowId") {
+
+      @Override
+      public boolean validate() {
+        return false;
+      }
+
+      @Override
+      public String getType() {
+        return null;
+      }
+    };
+
+    Map<String, String> attributes = new HashMap<String, String>();
+    attributes.put("attr123", "val123");
+
+    Response mockResponse = new Response(Response.OK, new Object());
+    PowerMockito.doReturn(mockResponse).when(target, "sendRequest",
+        anyString(),
+        eq(Request.Method.PUT),
+        eq("flows/FlowId/attributes"), anyString(), anyObject());
+
+    /*
+     * test
+     */
+    Response result = target.putFlowAttributes(flow, attributes);
+
+    /*
+     * check
+     */
+    PowerMockito.verifyPrivate(target, times(1)).invoke(
+        "putObjectToNetwork", "NetworkId",
+        "flows/FlowId/attributes", attributes);
 
     assertThat(result.statusCode, is(Response.OK));
 
