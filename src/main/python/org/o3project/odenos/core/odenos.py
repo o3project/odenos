@@ -17,7 +17,7 @@
 
 import imp
 import inspect
-#import kazoo.client 
+#import kazoo.client
 import logging
 import os
 from optparse import OptionParser
@@ -58,6 +58,7 @@ class Parser(object):
 
 
 def load(module_name, path):
+    logging.debug("load molude dir='%s', module='%s'", path, module_name)
     f, n, d = imp.find_module(module_name, [path])
     return imp.load_module(module_name, f, n, d)
 
@@ -69,16 +70,15 @@ def load_modules(path):
             if fdn.endswith(".py"):
                 m = load(fdn.replace(".py", ""), path)
                 modules.append(m)
-            elif os.path.isdir(fdn):
-                m = load_module(fdn)
-                modules.append(m)
+            elif os.path.isdir(path + "/" + fdn):
+                m = load_modules(path + "/" + fdn)
+                modules.extend(m)
         except ImportError:
             pass
     return modules
 
 
 if __name__ == '__main__':
-
 
     Logger.file_config()
 
@@ -98,17 +98,22 @@ if __name__ == '__main__':
     cwd = os.getcwd()
     directory = os.path.join(cwd, options.dir)
     modules = load_modules(directory)
+    #print "DEBUG: modeuls=", modules
 
     for m in modules:
         for name, clazz in inspect.getmembers(m, inspect.isclass):
-            if options.dir not in inspect.getsourcefile(clazz):
+            try:
+                #print "DEBUG: name=" + name + ", path=" + inspect.getsourcefile(clazz)
+                if options.dir not in inspect.getsourcefile(clazz):
+                    continue
+            except StandardError:
                 continue
             if issubclass(clazz, RemoteObject):
                 classes.append(clazz)
                 logging.info("Loading... " + str(clazz))
 
     classes.append(DummyDriver)
-    
+
     # ZooKeeper client start
     zkhost = options.zookeeper_host + ":" + options.zookeeper_port
     zk = kazoo.client.KazooClient(hosts=zkhost)
@@ -121,13 +126,13 @@ if __name__ == '__main__':
         else:
             logging.info("Waiting for system manager to be up...")
             time.sleep(2.0)
-    
+
     component_manager.register_components(classes)
     sysmgr = SystemManagerInterface(dispatcher, options.rid)
     sysmgr.add_component_manager(component_manager)
     component_manager.set_state(ObjectProperty.State.RUNNING)
-   
-    # Registers the component manager's object ID with ZooKeeper server. 
+
+    # Registers the component manager's object ID with ZooKeeper server.
     zk.ensure_path('/component_managers')
     zk.create(path='/component_managers/{}'.format(component_manager.object_id), ephemeral=True)
 
