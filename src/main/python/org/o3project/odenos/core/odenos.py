@@ -65,13 +65,17 @@ def load(module_name, path):
 
 def load_modules(path):
     modules = []
+    if not os.path.isdir(path):
+        logging.warn("not a directory: '%s'  (ignored)", path)
+        return modules
+
     for fdn in os.listdir(path):
         try:
             if fdn.endswith(".py"):
                 m = load(fdn.replace(".py", ""), path)
                 modules.append(m)
-            elif os.path.isdir(path + "/" + fdn):
-                m = load_modules(path + "/" + fdn)
+            elif os.path.isdir(os.path.join(path, fdn)):
+                m = load_modules(os.path.join(path, fdn))
                 modules.extend(m)
         except ImportError:
             pass
@@ -95,22 +99,21 @@ if __name__ == '__main__':
 
     classes = []
 
-    cwd = os.getcwd()
-    directory = os.path.join(cwd, options.dir)
-    modules = load_modules(directory)
-    #print "DEBUG: modeuls=", modules
+    for directory in options.dir.split(","):
+        modules = load_modules(directory)
+        #print "DEBUG: modeuls=", modules
 
-    for m in modules:
-        for name, clazz in inspect.getmembers(m, inspect.isclass):
-            try:
-                #print "DEBUG: name=" + name + ", path=" + inspect.getsourcefile(clazz)
-                if options.dir not in inspect.getsourcefile(clazz):
+        for m in modules:
+            for name, clazz in inspect.getmembers(m, inspect.isclass):
+                try:
+                    #print "DEBUG: name=" + name + ", path=" + inspect.getsourcefile(clazz)
+                    if directory not in inspect.getsourcefile(clazz):
+                        continue
+                except StandardError:
                     continue
-            except StandardError:
-                continue
-            if issubclass(clazz, RemoteObject):
-                classes.append(clazz)
-                logging.info("Loading... " + str(clazz))
+                if issubclass(clazz, RemoteObject):
+                    classes.append(clazz)
+                    logging.info("Loading... " + str(clazz))
 
     classes.append(DummyDriver)
 

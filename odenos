@@ -1,4 +1,4 @@
-#!/bin/bash
+#! /bin/sh
 
 # Copyright 2015 NEC Corporation.                                          #
 #                                                                          #
@@ -13,6 +13,8 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. #
 # See the License for the specific language governing permissions and      #
 # limitations under the License.                                           #
+
+## required the POSIX shell but may use bash or dash
 
 unset http_proxy
 
@@ -33,6 +35,7 @@ RUN_SCRIPT_DIR="${0%${RUN_SCRIPT_NAME}}"
 cd ${RUN_SCRIPT_DIR}
 ODENOS_ROOT=`pwd`
 MAX_WAIT_COUNT=30
+DEBUG="${DEBUG:-OFF}"
 
 ODENOS_CONF=$ODENOS_ROOT/etc
 ODENOS_CONF_FILE=$ODENOS_CONF/odenos.conf
@@ -47,6 +50,8 @@ REST_ROOT=.
 ODENOS_OPT="-Xms512m -Xmx512m -server"
 ODENOS_MAIN=org.o3project.odenos.core.Odenos
 FILE_ODENOS_SYSTEM_PID=$ODENOS_TMP/odenos_system.pid
+ODENOS_MAIN_PY="${ODENOS_LIB}/python/org/o3project/odenos/core/odenos.py"
+ODENOS_MAIN_RB="${ODENOS_LIB}/ruby/org/o3project/odenos/core/odenos.rb"
 
 SYSTEM_MANAGER_ID=systemmanager
 MANAGER=$SYSTEM_MANAGER_ID
@@ -61,11 +66,18 @@ ZOOKEEPER_HOST=""
 ZOOKEEPER_PORT=""
 ZOOKEEPER_EMBED=""
 ZOOKEEPER_LOG=var/zookeeper
-# Refer to http://zookeeper.apache.org/doc/r3.3.1/zookeeperAdmin.html 
+# Refer to http://zookeeper.apache.org/doc/r3.3.1/zookeeperAdmin.html
 # log file size 100KBytes, snapshot per 100 transactions
 ZOOKEEPER_OPT="-Dzookeeper.preAllocSize=100 -Dzookeeper.snapCount=100"
 
 TXOFFSET_SYSTEM=0000000
+
+PROC_CNT=0
+ODENOS_PROCESS=
+#PROC_NAME_N=
+#PROC_TYPE_N=
+#PROC_DIRS_N=
+
 
 ##########################################################################
 # common functions                                                       #
@@ -83,91 +95,131 @@ check_pid_file()
 
 read_config_file()
 {
-    [ -f $ODENOS_CONF_FILE_TMP ] || return 1
+    local res PROC_NAME PROC_TYPE PROC_DIRS idx
+
+    [ -f $ODENOS_CONF_FILE ] || return 1
 
     count=0
-    odenos_process=
+    PROC_CNT=0
+    ODENOS_PROCESS=","
     while read line; do
-        KEY=`echo $line | cut -d " " -f 1 | tr -d " "`
-        case "$KEY" in
-            "PROCESS")
-                VAL=`echo $line | awk '{print $2}'`
-                odenos_process=(${odenos_process[@]} $VAL)
-                count=`expr $count + 1`
-                ;;
-            "MANAGER")
-                MANAGER=`echo $line | awk '{print $2}'` 
-                if [ -z "${MANAGER}" ]; then
-                    MANAGER=$SYSTEM_MANAGER_ID
-                fi
-                ;;
-            "manager.disabled")
-                unset MANAGER_ENABLED
-                ;;
-            "pubsub.server.host")
-                HOST_M=`echo $line | awk '{print $2}'`
-                ;;
-            "pubsub.server.port")
-                PORT_M=`echo $line | awk '{print $2}'`
-                ;;
-            "pubsub.server.host.backup")
-                HOST_B=`echo $line | awk '{print $2}'`
-                ;;
-            "pubsub.server.port.backup")
-                PORT_B=`echo $line | awk '{print $2}'`
-                ;;
-            "rest.host")
-                REST_HOST=`echo $line | awk '{print $2}'`
-                ;;
-            "rest.root")
-                REST_ROOT=`echo $line | awk '{print $2}'`
-                ;;
-            "rest.root")
-                REST_ROOT=`echo $line | awk '{print $2}'`
-                ;;
-            "monitor")
-                MONITOR=true
-                ;;
-	    "monitor.logging")
-                MONITOR_LOGGING="-l "`echo $line | awk '{print $2}'`
-		;;
-	    "zookeeper.host")
-                ZOOKEEPER_HOST="-z "`echo $line | awk '{print $2}'`
-		;;
-	    "zookeeper.port")
-                ZOOKEEPER_PORT="-n "`echo $line | awk '{print $2}'`
-		;;
-	    "zookeeper.embed")
-                ZOOKEEPER_EMBED="-e"
-		;;
-            *)
-                ;;
-        esac
-    done < <(cat $ODENOS_CONF_FILE_TMP | grep -vE "^\s*(#|$)") 
+        echo "${line}" | grep -E "^\s*(#|$)" > /dev/null
+        res=$?
+        if [ ${res} -eq 0 ] ;then
+            continue
+        fi
 
-    for proc in ${odenos_process[@]}
-    do
-	PROC_NAME=`echo $proc | cut -d "," -f 1 | tr -d " "`
-	PROC_TYPE=`echo $proc | cut -d "," -f 2 | tr -d " "`
-	PROC_DIR=`echo $proc | cut -d "," -f 3 | tr -d " "`
-	#echo "DEBUG: $PROC_NAME, $PROC_TYPE, $PROC_DIR"
+        KEY=`echo $line | cut -d " " -f 1 | tr -d " "`
+        VAL=`echo $line | awk '{print $2}'`
+        case "$KEY" in
+        "PROCESS")
+            count=$(( $count + 1 ))
+            PROC_NAME=`echo $VAL | cut -d "," -f 1 | tr -d " "`
+            PROC_TYPE=`echo $VAL | cut -d "," -f 2 | tr -d " "`
+            PROC_DIRS=`echo $VAL | cut -d "," -f 3- | tr -d " "`
+            case "${ODENOS_PROCESS}" in
+            *,"${PROC_NAME}":[1-9],*|*,"${PROC_NAME}":[1-9][0-9],*|*,"${PROC_NAME}":[1-9][0-9][0-9],*)
+                idx="${ODENOS_PROCESS##*,${PROC_NAME}:}" ; idx="${idx%%,*}"
+                if [ "${PROC_TYPE}" != "$( eval echo "\${PROC_TYPE_${idx}}" )" ] ;then
+                    echo "PROC_TYPE is unmatched: ${line} [${count}] (ignored)" >&2
+                    continue
+                fi
+                eval "PROC_DIRS_${idx}=\"\${PROC_DIRS_${idx}},${PROC_DIRS}\""
+                ;;
+            *)
+                PROC_CNT=$(( PROC_CNT + 1 ))
+                eval "PROC_NAME_${PROC_CNT}=\"${PROC_NAME}\""
+                eval "PROC_TYPE_${PROC_CNT}=\"${PROC_TYPE}\""
+                eval "PROC_DIRS_${PROC_CNT}=\"${PROC_DIRS}\""
+                ODENOS_PROCESS="${ODENOS_PROCESS}${PROC_NAME}:${PROC_CNT},"
+                ;;
+            esac
+            ;;
+        "MANAGER")
+            MANAGER="${VAL}"
+            if [ -z "${MANAGER}" ]; then
+                MANAGER=$SYSTEM_MANAGER_ID
+            fi
+            ;;
+        "manager.disabled")
+            unset MANAGER_ENABLED
+            ;;
+        "pubsub.server.host")
+            HOST_M="${VAL}"
+            ;;
+        "pubsub.server.port")
+            PORT_M="${VAL}"
+            ;;
+        "pubsub.server.host.backup")
+            HOST_B="${VAL}"
+            ;;
+        "pubsub.server.port.backup")
+            PORT_B="${VAL}"
+            ;;
+        "rest.host")
+            REST_HOST="${VAL}"
+            ;;
+        "rest.root")
+            REST_ROOT="${VAL}"
+            ;;
+        "rest.root")
+            REST_ROOT="${VAL}"
+            ;;
+        "monitor")
+            MONITOR=true
+            ;;
+        "monitor.logging")
+            MONITOR_LOGGING="-l ${VAL}"
+            ;;
+        "zookeeper.host")
+            ZOOKEEPER_HOST="-z ${VAL}"
+            ;;
+        "zookeeper.port")
+            ZOOKEEPER_PORT="-n ${VAL}"
+            ;;
+        "zookeeper.embed")
+            ZOOKEEPER_EMBED="-e"
+            ;;
+        *)
+            ;;
+        esac
+    done < "${ODENOS_CONF_FILE}"
+    ODENOS_PROCESS="${ODENOS_PROCESS#,}" ; ODENOS_PROCESS="${ODENOS_PROCESS%,}"
+    ODENOS_PROCESS=$( IFS=, ; echo ${ODENOS_PROCESS} )
+
+    case "${DEBUG}" in
+    ON|on|YES|yes)
+        echo "DEBUG: ODENOS_PROCESS=[${ODENOS_PROCESS}]" >&2
+        ;;
+    esac
+    idx=0
+    while [ ${idx} -lt ${PROC_CNT} ] ;do
+        idx=$(( idx + 1 ))
+        eval PROC_NAME="\${PROC_NAME_${idx}}"
+        eval PROC_TYPE="\${PROC_TYPE_${idx}}"
+        eval PROC_DIRS="\${PROC_DIRS_${idx}}"
+        case "${DEBUG}" in
+        ON|on|YES|yes)
+            echo "DEBUG: name=${PROC_NAME}, type=${PROC_TYPE}, dirs=[${PROC_DIRS}]" >&2
+            ;;
+        esac
     done
 }
 
 set_classpath()
 {
     CLASSPATH=.:`echo \`ls lib/java/*\` | tr " " :`:$CLASSPATH
+    export CLASSPATH
 }
 
 purge_zk_log()
 {
-    # Purges ZooKeeper's transaction logs 
-    $JAVA -classpath $CLASSPATH \
-          -Dlog4j.configuration=file:${ODENOS_CONF}/log_java.conf \
+    # Purges ZooKeeper's transaction logs
+    $JAVA -Dlog4j.configuration=file:${ODENOS_CONF}/log_java.conf \
 	  -Dapp.log=${ODENOS_LOG}/$1 \
           -Dlog4j.configurationFile=file:${ODENOS_CONF}/log4j2_java.yaml \
 	  org.apache.zookeeper.server.PurgeTxnLog \
-	  ${ZOOKEEPER_LOG} ${ZOOKEEPER_LOG} -n 3 
+	  ${ZOOKEEPER_LOG} ${ZOOKEEPER_LOG} -n 3
 }
 
 get_txoffset()
@@ -205,7 +257,7 @@ start_system()
         return 1
     fi
     purge_zk_log odenos_system.log
-    $JAVA -classpath $CLASSPATH:. ${ODENOS_OPT} ${ZOOKEEPER_OPT}\
+    $JAVA ${ODENOS_OPT} ${ZOOKEEPER_OPT} \
 	-Dlog4j.configuration=file:${ODENOS_CONF}/log_java.conf \
 	-Dlog4j.configurationFile=file:${ODENOS_CONF}/log4j2_java.yaml \
 	-Dapp.log=${ODENOS_LOG}/odenos_system.log \
@@ -266,17 +318,18 @@ stop_system()
 
 start_process()
 {
-    local res proc_list
+    local res proc_list PROC_NAME PROC_TYPE PROC_DIRS idx
 
+    idx=0
     proc_list=""
-    for proc in ${odenos_process[@]}
-    do
-	PROC_NAME=`echo $proc | cut -d "," -f 1 | tr -d " "`
-	PROC_TYPE=`echo $proc | cut -d "," -f 2 | tr -d " "`
-	PROC_DIR=`echo $proc | cut -d "," -f 3 | tr -d " "`
+    while [ ${idx} -lt ${PROC_CNT} ] ;do
+        idx=$(( idx + 1 ))
+        eval PROC_NAME="\${PROC_NAME_${idx}}"
+        eval PROC_TYPE="\${PROC_TYPE_${idx}}"
+        eval PROC_DIRS="\${PROC_DIRS_${idx}}"
 	PROC_TXOFFSET=`get_txoffset`
 
-	file=$ODENOS_TMP/odenos_${PROC_NAME}.pid
+	file="$ODENOS_TMP/odenos_${PROC_NAME}.pid"
 
 	if check_pid_file $file; then
             echo "odenos $PROC_NAME is already running"
@@ -287,12 +340,12 @@ start_process()
 	if [ $PROC_TYPE = "java" ]; then
             purge_zk_log odenos_${PROC_NAME}.log
 	    # start java RemoteObjectManager
-	    $JAVA -classpath $CLASSPATH:. ${ODENOS_OPT} ${ZOOKEEPER_OPT}\
+	    $JAVA ${ODENOS_OPT} ${ZOOKEEPER_OPT} \
 		-Dlog4j.configuration=file:${ODENOS_CONF}/log_java.conf \
 		-Dlog4j.configurationFile=file:${ODENOS_CONF}/log4j2_java.yaml \
 		-Dapp.log=${ODENOS_LOG}/odenos_${PROC_NAME}.log \
 		-Dlog4j2_app.log=${ODENOS_LOG}/log4j2_odenos_${PROC_NAME}.log \
-		$ODENOS_MAIN -r ${PROC_NAME} -d ${PROC_DIR} \
+		$ODENOS_MAIN -r "${PROC_NAME}" -d "${PROC_DIRS}" \
 		-S $MANAGER -i $HOST_M -p $PORT_M -I $HOST_B -P $PORT_B -t $PROC_TXOFFSET \
 		-m $MONITOR $MONITOR_LOGGING $ZOOKEEPER_HOST $ZOOKEEPER_PORT &
 
@@ -303,16 +356,16 @@ start_process()
 	    PYTHONPATH=${ODENOS_LIB}/python:$PYTHONPATH \
 		LOGGING_CONF=${ODENOS_CONF}/log_python.conf \
 		APP_LOG=${ODENOS_LOG}/odenos_${PROC_NAME}.log \
-		$PYTHON ${ODENOS_LIB}/python/org/o3project/odenos/core/odenos.py \
-		-r ${PROC_NAME} -d ${PROC_DIR} -S $MANAGER -i $HOST_M -p $PORT_M -m \
+		$PYTHON "${ODENOS_MAIN_PY}" \
+		-r "${PROC_NAME}" -d "${PROC_DIRS}" -S $MANAGER -i $HOST_M -p $PORT_M -m \
 		MONITOR $ZOOKEEPER_HOST $ZOOKEEPER_PORT &
 
 	    echo $! > $ODENOS_TMP/odenos_${PROC_NAME}.pid
 
 	elif [ $PROC_TYPE = "ruby" ]; then
 	    # start ruby RemoteObjectManager
-	    sleep 3
-            $TREMA run -d "./src/main/ruby/org/o3project/odenos/core/odenos.rb --cmpmgr=$PROC_NAME"
+	    sleep 4
+            $TREMA run -d "${ODENOS_MAIN_RB} --cmpmgr=${PROC_NAME}"
 	fi
 
     done
@@ -367,11 +420,14 @@ check_start_process()
 
 stop_process()
 {
-    for proc in ${odenos_process[@]}
-    do
-	PROC_NAME=`echo $proc | cut -d "," -f 1 | tr -d " "`
-	PROC_TYPE=`echo $proc | cut -d "," -f 2 | tr -d " "`
-	PROC_DIR=`echo $proc | cut -d "," -f 3 | tr -d " "`
+    local PROC_NAME PROC_TYPE PROC_DIRS idx
+
+    idx=0
+    while [ ${idx} -lt ${PROC_CNT} ] ;do
+        idx=$(( idx + 1 ))
+        eval PROC_NAME="\${PROC_NAME_${idx}}"
+        eval PROC_TYPE="\${PROC_TYPE_${idx}}"
+        eval PROC_DIRS="\${PROC_DIRS_${idx}}"
 
 	file=$ODENOS_TMP/odenos_${PROC_NAME}.pid
 	if check_pid_file ${file}; then
@@ -398,7 +454,6 @@ start()
     echo "--                                      "
     echo ""
     echo "starting ODENOS"
-    cp $ODENOS_CONF_FILE $ODENOS_CONF_FILE_TMP
     read_config_file
 
     set_classpath
@@ -420,7 +475,7 @@ start()
 
     start_process
     res=$?
-    if [ ${res} -ne 0 ] ;then   
+    if [ ${res} -ne 0 ] ;then
 	echo "ODENOS Start-up failed!"
 	return 1
     else
@@ -433,10 +488,9 @@ stop()
 {
     echo "stop ODENOS"
     read_config_file
-    rm $ODENOS_CONF_FILE_TMP > /dev/null 2>&1
 
     stop_process
-    if [ -n "${MANAGER_ENABLED}" ]; then 
+    if [ -n "${MANAGER_ENABLED}" ]; then
         sleep 1
         stop_system
     fi
@@ -445,6 +499,8 @@ stop()
 
 status()
 {
+    local res PROC_NAME PROC_TYPE PROC_DIRS idx
+
     read_config_file
     if check_pid_file $FILE_ODENOS_SYSTEM_PID; then
 	echo "odenos core system is running"
@@ -452,13 +508,14 @@ status()
 	echo "odenos core system is not running"
     fi
 
-    for proc in ${odenos_process[@]}
-    do
-	PROC_NAME=`echo $proc | cut -d "," -f 1 | tr -d " "`
-	PROC_TYPE=`echo $proc | cut -d "," -f 2 | tr -d " "`
-	PROC_DIR=`echo $proc | cut -d "," -f 3 | tr -d " "`
+    idx=0
+    while [ ${idx} -lt ${PROC_CNT} ] ;do
+        idx=$(( idx + 1 ))
+        eval PROC_NAME="\${PROC_NAME_${idx}}"
+        eval PROC_TYPE="\${PROC_TYPE_${idx}}"
+        eval PROC_DIRS="\${PROC_DIRS_${idx}}"
 
-	file=$ODENOS_TMP/odenos_${PROC_NAME}.pid
+	file="$ODENOS_TMP/odenos_${PROC_NAME}.pid"
 	if check_pid_file ${file}; then
 	    echo "odenos $PROC_NAME is running running"
 	else

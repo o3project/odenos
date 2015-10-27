@@ -50,6 +50,7 @@ import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
 import org.o3project.odenos.core.logging.message.LogMessage;
 
+import java.io.File;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.EnumSet;
@@ -81,7 +82,7 @@ public final class Odenos {
   private String msgsvIpBackup;
   private int msgsvPortBackup;
   private String romgrId;
-  private String directory;
+  private String directories;
   private CommandParser parser = new CommandParser();
   private int restport;
   private String restroot;
@@ -96,7 +97,7 @@ public final class Odenos {
 
     public CommandParser() {
       options = new Options();
-      options.addOption("d", "directory", true, "directory including Components to be loaded");
+      options.addOption("d", "directories", true, "Directories including Components to be loaded");
       options.addOption("i", "ip", true, "ip address or host name of MessagingServer");
       options.addOption("p", "port", true, "port number of MessagingServer");
       options
@@ -163,8 +164,8 @@ public final class Odenos {
       return line.hasOption("romgr") ? line.getOptionValue("romgr") : null;
     }
 
-    public final String getDirectory() {
-      return line.hasOption("directory") ? line.getOptionValue("directory") : null;
+    public final String getDirectories() {
+      return line.hasOption("directories") ? line.getOptionValue("directories") : null;
     }
 
     public final int getRestPort() {
@@ -243,8 +244,8 @@ public final class Odenos {
     systemMgrId = parser.getSystemWithName();
     romgrId = parser.getRoMgr();
     if (romgrId != null) {
-      directory = parser.getDirectory();
-      if (directory == null) {
+      directories = parser.getDirectories();
+      if (directories == null) {
         throw new ParseException("please specify '-d' when you want to specify '-r'");
       }
     }
@@ -312,7 +313,7 @@ public final class Odenos {
 
       if (romgrId != null) {
         // Starts component manager
-        this.runComponentManager(romgrId, directory);
+        this.runComponentManager(romgrId, directories);
       }
 
       disp.join();
@@ -345,7 +346,7 @@ public final class Odenos {
     log.info(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Start-up completion: {}", REST_TRANSLATOR_ID));
   }
 
-  private final void runComponentManager(final String romgrId, final String dir) throws Exception {
+  private final void runComponentManager(final String romgrId, final String dirs) throws Exception {
     ZooKeeperService.waitForServerToBeUp();
 
     SystemManagerIF sysmgr = new SystemManagerIF(romgrId, disp);
@@ -363,7 +364,7 @@ public final class Odenos {
       }
     }
     
-    romgr.registerComponents(this.findComponents(dir));
+    romgr.registerComponents(this.findComponents(dirs));
     sysmgr.addComponentManager(romgr.getProperty());
     romgr.setState(ObjectProperty.State.RUNNING);
 
@@ -374,11 +375,17 @@ public final class Odenos {
     log.info(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Start-up completion: {}", romgrId));
   }
 
-  private Set<Class<? extends RemoteObject>> findComponents(String rootOfPackages) {
+  private Set<Class<? extends RemoteObject>> findComponents(String rootDirsOfPackages) {
     Set<Class<? extends RemoteObject>> classes = new HashSet<Class<? extends RemoteObject>>();
 
     try {
-      classes.addAll(ComponentLoader.load(rootOfPackages));
+      for(String rootDir : rootDirsOfPackages.split(",", 0)) {
+        if (new File(rootDir).isDirectory()) {
+          classes.addAll(ComponentLoader.load(rootDir));
+        } else {
+          log.warn(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "not a directory: ''{}''  (ignored)", rootDir));
+        }
+      }
     } catch (Exception e) {
       e.printStackTrace();
     }
