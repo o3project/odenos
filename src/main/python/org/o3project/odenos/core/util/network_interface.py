@@ -162,6 +162,13 @@ class NetworkInterface(RemoteObjectInterface):
         path = self.NODE_PATH % node.node_id
         return self._put_object_to_remote_object(path, node)
 
+    # PUT Node attributes.
+    def put_node_attributes(self, node, attributes):
+        logging.debug("PUT Node Attributes NetworkID:" + self.network_id +
+                      " NodeID:" + node.node_id)
+        path = self.NODE_PATH % node.node_id + "/attributes"
+        return self._put_object_to_remote_object(path, attributes)
+
     # DELETE Node.
     def del_node(self, node_id):
         logging.debug("DELETE Node NetworkID:" + self.network_id +
@@ -194,6 +201,13 @@ class NetworkInterface(RemoteObjectInterface):
                       " PhysicalID:" + node.attributes["physical_id"])
         path = self.PHYSICAL_NODES_PATH % node.attributes["physical_id"]
         return self._put_object_to_remote_object(path, node)
+
+    # PUT PhysicalNode attributes.
+    def put_physical_node_attributes(self, node, attributes):
+        logging.debug("PUT PhysicalNode Attributes NetworkID:" + self.network_id +
+                      " PhysicalID:" + node.attributes["physical_id"])
+        path = self.PHYSICAL_NODES_PATH % node.attributes["physical_id"] + "/attributes"
+        return self._put_object_to_remote_object(path, attributes)
 
     # DELETE PhysicalNode.
     def del_physical_node(self, physical_id):
@@ -255,6 +269,14 @@ class NetworkInterface(RemoteObjectInterface):
         path = self.PORT_PATH % (port.node_id, port.port_id)
         return self._put_object_to_remote_object(path, port)
 
+    # PUT Port atributes.
+    def put_port_attributes(self, port, attributes):
+        logging.debug("PUT Port Attributes NetworkID:" + self.network_id +
+                      " NodeID:" + port.node_id +
+                      " PortID:" + port.port_id)
+        path = self.PORT_PATH % (port.node_id, port.port_id) + "/attributes"
+        return self._put_object_to_remote_object(path, attributes)
+
     # DELETE Port.
     def del_port(self, node_id, port_id):
         logging.debug("DELETE Port NetworkID:" + self.network_id +
@@ -287,6 +309,13 @@ class NetworkInterface(RemoteObjectInterface):
                       " PhysicalID:" + port.attributes["physical_id"])
         path = self.PHYSICAL_PORTS_PATH % port.attributes["physical_id"]
         return self._put_object_to_remote_object(path, port)
+
+    # PUT PhysicalPort attributes.
+    def put_physical_port_attributes(self, port, attributes):
+        logging.debug("PUT PhysicalPort Attributes NetworkID:" + self.network_id +
+                      " PhysicalID:" + port.attributes["physical_id"])
+        path = self.PHYSICAL_PORTS_PATH % port.attributes["physical_id"] + "/attributes"
+        return self._put_object_to_remote_object(path, attributes)
 
     # DELETE PhysicalPort.
     def del_physical_port(self, physical_id):
@@ -345,6 +374,13 @@ class NetworkInterface(RemoteObjectInterface):
         path = self.LINK_PATH % link.link_id
         return self._put_object_to_remote_object(path, link)
 
+    # PUT Link attributes.
+    def put_link_attributes(self, link, attributes):
+        logging.debug("PUT Link Attributes NetworkID:" + self.network_id +
+                      " LinkID:" + link.link_id)
+        path = self.LINK_PATH % link.link_id + "/attributes"
+        return self._put_object_to_remote_object(path, attributes)
+
     # DELETE Link.
     def del_link(self, link_id):
         logging.debug("DELETE Link NetworkID:" + self.network_id +
@@ -401,6 +437,13 @@ class NetworkInterface(RemoteObjectInterface):
                       " FlowID:" + flow.flow_id)
         path = self.FLOW_PATH % flow.flow_id
         return self._put_object_to_remote_object(path, flow)
+
+    # PUT Flow attributes.
+    def put_flow_attributes(self, flow, attributes):
+        logging.debug("PUT Flow Attributes NetworkID:" + self.network_id +
+                      " FlowID:" + flow.flow_id)
+        path = self.FLOW_PATH % flow.flow_id + "/attributes"
+        return self._put_object_to_remote_object(path, attributes)
 
     # DELETE Flow.
     def del_flow(self, flow_id):

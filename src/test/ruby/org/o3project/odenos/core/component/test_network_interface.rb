@@ -331,6 +331,15 @@ class TestNetworkInterface < MiniTest::Test
       with(@test_nwc_id, path, node_obj).once
     @base_networkInterface.put_node(node_obj)
   end
+
+  def test_put_node_attributes_success
+    node_obj = Odenos::Component::Node.new(@node_body)
+    attributes = { :attr123 => "val123" }
+    path =  Odenos::Component::NetworkInterface::NODE_PATH % 'NodeId1' + '/attributes'
+    @base_networkInterface.expects(:put_object_to_network).
+      with(@test_nwc_id, path, attributes).once
+    @base_networkInterface.put_node_attributes(node_obj, attributes)
+  end
   
   def test_del_node_success
     path =  Odenos::Component::NetworkInterface::NODE_PATH % 'NodeId1'
@@ -372,6 +381,14 @@ class TestNetworkInterface < MiniTest::Test
     path =  Odenos::Component::NetworkInterface::PHYSICAL_NODES_PATH % 'Physicalid1'
     @base_networkInterface.expects(:put_object_to_network).with(@test_nwc_id, path, node_obj).once
     @base_networkInterface.put_physical_node(node_obj)
+  end
+
+  def test_put_physical_node_attributes_success
+    node_obj = Odenos::Component::Node.new(@node_body)
+    attributes = { :attr123 => "val123" }
+    path =  Odenos::Component::NetworkInterface::PHYSICAL_NODES_PATH % 'Physicalid1' + '/attributes'
+    @base_networkInterface.expects(:put_object_to_network).with(@test_nwc_id, path, attributes).once
+    @base_networkInterface.put_physical_node_attributes(node_obj, attributes)
   end
   
   def test_del_physical_node_success
@@ -461,6 +478,14 @@ class TestNetworkInterface < MiniTest::Test
     @base_networkInterface.put_port(port_obj)
   end
 
+  def test_put_port_attributes_success
+    port_obj = Odenos::Component::Port.new(@port_body)
+    attributes = { :attr123 => "val123" }
+    path =  format(Odenos::Component::NetworkInterface::PORT_PATH + '/attributes','NodeId1', 'PortId1')
+    @base_networkInterface.expects(:put_object_to_network).with(@test_nwc_id, path, attributes).once
+    @base_networkInterface.put_port_attributes(port_obj, attributes)
+  end
+
   def test_del_port_success
     path =  format(Odenos::Component::NetworkInterface::PORT_PATH ,'NodeId1', 'PortId1')
     @base_networkInterface.expects(:del_object_to_network).with(@test_nwc_id, path)
@@ -504,6 +529,14 @@ class TestNetworkInterface < MiniTest::Test
     path =  Odenos::Component::NetworkInterface::PHYSICAL_PORTS_PATH % 'PhysicalId1'
     @base_networkInterface.expects(:put_object_to_network).with(@test_nwc_id, path, port_obj).once
     @base_networkInterface.put_physical_port(port_obj)
+  end
+
+  def test_put_physical_port_attributes_success
+    port_obj = Odenos::Component::Port.new(@port_body)
+    attributes = { :attr123 => "val123" }
+    path =  Odenos::Component::NetworkInterface::PHYSICAL_PORTS_PATH % 'PhysicalId1' + '/attributes'
+    @base_networkInterface.expects(:put_object_to_network).with(@test_nwc_id, path, attributes).once
+    @base_networkInterface.put_physical_port_attributes(port_obj, attributes)
   end
   
   def test_del_physical_port_success
@@ -594,6 +627,14 @@ class TestNetworkInterface < MiniTest::Test
     @base_networkInterface.expects(:put_object_to_network).with(@test_nwc_id, path, link_obj).once
     @base_networkInterface.put_link(link_obj)
   end
+
+  def test_put_link_attributes_success
+    link_obj = Odenos::Component::Link.new(@link_body)
+    attributes = { :attr123 => "val123" }
+    path =  Odenos::Component::NetworkInterface::LINK_PATH % 'LinkId1' + '/attributes'
+    @base_networkInterface.expects(:put_object_to_network).with(@test_nwc_id, path, attributes).once
+    @base_networkInterface.put_link_attributes(link_obj, attributes)
+  end
   
   def test_del_link_success
     path =  Odenos::Component::NetworkInterface::LINK_PATH % 'LinkId1'
@@ -676,6 +717,14 @@ class TestNetworkInterface < MiniTest::Test
     path =  Odenos::Component::NetworkInterface::FLOW_PATH % 'FlowId01'
     @base_networkInterface.expects(:put_object_to_network).with(@test_nwc_id, path, flow_obj).once
     @base_networkInterface.put_flow(flow_obj)
+  end
+
+  def test_put_flow_attributes_success
+    flow_obj = Odenos::Component::Flow.new(@flow1_body)
+    attributes = { :attr123 => "val123" }
+    path =  Odenos::Component::NetworkInterface::FLOW_PATH % 'FlowId01' + '/attributes'
+    @base_networkInterface.expects(:put_object_to_network).with(@test_nwc_id, path, attributes).once
+    @base_networkInterface.put_flow_attributes(flow_obj, attributes)
   end
   
   def test_del_flow_success
