@@ -185,7 +185,6 @@ public class Network extends Component {
 
   @Override
   public Response onRequest(Request request) {
-    LogMessage.setSavedTxid(request.txid);
     log.debug("");
     Response res;
 
@@ -198,7 +197,6 @@ public class Network extends Component {
           .parse(request);
       IActionCallback callback = parsed.getResult();
       res = callback.process(parsed);
-      LogMessage.delSavedTxid();
       return res;
     } catch (Exception e) {
       log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(),
@@ -207,7 +205,6 @@ public class Network extends Component {
       res = createErrorResponse(Response.BAD_REQUEST,
           "Error while processing : [" + request.method + "] "
               + request.path);
-      LogMessage.delSavedTxid();
       return res;
     }
   }

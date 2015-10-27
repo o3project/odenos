@@ -493,7 +493,6 @@ public class Federator extends Logic {
 
   @Override
   protected Response onRequest(Request request) {
-    LogMessage.setSavedTxid(request.txid);
     log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "received {}", request.path));
 
     Response res;
@@ -503,7 +502,6 @@ public class Federator extends Logic {
       if (parsed == null) {
         res = new Response(Response.BAD_REQUEST,
             "Error unknown request ");
-        LogMessage.delSavedTxid();
         return res;
       }
 
@@ -511,18 +509,15 @@ public class Federator extends Logic {
       if (callback == null) {
         res = new Response(Response.BAD_REQUEST,
             "Error unknown request ");
-        LogMessage.delSavedTxid();
         return res;
       }
       // Get response.
       res = callback.process(parsed);
-      LogMessage.delSavedTxid();
       return res;
 
     } catch (Exception ex) {
       log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Error unknown request"), ex);
       res = new Response(Response.BAD_REQUEST, "Error unknown request ");
-      LogMessage.delSavedTxid();
       return res;
     }
 

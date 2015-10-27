@@ -326,7 +326,7 @@ public class SystemManagerTest {
 
     Response dummyResp = new Response(Response.OK, null);
     PowerMockito.doReturn(dummyResp).when(target, "transferComponent",
-        anyString(), anyString(), eq(Request.Method.POST), eq("txid"),
+        anyString(), anyString(), eq(Request.Method.POST), eq(""),
         (Value) anyObject());
 
     // Call test target method

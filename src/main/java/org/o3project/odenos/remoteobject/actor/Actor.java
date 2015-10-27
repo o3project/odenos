@@ -164,14 +164,10 @@ public class Actor implements Closeable {
               head.via.getSourceDispatcherId(), path));
     }
 
-    txid = LogMessage.getSavedTxid();
-
     // Picks up a worker thread and assigns it to RemoteObject.
     threadPoolExecutor.execute(new Runnable() {
       @Override
       public void run() {
-        LogMessage.setSavedTxid(txid);
-
         Queue<Mail> mailbox = localObject.getMailbox();
         Mail mail = mailbox.poll();
         if (mail != null) {

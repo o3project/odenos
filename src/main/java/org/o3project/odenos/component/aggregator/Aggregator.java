@@ -466,7 +466,6 @@ public class Aggregator extends Logic {
   @Override
   protected Response onRequest(
       final Request request) {
-    LogMessage.setSavedTxid(request.txid);
     log.debug("");
     log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "received {}", request.path));
     Response res;
@@ -475,26 +474,22 @@ public class Aggregator extends Logic {
         .parse(request);
     if (parsed == null) {
       res = new Response(Response.BAD_REQUEST, "Error unknown request ");
-      LogMessage.delSavedTxid();
       return res;
     }
 
     IActionCallback callback = parsed.getResult();
     if (callback == null) {
       res = new Response(Response.BAD_REQUEST, "Error unknown request ");
-      LogMessage.delSavedTxid();
       return res;
     }
 
     try {
       // Get response.
       res = callback.process(parsed);
-      LogMessage.delSavedTxid();
       return res;
     } catch (Exception e) {
       log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Error unknown request"));
       res = new Response(Response.BAD_REQUEST, "Error unknown request ");
-      LogMessage.delSavedTxid();
       return res;
     }
   }

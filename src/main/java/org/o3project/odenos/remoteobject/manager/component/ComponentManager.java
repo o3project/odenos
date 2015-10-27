@@ -189,7 +189,6 @@ public class ComponentManager extends RemoteObject {
 
   @Override
   protected Response onRequest(Request request) {
-    LogMessage.setSavedTxid(request.txid);
     log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "onRequest: {}, {}", request.method, request.path));
 
     RequestParser<IActionCallback>.ParsedRequest parsed = parser
@@ -199,7 +198,6 @@ public class ComponentManager extends RemoteObject {
     IActionCallback callback = parsed.getResult();
     if (callback == null) {
       response = new Response(Response.BAD_REQUEST, null);
-      LogMessage.delSavedTxid();
       return response;
     }
     try {
@@ -211,7 +209,6 @@ public class ComponentManager extends RemoteObject {
     if (response == null) {
       response = new Response(Response.BAD_REQUEST, null);
     }
-    LogMessage.delSavedTxid();
     return response;
   }
 
@@ -408,7 +405,6 @@ public class ComponentManager extends RemoteObject {
 
   @Override
   protected void onEvent(Event event) {
-    LogMessage.setSavedTxid(event.txid);
     if (event.eventType.equals(
         ComponentManagerChanged.TYPE)) {
       try {

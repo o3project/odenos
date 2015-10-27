@@ -315,30 +315,25 @@ public class Bridge extends Component {
   @Override
   protected Response onRequest(
       final Request request) {
-    LogMessage.setSavedTxid(request.txid);
     Response res;
 
     RequestParser<IActionCallback>.ParsedRequest parsed = parser
         .parse(request);
     if (parsed == null) {
       res = new Response(Response.BAD_REQUEST, "Error unknown request ");
-      LogMessage.delSavedTxid();
       return res;
     }
     IActionCallback callback = parsed.getResult();
     if (callback == null) {
       res = new Response(Response.BAD_REQUEST, "Error unknown request ");
-      LogMessage.delSavedTxid();
       return res;
     }
     try {
       res = callback.process(parsed);
-      LogMessage.delSavedTxid();
       return res;
     } catch (Exception e) {
       log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "request error"), e);
       res = new Response(Response.BAD_REQUEST, "Error unknown request ");
-      LogMessage.delSavedTxid();
       return res;
     }
   }

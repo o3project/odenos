@@ -216,7 +216,6 @@ public class Generator extends Driver {
 
   @Override
   public Response onRequest(Request request) {
-    LogMessage.setSavedTxid(request.txid);
     log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), ">> {}", new Throwable().getStackTrace()[0].getMethodName()));
     Response res;
 
@@ -226,14 +225,12 @@ public class Generator extends Driver {
       RequestParser<IActionCallback>.ParsedRequest parsed = parser.parse(request);
       IActionCallback callback = parsed.getResult();
       res = callback.process(parsed);
-      LogMessage.delSavedTxid();
       return res;
     } catch (Exception e) {
       log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Exception in onRequest() : [case:{}] [msg:{}]", request.path, e.getMessage()));
       e.printStackTrace();
       res = createErrorResponse(Response.BAD_REQUEST, "Error while processing : ["
           + request.method + "] " + request.path);
-      LogMessage.delSavedTxid();
       return res;
     }
   }

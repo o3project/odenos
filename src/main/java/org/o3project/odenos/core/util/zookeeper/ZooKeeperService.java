@@ -109,10 +109,8 @@ public final class ZooKeeperService {
       }
       zkServerConfig.readFrom(quorumConfiguration);
 
-      txid = LogMessage.getSavedTxid();
       zkServerThread = new Thread() {
         public void run() {
-          LogMessage.setSavedTxid(txid);
           try {
             // Start the server.
             zkServer.runFromConfig(zkServerConfig);

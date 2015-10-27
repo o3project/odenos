@@ -165,7 +165,6 @@ public class PublisherClient extends RedisClient {
   protected class SendThread implements Runnable {
     @Override
     public void run() {
-      LogMessage.setSavedTxid(txid);
       while (true) {
         int count = publisherQueue.size();
         if (count <= 1) {
@@ -198,8 +197,6 @@ public class PublisherClient extends RedisClient {
   private class ReceiveThread implements Runnable {
     @Override
     public void run() {
-      LogMessage.setSavedTxid(txid);
-
       Object object;
       while (true) {
         try {

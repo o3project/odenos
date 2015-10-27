@@ -124,7 +124,6 @@ public class SystemManager extends RemoteObject {
 
   @Override
   protected void onEvent(Event event) {
-    LogMessage.setSavedTxid(event.txid);
     log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "onEvent: {}", event.eventType));
     if (event.eventType.equals(ObjectPropertyChanged.TYPE)) {
       ObjectPropertyChanged message = event.getBody2(ObjectPropertyChanged.class);
@@ -329,7 +328,6 @@ public class SystemManager extends RemoteObject {
 
   @Override
   protected Response onRequest(final Request req) {
-    LogMessage.setSavedTxid(req.txid);
     log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "onRequest: {}, {}", req.method, req.path));
 
     Response response = null;
@@ -342,12 +340,10 @@ public class SystemManager extends RemoteObject {
         String command = getDestinationPath(req.path);
         response = transferComponent(compId, command,
             req.method, LogMessage.getSavedTxid(), req.getBodyValue());
-        LogMessage.delSavedTxid();
         return response;
       }
 
       response = new Response(Response.BAD_REQUEST, null);
-      LogMessage.delSavedTxid();
       return response;
     }
 
@@ -355,7 +351,6 @@ public class SystemManager extends RemoteObject {
       IActionCallback callback = parsed.getResult();
       if (callback == null) {
         response = new Response(Response.BAD_REQUEST, null);
-        LogMessage.delSavedTxid();
         return response;
       }
       response = callback.process(parsed);
@@ -366,7 +361,6 @@ public class SystemManager extends RemoteObject {
     if (response == null) {
       response = new Response(Response.BAD_REQUEST, null);
     }
-    LogMessage.delSavedTxid();
     return response;
   }
 

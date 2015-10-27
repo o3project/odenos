@@ -163,12 +163,10 @@ public class RESTTranslator extends RemoteObject {
 
   private void startServer(final String host, final Integer port, final String root) {
     this.stopServer();
-    txid = LogMessage.getSavedTxid();
 
     Thread thread = new Thread(new Runnable() {
       @Override
       public void run() {
-        LogMessage.setSavedTxid(txid);
         RESTTranslator.this.server = new Server(new InetSocketAddress(host, port));
         synchronized (RESTTranslator.this.server) {
           HashMap<String, String> param = new HashMap<String, String>();
@@ -315,7 +313,6 @@ public class RESTTranslator extends RemoteObject {
    */
   @Override
   protected void onEvent(Event event) {
-    LogMessage.setSavedTxid(event.txid);
     Set<String> subscriptionIds = null;
     synchronized (this.distributionTable) {
       subscriptionIds =
