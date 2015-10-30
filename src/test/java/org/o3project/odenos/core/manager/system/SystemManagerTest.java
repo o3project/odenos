@@ -2036,6 +2036,56 @@ public class SystemManagerTest {
 
   /**
    * Test method for
+   * {@link org.o3project.odenos.core.manager.system.SystemManager#putSequence(java.lang.String, java.util.Map<java.lnag.String. java.lnag.Long>)}.
+   *
+   * @throws Exception
+   */
+  @Test
+  public final void testPutSequence() throws Exception {
+    String seqId = "offset";
+    Map<String, String> spec = new HashMap<String, String>();
+    spec.put("start", String.valueOf(1000L));
+    spec.put("end", String.valueOf(9000L));
+    spec.put("step", String.valueOf(10L));
+    Response resp = Whitebox.invokeMethod(target, "putSequence", seqId, spec);
+
+    Map<String, String> body = WhiteboxImpl.getInternalState(resp, "body");
+    assertThat(resp.statusCode, is(Response.OK));
+    assertThat(body.get("seq_id"), is(seqId));
+    assertThat(body.get("start"), is(spec.get("start")));
+    assertThat(body.get("end"), is(spec.get("end")));
+    assertThat(body.get("step"), is(spec.get("step")));
+  }
+
+  /**
+   * Test method for
+   * {@link org.o3project.odenos.core.manager.system.SystemManager#getSequence(java.lang.String, java.util.Map<java.lnag.String. java.lnag.Long>)}.
+   *
+   * @throws Exception
+   */
+  @Test
+  public final void testGetSequence() throws Exception {
+    String seqId = "offset";
+    Map<String, String> spec = new HashMap<String, String>();
+    spec.put("start", String.valueOf(1000L));
+    spec.put("end", String.valueOf(9000L));
+    spec.put("step", String.valueOf(10L));
+    Whitebox.invokeMethod(target, "putSequence", seqId, spec);
+
+    Response resp;
+    resp = Whitebox.invokeMethod(target, "getSequence", seqId, true);
+    assertThat(resp.statusCode, is(Response.OK));
+    assertThat(resp.getBody(String.class), is(String.valueOf(1000L)));
+    resp = Whitebox.invokeMethod(target, "getSequence", seqId, true);
+    assertThat(resp.statusCode, is(Response.OK));
+    assertThat(resp.getBody(String.class), is(String.valueOf(1010L)));
+    resp = Whitebox.invokeMethod(target, "getSequence", seqId, false);
+    assertThat(resp.statusCode, is(Response.OK));
+    assertThat(resp.getBody(String.class), is(String.valueOf(1010L)));
+  }
+
+  /**
+   * Test method for
    * {@link org.o3project.odenos.core.manager.system.SystemManager#getUniqueID()}.
    *
    * @throws Exception

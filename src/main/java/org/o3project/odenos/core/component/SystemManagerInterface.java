@@ -51,6 +51,8 @@ public class SystemManagerInterface {
   public static final String COMP_PATH = "components/%s";
   public static final String CONNECTIONS_PATH = "connections";
   public static final String CONNECTION_PATH = "connections/%s";
+  public static final String SEQUENCES_PATH = "sequence";
+  public static final String SEQUENCE_PATH = "sequence/%s";
   public static final String OBJECT_PATH = "objects/%s";
 
   private MessageDispatcher dispatcher;
@@ -471,6 +473,71 @@ public class SystemManagerInterface {
       final String connId) {
     String path = String.format(CONNECTION_PATH, connId);
     log.debug("");
+    return delObjectToSystemMng(path);
+  }
+
+  /**
+   * Requests a "POST Sequence".
+   * @param spec spec of sequence
+   * @return response object.
+   */
+  public final Response postSequence(final Map<String, String> spec) {
+    if (spec == null) {
+      return new Response(Response.BAD_REQUEST, null);
+    }
+    String path = SEQUENCES_PATH;
+    log.debug("spec={}", spec);
+    return postObjectToSystemMng(path, spec);
+  }
+
+  /**
+   * Requests a "PUT Sequence".
+   * @param seqId sequnce id
+   * @param spec spec of sequence
+   * @return response object.
+   */
+  public final Response putSequence(final String seqId, final Map<String, String> spec) {
+    if (spec == null) {
+      return new Response(Response.BAD_REQUEST, null);
+    }
+    String path = String.format(SEQUENCE_PATH, seqId);
+    log.debug("seqId=''{}'', spec={}", seqId, spec);
+    return putObjectToSystemMng(path, spec);
+  }
+
+  /**
+   * Requests a "GET Sequence".
+   * @param seqId sequnce id
+   * @return response object.
+   */
+  public final Response getSequence(final String seqId) {
+    return getSequence(seqId, true);
+  }
+  /**
+   * Requests a "GET Sequence".
+   * @param seqId sequnce id
+   * @param next flag of next or current
+   * @return response object.
+   */
+  public final Response getSequence(final String seqId, boolean next) {
+    String path;
+    if (next) {
+      path = String.format(SEQUENCE_PATH, seqId) + "/next";
+    } else {
+      path = String.format(SEQUENCE_PATH, seqId) + "/curr";
+    }
+    log.debug("seqId=''{}''", seqId);
+    return getObjectToSystemMng(path);
+  }
+
+  /**
+   * Requests a "DELETE Sequence".
+   * @param seqId sequnce id
+   * @return response object.
+   */
+  public final Response delSequence(final String seqId) {
+    String path = String.format(SEQUENCE_PATH, seqId);
+    log.debug("seqId=''{}''", seqId);
     return delObjectToSystemMng(path);
   }
 
