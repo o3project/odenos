@@ -205,7 +205,6 @@ public class SubscriberClient extends RedisClient {
 
   private class RecieveThread implements Runnable {
     public void run() {
-      LogMessage.setSavedTxid(txid);
       receiveLoop();
     }
   }

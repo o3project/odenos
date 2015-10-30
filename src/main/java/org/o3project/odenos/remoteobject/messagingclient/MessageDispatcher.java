@@ -453,11 +453,9 @@ public class MessageDispatcher implements Closeable, IMessageListener {
 
     // This thread feeds subscription info to EventManager
     // in an eventually-consistent manner.
-    txid = LogMessage.getSavedTxid();
     subscriptionFeeder = new Thread(new Runnable() {
       @Override
       public void run() {
-        LogMessage.setSavedTxid(txid);
         do {
           Request request = null;
           try {
@@ -716,6 +714,9 @@ public class MessageDispatcher implements Closeable, IMessageListener {
 
   public Response requestSync(Request request, String sourceObjectId)
       throws Exception {
+    LogMessage.setSavedTxid(request.txid);
+    request.txid = LogMessage.getSavedTxid();
+
     String objectId = request.objectId;
     Response response;
     RemoteObject localObject = localObjectsMap.get(objectId);
@@ -780,6 +781,8 @@ public class MessageDispatcher implements Closeable, IMessageListener {
     } else {
       response = remoteTransactions.sendRequest(request, sourceObjectId);
     }
+
+    LogMessage.delSavedTxid();
     return response;
   }
 

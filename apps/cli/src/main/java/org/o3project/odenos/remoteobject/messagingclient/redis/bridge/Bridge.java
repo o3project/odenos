@@ -315,20 +315,26 @@ public class Bridge extends Component {
   @Override
   protected Response onRequest(
       final Request request) {
+    Response res;
+
     RequestParser<IActionCallback>.ParsedRequest parsed = parser
         .parse(request);
     if (parsed == null) {
-      return new Response(Response.BAD_REQUEST, "Error unknown request ");
+      res = new Response(Response.BAD_REQUEST, "Error unknown request ");
+      return res;
     }
     IActionCallback callback = parsed.getResult();
     if (callback == null) {
-      return new Response(Response.BAD_REQUEST, "Error unknown request ");
+      res = new Response(Response.BAD_REQUEST, "Error unknown request ");
+      return res;
     }
     try {
-      return callback.process(parsed);
+      res = callback.process(parsed);
+      return res;
     } catch (Exception e) {
       log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "request error"), e);
-      return new Response(Response.BAD_REQUEST, "Error unknown request ");
+      res = new Response(Response.BAD_REQUEST, "Error unknown request ");
+      return res;
     }
   }
 

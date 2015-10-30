@@ -326,7 +326,7 @@ public class SystemManagerTest {
 
     Response dummyResp = new Response(Response.OK, null);
     PowerMockito.doReturn(dummyResp).when(target, "transferComponent",
-        anyString(), anyString(), eq(Request.Method.POST), eq("txid"),
+        anyString(), anyString(), eq(Request.Method.POST), eq(""),
         (Value) anyObject());
 
     // Call test target method
@@ -589,7 +589,7 @@ public class SystemManagerTest {
     Response mockres = PowerMockito.spy(new Response(Response.BAD_REQUEST,
         null));
     PowerMockito.doReturn(mockres).when(target)
-        .request("key2", Request.Method.GET, testUri, "txid", null);
+        .request("key2", Request.Method.GET, testUri, "", null);
     SystemManager.CheckComponentsTask task = PowerMockito
         .spy(target.new CheckComponentsTask(testUri));
 
@@ -627,7 +627,7 @@ public class SystemManagerTest {
         .spy(target.new CheckComponentsTask(testUri));
     Mockito.doThrow(new Exception())
         .when(target)
-        .request(anyString(), eq(Request.Method.GET), anyString(), eq("txid"),
+        .request(anyString(), eq(Request.Method.GET), anyString(), eq(""),
             eq(null));
 
     task.run();
@@ -1006,7 +1006,7 @@ public class SystemManagerTest {
         mockEventManagerProp));
 
     PowerMockito.doReturn(new Response(Response.OK, null)).when(target)
-        .request("compId", Request.Method.GET, "component_types", "txid", null);
+        .request("compId", Request.Method.GET, "component_types", "", null);
 
     Response ret = (Response) Whitebox.invokeMethod(target,
         "getComponentTypes", "compId");
@@ -1195,7 +1195,7 @@ public class SystemManagerTest {
     ObjectProperty obj = new ObjectProperty("type01", "testType");
 
     PowerMockito.doReturn(new Response(Response.CREATED, obj)).when(target)
-        .request("testType", Request.Method.PUT, "components/" + obj.getObjectId(), "txid", obj);
+        .request("testType", Request.Method.PUT, "components/" + obj.getObjectId(), "", obj);
 
     Response ret = (Response) Whitebox.invokeMethod(target,
         "postComponent", obj);
@@ -1228,7 +1228,7 @@ public class SystemManagerTest {
     ObjectProperty obj = new ObjectProperty("type01", "testType");
 
     PowerMockito.doReturn(new Response(Response.CREATED, obj)).when(target)
-        .request("testType", Request.Method.PUT, "components/" + obj.getObjectId(), "txid", obj);
+        .request("testType", Request.Method.PUT, "components/" + obj.getObjectId(), "", obj);
 
     Response ret = (Response) Whitebox.invokeMethod(target,
         "putComponent", obj.getObjectId(), obj);
@@ -1281,7 +1281,7 @@ public class SystemManagerTest {
 
     Whitebox.setInternalState(target, "allComponentTypes", mockTypes);
     PowerMockito.doThrow(new Exception()).when(target)
-        .request("testType", Request.Method.POST, "components", "txid", obj);
+        .request("testType", Request.Method.POST, "components", "", obj);
 
     Response ret = (Response) Whitebox.invokeMethod(target,
         "postComponent", obj);
@@ -1315,7 +1315,7 @@ public class SystemManagerTest {
     ObjectProperty obj = new ObjectProperty("type01", "testType");
 
     PowerMockito.doReturn(new Response(Response.OK, null)).when(target)
-        .request("testType", Request.Method.POST, "components", "txid", obj);
+        .request("testType", Request.Method.POST, "components", "", obj);
 
     Response ret = (Response) Whitebox.invokeMethod(target,
         "postComponent", obj);
@@ -1505,7 +1505,7 @@ public class SystemManagerTest {
         mockDispatcher,
         mockEventManagerProp));
     PowerMockito.doThrow(new Exception()).when(target)
-        .request(compId, Request.Method.GET, "property", "txid", null);
+        .request(compId, Request.Method.GET, "property", "", null);
 
     assertThat(Whitebox.invokeMethod(target,
         "getPropertyFromOtherComponent", compId), is(nullValue()));
@@ -1530,7 +1530,7 @@ public class SystemManagerTest {
         .doReturn(new Response(Response.OK, null))
         .when(target)
         .request(compMgrId, Request.Method.DELETE, "components/compId",
-            "txid", null);
+            "", null);
 
     Response resp = Whitebox.invokeMethod(target,
         "deleteComponentFromComponentManager", compMgrId, compId);
@@ -1576,7 +1576,7 @@ public class SystemManagerTest {
     String compId = "compId";
 
     PowerMockito.doThrow(new Exception()).when(target)
-        .request(compMgrId, Request.Method.DELETE, "components/", "txid", null);
+        .request(compMgrId, Request.Method.DELETE, "components/", "", null);
 
     Response resp = Whitebox.invokeMethod(target,
         "deleteComponentFromComponentManager", compMgrId, compId);

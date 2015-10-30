@@ -64,7 +64,7 @@ public class SystemManagerInterface {
   public SystemManagerInterface(
       final MessageDispatcher dispatcher) {
     this.dispatcher = dispatcher;
-    log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Create SystemManagerInterface : Id = '{}'.", this.getSystemManagerId()));
+    log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Create SystemManagerInterface : Id = ''{}''.", this.getSystemManagerId()));
   }
 
   /**
@@ -77,7 +77,7 @@ public class SystemManagerInterface {
       final String sourceObjectId) {
     this.dispatcher = dispatcher;
     this.sourceObjectId = sourceObjectId;
-    log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Create SystemManagerInterface : Id = '{}'.", this.getSystemManagerId()));
+    log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Create SystemManagerInterface : Id = ''{}''.", this.getSystemManagerId()));
   }
   
   /**

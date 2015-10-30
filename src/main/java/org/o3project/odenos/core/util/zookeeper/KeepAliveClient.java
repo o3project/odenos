@@ -142,12 +142,10 @@ public class KeepAliveClient {
    * @param message catched message
    */
   public void watchPath(final String path, final String message) {
-    txid = LogMessage.getSavedTxid();
     try {
       zk.exists(path, new Watcher() {
         @Override
         public void process(WatchedEvent event) {
-          LogMessage.setSavedTxid(txid);
           String path = event.getPath();
           switch (event.getType()) {
           case NodeCreated:

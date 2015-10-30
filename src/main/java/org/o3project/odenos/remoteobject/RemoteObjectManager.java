@@ -75,7 +75,6 @@ public class RemoteObjectManager extends RemoteObject {
 
   @Override
   protected Response onRequest(Request request) {
-    LogMessage.setSavedTxid(request.txid);
     log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "onRequest: {}, {}", request.method, request.path));
 
     RequestParser<IActionCallback>.ParsedRequest parsed = parser.parse(request);
@@ -83,7 +82,8 @@ public class RemoteObjectManager extends RemoteObject {
 
     IActionCallback callback = parsed.getResult();
     if (callback == null) {
-      return new Response(Response.BAD_REQUEST, null);
+      response = new Response(Response.BAD_REQUEST, null);
+      return response;
     }
     try {
       response = callback.process(parsed);

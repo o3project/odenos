@@ -15,9 +15,8 @@ public class LogMessage {
 
   private static int txidOffset = 0;
   private static int txidSerial = 0;
-  private static String txidOwn = "";
 
-  private static Random rnd;
+  private static Random rnd = new Random(System.currentTimeMillis());
 
   private String txid = null;
   private Object[] parameters;
@@ -41,8 +40,6 @@ public class LogMessage {
    */
   public static void initParameters(int offset) {
     txidOffset = offset;
-    long now = System.currentTimeMillis();
-    rnd = new Random(now);
   }
 
   /**
@@ -90,7 +87,11 @@ public class LogMessage {
    * @param id transaction ID
    */
   public static void setSavedTxid(String id) {
-    savedTxid.set(id);
+    String txid = id;
+    if(txid == null || txid.length() == 0) {
+      txid = createTxid();
+    }
+    savedTxid.set(txid);
   }
 
   /**
@@ -99,11 +100,7 @@ public class LogMessage {
    * @return saved transaction ID
    */
   public static String getSavedTxid() {
-    String txid = savedTxid.get();
-    if(txid == null || txid.length() == 0) {
-      txid = txidOwn;
-    }
-    return txid;
+    return savedTxid.get();
   }
 
   /**
@@ -135,10 +132,15 @@ public class LogMessage {
     }
 
     String uuid_str = uuid.toLowerCase() + "-" + String.format("%07d", serial);
-    if(txidOwn.length() == 0) {
-      txidOwn = uuid_str;
-    }
     return uuid_str;
+  }
+
+  /**
+   * Delete a transactionID.
+   *
+   */
+  public static void delSavedTxid() {
+    savedTxid.set("");
   }
 
   /**
@@ -179,11 +181,11 @@ public class LogMessage {
         } else {
           formattedMessage = MessageFormat.format(this.format, this.parameters);
         }
-        if (this.txid != null) {
+        if (this.txid != null && this.txid.length() != 0) {
           formattedMessage =
               MessageFormat.format("txid: {0}, {1}", this.txid, formattedMessage);
         } else {
-          formattedMessage = MessageFormat.format("{0}", formattedMessage);
+          formattedMessage = MessageFormat.format("txid: -, {0}", formattedMessage);
         }
         return formattedMessage;
       }

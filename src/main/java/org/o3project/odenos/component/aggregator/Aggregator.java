@@ -466,26 +466,31 @@ public class Aggregator extends Logic {
   @Override
   protected Response onRequest(
       final Request request) {
-    LogMessage.setSavedTxid(request.txid);
     log.debug("");
     log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "received {}", request.path));
+    Response res;
+
     RequestParser<IActionCallback>.ParsedRequest parsed = parser
         .parse(request);
     if (parsed == null) {
-      return new Response(Response.BAD_REQUEST, "Error unknown request ");
+      res = new Response(Response.BAD_REQUEST, "Error unknown request ");
+      return res;
     }
 
     IActionCallback callback = parsed.getResult();
     if (callback == null) {
-      return new Response(Response.BAD_REQUEST, "Error unknown request ");
+      res = new Response(Response.BAD_REQUEST, "Error unknown request ");
+      return res;
     }
 
     try {
       // Get response.
-      return callback.process(parsed);
+      res = callback.process(parsed);
+      return res;
     } catch (Exception e) {
       log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Error unknown request"));
-      return new Response(Response.BAD_REQUEST, "Error unknown request ");
+      res = new Response(Response.BAD_REQUEST, "Error unknown request ");
+      return res;
     }
   }
 
@@ -888,7 +893,7 @@ public class Aggregator extends Logic {
 
     FlowSet flowSet = orgNetworkIf.getFlowSet();
     for (String flowId : flowSet.flows.keySet()) {
-      log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), ">> target flow : '{}'", flowId));
+      log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), ">> target flow : ''{}''", flowId));
       BasicFlow orgFlow = (BasicFlow) flowSet.flows.get(flowId);
       // Get aggregated_network's flowId from orgFlowId.
       String aggFlowId = getConvFlowId(
@@ -899,7 +904,7 @@ public class Aggregator extends Logic {
         continue;
       }
       String[] list = aggFlowId.split("::");
-      log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), ">> conversion flow : '{}'", list[1]));
+      log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), ">> conversion flow : ''{}''", list[1]));
 
       orgFlow = getFlow(orgNetworkIf, flowId);
       BasicFlow aggFlow = getFlow(aggNetworkIf, list[1]);

@@ -257,6 +257,7 @@ public class RemoteObject {
    * @return response to the RemoteObject
    */
   public Response dispatchRequest(Request request) {
+    LogMessage.setSavedTxid(request.txid);
     log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "dispatchRequest: {}, {}", request.method, request.path));
     if (StringUtils.stripToNull(request.path) == null) {
       return new Response(Response.BAD_REQUEST, null);
@@ -419,6 +420,7 @@ public class RemoteObject {
   }
 
   protected Response doPostEvent(final Event event) {
+    LogMessage.setSavedTxid(event.txid);
     onEvent(event);
     return new Response(Response.ACCEPTED, null);
   }
@@ -463,7 +465,8 @@ public class RemoteObject {
    * @return response to the RemoteObject
    */
   protected Response onRequest(Request request) {
-    return new Response(Response.BAD_REQUEST, null);
+    Response res = new Response(Response.BAD_REQUEST, null);
+    return res;
   }
 
   /**

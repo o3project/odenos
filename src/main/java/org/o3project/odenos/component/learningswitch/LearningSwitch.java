@@ -387,25 +387,30 @@ public class LearningSwitch extends Logic {
       return new Response(Response.BAD_REQUEST, "Error unknown request ");
     }
 
-    LogMessage.setSavedTxid(request.txid);
     log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "received {}", request.path));
+    Response res;
+
     RequestParser<IActionCallback>.ParsedRequest parsed =
         parser.parse(request);
     if (parsed == null) {
-      return new Response(Response.BAD_REQUEST, "Error unknown request ");
+      res = new Response(Response.BAD_REQUEST, "Error unknown request ");
+      return res;
     }
 
     IActionCallback callback = parsed.getResult();
     if (callback == null) {
-      return new Response(Response.BAD_REQUEST, "Error unknown request ");
+      res = new Response(Response.BAD_REQUEST, "Error unknown request ");
+      return res;
     }
 
     try {
       // Get response.
-      return callback.process(parsed);
+      res = callback.process(parsed);
+      return res;
     } catch (Exception e) {
       log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Error unknown request"));
-      return new Response(Response.BAD_REQUEST, "Error unknown request ");
+      res = new Response(Response.BAD_REQUEST, "Error unknown request ");
+      return res;
     }
   }
 

@@ -269,7 +269,7 @@ public class RestServletTest {
     /*
      * setting
      */
-    LogMessage.initParameters(0);
+    LogMessage.initParameters(9000000);
 
     HttpServletRequest request = Mockito.mock(HttpServletRequest.class);
     HttpServletResponse response = Mockito.mock(HttpServletResponse.class);
