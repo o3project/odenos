@@ -30,7 +30,7 @@ class LocalMessageTransport(BaseMessageTransport):
         BaseMessageTransport.__init__(self, remote_object_id)
         self.dispatcher = dispatcher
 
-    def send_request_message(self, request):
+    def send_request_message(self, request, source_object_id=None):
         # for deep copy of Request object
         obj = msgpack.unpackb(msgpack.packb(request.packed_object()))
         rcv_request = Request.create_from_packed(obj)
