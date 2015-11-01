@@ -77,7 +77,7 @@ network_id       | \<String>              |Network ID
   * [GET \<base_uri>/settings/boundaries/\<boundary_id>](#GETboundaries_id)
   * [PUT \<base_uri>/settings/boundaries/\<boundary_id>](#PUTboundaries_id)
   * [DELETE \<base_uri>/settings/boundaries/\<boundary_id>](#DELETEboundaries_id)
-  * [PUT \<base_uri>/settings/settings/upper_link_sync](#PUTupper_link_sync)
+  * [PUT \<base_uri>/settings/upper_link_sync](#PUTupper_link_sync)
   * [GET \<base_uri>/lower_flows](#GETlower_flows)
   * [GET \<base_uri>/lower_flows/\<link_id>](#GETlink_id)
   * [GET \<base_uri>/layerized_links](#GETlayerized_links)
