@@ -157,7 +157,7 @@ class TestFederatorConfigurator(OdenosConfigurator):
     print "test multi node ..."
 
     flow_id = "multi_domain"
-    m1 = OFPFlowMatch("OFPFlowMatch", "nwA_node1", "nwA_node1_p1")
+    m1 = OFPFlowMatch("OFPFlowMatch", "nwA_node1", "p1")
     m1.eth_dst = "00:22:33:44:55:66"
     m1.ip_proto = 6
     m1.eth_type = 2048
@@ -166,7 +166,7 @@ class TestFederatorConfigurator(OdenosConfigurator):
     path = ["nwA_link1a", "bound_01_link01", "bound_03_link01",
             "nwC_link3a", "bond_0_link01", "bond_1_link01"]
 
-    a1 =  FlowActionOutput("FlowActionOutput", "nwA_node7_p1")
+    a1 =  FlowActionOutput("FlowActionOutput", "p1")
     m2 = OFPFlowMatch("OFPFlowMatch", None, None)
     m2.eth_dst = "00:22:33:44:55:88"
     a2 = OFPFlowActionSetField("OFPFlowActionSetField", m2)
@@ -305,7 +305,7 @@ class TestFederatorConfigurator(OdenosConfigurator):
 
     time.sleep(1)
     flow_id = "multi_domain"
-    m1 = OFPFlowMatch("OFPFlowMatch", "nwA_node1", "nwA_node1_p1")
+    m1 = OFPFlowMatch("OFPFlowMatch", "nwA_node1", "p1")
     m1.eth_dst = "00:22:33:44:55:66"
     m1.ip_proto = 17
     m1.eth_type = 2048
@@ -314,7 +314,7 @@ class TestFederatorConfigurator(OdenosConfigurator):
     path = ["nwA_link1a", "bound_01_link01", "bound_03_link01",
             "nwC_link3a", "bond_0_link01", "bond_1_link01"]
 
-    a1 =  FlowActionOutput("FlowActionOutput", "nwA_node7_p1")
+    a1 =  FlowActionOutput("FlowActionOutput", "p1")
     m = OFPFlowMatch("OFPFlowMatch", None, None)
     m.eth_dst = "00:22:33:44:55:88"
     a2 = OFPFlowActionSetField("OFPFlowActionSetField", m)
@@ -341,7 +341,7 @@ class TestFederatorConfigurator(OdenosConfigurator):
     print "test single node ..."
 
     flow_id = "single_node"
-    m1 = OFPFlowMatch("OFPFlowMatch", "nwA_node1", "nwA_node1_p1")
+    m1 = OFPFlowMatch("OFPFlowMatch", "nwA_node1", "p1")
     m1.eth_dst = "00:22:33:44:55:66"
     m1.ip_proto = 6
     m1.eth_type = 2048
@@ -349,7 +349,7 @@ class TestFederatorConfigurator(OdenosConfigurator):
     matches.append(m1)
     path = []
 
-    a1 =  FlowActionOutput("FlowActionOutput", "nwA_node1_p2")
+    a1 =  FlowActionOutput("FlowActionOutput", "p2")
     m = OFPFlowMatch("OFPFlowMatch", None, None)
     m.eth_dst = "00:22:33:44:55:88"
     a2 = OFPFlowActionSetField("OFPFlowActionSetField", m)
