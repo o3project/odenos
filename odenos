@@ -543,25 +543,24 @@ show_help()
     echo >&2 ">$0 start -c [FILE]     (loaded original config file.)"
 }
 
+set_conf "$@"
 case "$1" in
-    start)
-        set_conf $@
-	start
-	;;
-    stop)
-	stop
-	;;
-    status)
-        set_conf $@
-	status
-	;;
-    restart)
-	stop
-        set_conf $@
-	start
-	;;
-    *)
-	show_help
+start)
+    start
+    ;;
+stop)
+    stop
+    ;;
+status)
+    status
+    ;;
+restart)
+    stop
+    start
+    ;;
+*)
+    show_help
+    ;;
 esac
 
 cd ${RUN_DIR}
