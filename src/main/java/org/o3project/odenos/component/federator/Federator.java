@@ -570,7 +570,7 @@ public class Federator extends Logic {
 
     // Create Federated's Port
     String fedNodeId = String.format("%s_%s", networkId, port.getNode());
-    String fedPortId = String.format("%s_%s", fedNodeId, port.getId());
+    String fedPortId = port.getId();
     Port fedPort = port.clone();
     fedPort.setNode(fedNodeId);
     fedPort.setId(fedPortId);

@@ -681,7 +681,7 @@ public class FederatorTest {
      */
     verify(conversionTable).addEntryPort("OriginalNetworkId", "NodeId",
         "PortId", "FederatedNetworkId", "OriginalNetworkId_NodeId",
-        "OriginalNetworkId_NodeId_PortId");
+        "PortId");
 
     Port expectedPort = new Port("FederatedNetworkId_NodeId_PortId",
         "FederatedNetworkId_NodeId");
