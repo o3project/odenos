@@ -37,8 +37,8 @@ class Logger(object):
         except IOError:
             print >> sys.stderr, "*** WARN: Logger: may not output log in this time (continued) ***"
 
-        logger = logging.getLogger()
-        logger.addFiler(ContextFilter())
+        for handler in logging.root.handlers:
+            handler.addFilter(ContextFilter())
 
     @classmethod
     def set_level_debug(cls):
