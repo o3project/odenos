@@ -58,9 +58,14 @@ class Parser(object):
 
 
 def load(module_name, path):
-    logging.debug("load molude dir='%s', module='%s'", path, module_name)
     f, n, d = imp.find_module(module_name, [path])
-    return imp.load_module(module_name, f, n, d)
+    logging.debug("load module dir='%s', module='%s', [%s]", path, module_name, n)
+    try:
+        mod = imp.load_module(module_name, f, n, d)
+    except ImportError, ex:
+        logging.error("load error: " + module_name + ": " + str(ex))
+        return []
+    return mod
 
 
 def load_modules(path):
@@ -77,8 +82,9 @@ def load_modules(path):
             elif os.path.isdir(os.path.join(path, fdn)):
                 m = load_modules(os.path.join(path, fdn))
                 modules.extend(m)
-        except ImportError:
-            pass
+        except ImportError, ex:
+            logging.warn("unknown error: " + str(ex))
+            path
     return modules
 
 
@@ -100,8 +106,8 @@ if __name__ == '__main__':
     classes = []
 
     for directory in options.dir.split(","):
+        logging.debug("load from dir=" + directory)
         modules = load_modules(directory)
-        #print "DEBUG: modeuls=", modules
 
         for m in modules:
             for name, clazz in inspect.getmembers(m, inspect.isclass):
@@ -110,6 +116,7 @@ if __name__ == '__main__':
                     if directory not in inspect.getsourcefile(clazz):
                         continue
                 except StandardError:
+                    logging.warn("inspect error: name='%s'  (ignored)", name)
                     continue
                 if issubclass(clazz, RemoteObject):
                     classes.append(clazz)
