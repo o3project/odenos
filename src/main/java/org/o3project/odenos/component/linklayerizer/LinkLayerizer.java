@@ -1057,59 +1057,59 @@ public class LinkLayerizer extends Logic {
   protected boolean onLinkAddedPre(String networkId, Link link) {
     log.debug("");
 
-    if (StringUtils.isBlank(networkId)) {
-      String message = "invalid networkID: " + networkId;
-      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), message));
-      throw new IllegalArgumentException(message);
-    }
-
-    if (isUpperNetwork(networkId)) {
-      NetworkInterface layNwIf = getLayerizedNetworkIf();
-      if (layNwIf == null) {
-        return false;
-      }
-      Map<String, Link> layerizedLinks = layNwIf.getLinks();
-      if (layerizedLinks == null) {
-        return true;
-      }
-
-      String convLinkId = null;
-      for (String layLinkId : layerizedLinks.keySet()) {
-        Link layLink = layerizedLinks.get(layLinkId);
-        Link compLink = layLink.clone();
-        compLink.setPorts(
-            link.getSrcNode(), link.getSrcPort(),
-            link.getDstNode(), link.getDstPort());
-        // register conversion link.
-        if (compLink.equals(layLink)) {
-          conversionTable().addEntryLink(
-              networkId, link.getId(), // upper's link 
-              layNwIf.getNetworkId(), layLinkId); // layerized's link
-          convLinkId = layLinkId;
-          break;
-        }
-      }
-
-      if (convLinkId == null) {
-        return true; // default on_link_add.
-      }
-      // sync layerized's flow to upper.
-      FlowSet layerizedFlows = layNwIf.getFlowSet();
-      for (String layFlowId : layerizedFlows.getFlows().keySet()) {
-        BasicFlow layFlow = (BasicFlow) layerizedFlows.getFlow(layFlowId);
-        if (layFlow.getPath().contains(convLinkId)) {
-          linkLayerizerOnFlow.flowAddedLayerizedNwExistPath(
-              layNwIf.getNetworkId(), layFlow);
-        }
+    if (isLayerizedNetwork(networkId)) {
+      NetworkInterface upperNwIf = getUpperNetworkIf();
+      Port upperPort = upperNwIf.getPort(link.getSrcNode(), link.getSrcPort());
+      if((upperPort.isAttribute(AttrElements.IS_BOUNDARY))
+        && (upperPort.getAttribute(AttrElements.IS_BOUNDARY).equals("true"))) {
+          if (upperLinkSync) {
+            // copy Link to uppper
+            return true;
+          }
+          if (upperPort.getOutLink() != null) {
+            Link upperLink = upperNwIf.getLink(upperPort.getOutLink());
+            conversionTable().addEntryLink(
+              upperNwIf.getNetworkId(), upperLink.getId(), // upper link
+              networkId, link.getId());                    // layerized's link
+          }
       }
       return false;
     }
 
-    if (isLayerizedNetwork(networkId)) {
-      return upperLinkSync;
+    if (isUpperNetwork(networkId)) {
+      NetworkInterface layNwIf = getLayerizedNetworkIf();
+      Port layPort = layNwIf.getPort( link.getSrcNode(), link.getSrcPort());
+      if ((layPort.isAttribute(AttrElements.IS_BOUNDARY))
+        && (layPort.getAttribute(AttrElements.IS_BOUNDARY).equals("true"))) {
+        if (upperLinkSync) {
+          return false;
+        }
+        if (layPort.getOutLink() != null) {
+          Link layLink = layNwIf.getLink(layPort.getOutLink());
+          conversionTable().addEntryLink(
+              networkId, link.getId(),                  // upper link
+              layNwIf.getNetworkId(), layLink.getId()); // layerized's link
+
+          // sync layerized's flow to upper.
+          FlowSet layerizedFlows = layNwIf.getFlowSet();
+          for (String layFlowId : layerizedFlows.getFlows().keySet()) {
+            BasicFlow layFlow = (BasicFlow) layerizedFlows.getFlow(layFlowId);
+            if (layFlow.getPath().contains(layLink.getId())) {
+              linkLayerizerOnFlow.flowAddedLayerizedNwExistPath(
+                layNwIf.getNetworkId(), layFlow);
+            }
+          }
+        }
+        return false;
+      }
+      // copy Link to layerized
+      return true;
     }
 
-    return true;
+    if (isLowerNetwork(networkId)) {
+      return false;
+    }
+    return false;
   }
 
   /* (non-Javadoc)
