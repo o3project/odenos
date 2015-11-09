@@ -122,7 +122,7 @@ run curl -w "$FORMAT" http://$ADDRESS:10080/network2/topology/nodes/node02/ports
 run curl -w "$FORMAT" http://$ADDRESS:10080/network2/topology/nodes/node03/ports/port030 -X PUT -d '{"type": "Port", "node_id": "node03", "port_id": "port030", "out_link": null, "in_link": null, "attributes": {}}'
 run curl -w "$FORMAT" http://$ADDRESS:10080/network2/topology/nodes/node03/ports/port031 -X PUT -d '{"type": "Port", "node_id": "node03", "port_id": "port031", "out_link": null, "in_link": null, "attributes": {}}'
 run curl -w "$FORMAT" http://$ADDRESS:10080/network2/topology/nodes/node03/ports/port032 -X PUT -d '{"type": "Port", "node_id": "node03", "port_id": "port032", "out_link": null, "in_link": null, "attributes": {}}'
-#run curl http://$ADDRESS:10080/systemmanager/components/network2/topology/nodes -X GET | python -mjson.tool
+#run curl http://$ADDRESS:10080/network2/topology/nodes -X GET | python -mjson.tool
 
 run curl -w "$FORMAT" http://$ADDRESS:10080/network2/topology/links/link012 -X PUT -d '{"type": "Link", "link_id": "link012", "src_node": "node01", "src_port": "port011", "dst_node": "node02", "dst_port": "port022", "attributes": {}}'
 run curl -w "$FORMAT" http://$ADDRESS:10080/network2/topology/links/link021 -X PUT -d '{"type": "Link", "link_id": "link021", "src_node": "node02", "src_port": "port022", "dst_node": "node01", "dst_port": "port011", "attributes": {}}'
@@ -130,18 +130,18 @@ run curl -w "$FORMAT" http://$ADDRESS:10080/network2/topology/links/link023 -X P
 run curl -w "$FORMAT" http://$ADDRESS:10080/network2/topology/links/link032 -X PUT -d '{"type": "Link", "link_id": "link032", "src_node": "node03", "src_port": "port032", "dst_node": "node02", "dst_port": "port021", "attributes": {}}'
 run curl -w "$FORMAT" http://$ADDRESS:10080/network2/topology/links/link031 -X PUT -d '{"type": "Link", "link_id": "link031", "src_node": "node03", "src_port": "port031", "dst_node": "node01", "dst_port": "port012", "attributes": {}}'
 run curl -w "$FORMAT" http://$ADDRESS:10080/network2/topology/links/link013 -X PUT -d '{"type": "Link", "link_id": "link013", "src_node": "node01", "src_port": "port012", "dst_node": "node03", "dst_port": "port031", "attributes": {}}'
-#run curl http://$ADDRESS:10080/systemmanager/components/network2/topology/links -X GET | python -mjson.tool
+#run curl http://$ADDRESS:10080/network2/topology/links -X GET | python -mjson.tool
 
 sleep 1
-#run curl http://$ADDRESS:10080/systemmanager/components/network2/topology -X GET | python -mjson.tool
+#run curl http://$ADDRESS:10080/network2/topology -X GET | python -mjson.tool
 
-if ps -ef | grep neo4j > /dev/null
+if ps -ef | grep "[n]eo4j" > /dev/null
 then
 	PYTHONPATH=lib/python apps/neo4j/neo4jsync.py topology
 fi
 
 # set Flows
-run curl http://$ADDRESS:10080/systemmanager/components/network2/flows -X GET | python -mjson.tool
+run curl http://$ADDRESS:10080/network2/flows -X GET | python -mjson.tool
 
 # Send and Receive Packets
 echo "------ OutPacket  -------"
