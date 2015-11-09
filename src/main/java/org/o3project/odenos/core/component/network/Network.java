@@ -579,7 +579,11 @@ public class Network extends Component {
 
     Port port = node.getPort(portId);
 
-    Node nodeOld = node.clone();
+    
+    Node nodeOld = null;
+    if (isNeededVerboseNodeEvent()) {
+      nodeOld = node.clone();
+    }
     Port portOld;
 
     PortChanged.Action action;
