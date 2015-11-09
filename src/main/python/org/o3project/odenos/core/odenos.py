@@ -84,7 +84,7 @@ def load_modules(path):
                 modules.extend(m)
         except ImportError, ex:
             logging.warn("unknown error: " + str(ex))
-            path
+            pass
     return modules
 
 
