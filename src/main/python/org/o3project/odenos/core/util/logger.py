@@ -16,7 +16,14 @@
 
 import os
 import sys
+import logging
 import logging.config
+
+
+class ContextFilter(logging.Filter):
+    def fileter(self, record):
+        # get basename from filename by removing '.py'
+        record.module = ".".join(record.filename.split(".")[:-1])
 
 
 class Logger(object):
@@ -29,6 +36,9 @@ class Logger(object):
             logging.config.fileConfig(filename)
         except IOError:
             print >> sys.stderr, "*** WARN: Logger: may not output log in this time (continued) ***"
+
+        for handler in logging.root.handlers:
+            handler.addFilter(ContextFilter())
 
     @classmethod
     def set_level_debug(cls):
