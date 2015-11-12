@@ -210,12 +210,12 @@ class OdenosConfigurator(object):
         return network.put_link(Link("Link", "0", link_id, snode, sport, dnode, dport, attr))
 
     def create_simple_basicFlow(self, network, flow_id,
-                                in_node, in_port, path, out_node, out_port):
+                                in_node, in_port, path, out_node, out_port, attr={}):
         matches = []
         matches.append(BasicFlowMatch("BasicFlowMatch", in_node, in_port))
         edge_actions = {}
         edge_actions[out_node] = [FlowActionOutput("FlowActionOutput", out_port)]
-        attributes = {}
+        attributes = attr
         flow = BasicFlow("BasicFlow", "0", flow_id, "simple_basicFlow",
                 True, None, None, attributes, matches, path, edge_actions)
         return network.put_flow(flow)
