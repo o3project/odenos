@@ -1455,7 +1455,7 @@ public class LinkLayerizer extends Logic {
       LinkLayerizerBoundary resultBoundary =
           linkLayerizerBoundaryTable.addEntry(boundary);
 
-      setBoundaryPortAttr();
+      setBoundaryPortAttr(boundary);
 
       return new Response(Response.OK, resultBoundary);
 
@@ -1526,7 +1526,7 @@ public class LinkLayerizer extends Logic {
           linkLayerizerBoundaryTable
               .updateEntry(boundaryId, boundary);
 
-      setBoundaryPortAttr();
+      setBoundaryPortAttr(boundary);
 
       return new Response(Response.OK, resultBoundary);
 
@@ -1692,6 +1692,32 @@ public class LinkLayerizer extends Logic {
 
     return basicFlow;
   }
+
+  protected void setBoundaryPortAttr(final LinkLayerizerBoundary boundary) {
+    log.debug("{}", boundary.getId());
+    try {
+      /* for lower nw. */
+      NetworkInterface lowerNetif = getNetworkIf(LOWER_NETWORK);
+      Port lowerPort = lowerNetif.getPort(boundary.getLowerNwNode(),
+                                          boundary.getLowerNwPort());
+      if (lowerPort != null) {
+        lowerPort.putAttribute(AttrElements.IS_BOUNDARY, "true");
+        lowerNetif.putPort(lowerPort);
+      }
+
+      /* for upper nw. */
+      NetworkInterface upperNetif = getNetworkIf(UPPER_NETWORK);
+      Port upperPort = upperNetif.getPort(boundary.getUpperNwNode(),
+                                          boundary.getUpperNwPort());
+      if (upperPort != null) {
+        upperPort.putAttribute(AttrElements.IS_BOUNDARY, "true");
+        upperNetif.putPort(upperPort);
+      }
+    } catch (Exception ex) {
+      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Receive Exception."), ex);
+    }
+  }
+
 
   protected void setBoundaryPortAttr() {
     log.debug("");
