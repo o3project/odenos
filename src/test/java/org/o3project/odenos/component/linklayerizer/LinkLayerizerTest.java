@@ -2855,7 +2855,7 @@ public class LinkLayerizerTest {
         "BoundaryId", "Type", "LowerNwId", "LowerNwNodeId",
         "LowerNwPortId", "UpperNwId", "UpperNwNodeId", "UpperNwPortId");
 
-    PowerMockito.doNothing().when(target, "setBoundaryPortAttr");
+    PowerMockito.doNothing().when(target, "setBoundaryPortAttr", boundary);
 
     /*
      * test
@@ -2877,7 +2877,7 @@ public class LinkLayerizerTest {
 
     assertThat(linkLayerizerBoundaryTable.getEntry(boundaryId), is(boundary));
 
-    PowerMockito.verifyPrivate(target).invoke("setBoundaryPortAttr");
+    PowerMockito.verifyPrivate(target).invoke("setBoundaryPortAttr", boundary);
 
   }
 
@@ -2959,7 +2959,7 @@ public class LinkLayerizerTest {
         "BoundaryId", "Type", "LowerNwId", "LowerNwNodeId",
         "LowerNwPortId", "UpperNwId", "UpperNwNodeId", "UpperNwPortId");
 
-    PowerMockito.doNothing().when(target, "setBoundaryPortAttr");
+    PowerMockito.doNothing().when(target, "setBoundaryPortAttr", boundary);
 
     /*
      * test
@@ -2978,7 +2978,7 @@ public class LinkLayerizerTest {
     assertThat(linkLayerizerBoundaryTable.getEntry("BoundaryId"),
         is(boundary));
 
-    PowerMockito.verifyPrivate(target).invoke("setBoundaryPortAttr");
+    PowerMockito.verifyPrivate(target).invoke("setBoundaryPortAttr", boundary);
   }
 
   /**
@@ -3025,8 +3025,7 @@ public class LinkLayerizerTest {
     assertThat(linkLayerizerBoundaryTable.getEntry("BoundaryId"),
         is(boundary2));
 
-    PowerMockito.verifyPrivate(target, times(2)).invoke(
-        "setBoundaryPortAttr");
+    PowerMockito.verifyPrivate(target, times(3)).invoke("setBoundaryPortAttr", boundary2);
 
   }
 
