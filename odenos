@@ -310,10 +310,10 @@ stop_system()
 {
     if check_pid_file $FILE_ODENOS_SYSTEM_PID; then
 	kill `cat $FILE_ODENOS_SYSTEM_PID`  > /dev/null 2>&1
-	unlink $FILE_ODENOS_SYSTEM_PID      > /dev/null 2>&1
     else
 	echo "odenos core system is not running"
     fi
+    unlink $FILE_ODENOS_SYSTEM_PID > /dev/null 2>&1
 }
 
 start_process()
@@ -432,10 +432,10 @@ stop_process()
 	file=$ODENOS_TMP/odenos_${PROC_NAME}.pid
 	if check_pid_file ${file}; then
 	    kill `cat ${file}`  > /dev/null 2>&1
-	    unlink ${file}      > /dev/null 2>&1
 	else
 	    echo "odenos $PROC_NAME is not running"
 	fi
+	unlink ${file} > /dev/null 2>&1
 	if [ $PROC_TYPE = "ruby" ]; then
             $TREMA killall
 	fi
