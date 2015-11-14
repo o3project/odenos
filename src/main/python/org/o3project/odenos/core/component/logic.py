@@ -107,27 +107,27 @@ class Logic(Component):
             return
 
     def _connection_changed_added_pre(self, msg):
-        logging.debug(">> %s", stack()[0][3])
+        logging.debug("%s", self.object_id)
         return True
 
     def _connection_changed_update_pre(self, msg):
-        logging.debug(">> %s", stack()[0][3])
+        logging.debug("%s", self.object_id)
         return True
 
     def _connection_changed_delete_pre(self, msg):
-        logging.debug(">> %s", stack()[0][3])
+        logging.debug("%s", self.object_id)
         return True
 
     def _connection_changed_added(self, msg):
-        logging.debug(">> %s", stack()[0][3])
+        logging.debug("%s", self.object_id)
         return
 
     def _connection_changed_update(self, msg):
-        logging.debug(">> %s", stack()[0][3])
+        logging.debug("%s", self.object_id)
         return
 
     def _connection_changed_delete(self, msg):
-        logging.debug(">> %s", stack()[0][3])
+        logging.debug("%s", self.object_id)
         return
 
     # Add Network Event Subscription
@@ -337,11 +337,11 @@ class Logic(Component):
         return
 
     def _on_in_packet_added_pre(self, network_id, msg):
-        logging.debug(">> %s", stack()[0][3])
+        logging.debug("%s", self.object_id)
         return True
 
     def _on_in_packet_added_post(self, network_id, msg, resp_list):
-        logging.debug(">> %s", stack()[0][3])
+        logging.debug("%s", self.object_id)
         return
 
     ###################################
@@ -366,16 +366,16 @@ class Logic(Component):
         return
 
     def _on_out_packet_added_pre(self, network_id, msg):
-        logging.debug(">> %s", stack()[0][3])
+        logging.debug("%s", self.object_id)
         return True
 
     def _on_out_packet_added_post(self, network_id, msg, resp_list):
-        logging.debug(">> %s", stack()[0][3])
+        logging.debug("%s", self.object_id)
         return
 
     # Add Node
     def _on_node_added(self, network_id, node_msg):
-        logging.debug(">> %s", stack()[0][3])
+        logging.debug("%s", self.object_id)
         if (self._on_node_added_pre(network_id, node_msg)):
             resp_list = self._add_node_conversion(network_id, node_msg)
             self._on_node_added_post(network_id, node_msg, resp_list)
@@ -383,16 +383,16 @@ class Logic(Component):
         return
 
     def _on_node_added_pre(self, network_id, node_msg):
-        logging.debug(">> %s", stack()[0][3])
+        logging.debug("%s", self.object_id)
         return True
 
     def _on_node_added_post(self, network_id, node_msg, resp_list):
-        logging.debug(">> %s", stack()[0][3])
+        logging.debug("%s", self.object_id)
         return
 
     # Add Port
     def _on_port_added(self, network_id, port_msg):
-        logging.debug(">> %s", stack()[0][3])
+        logging.debug("%s", self.object_id)
         if (self._on_port_added_pre(network_id, port_msg)):
             resp_list = self._add_port_conversion(network_id, port_msg)
             self._on_port_added_post(network_id, port_msg, resp_list)
@@ -400,16 +400,16 @@ class Logic(Component):
         return
 
     def _on_port_added_pre(self, network_id, port_msg):
-        logging.debug(">> %s", stack()[0][3])
+        logging.debug("%s", self.object_id)
         return True
 
     def _on_port_added_post(self, network_id, port_msg, resp_list):
-        logging.debug(">> %s", stack()[0][3])
+        logging.debug("%s", self.object_id)
         return
 
     # Add Link
     def _on_link_added(self, network_id, link_msg):
-        logging.debug(">> %s", stack()[0][3])
+        logging.debug("%s", self.object_id)
         if (self._on_link_added_pre(network_id, link_msg)):
             resp_list = self._add_link_conversion(network_id, link_msg)
             self._on_link_added_post(network_id, link_msg, resp_list)
@@ -417,16 +417,16 @@ class Logic(Component):
         return
 
     def _on_link_added_pre(self, network_id, link_msg):
-        logging.debug(">> %s", stack()[0][3])
+        logging.debug("%s", self.object_id)
         return True
 
     def _on_link_added_post(self, network_id, link_msg, resp_list):
-        logging.debug(">> %s", stack()[0][3])
+        logging.debug("%s", self.object_id)
         return
 
     # Add Flow
     def _on_flow_added(self, network_id, flow_msg):
-        logging.debug(">> %s", stack()[0][3])
+        logging.debug("%s", self.object_id)
         if (self._on_flow_added_pre(network_id, flow_msg)):
             resp_list = self._add_flow_conversion(network_id, flow_msg)
             self._on_flow_added_post(network_id, flow_msg, resp_list)
@@ -434,16 +434,16 @@ class Logic(Component):
         return
 
     def _on_flow_added_pre(self, network_id, flow_msg):
-        logging.debug(">> %s", stack()[0][3])
+        logging.debug("%s", self.object_id)
         return True
 
     def _on_flow_added_post(self, network_id, flow_msg, resp_list):
-        logging.debug(">> %s", stack()[0][3])
+        logging.debug("%s", self.object_id)
         return
 
     # Update Node
     def _on_node_update(self, network_id, prev, curr, attributes):
-        logging.debug(">> %s", stack()[0][3])
+        logging.debug("%s", self.object_id)
         if (self._on_node_update_pre(network_id, prev, curr, attributes)):
             resp_list = self._update_node_conversion(network_id,
                                                      prev,
@@ -458,17 +458,17 @@ class Logic(Component):
         return
 
     def _on_node_update_pre(self, network_id, prev, curr, attributes):
-        logging.debug(">> %s", stack()[0][3])
+        logging.debug("%s", self.object_id)
         return True
 
     def _on_node_update_post(self, network_id,
                              prev, curr, attributes, resp_list):
-        logging.debug(">> %s", stack()[0][3])
+        logging.debug("%s", self.object_id)
         return
 
     # Update Port
     def _on_port_update(self, network_id, prev, curr, attributes):
-        logging.debug(">> %s", stack()[0][3])
+        logging.debug("%s", self.object_id)
         if (self._on_port_update_pre(network_id, prev, curr, attributes)):
             resp_list = self._update_port_conversion(network_id,
                                                      prev,
@@ -483,17 +483,17 @@ class Logic(Component):
         return
 
     def _on_port_update_pre(self, network_id, prev, curr, attributes):
-        logging.debug(">> %s", stack()[0][3])
+        logging.debug("%s", self.object_id)
         return True
 
     def _on_port_update_post(self, network_id,
                              prev, curr, attributes, resp_list):
-        logging.debug(">> %s", stack()[0][3])
+        logging.debug("%s", self.object_id)
         return
 
     # Update Link
     def _on_link_update(self, network_id, prev, curr, attributes):
-        logging.debug(">> %s", stack()[0][3])
+        logging.debug("%s", self.object_id)
         if (self._on_link_update_pre(network_id, prev, curr, attributes)):
             resp_list = self._update_link_conversion(network_id,
                                                      prev,
@@ -508,17 +508,17 @@ class Logic(Component):
         return
 
     def _on_link_update_pre(self, network_id, prev, curr, attributes):
-        logging.debug(">> %s", stack()[0][3])
+        logging.debug("%s", self.object_id)
         return True
 
     def _on_link_update_post(self, network_id,
                              prev, curr, attributes, resp_list):
-        logging.debug(">> %s", stack()[0][3])
+        logging.debug("%s", self.object_id)
         return
 
     # Update Flow
     def _on_flow_update(self, network_id, prev, curr, attributes):
-        logging.debug(">> %s", stack()[0][3])
+        logging.debug("%s", self.object_id)
         if (self._on_flow_update_pre(network_id, prev, curr, attributes)):
             resp_list = self._update_flow_conversion(network_id,
                                                      prev,
@@ -533,17 +533,17 @@ class Logic(Component):
         return
 
     def _on_flow_update_pre(self, network_id, prev, curr, attributes):
-        logging.debug(">> %s", stack()[0][3])
+        logging.debug("%s", self.object_id)
         return True
 
     def _on_flow_update_post(self, network_id,
                              prev, curr, attributes, resp_list):
-        logging.debug(">> %s", stack()[0][3])
+        logging.debug("%s", self.object_id)
         return
 
     # Delete Node
     def _on_node_delete(self, network_id, node_msg):
-        logging.debug(">> %s", stack()[0][3])
+        logging.debug("%s", self.object_id)
         if (self._on_node_delete_pre(network_id, node_msg)):
             resp_list = self._delete_node_conversion(network_id, node_msg)
             self._on_node_delete_post(network_id, node_msg, resp_list)
@@ -551,16 +551,16 @@ class Logic(Component):
         return
 
     def _on_node_delete_pre(self, network_id, node_msg):
-        logging.debug(">> %s", stack()[0][3])
+        logging.debug("%s", self.object_id)
         return True
 
     def _on_node_delete_post(self, network_id, node_msg, resp_list):
-        logging.debug(">> %s", stack()[0][3])
+        logging.debug("%s", self.object_id)
         return
 
     # Delete Port
     def _on_port_delete(self, network_id, port_msg):
-        logging.debug(">> %s", stack()[0][3])
+        logging.debug("%s", self.object_id)
         if (self._on_port_delete_pre(network_id, port_msg)):
             resp_list = self._delete_port_conversion(network_id, port_msg)
             self._on_port_delete_post(network_id, port_msg, resp_list)
@@ -568,16 +568,16 @@ class Logic(Component):
         return
 
     def _on_port_delete_pre(self, network_id, port_msg):
-        logging.debug(">> %s", stack()[0][3])
+        logging.debug("%s", self.object_id)
         return True
 
     def _on_port_delete_post(self, network_id, port_msg, resp_list):
-        logging.debug(">> %s", stack()[0][3])
+        logging.debug("%s", self.object_id)
         return
 
     # Delete Link
     def _on_link_delete(self, network_id, link_msg):
-        logging.debug(">> %s", stack()[0][3])
+        logging.debug("%s", self.object_id)
         if (self._on_link_delete_pre(network_id, link_msg)):
             resp_list = self._delete_link_conversion(network_id, link_msg)
             self._on_link_delete_post(network_id, link_msg, resp_list)
@@ -585,16 +585,16 @@ class Logic(Component):
         return
 
     def _on_link_delete_pre(self, network_id, link_msg):
-        logging.debug(">> %s", stack()[0][3])
+        logging.debug("%s", self.object_id)
         return True
 
     def _on_link_delete_post(self, network_id, link_msg, resp_list):
-        logging.debug(">> %s", stack()[0][3])
+        logging.debug("%s", self.object_id)
         return
 
     # Delete Flow
     def _on_flow_delete(self, network_id, flow_msg):
-        logging.debug(">> %s", stack()[0][3])
+        logging.debug("%s", self.object_id)
         if (self._on_flow_delete_pre(network_id, flow_msg)):
             resp_list = self._delete_flow_conversion(network_id, flow_msg)
             self._on_flow_delete_post(network_id, flow_msg, resp_list)
@@ -602,11 +602,11 @@ class Logic(Component):
         return
 
     def _on_flow_delete_pre(self, network_id, flow_msg):
-        logging.debug(">> %s", stack()[0][3])
+        logging.debug("%s", self.object_id)
         return True
 
     def _on_flow_delete_post(self, network_id, flow_msg, resp_list):
-        logging.debug(">> %s", stack()[0][3])
+        logging.debug("%s", self.object_id)
         return
 
     ###################################
@@ -615,7 +615,7 @@ class Logic(Component):
 
     # Add Node Conversion
     def _add_node_conversion(self, network_id, node):
-        logging.debug(">> %s", stack()[0][3])
+        logging.debug("%s", self.object_id)
         resp_list = {}
         for nw_id in self._conversion_table.get_network(network_id):
             if nw_id not in self._network_interfaces:
@@ -638,7 +638,7 @@ class Logic(Component):
 
     # Add Port Conversion
     def _add_port_conversion(self, network_id, port):
-        logging.debug(">> %s", stack()[0][3])
+        logging.debug("%s", self.object_id)
         resp_list = {}
 
         for nw_id in self._conversion_table.get_network(network_id):
@@ -664,7 +664,7 @@ class Logic(Component):
 
     # Add Link Conversion
     def _add_link_conversion(self, network_id, link):
-        logging.debug(">> %s", stack()[0][3])
+        logging.debug("%s", self.object_id)
         resp_list = {}
 
         for nw_id in self._conversion_table.get_network(network_id):
@@ -688,7 +688,7 @@ class Logic(Component):
 
     # Add Flow Conversion
     def _add_flow_conversion(self, network_id, flow):
-        logging.debug(">> %s", stack()[0][3])
+        logging.debug("%s", self.object_id)
         resp_list = {}
         for nw_id in self._conversion_table.get_network(network_id):
             if nw_id not in self._network_interfaces:
@@ -701,7 +701,7 @@ class Logic(Component):
 
     # Add InPacket Conversion
     def _add_in_packet_conversion(self, network_id, in_packet):
-        logging.debug(">> %s", stack()[0][3])
+        logging.debug("%s", self.object_id)
 
         resp_list = {}
 
@@ -760,7 +760,7 @@ class Logic(Component):
 
     # Add OutPacket Conversion
     def _add_out_packet_conversion(self, network_id, out_packet):
-        logging.debug(">> %s", stack()[0][3])
+        logging.debug("%s", self.object_id)
 
         resp_list = {}
 
@@ -856,7 +856,7 @@ class Logic(Component):
     # Update Node Conversion
     def _update_node_conversion(self, network_id,
                                 node_prev, node_curr, attributes):
-        logging.debug(">> %s", stack()[0][3])
+        logging.debug("%s", self.object_id)
         resp_list = {}
         if network_id is None or node_curr is None:
             return resp_list
@@ -911,7 +911,7 @@ class Logic(Component):
     # Update Port Conversion
     def _update_port_conversion(self, network_id,
                                 port_prev, port_curr, attributes):
-        logging.debug(">> %s", stack()[0][3])
+        logging.debug("%s", self.object_id)
         resp_list = {}
         if network_id is None or port_curr is None:
             return resp_list
@@ -967,7 +967,7 @@ class Logic(Component):
     # Update Link Conversion
     def _update_link_conversion(self, network_id,
                                 link_prev, link_curr, attributes):
-        logging.debug(">> %s", stack()[0][3])
+        logging.debug("%s", self.object_id)
         resp_list = {}
         if network_id is None or link_curr is None:
             return resp_list
@@ -1022,7 +1022,7 @@ class Logic(Component):
     # Update Flow Conversion
     def _update_flow_conversion(self, network_id,
                                 flow_prev, flow_curr, attributes):
-        logging.debug(">> %s", stack()[0][3])
+        logging.debug("%s", self.object_id)
         resp_list = {}
         if network_id is None or flow_curr is None:
             return resp_list
@@ -1095,7 +1095,7 @@ class Logic(Component):
 
     # Delete Node Conversion
     def _delete_node_conversion(self, network_id, node):
-        logging.debug(">> %s", stack()[0][3])
+        logging.debug("%s", self.object_id)
         resp_list = {}
         if network_id is None or node is None:
             return resp_list
@@ -1128,7 +1128,7 @@ class Logic(Component):
 
     # Delete Port Conversion
     def _delete_port_conversion(self, network_id, port):
-        logging.debug(">> %s", stack()[0][3])
+        logging.debug("%s", self.object_id)
         resp_list = {}
         if network_id is None or port is None:
             return resp_list
@@ -1164,7 +1164,7 @@ class Logic(Component):
 
     # Delete Link Conversion
     def _delete_link_conversion(self, network_id, link):
-        logging.debug(">> %s", stack()[0][3])
+        logging.debug("%s", self.object_id)
         resp_list = {}
         if network_id is None or link is None:
             return resp_list
@@ -1197,7 +1197,7 @@ class Logic(Component):
 
     # Delete Flow Conversion
     def _delete_flow_conversion(self, network_id, flow):
-        logging.debug(">> %s", stack()[0][3])
+        logging.debug("%s", self.object_id)
         resp_list = {}
         if network_id is None or flow is None:
             return resp_list
@@ -1241,7 +1241,7 @@ class Logic(Component):
     ###################################
 
     def _del_in_packet(self, nw_if, packet_id):
-        logging.debug(">> %s", stack()[0][3])
+        logging.debug("%s", self.object_id)
 
         resp = nw_if.del_in_packet(packet_id)
         if resp.is_error(Request.Method.DELETE):
@@ -1259,7 +1259,7 @@ class Logic(Component):
         return resp_in_packet
 
     def _del_out_packet(self, nw_if, packet_id):
-        logging.debug(">> %s", stack()[0][3])
+        logging.debug("%s", self.object_id)
 
         resp = nw_if.del_out_packet(packet_id)
         if resp.is_error(Request.Method.DELETE):
