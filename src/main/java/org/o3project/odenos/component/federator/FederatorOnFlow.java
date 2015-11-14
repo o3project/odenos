@@ -83,6 +83,11 @@ public class FederatorOnFlow {
 
     List<String> fedFlowIds
         = conversionTable.getFlow(networkId, flow.getFlowId());
+    if (fedFlowIds == null || fedFlowIds.size() == 0) {
+      log.warn(LogMessage.buildLogMessage(LogMessage.getSavedTxid(),
+        "no Federator Flows in conversionTable: {}::{}", networkId, flow.getFlowId()));
+      return;
+    }
     String[] fedFlowId = fedFlowIds.get(0).split("::");
     NetworkInterface fedNwIf = networkInterfaces.get(fedFlowId[0]);
     Flow fedFlow = fedNwIf.getFlow(fedFlowId[1]);
@@ -105,6 +110,11 @@ public class FederatorOnFlow {
 
     List<String> fedFlowIds
         = conversionTable.getFlow(networkId, flow.getFlowId());
+    if (fedFlowIds == null || fedFlowIds.size() == 0) {
+      log.warn(LogMessage.buildLogMessage(LogMessage.getSavedTxid(),
+        "no Federator Flows in conversionTable: {}::{}", networkId, flow.getFlowId()));
+      return false;
+    }
     String[] fedFlowId = fedFlowIds.get(0).split("::");
 
     List<String> fedOrgIds
@@ -118,6 +128,10 @@ public class FederatorOnFlow {
 
       NetworkInterface orgNwIf = networkInterfaces.get(flowId[0]);
       Flow orgFlow = orgNwIf.getFlow(flowId[1]);
+      if (orgFlow == null) {
+        log.warn(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "not found Original Flow: {}", flowId));
+        continue;
+      }
       if (!FlowObject.FlowStatus.ESTABLISHED.toString().equalsIgnoreCase(orgFlow.getStatus())) {
         log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "not flow's status established."));
         return false;
@@ -150,6 +164,10 @@ public class FederatorOnFlow {
 
       NetworkInterface orgNwIf = networkInterfaces.get(flowId[0]);
       Flow orgFlow = orgNwIf.getFlow(flowId[1]);
+      if (orgFlow == null) {
+        log.warn(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "not found Original Flow: {}", flowId));
+        continue;
+      }
 
       if (!FlowObject.FlowStatus.NONE.toString().equalsIgnoreCase(
           orgFlow.getStatus())) {
@@ -187,6 +205,10 @@ public class FederatorOnFlow {
     String flowId = flow.getFlowId();
     // Get Flow. and set version.
     Flow fedFlow = fedNwIf.getFlow(getConvFlowId(networkId, flowId));
+    if (fedFlow == null) {
+      log.warn(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "not found Federator Flow: {}", flowId));
+      return;
+    }
     boolean updated = false;
     // set status.
     String fedStatus = String.valueOf(fedFlow.getStatus());
