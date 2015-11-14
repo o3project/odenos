@@ -152,6 +152,11 @@ public class FederatorOnFlow {
 
     List<String> fedFlowIds
         = conversionTable.getFlow(networkId, flow.getFlowId());
+    if (fedFlowIds == null || fedFlowIds.size() == 0) {
+      log.warn(LogMessage.buildLogMessage(LogMessage.getSavedTxid(),
+        "no Federator Flows in conversionTable: {}::{}", networkId, flow.getFlowId()));
+      return false;
+    }
     String[] fedFlowId = fedFlowIds.get(0).split("::");
     List<String> fedOrgIds
         = conversionTable.getFlow(fedFlowId[0], fedFlowId[1]);
@@ -340,6 +345,11 @@ public class FederatorOnFlow {
     for (String fedPathId : fedFlow.getPath()) {
 
       Link fedLink = networkInterfaces.get(fedNwId).getLink(fedPathId);
+      if (fedLink == null) {
+        log.warn(LogMessage.buildLogMessage(LogMessage.getSavedTxid(),
+          "not found Federator Link: {}, path={}", fedNwId, fedPathId));
+        continue;
+      }
       edgeNode = fedLink.getDstNode();
       // convert path
       String orgPathId = convertPath(fedNwId, fedPathId);
@@ -364,6 +374,10 @@ public class FederatorOnFlow {
       // set match
       orgNwId = dstPortIds[0];
       setFlowMatch(orgFlow, dstPortIds[1], dstPortIds[2]);
+    }
+    if (orgNwId == null) {
+      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "no Original Network"));
+      return;
     }
 
     // convert action
