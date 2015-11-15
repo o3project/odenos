@@ -73,6 +73,9 @@ class Logic(Component):
             return
         self._sys_manager_interface = SystemManagerInterface(dispatcher, object_id)
 
+    def conversion_table(self):
+        return self._conversion_table
+
     ###################################
     # Receive ComponentConnectionChanged
     ###################################
@@ -696,6 +699,16 @@ class Logic(Component):
 
             network_if = self._network_interfaces[nw_id]
             resp_list[nw_id] = network_if.put_flow(flow)
+
+            try:
+                resp_flow = Flow.create_from_packed(resp.body)
+                self._conversion_table.add_entry_flow(network_id,
+                                                      flow.flow_id,
+                                                      nw_id,
+                                                      resp_flow.flow_id)
+            except KeyError, err:
+                logging.error("PUT Flow Invalid Response Message"
+                              + " KeyError: " + str(err))
 
         return resp_list
 
