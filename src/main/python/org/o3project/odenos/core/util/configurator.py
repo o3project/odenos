@@ -71,6 +71,12 @@ class OdenosConfigurator(object):
     DEF_ATTR = {"oper_status": "UP"}
     DEF_VENDOR = "VENDOR1"
 
+    def __init__(self, dispatcher):
+        self.disp = dispatcher
+        self.sysmgr = SystemManagerInterface(self.disp)
+        self.stations = {}
+        self.packet_id = 0;
+
     def __init__(self):
         bound_func = partial(signal_handler, obj=self)
         signal.signal(signal.SIGINT, bound_func)
