@@ -77,8 +77,9 @@ class OdenosConfigurator(object):
         signal.signal(signal.SIGINT, bound_func)
         signal.signal(signal.SIGTERM, bound_func)
 
-      self.disp = MessageDispatcher()
+      self.disp = dispatcher
       if dispatcher is None:
+        self.disp = MessageDispatcher()
         self.thread = ServerThread(self.disp)
         self.thread.start()
         
