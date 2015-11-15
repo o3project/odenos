@@ -71,24 +71,20 @@ class OdenosConfigurator(object):
     DEF_ATTR = {"oper_status": "UP"}
     DEF_VENDOR = "VENDOR1"
 
-    def __init__(self, dispatcher):
-        self.disp = dispatcher
-        self.sysmgr = SystemManagerInterface(self.disp)
-        self.stations = {}
-        self.packet_id = 0;
-
-    def __init__(self):
+    def __init__(self, dispatcher=None):
+      if dispatcher is None:
         bound_func = partial(signal_handler, obj=self)
         signal.signal(signal.SIGINT, bound_func)
         signal.signal(signal.SIGTERM, bound_func)
 
-        self.disp = MessageDispatcher()
+      self.disp = MessageDispatcher()
+      if dispatcher is None:
         self.thread = ServerThread(self.disp)
         self.thread.start()
         
-        self.sysmgr = SystemManagerInterface(self.disp)
-        self.stations = {}
-        self.packet_id = 0;
+      self.sysmgr = SystemManagerInterface(self.disp)
+      self.stations = {}
+      self.packet_id = 0;
 
     def __del__(self):
         self.thread.join()
