@@ -698,7 +698,8 @@ class Logic(Component):
                 continue
 
             network_if = self._network_interfaces[nw_id]
-            resp_list[nw_id] = network_if.put_flow(flow)
+            resp = network_if.put_flow(flow)
+            resp_list[nw_id] = resp
 
             try:
                 resp_flow = Flow.create_from_packed(resp.body)
