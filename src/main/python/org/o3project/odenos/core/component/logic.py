@@ -1243,6 +1243,7 @@ class Logic(Component):
         if src_flow is not None:
             src_flow.status = Flow.Status.TEARDOWN
             network_if.put_flow(src_flow)
+            src_flow = network_if.get_flow(flow.flow_id)
             src_flow.status = Flow.Status.NONE
             network_if.put_flow(src_flow)
 
