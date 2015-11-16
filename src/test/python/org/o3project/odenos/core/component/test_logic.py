@@ -1832,11 +1832,15 @@ class LogicTest(unittest.TestCase):
         conversion_table = self.target._conversion_table
         with nested(patch("logging.debug"),
                     patch("logging.error"),
+                    patch("org.o3project.odenos.core.component.network.flow."
+                          "flow.Flow."
+                          "create_from_packed"),
                     patch("org.o3project.odenos.core.util."
                           "network_interface.NetworkInterface."
                           "_put_object_to_remote_object")
                     ) as (logging_debug,
                           logging_error,
+                          mock_flow,
                           mock_put_object):
 
             conversion_table._ConversionTable__network_conversion_table =\
@@ -1848,6 +1852,7 @@ class LogicTest(unittest.TestCase):
                 NetworkInterface(self.target.dispatcher, "network2")
             self.value = Response(200, "flow_item")
 
+            mock_flow.return_value = flow
             mock_put_object.return_value = self.value
 
             self.result = self.target._add_flow_conversion("network1",
