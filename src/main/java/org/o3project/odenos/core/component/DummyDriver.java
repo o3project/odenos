@@ -38,8 +38,8 @@ import java.util.ArrayList;
  */
 public class DummyDriver extends Driver {
   private static final Logger log = LogManager.getLogger(DummyDriver.class);
-  private String network;
-  private final String description = "dummy driver";
+  private static String network;
+  private static final String description = "dummy driver";
 
   /**
    * Constructor.
@@ -115,6 +115,7 @@ public class DummyDriver extends Driver {
   @Override
   protected final void onConnectionChangedAdded(
       final ComponentConnectionChanged msg) {
+    log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "called"));
 
     ComponentConnection curr = msg.curr();
     this.network = curr.getProperty(
@@ -129,6 +130,7 @@ public class DummyDriver extends Driver {
   @Override
   protected final void onConnectionChangedDelete(
       final ComponentConnectionChanged message) {
+    log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "called"));
 
     ComponentConnection curr = message.curr();
     // Changed ConectionProperty's status.
@@ -279,7 +281,7 @@ public class DummyDriver extends Driver {
   protected BasicFlow getFlow(
       final NetworkInterface nwIf,
       final String flowId) {
-    log.debug("");
+    log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "called"));
 
     if (nwIf == null || flowId == null) {
       return null;
