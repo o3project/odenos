@@ -18,7 +18,7 @@
 
 unset http_proxy
 
-if [ -z "${JAVA_HOME}" ]; then
+if [ -z "${JAVA_HOME}" ] ;then
     echo "set JAVA_HOME."
     exit 1
 fi
@@ -85,7 +85,7 @@ ODENOS_PROCESS=
 check_pid_file()
 {
     pid_file=$1
-    if [ -f $pid_file ]; then
+    if [ -f $pid_file ] ;then
 	pid=`cat $pid_file`
 	kill -0 $pid > /dev/null 2>&1
     else
@@ -102,7 +102,7 @@ read_config_file()
     count=0
     PROC_CNT=0
     ODENOS_PROCESS=","
-    while read line; do
+    while read line ;do
         echo "${line}" | grep -E "^\s*(#|$)" > /dev/null
         res=$?
         if [ ${res} -eq 0 ] ;then
@@ -137,7 +137,7 @@ read_config_file()
             ;;
         "MANAGER")
             MANAGER="${VAL}"
-            if [ -z "${MANAGER}" ]; then
+            if [ -z "${MANAGER}" ] ;then
                 MANAGER=$SYSTEM_MANAGER_ID
             fi
             ;;
@@ -252,7 +252,7 @@ get_txoffset()
 ##########################################################################
 start_system()
 {
-    if check_pid_file $FILE_ODENOS_SYSTEM_PID; then
+    if check_pid_file $FILE_ODENOS_SYSTEM_PID ;then
         echo "odenos core system is already running"
         return 1
     fi
@@ -278,7 +278,16 @@ check_start_system()
     while [ ${cnt} -lt ${MAX_WAIT_COUNT} ] ;do
         cnt=$(( cnt + 1 ))
         ret_val=0
-	reply_code=`curl http://${REST_HOST}:${REST_PORT}/systemmanager/property -w "\n%{response_code}\n" 2>/dev/null | grep '^[0-5][0-9][0-9]$'`
+	msg="$( curl http://${REST_HOST}:${REST_PORT}/systemmanager/property -w "\n%{response_code}\n" 2>/dev/null )"
+	reply_code="$( echo "${msg}" | grep '^[0-5][0-9][0-9]$' )"
+	msg="${msg%${reply_code}}" ; msg="$( echo "${msg}" )"
+	case "${DEBUG}-${reply_code}" in
+	*-200)
+	    ;;
+	ON-*|on-*|YES-*|yes-*)
+	    echo "DEBUG: SystemManager: reply=${reply_code}, msg=<${msg%${reply_code}}>, cnt=${cnt}" >&2
+	    ;;
+	esac
 	case "${reply_code}" in
 	200)
 	    echo "Started System Manager" >&2
@@ -308,7 +317,7 @@ check_start_system()
 
 stop_system()
 {
-    if check_pid_file $FILE_ODENOS_SYSTEM_PID; then
+    if check_pid_file $FILE_ODENOS_SYSTEM_PID ;then
 	kill `cat $FILE_ODENOS_SYSTEM_PID`  > /dev/null 2>&1
     else
 	echo "odenos core system is not running"
@@ -331,13 +340,13 @@ start_process()
 
 	file="$ODENOS_TMP/odenos_${PROC_NAME}.pid"
 
-	if check_pid_file $file; then
+	if check_pid_file $file ;then
             echo "odenos $PROC_NAME is already running"
             return 1
 	fi
 	proc_list="${proc_list:+${proc_list} }${PROC_NAME}"
 
-	if [ $PROC_TYPE = "java" ]; then
+	if [ $PROC_TYPE = "java" ] ;then
             purge_zk_log odenos_${PROC_NAME}.log
 	    # start java RemoteObjectManager
 	    $JAVA ${ODENOS_OPT} ${ZOOKEEPER_OPT} \
@@ -351,7 +360,7 @@ start_process()
 
 	    echo $! > $ODENOS_TMP/odenos_${PROC_NAME}.pid
 
-	elif [ $PROC_TYPE = "python" ]; then
+	elif [ $PROC_TYPE = "python" ] ;then
 	    # start python RemoteObjectManager
 	    PYTHONPATH=${ODENOS_LIB}/python:$PYTHONPATH \
 		LOGGING_CONF=${ODENOS_CONF}/log_python.conf \
@@ -362,7 +371,7 @@ start_process()
 
 	    echo $! > $ODENOS_TMP/odenos_${PROC_NAME}.pid
 
-	elif [ $PROC_TYPE = "ruby" ]; then
+	elif [ $PROC_TYPE = "ruby" ] ;then
 	    # start ruby RemoteObjectManager
 	    sleep 4
             $TREMA run -d "${ODENOS_MAIN_RB} --cmpmgr=${PROC_NAME}"
@@ -380,7 +389,7 @@ start_process()
 
 check_start_process()
 {
-    local ret_val proc_list proc reply_code cnt
+    local ret_val proc_list proc msg reply_code cnt
 
     proc_list=" $* "
     cnt=0
@@ -388,7 +397,16 @@ check_start_process()
 	cnt=$(( cnt + 1 ))
 	ret_val=0
 	for proc in ${proc_list} ;do
-	    reply_code=`curl http://${REST_HOST}:${REST_PORT}/systemmanager/component_managers/${proc} -w "\n%{response_code}\n" 2>/dev/null | grep '^[0-5][0-9][0-9]$'`
+	    msg="$( curl http://${REST_HOST}:${REST_PORT}/systemmanager/component_managers/${proc} -w "\n%{response_code}\n" 2>/dev/null )"
+	    reply_code="$( echo "${msg}" | grep '^[0-5][0-9][0-9]$' )"
+	    msg="${msg%${reply_code}}" ; msg="$( echo "${msg}" )"
+	    case "${DEBUG}-${reply_code}" in
+	    *-200)
+		;;
+	    ON-*|on-*|YES-*|yes-*)
+		echo "DEBUG: ${proc}: reply=${reply_code}, msg=<${msg%${reply_code}}>, cnt=${cnt}" >&2
+		;;
+	    esac
 	    case "${reply_code}" in
 	    200)
 		echo "Started Compnent Manager :: ${proc}" >&2
@@ -420,7 +438,7 @@ check_start_process()
 
 stop_process()
 {
-    local PROC_NAME PROC_TYPE PROC_DIRS idx
+    local PROC_NAME PROC_TYPE PROC_DIRS idx file
 
     idx=0
     while [ ${idx} -lt ${PROC_CNT} ] ;do
@@ -429,16 +447,25 @@ stop_process()
         eval PROC_TYPE="\${PROC_TYPE_${idx}}"
         eval PROC_DIRS="\${PROC_DIRS_${idx}}"
 
-	file=$ODENOS_TMP/odenos_${PROC_NAME}.pid
-	if check_pid_file ${file}; then
-	    kill `cat ${file}`  > /dev/null 2>&1
-	else
-	    echo "odenos $PROC_NAME is not running"
-	fi
-	unlink ${file} > /dev/null 2>&1
-	if [ $PROC_TYPE = "ruby" ]; then
-            $TREMA killall
-	fi
+	case "${PROC_TYPE}" in
+	java|python)
+	    file=$ODENOS_TMP/odenos_${PROC_NAME}.pid
+	    if check_pid_file ${file} ;then
+		kill `cat ${file}`  > /dev/null 2>&1
+	    else
+		echo "odenos $PROC_NAME is not running"
+	    fi
+	    unlink ${file} > /dev/null 2>&1
+            ;;
+	ruby)
+	    file="${TREMA%/trema}/tmp/pid/switch_manager.pid"
+	    if ! check_pid_file ${file} ;then
+		echo "odenos $PROC_NAME is not running"
+	    fi
+	    $TREMA killall
+	    ;;
+	esac
+
     done
 }
 
@@ -464,7 +491,7 @@ start()
     if [ ! -d "${ODENOS_TMP}" ] ;then
         mkdir -p "${ODENOS_TMP}"
     fi
-    if [ -n "${MANAGER_ENABLED}" ]; then
+    if [ -n "${MANAGER_ENABLED}" ] ;then
         start_system
     fi
     check_start_system
@@ -490,7 +517,7 @@ stop()
     read_config_file
 
     stop_process
-    if [ -n "${MANAGER_ENABLED}" ]; then
+    if [ -n "${MANAGER_ENABLED}" ] ;then
         sleep 1
         stop_system
     fi
@@ -502,7 +529,7 @@ status()
     local res PROC_NAME PROC_TYPE PROC_DIRS idx
 
     read_config_file
-    if check_pid_file $FILE_ODENOS_SYSTEM_PID; then
+    if check_pid_file $FILE_ODENOS_SYSTEM_PID ;then
 	echo "odenos core system is running"
     else
 	echo "odenos core system is not running"
@@ -516,7 +543,7 @@ status()
         eval PROC_DIRS="\${PROC_DIRS_${idx}}"
 
 	file="$ODENOS_TMP/odenos_${PROC_NAME}.pid"
-	if check_pid_file ${file}; then
+	if check_pid_file ${file} ;then
 	    echo "odenos $PROC_NAME is running running"
 	else
 	    echo "odenos $PROC_NAME is not running"
@@ -527,7 +554,7 @@ status()
 
 set_conf()
 {
-  if [ $# = 3 ]; then
+  if [ $# = 3 ] ;then
     case "$2" in
     -c)
       echo "Read config files :: $3"
