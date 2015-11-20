@@ -28,20 +28,20 @@ class TestComponent < MiniTest::Test
   include Odenos::Core
   
   def setup
-    @test_dispacher = MessageDispatcher.new
-    @test_dispacher.expects(:subscribe_event).once
-    @base_component = Odenos::Component::Component.new("remote_object_id", @test_dispacher)
+    @test_dispatcher = MessageDispatcher.new
+    @test_dispatcher.expects(:subscribe_event).once
+    @base_component = Odenos::Component::Component.new("remote_object_id", @test_dispatcher)
   end
   
   def teardown
     @base_component = nil
-    @test_dispacher = nil
+    @test_dispatcher = nil
   end
   
   def test_initialize
-    driver_dispacher = MessageDispatcher.new
-    driver_dispacher.expects(:subscribe_event).once
-    base_driver = Odenos::Component::Driver::Driver.new("remote_object_id", driver_dispacher)
+    driver_dispatcher = MessageDispatcher.new
+    driver_dispatcher.expects(:subscribe_event).once
+    base_driver = Odenos::Component::Driver::Driver.new("remote_object_id", driver_dispatcher)
     assert_equal("Driver", base_driver.instance_variable_get(:@super_type))
     assert_equal("Driver", base_driver.instance_variable_get(:@property).super_type)
   end
@@ -51,10 +51,10 @@ class TestComponent < MiniTest::Test
     if event.event_filters.size != 0
       event.event_filters.clear
     end
-    @test_dispacher.expects(:subscribe_event).once
+    @test_dispatcher.expects(:subscribe_event).once
     @base_component.reset_event_subscription
     event_filters = @base_component.instance_variable_get(:@event_subscription)
     type = Odenos::Core::ComponentConnectionChanged::TYPE
-    assert(event_filters.event_filters[@test_dispacher.system_manager_id].index(type))
+    assert(event_filters.event_filters[@test_dispatcher.system_manager_id].index(type))
   end
 end

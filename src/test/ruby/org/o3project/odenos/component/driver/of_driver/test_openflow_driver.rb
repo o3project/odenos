@@ -64,10 +64,10 @@ class TestOpenFlowDriver < MiniTest::Test
 
     @flow_curr_obj = Odenos::Component::Flow.new(@flow_curr_body)
        
-    @test_dispacher = MessageDispatcher.new
+    @test_dispatcher = MessageDispatcher.new
     @controller = mock()
-    @test_dispacher.expects(:subscribe_event)
-    @base_driver = Driver::OFDriver::OpenFlowDriver.new("of_driver", @test_dispacher, @controller) 
+    @test_dispatcher.expects(:subscribe_event)
+    @base_driver = Driver::OFDriver::OpenFlowDriver.new("of_driver", @test_dispatcher, @controller)
   end
   
   def teardown
@@ -166,7 +166,7 @@ class TestOpenFlowDriver < MiniTest::Test
   end
   
   def test_on_connection_changed_delete_success
-    @test_dispacher.expects(:request_sync).with(anything).
+    @test_dispatcher.expects(:request_sync).with(anything).
       returns(Response.new(Response::OK, nil)).once
     @base_driver.expects(:remove_entry_event_subscription).
       with(OutPacketAdded::TYPE, nil).once
@@ -181,7 +181,7 @@ class TestOpenFlowDriver < MiniTest::Test
   end
 
   def test_on_connection_changed_delete_failed
-    @test_dispacher.expects(:request_sync).with(anything).
+    @test_dispatcher.expects(:request_sync).with(anything).
       returns(Response.new(Response::OK, nil)).once
     @base_driver.expects(:remove_entry_event_subscription).
       with(OutPacketAdded::TYPE, nil).once

@@ -28,9 +28,9 @@ class TestDriver < MiniTest::Test
   include Odenos::Util
   
   def setup
-    @test_dispacher = MessageDispatcher.new
-    @test_dispacher.expects(:subscribe_event)
-    @base_driver = Odenos::Component::Driver::Driver.new("remote_object_id", @test_dispacher) 
+    @test_dispatcher = MessageDispatcher.new
+    @test_dispatcher.expects(:subscribe_event)
+    @base_driver = Odenos::Component::Driver::Driver.new("remote_object_id", @test_dispatcher)
   end
   
   def teardown

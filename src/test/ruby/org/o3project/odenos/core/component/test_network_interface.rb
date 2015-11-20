@@ -208,9 +208,9 @@ class TestNetworkInterface < MiniTest::Test
       'ports-except' => ["ExPortId1", "ExPortId2"],
       'header'=> @OutPacket_head, 'data'=> {}}
 
-    @test_dispacher = mock()
+    @test_dispatcher = mock()
     @test_nwc_id = "remote_object_id"
-    @base_networkInterface = Odenos::Component::NetworkInterface.new(@test_dispacher, @test_nwc_id) 
+    @base_networkInterface = Odenos::Component::NetworkInterface.new(@test_dispatcher, @test_nwc_id)
   end
   
   def teardown
@@ -218,9 +218,9 @@ class TestNetworkInterface < MiniTest::Test
   end
   
   def test_initialize
-    base_dispacher = @base_networkInterface.instance_variable_get(:@dispatcher)
+    base_dispatcher = @base_networkInterface.instance_variable_get(:@dispatcher)
     base_nwc_id = @base_networkInterface.instance_variable_get(:@nwc_id)
-    assert_equal(base_dispacher, @test_dispacher)
+    assert_equal(base_dispatcher, @test_dispatcher)
     assert_equal(base_nwc_id, @test_nwc_id)
   end
 
@@ -1164,9 +1164,9 @@ class TestNetworkInterface < MiniTest::Test
   end
   
   def test_send_request_success
-    dispacher_test = mock()
-    dispacher_test.expects(:request_sync).with(anything).returns('request_sync_OK').once
-    networkInterface = Odenos::Component::NetworkInterface.new(dispacher_test, @test_nwc_id) 
+    dispatcher_test = mock()
+    dispatcher_test.expects(:request_sync).with(anything).returns('request_sync_OK').once
+    networkInterface = Odenos::Component::NetworkInterface.new(dispatcher_test, @test_nwc_id)
     path =  Odenos::Component::NetworkInterface::INPACKET_PATH % 'PacketId01'
     assert_equal('request_sync_OK', networkInterface.send(:send_request, @test_nwc_id, :GET, path, nil))
   end
