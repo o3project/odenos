@@ -27,7 +27,7 @@ JAVAC=$JAVA_HOME/bin/javac
 JAVA=$JAVA_HOME/bin/java
 PYTHON=python
 MVN=mvn
-TREMA=~/trema-edge/trema
+TREMA=${TREMA:-~/trema-edge/trema}	# DO NOT enclose by quote(")
 
 RUN_DIR=`pwd`
 RUN_SCRIPT_NAME="${0##*/}"
@@ -373,8 +373,11 @@ start_process()
 
 	elif [ $PROC_TYPE = "ruby" ] ;then
 	    # start ruby RemoteObjectManager
-	    sleep 4
             $TREMA run -d "${ODENOS_MAIN_RB} --cmpmgr=${PROC_NAME}"
+	fi
+
+	if [ $(( idx + 1 )) -lt ${PROC_CNT} ] ;then
+	    sleep 1
 	fi
 
     done
@@ -465,6 +468,10 @@ stop_process()
 	    $TREMA killall
 	    ;;
 	esac
+
+	if [ $(( idx + 1 )) -lt ${PROC_CNT} ] ;then
+	    sleep 1
+	fi
 
     done
 }
