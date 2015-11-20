@@ -19,9 +19,10 @@ stop() {
 }
 
 clean() {
-    run sudo killall -9 python
+    run killall -9 python
     run cd $ODENOS_HOME_DIR
     run rm var/log/*.log
+    run rm -r var/zookeeper
     run cd $RUN_DIR
     run sudo service redis-server restart
 }
@@ -55,7 +56,6 @@ case "$1" in
 	;;
     restart)
 	stop
-	sleep 2
 	start
 	;;
     crestart)
