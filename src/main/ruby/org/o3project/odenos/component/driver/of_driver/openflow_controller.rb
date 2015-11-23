@@ -127,8 +127,23 @@ module Odenos
 
             # Create OFComponentManager
             info "waiting ....."
-            sleep 2			# @@@ temporary changed
-            @component_manager = OFComponentManager.new(component_mgr_id, mngr_dispatcher, self)
+            count = 10
+            while count > 0 do
+              # waiting initializing of dispatchers
+              sleep 1
+              begin
+                @component_manager = OFComponentManager.new(component_mgr_id, mngr_dispatcher, self)
+                break
+              rescue => ex
+                count -= 1
+                if count > 0
+                  warn "OFComponentManager: initializing error (retrying): #{ex.message} #{ex.backtrace}"
+                else
+                  error "OFComponentManager: initializing error (aborted): #{ex.message} #{ex.backtrace}"
+                  exit()
+                end
+              end
+            end
             @component_manager.driver_dispatcher = driver_dispatcher
 
             info 'Register OFComponentManager to System Manager'
