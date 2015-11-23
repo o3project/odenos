@@ -5,6 +5,9 @@ ODENOS_HOME_DIR=../../../
 CONF_FILE="${RUN_DIR}/odenos.conf"
 DEBUG="${DEBUG:-OFF}"
 
+## please specify the path of trema command
+export TREMA="${HOME}/trema-edge/trema"
+
 start() {
     run cd $ODENOS_HOME_DIR
     run ./odenos start -c "${CONF_FILE}"
@@ -21,8 +24,10 @@ stop() {
 clean() {
     run killall -9 python
     run cd $ODENOS_HOME_DIR
-    run rm var/log/*.log
-    run rm -r var/zookeeper
+    [ "$( echo var/log/*.log )" = "var/log/*.log" ] || run rm var/log/*.log
+    [ ! -d var/zookeeper ] || run rm -r var/zookeeper
+    run cd "${TREMA%/*}"
+    [ "$( echo tmp/* )" = "tmp/*" ] || run rm -r tmp/*
     run cd $RUN_DIR
     run sudo service redis-server restart
 }
