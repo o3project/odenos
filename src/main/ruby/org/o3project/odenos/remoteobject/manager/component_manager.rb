@@ -21,6 +21,9 @@ module Odenos
     class ComponentManager < Odenos::Core::RemoteObject
       include Odenos::Core
       include Odenos::Util
+
+      attr_accessor :driver_dispatcher
+
       def initialize(remote_object_id, dispatcher)
         @description = 'ComponentManager for ruby'
         @connection_types = ''
@@ -137,7 +140,8 @@ module Odenos
         begin
           @component_classes.each do |type_name, clazz|
             comp_id = format('%s_%s', remote_object_id, type_name)
-            component = clazz.new(comp_id, dispatcher)
+            debug "creating class: #{type_name}, comp_id=#{comp_id}"
+            component = clazz.new(comp_id, driver_dispatcher)
             obj_prop = component.property
 
             type = obj_prop.get_property(ObjectProperty::TYPE) || ''
@@ -198,8 +202,8 @@ module Odenos
         end
 
         component_class = @component_classes[component_type]
-
-        @components[object_id] = component_class.new(object_id, dispatcher)
+        debug "creating class: #{component_type}, comp_id=#{object_id}"
+        @components[object_id] = component_class.new(object_id, driver_dispatcher)
         @components[object_id].set_state(ObjectProperty::State::RUNNING)
         do_component_changed('add', nil, @components[object_id].property)
         Response.new(Response::CREATED, @components[object_id].property)

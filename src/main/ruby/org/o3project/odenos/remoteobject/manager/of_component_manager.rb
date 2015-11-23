@@ -44,10 +44,11 @@ module Odenos
           @component_classes.each do |type_name, clazz|
             comp_id = format('%s_%s', remote_object_id, type_name)
             component = nil
+            debug "creating class: #{type_name}, comp_id=#{comp_id}"
             if type_name == 'OpenFlowDriver'
               component = create_openflow_driver_component(comp_id)
             else
-              component = clazz.new(comp_id, dispatcher)
+              component = clazz.new(comp_id, driver_dispatcher)
             end
             obj_prop = component.property
 
@@ -99,6 +100,7 @@ module Odenos
             return Response.new(Core::Response::FORBIDDEN, 'Unsupported type')
           end
           if @driver_component.nil?
+            debug "creating class: #{prop.remote_object_type}, comp_id=#{component_id}"
             @driver_component = create_openflow_driver_component(component_id)
             @driver_component.set_state(ObjectProperty::State::RUNNING)
             @components[component_id] = @driver_component
@@ -139,7 +141,7 @@ module Odenos
       def create_openflow_driver_component(component_id)
         debug { "create_openflow_driver_component( #{component_id} )" }
         # create instance
-        OFDriver::OpenFlowDriver.new(component_id, @dispatcher, @controller)
+        OFDriver::OpenFlowDriver.new(component_id, driver_dispatcher, @controller)
       end
     end
   end
