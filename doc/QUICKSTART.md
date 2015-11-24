@@ -92,7 +92,7 @@ Python or Ruby environment, please see "Appendix A".
 
    ```
    $ sudo apt-get install python-setuptools python-dev
-   $ sudo -E easy_install msgpack-python redis futures mock coverage kazoo
+   $ sudo -E easy_install msgpack-python==0.4.6 redis==2.10.3 futures==2.2.0 mock==1.0.1 coverage==4.0a5 kazoo==2.2.1
    ```
 
 2. Add the following line to *./etc/odenos.conf*
