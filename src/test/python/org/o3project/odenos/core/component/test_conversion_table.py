@@ -94,6 +94,14 @@ class ConversionTableTest(unittest.TestCase):
             self.target._ConversionTable__connection_type_map,
             {"123456789": "Type1", "789456123": "Type3", "987654321": "Type1"})
 
+    def test_del_entry_connection_type_not_in(self):
+        self.target._ConversionTable__connection_type_map =\
+            {"123456789": "Type1", "789456123": "Type3", "987654321": "Type1"}
+        self.target.del_entry_connection_type("321654987")
+        self.assertEqual(
+            self.target._ConversionTable__connection_type_map,
+            {"123456789": "Type1", "789456123": "Type3", "987654321": "Type1"})
+
     def test_get_network(self):
         self.target._ConversionTable__network_conversion_table =\
             {"123456789": ["GetNetwork"]}
