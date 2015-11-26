@@ -11,8 +11,9 @@ TREMA_PARAM="src/main/ruby/org/o3project/odenos/core/odenos.rb --cmpmgr=romgr3"
 start() {
   cd $ODENOS_HOME_DIR
   ./odenos start
-  sleep 4
+  sleep 1
   ${TREMA} run -d "${TREMA_PARAM}"
+  sleep 3
   cd $RUN_DIR
   PYTHONPATH=$ODENOS_HOME_DIR/lib/python/ ./config_odenos.py
 }
