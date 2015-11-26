@@ -19,7 +19,7 @@
 unset http_proxy
 
 if [ -z "${JAVA_HOME}" ] ;then
-    echo "set JAVA_HOME."
+    echo "set JAVA_HOME." >&2
     exit 1
 fi
 
@@ -510,17 +510,17 @@ start()
     start_process
     res=$?
     if [ ${res} -ne 0 ] ;then
-	echo "ODENOS Start-up failed!"
+	echo "ODENOS Start-up failed!" >&2
 	return 1
     else
-	echo "ODENOS Start-up completion."
+	echo "ODENOS Start-up completion." >&2
 	return 0
     fi
 }
 
 stop()
 {
-    echo "stop ODENOS"
+    echo "stop ODENOS" >&2
     read_config_file
 
     stop_process
@@ -535,10 +535,13 @@ status()
     local res PROC_NAME PROC_TYPE PROC_DIRS idx
 
     read_config_file
-    if check_pid_file $FILE_ODENOS_SYSTEM_PID ;then
-	echo "odenos core system is running"
-    else
-	echo "odenos core system is not running"
+
+    if [ -n "${MANAGER_ENABLED}" ] ;then
+	if check_pid_file $FILE_ODENOS_SYSTEM_PID ;then
+	    echo "odenos core system is running"
+	else
+	    echo "odenos core system is not running"
+	fi
     fi
 
     idx=0
@@ -557,7 +560,7 @@ status()
 	    ;;
 	esac
 	if check_pid_file ${file} ;then
-	    echo "odenos $PROC_NAME is running running"
+	    echo "odenos $PROC_NAME is running"
 	else
 	    echo "odenos $PROC_NAME is not running"
 	fi
@@ -570,7 +573,7 @@ set_conf()
   if [ $# = 3 ] ;then
     case "$2" in
     -c)
-      echo "Read config files :: $3"
+      echo "Read config files :: $3" >&2
       ODENOS_CONF_FILE=$3
     esac
   fi
