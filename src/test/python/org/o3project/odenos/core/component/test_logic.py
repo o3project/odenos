@@ -77,6 +77,9 @@ class LogicTest(unittest.TestCase):
         self.assertEqual(self.target._network_interfaces, {})
         self.assertEqual(self.target._Logic__subscription_table, {})
 
+    def test_conversion_table(self):
+        self.assertEqual(self.target.conversion_table(), self.target._conversion_table)
+
     def test_do_event_componentconnectionchanged_add_action_not_Exist(self):
         with patch("logging.debug") as logging_debug:
             self.value = {"action": "add",

@@ -50,7 +50,8 @@ class ConversionTable(object):
         self.__connection_type_map[connection_id] = connection_type
 
     def del_entry_connection_type(self, connection_id):
-        del self.__connection_type_map[connection_id]
+        if self.__connection_type_map.has_key(connection_id):
+            del self.__connection_type_map[connection_id]
 
     def get_network(self, network_id):
         networks = []
