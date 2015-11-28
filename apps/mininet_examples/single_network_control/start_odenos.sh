@@ -2,34 +2,51 @@
 
 RUN_DIR=`pwd`
 ODENOS_HOME_DIR=../../../
+CONF_FILE="${RUN_DIR}/odenos.conf"
+DEBUG="${DEBUG:-OFF}"
 
 ## please specify the path of trema command
-TREMA="${HOME}/trema-edge/trema"
-
-TREMA_PARAM="src/main/ruby/org/o3project/odenos/core/odenos.rb --cmpmgr=romgr3"
+export TREMA="${HOME}/trema-edge/trema"
 
 start() {
-  cd $ODENOS_HOME_DIR
-  ./odenos start
-  sleep 4
-  ${TREMA} run -d "${TREMA_PARAM}"
-  cd $RUN_DIR
-  PYTHONPATH=$ODENOS_HOME_DIR/lib/python/ ./config_odenos.py
+    run cd $ODENOS_HOME_DIR
+    run ./odenos start -c "${CONF_FILE}"
+    run cd $RUN_DIR
+    run eval PYTHONPATH=$ODENOS_HOME_DIR/lib/python/ ./config_odenos.py
 }
 
 stop() {
-    ${TREMA} killall
-    cd $ODENOS_HOME_DIR
-    ./odenos stop
-    cd $RUN_DIR
+    run cd $ODENOS_HOME_DIR
+    run ./odenos stop -c "${CONF_FILE}"
+    run cd $RUN_DIR
 }
 
 clean() {
-    sudo killall -9 python
-    cd $ODENOS_HOME_DIR
-    rm var/log/*.log
-    cd $RUN_DIR
-    sudo service redis-server restart
+    run killall -9 python
+    run cd $ODENOS_HOME_DIR
+    [ "$( echo var/log/*.log )" = "var/log/*.log" ] || run rm var/log/*.log
+    [ ! -d var/zookeeper ] || run rm -r var/zookeeper
+    run cd "${TREMA%/*}"
+    [ "$( echo tmp/* )" = "tmp/*" ] || run rm -r tmp/*
+    run cd $RUN_DIR
+    run sudo service redis-server restart
+}
+
+run() {
+    local res
+    case "${DEBUG}" in
+    ON|on|YES|yes)
+	echo "==== $* ====" >&2
+	;;
+    esac
+    "$@"
+    res=$?
+    case "${DEBUG}" in
+    ON|on|YES|yes)
+	echo "==== exit=${res} ====" >&2
+	;;
+    esac
+    return ${res}
 }
 
 case "$1" in

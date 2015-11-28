@@ -115,18 +115,36 @@ module Odenos
             # THE OpenFlowDriver component instance
             @component = nil
 
-            # create dispatcher for OpenFlowDriver Component
-            dispatcher = MessageDispatcher.new(system_manager_id, redis_server, redis_port.to_i)
-            dispatcher.set_remote_system_manager
-            dispatcher.start
+            # create dispatcher for OpenFlowDriver Component (Driver)
+            driver_dispatcher = MessageDispatcher.new(system_manager_id, redis_server, redis_port.to_i)
+            driver_dispatcher.set_remote_system_manager
+            driver_dispatcher.start
 
-            # create dispatcher (as ODENOS bus client) for OpenFlowController
-            @dispatcher = MessageDispatcher.new(system_manager_id, redis_server, redis_port.to_i)
-            @dispatcher.set_remote_system_manager
-            @dispatcher.start
+            # create dispatcher (as ODENOS bus client) for OpenFlowController (ComponentManager)
+            mngr_dispatcher = MessageDispatcher.new(system_manager_id, redis_server, redis_port.to_i)
+            mngr_dispatcher.set_remote_system_manager
+            mngr_dispatcher.start
 
             # Create OFComponentManager
-            @component_manager = OFComponentManager.new(component_mgr_id, dispatcher, self)
+            info "waiting ....."
+            count = 10
+            while count > 0 do
+              # waiting initializing of dispatchers
+              sleep 1
+              begin
+                @component_manager = OFComponentManager.new(component_mgr_id, mngr_dispatcher, self)
+                break
+              rescue => ex
+                count -= 1
+                if count > 0
+                  warn "OFComponentManager: initializing error (retrying): #{ex.message} #{ex.backtrace}"
+                else
+                  error "OFComponentManager: initializing error (aborted): #{ex.message} #{ex.backtrace}"
+                  exit()
+                end
+              end
+            end
+            @component_manager.driver_dispatcher = driver_dispatcher
 
             info 'Register OFComponentManager to System Manager'
 

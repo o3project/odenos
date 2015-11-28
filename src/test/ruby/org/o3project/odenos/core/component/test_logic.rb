@@ -117,14 +117,14 @@ class TestLogic < MiniTest::Test
 
     @flow_curr_obj = Odenos::Component::Flow.new(@flow_curr_body)
 
-    @test_dispacher = MessageDispatcher.new
-    @test_dispacher.expects(:subscribe_event)
-    @base_logic = Odenos::Component::Logic.new("remote_object_id", @test_dispacher)
+    @test_dispatcher = MessageDispatcher.new
+    @test_dispatcher.expects(:subscribe_event)
+    @base_logic = Odenos::Component::Logic.new("remote_object_id", @test_dispatcher)
   end
 
   def teardown
     @base_logic = nil
-    @test_dispacher = nil
+    @test_dispatcher = nil
   end
 
   def test_initialize
