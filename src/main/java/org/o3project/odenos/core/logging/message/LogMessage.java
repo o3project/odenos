@@ -8,6 +8,8 @@ import java.net.SocketException;
 import java.nio.ByteBuffer;
 import javax.xml.bind.DatatypeConverter;
 
+import org.apache.logging.log4j.ThreadContext;
+
 /**
  * Logging message DTO builder.
  */
@@ -88,10 +90,11 @@ public class LogMessage {
    */
   public static void setSavedTxid(String id) {
     String txid = id;
-    if(txid == null || txid.length() == 0) {
+    if(txid == null || txid.length() <= 1) {
       txid = createTxid();
     }
     savedTxid.set(txid);
+    ThreadContext.put("txid", txid);
   }
 
   /**
@@ -141,6 +144,7 @@ public class LogMessage {
    */
   public static void delSavedTxid() {
     savedTxid.set("");
+    ThreadContext.clearAll();
   }
 
   /**
