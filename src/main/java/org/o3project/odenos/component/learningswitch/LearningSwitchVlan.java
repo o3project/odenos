@@ -52,7 +52,7 @@ public class LearningSwitchVlan extends LearningSwitch {
       final String objectId,
       final MessageDispatcher dispatcher) throws Exception {
     super(objectId, dispatcher);
-    log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "created"));
+    log.debug("created");
   }
 
   /**
@@ -86,7 +86,7 @@ public class LearningSwitchVlan extends LearningSwitch {
     try {
       header = (OFPFlowMatch) inPacket.getHeader();
     } catch (ClassCastException e) {
-      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Recieved Message ClassCastException."), e);
+      log.error("Recieved Message ClassCastException.", e);
       return null;
     }
 

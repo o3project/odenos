@@ -56,7 +56,7 @@ public class StartSimpleL2Switch extends SimpleControllerBase {
         String txid = LogMessage.createTxid();
         LogMessage.setSavedTxid(txid);
 
-        log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Start initialization..."));
+        log.debug("Start initialization...");
 
         // /////////////////////////////////////
         // Set MessageDispatcher.
@@ -93,7 +93,7 @@ public class StartSimpleL2Switch extends SimpleControllerBase {
         if (rsp == null || getProperty == null
                 || !getProperty.getObjectId().equals(
                         sendProperty.getObjectId())) {
-            log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Failed."));
+            log.error("Failed.");
             return;
         }
         outMsg("  -PUT Compoent(Netowrk). ");
@@ -119,7 +119,7 @@ public class StartSimpleL2Switch extends SimpleControllerBase {
         if (rsp == null || getProperty == null
                 || !getProperty.getObjectId().equals(
                         sendProperty.getObjectId())) {
-            log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Failed."));
+            log.error("Failed.");
             return;
         }
         outMsg("  -PUT Compoent(DummyDriver). ");
@@ -145,7 +145,7 @@ public class StartSimpleL2Switch extends SimpleControllerBase {
         if (rsp == null || getProperty == null
                 || !getProperty.getObjectId().equals(
                         sendProperty.getObjectId())) {
-            log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Failed."));
+            log.error("Failed.");
             return;
         }
         outMsg("  -PUT Compoent(LearningSwitch). ");
@@ -187,14 +187,14 @@ public class StartSimpleL2Switch extends SimpleControllerBase {
         Map<String, ComponentConnection> getConns =
                 systemMngInterface.getConnections();
         if (getConns == null || getConns.size() != 2) {
-            log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Failed."));
+            log.error("Failed.");
             return;
         }
         for (String conId : getConns.keySet()) {
             ComponentConnection getConn =
                     systemMngInterface.getConnection(conId);
             if (getConn == null) {
-                log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Failed."));
+                log.error("Failed.");
                 return;
             }
         }

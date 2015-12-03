@@ -121,7 +121,7 @@ public class BasicSliceCondition extends SliceCondition
       }
 
     } catch (IOException ex) {
-      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "fail to read packer"), ex);
+      log.error("fail to read packer", ex);
       throw ex;
 
     } finally {
@@ -154,7 +154,7 @@ public class BasicSliceCondition extends SliceCondition
       }
 
     } catch (IOException ex) {
-      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), ex.getMessage()), ex);
+      log.error(ex.getMessage(), ex);
       throw ex;
     }
   }
@@ -171,7 +171,7 @@ public class BasicSliceCondition extends SliceCondition
       doWriteTo(pk);
 
     } catch (IOException ex) {
-      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "fail to write packer"), ex);
+      log.error("fail to write packer", ex);
       throw ex;
 
     } finally {
@@ -192,7 +192,7 @@ public class BasicSliceCondition extends SliceCondition
       pk.write(getInPort());
 
     } catch (IOException ex) {
-      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), ex.getMessage()), ex);
+      log.error(ex.getMessage(), ex);
       throw ex;
     }
   }
