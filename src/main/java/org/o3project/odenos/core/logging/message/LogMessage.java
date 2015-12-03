@@ -129,7 +129,7 @@ public class LogMessage {
     } catch (SocketException ex) {
     } finally {
       if(uuid == ""){
-        long rLong = rnd.nextLong() % 0x10000_0000_0000L;
+        long rLong = rnd.nextLong() & 0xFFFF_FFFF_FFFFL;
         uuid = Long.toHexString(rLong);
       }
     }
