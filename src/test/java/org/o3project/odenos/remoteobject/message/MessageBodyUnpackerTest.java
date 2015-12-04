@@ -43,7 +43,6 @@ import org.msgpack.type.Value;
 import org.msgpack.type.ValueFactory;
 import org.msgpack.unpacker.Unpacker;
 import org.o3project.odenos.remoteobject.message.MessageBodyUnpacker.ParseBodyException;
-import org.o3project.odenos.remoteobject.message.MessageBodyUnpacker.StringList;
 import org.o3project.odenos.remoteobject.message.MessageBodyUnpacker.StringMap;
 import org.o3project.odenos.remoteobject.message.MessageBodyUnpacker.TemplateHashMap;
 import org.powermock.reflect.Whitebox;
@@ -420,11 +419,11 @@ public class MessageBodyUnpackerTest {
    */
   @Test
   public final void testGetBodyAsStringList() throws ParseBodyException {
-    StringList ret = new StringList();
+    List<String> ret = new ArrayList<String>();
     MessageBodyUnpacker mock = Mockito.mock(MessageBodyUnpacker.class, Mockito.CALLS_REAL_METHODS);
-    when(mock.getBody(StringList.class)).thenReturn(ret);
+    when(mock.getBodyAsList(String.class)).thenReturn(ret);
 
-    assertThat((StringList) mock.getBodyAsStringList(), is(sameInstance(ret)));
+    assertThat(mock.getBodyAsStringList(), is(sameInstance(ret)));
 
   }
 
@@ -549,44 +548,6 @@ public class MessageBodyUnpackerTest {
     };
 
     target.writeTo(packer);
-
-  }
-
-  /**
-   * Test method for {@link MessageBodyUnpacker.StringList#writeTo(org.msgpack.packer.Packer)}.
-   * @throws IOException
-   */
-  @Test
-  public final void testStringListWriteTo() throws IOException {
-    Packer packer = Mockito.mock(Packer.class);
-    StringList list = Mockito.spy(new StringList());
-
-    doReturn(null).when(packer).write(list);
-
-    list.writeTo(packer);
-
-    verify(packer).write(list);
-
-  }
-
-  /**
-   * Test method for {@link MessageBodyUnpacker.StringList#readFrom(org.msgpack.unpacker.Unpacker)}.
-   * @throws IOException
-   */
-  @SuppressWarnings("unchecked")
-  @Test
-  public final void testStringListReadFrom() throws IOException {
-    Unpacker unpacker = Mockito.mock(Unpacker.class);
-    StringList list = Mockito.spy(new StringList());
-
-    doNothing().when(list).clear();
-    doReturn(false).when(list).addAll(
-        (Collection<? extends String>) anyObject());
-
-    list.readFrom(unpacker);
-
-    verify(list).clear();
-    verify(list).addAll((Collection<? extends String>) anyObject());
 
   }
 
