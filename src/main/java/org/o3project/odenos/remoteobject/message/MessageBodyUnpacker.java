@@ -65,21 +65,6 @@ public abstract class MessageBodyUnpacker implements MessagePackable {
   }
 
   @SuppressWarnings("serial")
-  public static class StringList extends LinkedList<String> implements
-      MessagePackable {
-    @Override
-    public void writeTo(Packer pk) throws IOException {
-      pk.write(this);
-    }
-
-    @Override
-    public void readFrom(Unpacker unpk) throws IOException {
-      this.clear();
-      this.addAll(unpk.read(tList(TString)));
-    }
-  }
-
-  @SuppressWarnings("serial")
   public static class StringMap extends HashMap<String, String> implements
       MessagePackable {
     @Override
@@ -273,7 +258,7 @@ public abstract class MessageBodyUnpacker implements MessagePackable {
   }
 
   public List<String> getBodyAsStringList() throws ParseBodyException {
-    return getBody(StringList.class);
+    return getBodyAsList(String.class);
   }
 
   public Map<String, String> getBodyAsStringMap() throws ParseBodyException {
