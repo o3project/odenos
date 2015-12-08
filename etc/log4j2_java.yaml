@@ -8,7 +8,7 @@ configuration:
     Console:
       name: Console
       PatternLayout:
-        Pattern: "%d{HH:mm:ss.SSS} %-5level %logger{2} %X - %msg%n"
+        Pattern: "%d{HH:mm:ss.SSS} %-5level %logger{2} txid: %replace{%X{txid}}{^$}{-} - %msg%n"
       ThresholdFilter:
         level: error
 
@@ -16,7 +16,7 @@ configuration:
       name: File
       fileName: "${sys:log4j2_app.log}"
       PatternLayout:
-        Pattern: "%d %-5level [%t] %logger{36}.%M %X - %msg%n"
+        Pattern: "%d %-5level [%t] %logger{36}.%M txid: %replace{%X{txid}}{^$}{-} - %msg%n"
 
     Syslog:
       name: Syslog
