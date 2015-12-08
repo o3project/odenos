@@ -1,7 +1,5 @@
 package org.o3project.odenos.core.logging.message;
 
-import java.text.MessageFormat;
-import org.apache.logging.log4j.message.Message;
 import java.util.Random;
 import java.net.NetworkInterface;
 import java.net.SocketException;
@@ -20,21 +18,6 @@ public class LogMessage {
 
   private static Random rnd = new Random(System.currentTimeMillis());
 
-  private String txid = null;
-  private Object[] parameters;
-  private String format = null;
-
-  /**
-   * Alloc ThreadLocal variable.
-   *
-   */
-  private static ThreadLocal<String> savedTxid = new ThreadLocal<String>() {
-    @Override
-    protected String initialValue() {
-      return new String();
-    }
-  };
-
   /**
    * Init parameters.
    *
@@ -45,55 +28,14 @@ public class LogMessage {
   }
 
   /**
-   * Sets a transaction ID (txid).
-   * 
-   * @param txid a transaction ID
-   * @return LogMessage
-   */
-  public LogMessage setTxid(String txid) {
-    this.txid = txid;
-    return this;
-  }
-
-  /**
-   * Sets a log message as a plain text.
-   * 
-   * @param msg string of log message
-   * @return LogMessage
-   */
-  public LogMessage setMessage(String msg) {
-    this.parameters = new Object[1];
-    this.parameters[0] = (Object) msg;
-    return this;
-  }
-
-  /**
-   * Sets a formatted log message.
-   * 
-   * @param fmt format
-   * @param msg message parameter
-   * @return LogMessage
-   */
-  public LogMessage setFormatedMessage(String fmt, Object... msg) {
-    this.format = fmt;
-    int len = msg.length;
-    this.parameters = new Object[len];
-    for (int i = 0; i < len; i++) {
-      this.parameters[i] = msg[i];
-    }
-    return this;
-  }
-
-  /**
    * Set a transactionID.
    * @param id transaction ID
    */
   public static void setSavedTxid(String id) {
     String txid = id;
-    if(txid == null || txid.length() <= 1) {
+    if(txid == null || txid.length() <= 0) {
       txid = createTxid();
     }
-    savedTxid.set(txid);
     ThreadContext.put("txid", txid);
   }
 
@@ -103,7 +45,11 @@ public class LogMessage {
    * @return saved transaction ID
    */
   public static String getSavedTxid() {
-    return savedTxid.get();
+    String txid = ThreadContext.get("txid");
+    if(txid == null || txid.length() <= 0) {
+      txid = "-";
+    }
+    return txid;
   }
 
   /**
@@ -143,7 +89,6 @@ public class LogMessage {
    *
    */
   public static void delSavedTxid() {
-    savedTxid.set("");
-    ThreadContext.clearAll();
+    ThreadContext.clearMap();
   }
 }
