@@ -1302,9 +1302,11 @@ class Logic(Component):
         for update_key in update_keys:
             if reg_attr.match(update_key) is not None:
                 attr_key = update_key.split("::")
-                ignore_keys.remove(attr_key[1])
+                if attr_key[1] in ignore_keys:
+                    ignore_keys.remove(attr_key[1])
             else:
-                ignore_keys.remove(update_key)
+                if update_key in ignore_keys:
+                    ignore_keys.remove(update_key)
 
         logging.debug("ignore key_list:: " + str(ignore_keys))
         return ignore_keys
