@@ -25,6 +25,7 @@ public class LogMessage {
    */
   public static void initParameters(int offset) {
     txidOffset = offset;
+    txidSerial = 0;
   }
 
   /**
