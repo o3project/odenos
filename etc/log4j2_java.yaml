@@ -33,6 +33,8 @@ configuration:
             value: "%t"
           - key: "method"
             value: "%c.%M"
+          - key: "txid"
+            value: "%replace{%X{txid}}{^$}{-}"
 
 #   CassandraAppender:
 #      name: CassandraAppender
