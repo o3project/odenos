@@ -33,7 +33,7 @@ public class LogMessage {
    */
   public static void setSavedTxid(String id) {
     String txid = id;
-    if(txid == null || txid.length() <= 0) {
+    if(txid == null || txid.length() <= 0 || txid.equals("-")) {
       txid = createTxid();
     }
     ThreadContext.put("txid", txid);
