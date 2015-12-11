@@ -17,6 +17,7 @@
 JAVA=$JAVA_HOME/bin/java
 ODENOS_HOME_DIR=`pwd`/../../
 RUN_DIR=`pwd`
+LOG4J_CONF=../../etc/log4j-silent.properties
 LOG4J2_CONF=../../etc/log4j2_java.yaml
 LOG4J2_FILE=$ODENOS_HOME_DIR/var/log/log4j2_example.log
 
@@ -86,6 +87,7 @@ simple_l2switch() {
   /bin/echo -e "\033[0;32m---------------------------------------------\033[0;39m"
   $JAVA -classpath $CLASSPATH:$CLASSPATH2:$CLASSPATH3:. \
     -server \
+    -Dlog4j.configuration=file:${LOG4J_CONF} \
     -Dlog4j.configurationFile=file:${LOG4J2_CONF} \
     -Dlog4j2_app.log=$LOG4J2_FILE \
     simple_l2switch.StartSimpleL2Switch 
@@ -95,6 +97,7 @@ simple_l2switch() {
   /bin/echo -e "\033[0;32m---------------------------------------------\033[0;39m"
   $JAVA -classpath $CLASSPATH:$CLASSPATH2:$CLASSPATH3:. \
     -server \
+    -Dlog4j.configuration=file:${LOG4J_CONF} \
     -Dlog4j.configurationFile=file:${LOG4J2_CONF} \
     -Dlog4j2_app.log=$LOG4J2_FILE \
     simple_l2switch.SettingNetwork 
@@ -104,6 +107,7 @@ simple_l2switch() {
   /bin/echo -e "\033[0;32m---------------------------------------------\033[0;39m"
   $JAVA -classpath $CLASSPATH:$CLASSPATH2:$CLASSPATH3:. \
     -server \
+    -Dlog4j.configuration=file:${LOG4J_CONF} \
     -Dlog4j.configurationFile=file:${LOG4J2_CONF} \
     -Dlog4j2_app.log=$LOG4J2_FILE \
     simple_l2switch.CleanUp 
@@ -119,6 +123,7 @@ one_big_l2switch() {
   /bin/echo -e "\033[0;32m---------------------------------------------\033[0;39m"
   $JAVA -classpath $CLASSPATH:$CLASSPATH2:$CLASSPATH3:. \
     -server \
+    -Dlog4j.configuration=file:${LOG4J_CONF} \
     -Dlog4j.configurationFile=file:${LOG4J2_CONF} \
     -Dlog4j2_app.log=$LOG4J2_FILE \
     one_big_l2switch.StartOneBigL2Switch 
@@ -128,6 +133,7 @@ one_big_l2switch() {
   /bin/echo -e "\033[0;32m---------------------------------------------\033[0;39m"
   $JAVA -classpath $CLASSPATH:$CLASSPATH2:$CLASSPATH3:. \
     -server \
+    -Dlog4j.configuration=file:${LOG4J_CONF} \
     -Dlog4j.configurationFile=file:${LOG4J2_CONF} \
     -Dlog4j2_app.log=$LOG4J2_FILE \
     one_big_l2switch.SettingNetwork
@@ -137,6 +143,7 @@ one_big_l2switch() {
   /bin/echo -e "\033[0;32m---------------------------------------------\033[0;39m"
   $JAVA -classpath $CLASSPATH:$CLASSPATH2:$CLASSPATH3:. \
     -server \
+    -Dlog4j.configuration=file:${LOG4J_CONF} \
     -Dlog4j.configurationFile=file:${LOG4J2_CONF} \
     -Dlog4j2_app.log=$LOG4J2_FILE \
     one_big_l2switch.CleanUp 
@@ -152,6 +159,7 @@ sliver_network() {
   /bin/echo -e "\033[0;32m---------------------------------------------\033[0;39m"
   $JAVA -classpath $CLASSPATH:$CLASSPATH2:$CLASSPATH3:. \
     -server \
+    -Dlog4j.configuration=file:${LOG4J_CONF} \
     -Dlog4j.configurationFile=file:${LOG4J2_CONF} \
     -Dlog4j2_app.log=$LOG4J2_FILE \
     sliver_network.StartSliverNetwork 
@@ -161,6 +169,7 @@ sliver_network() {
   /bin/echo -e "\033[0;32m---------------------------------------------\033[0;39m"
   $JAVA -classpath $CLASSPATH:$CLASSPATH2:$CLASSPATH3:. \
     -server \
+    -Dlog4j.configuration=file:${LOG4J_CONF} \
     -Dlog4j.configurationFile=file:${LOG4J2_CONF} \
     -Dlog4j2_app.log=$LOG4J2_FILE \
     sliver_network.SettingNetwork 
@@ -170,6 +179,7 @@ sliver_network() {
   /bin/echo -e "\033[0;32m---------------------------------------------\033[0;39m"
   $JAVA -classpath $CLASSPATH:$CLASSPATH2:$CLASSPATH3:. \
     -server \
+    -Dlog4j.configuration=file:${LOG4J_CONF} \
     -Dlog4j.configurationFile=file:${LOG4J2_CONF} \
     -Dlog4j2_app.log=$LOG4J2_FILE \
     sliver_network.CleanUp 
@@ -185,6 +195,7 @@ federated_network() {
   /bin/echo -e "\033[0;32m---------------------------------------------\033[0;39m"
   $JAVA -classpath $CLASSPATH:$CLASSPATH2:$CLASSPATH3:. \
     -server \
+    -Dlog4j.configuration=file:${LOG4J_CONF} \
     -Dlog4j.configurationFile=file:${LOG4J2_CONF} \
     -Dlog4j2_app.log=$LOG4J2_FILE \
     federated_network.StartFederatedNetwork 
@@ -194,6 +205,7 @@ federated_network() {
   /bin/echo -e "\033[0;32m---------------------------------------------\033[0;39m"
   $JAVA -classpath $CLASSPATH:$CLASSPATH2:$CLASSPATH3:. \
     -server \
+    -Dlog4j.configuration=file:${LOG4J_CONF} \
     -Dlog4j.configurationFile=file:${LOG4J2_CONF} \
     -Dlog4j2_app.log=$LOG4J2_FILE \
     federated_network.SettingNetwork 
@@ -203,6 +215,7 @@ federated_network() {
   /bin/echo -e "\033[0;32m---------------------------------------------\033[0;39m"
   $JAVA -classpath $CLASSPATH:$CLASSPATH2:$CLASSPATH3:. \
     -server \
+    -Dlog4j.configuration=file:${LOG4J_CONF} \
     -Dlog4j.configurationFile=file:${LOG4J2_CONF} \
     -Dlog4j2_app.log=$LOG4J2_FILE \
     federated_network.CleanUp 
@@ -218,6 +231,7 @@ layerized_network() {
   /bin/echo -e "\033[0;32m---------------------------------------------\033[0;39m"
   $JAVA -classpath $CLASSPATH:$CLASSPATH2:$CLASSPATH3:. \
     -server \
+    -Dlog4j.configuration=file:${LOG4J_CONF} \
     -Dlog4j.configurationFile=file:${LOG4J2_CONF} \
     -Dlog4j2_app.log=$LOG4J2_FILE \
     layerized_network.StartLayerizedNetwork 
@@ -227,6 +241,7 @@ layerized_network() {
   /bin/echo -e "\033[0;32m---------------------------------------------\033[0;39m"
   $JAVA -classpath $CLASSPATH:$CLASSPATH2:$CLASSPATH3:. \
     -server \
+    -Dlog4j.configuration=file:${LOG4J_CONF} \
     -Dlog4j.configurationFile=file:${LOG4J2_CONF} \
     -Dlog4j2_app.log=$LOG4J2_FILE \
     layerized_network.SettingNetwork 
@@ -236,6 +251,7 @@ layerized_network() {
   /bin/echo -e "\033[0;32m---------------------------------------------\033[0;39m"
   $JAVA -classpath $CLASSPATH:$CLASSPATH2:$CLASSPATH3:. \
     -server \
+    -Dlog4j.configuration=file:${LOG4J_CONF} \
     -Dlog4j.configurationFile=file:${LOG4J2_CONF} \
     -Dlog4j2_app.log=$LOG4J2_FILE \
     layerized_network.CleanUp 
