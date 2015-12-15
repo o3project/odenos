@@ -12,11 +12,10 @@ import org.apache.logging.log4j.ThreadContext;
  * Logging message DTO builder.
  */
 public class LogMessage {
-
   private static int txidOffset = 0;
   private static int txidSerial = 0;
 
-  private static Random rnd = null;
+  private static Random rnd = new Random(System.currentTimeMillis());
 
   /**
    * Init parameters.
@@ -26,7 +25,6 @@ public class LogMessage {
   public static void initParameters(int offset) {
     txidOffset = offset;
     txidSerial = 0;
-    rnd = new Random(System.currentTimeMillis());
   }
 
   /**
@@ -77,9 +75,6 @@ public class LogMessage {
     } catch (SocketException ex) {
     } finally {
       if(uuid == ""){
-        if(rnd == null){
-          rnd = new Random(System.currentTimeMillis());
-        }
         long rLong = rnd.nextLong() & 0xFFFF_FFFF_FFFFL;
         uuid = Long.toHexString(rLong);
       }

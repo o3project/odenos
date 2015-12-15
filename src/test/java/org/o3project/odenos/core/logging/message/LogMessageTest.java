@@ -50,12 +50,14 @@ import org.apache.logging.log4j.ThreadContext;
 @PrepareForTest({ LogMessage.class, NetworkInterface.class, Random.class })
 public class LogMessageTest {
   private int txoffset = 0;
+  private LogMessage target;
 
   /**
    * @throws java.lang.Exception
    */
   @Before
   public void setUp() throws Exception {
+    target = PowerMockito.spy(new LogMessage());
   }
 
   /**
@@ -81,8 +83,6 @@ public class LogMessageTest {
 
     PowerMockito.when(NetworkInterface.getByName(anyString())).thenReturn(nic);
     PowerMockito.when(nic.getHardwareAddress()).thenReturn(data);
-
-    LogMessage target = PowerMockito.spy(new LogMessage());
 
     /*
      * test
@@ -111,10 +111,10 @@ public class LogMessageTest {
     PowerMockito.when(NetworkInterface.getByName(anyString())).thenReturn(null);
 
     long l = 0x0000123456789ABCL;
-    Random rnd = PowerMockito.mock(Random.class);
-    PowerMockito.when(rnd.nextLong()).thenReturn(l);
-    PowerMockito.whenNew(Random.class).withArguments(anyLong()).thenReturn(rnd);
-    LogMessage target = PowerMockito.spy(new LogMessage());
+    Random rnd0 = PowerMockito.mock(Random.class);
+    PowerMockito.when(rnd0.nextLong()).thenReturn(l);
+
+    Whitebox.setInternalState(LogMessage.class, "rnd", rnd0);
 
     /*
      * test
@@ -143,10 +143,10 @@ public class LogMessageTest {
     PowerMockito.when(NetworkInterface.getByName(anyString())).thenReturn(null);
 
     long l = 0xFFFF123456789ABCL;
-    Random rnd = PowerMockito.mock(Random.class);
-    PowerMockito.when(rnd.nextLong()).thenReturn(l);
-    PowerMockito.whenNew(Random.class).withArguments(anyLong()).thenReturn(rnd);
-    LogMessage target = PowerMockito.spy(new LogMessage());
+    Random rnd0 = PowerMockito.mock(Random.class);
+    PowerMockito.when(rnd0.nextLong()).thenReturn(l);
+
+    Whitebox.setInternalState(LogMessage.class, "rnd", rnd0);
 
     /*
      * test
@@ -171,8 +171,6 @@ public class LogMessageTest {
   public void testGetSavedTxid() throws Exception {
     ThreadContext.put("txid", "aabbccddeeff-0000001");
 
-    LogMessage target = PowerMockito.spy(new LogMessage());
-
     /*
      * test
      */
@@ -194,8 +192,6 @@ public class LogMessageTest {
    */
   @Test
   public void testGetSavedTxidNotSet() throws Exception {
-    LogMessage target = PowerMockito.spy(new LogMessage());
-
     /*
      * test
      */
@@ -217,8 +213,6 @@ public class LogMessageTest {
    */
   @Test
   public void testSetSavedTxid() throws Exception {
-    LogMessage target = PowerMockito.spy(new LogMessage());
-
     /*
      * test
      */
@@ -248,8 +242,6 @@ public class LogMessageTest {
 
     PowerMockito.when(NetworkInterface.getByName(anyString())).thenReturn(nic);
     PowerMockito.when(nic.getHardwareAddress()).thenReturn(data);
-
-    LogMessage target = PowerMockito.spy(new LogMessage());
 
     /*
      * test
@@ -282,8 +274,6 @@ public class LogMessageTest {
     PowerMockito.when(NetworkInterface.getByName(anyString())).thenReturn(nic);
     PowerMockito.when(nic.getHardwareAddress()).thenReturn(data);
 
-    LogMessage target = PowerMockito.spy(new LogMessage());
-
     /*
      * test
      */
@@ -315,8 +305,6 @@ public class LogMessageTest {
     PowerMockito.when(NetworkInterface.getByName(anyString())).thenReturn(nic);
     PowerMockito.when(nic.getHardwareAddress()).thenReturn(data);
 
-    LogMessage target = PowerMockito.spy(new LogMessage());
-
     /*
      * test
      */
@@ -340,8 +328,6 @@ public class LogMessageTest {
    */
   @Test
   public void testdelSavedTxid() throws Exception {
-    LogMessage target = PowerMockito.spy(new LogMessage());
-
     /*
      * test
      */
