@@ -185,7 +185,7 @@
       <artifactId>jung2</artifactId>
       <version>2.0.1</version>
       <type>pom</type>
-    </dependency> 
+    </dependency>
     <dependency>
       <groupId>net.sf.jung</groupId>
       <artifactId>jung-graph-impl</artifactId>
@@ -212,7 +212,7 @@
       <version>3.1.0</version>
     </dependency>
     -->
-  </dependencies> 
+  </dependencies>
 
   <build>
     <resources>
@@ -223,7 +223,6 @@
 	</excludes>
       </resource>
     </resources>
-    
     <pluginManagement>
       <plugins>
 	<plugin>
@@ -265,6 +264,22 @@
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-clean-plugin</artifactId>
           <version>2.6.1</version>
+          <configuration>
+            <filesets>
+              <fileset>
+                <directory>${basedir}/lib/java</directory>
+              </fileset>
+              <fileset>
+                <directory>${basedir}/lib/python</directory>
+              </fileset>
+              <fileset>
+                <directory>${basedir}/lib/ruby</directory>
+              </fileset>
+              <fileset>
+                <directory>${basedir}/doc/java</directory>
+              </fileset>
+            </filesets>
+          </configuration>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
@@ -378,7 +393,7 @@
           <target>1.7</target>
 	  <excludes>
 	    <exclude>**/src/main/resource*</exclude>
-	  </excludes>	    
+	  </excludes>
         </configuration>
       </plugin>
       <plugin>
@@ -401,7 +416,6 @@
           </systemPropertyVariables>
         </configuration>
       </plugin>
-
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
@@ -414,8 +428,6 @@
           <reportOutputDirectory>doc/java/</reportOutputDirectory>
        </configuration>
      </plugin>
-
-
     </plugins>
   </build>
 </project>
