@@ -215,10 +215,10 @@ set_classpath()
 purge_zk_log()
 {
     # Purges ZooKeeper's transaction logs
-    $JAVA -Dlog4j.configuration=file:${ODENOS_CONF}/log_java.conf \
-          -Dapp.log=${ODENOS_LOG}/$1 \
-          org.apache.zookeeper.server.PurgeTxnLog \
-	  ${ZOOKEEPER_LOG} ${ZOOKEEPER_LOG} -n 3
+     $JAVA -Dlog4j.configurationFile=file:${ODENOS_CONF}/log4j2_java.yaml \
+           -Dlog4j2_app.log=$1 \
+           org.apache.zookeeper.server.PurgeTxnLog \
+	   ${ZOOKEEPER_LOG} ${ZOOKEEPER_LOG} -n 3
 }
 
 get_txoffset()
@@ -257,8 +257,6 @@ start_system()
     fi
     purge_zk_log odenos_system.log
     $JAVA ${ODENOS_OPT} ${ZOOKEEPER_OPT} \
-	-Dlog4j.configuration=file:${ODENOS_CONF}/log_java.conf \
-	-Dapp.log=${ODENOS_LOG}/odenos_system.log \
 	-Dlog4j.configurationFile=file:${ODENOS_CONF}/log4j2_java.yaml \
 	-Dlog4j2_app.log=${ODENOS_LOG}/log4j2_odenos_system.log \
 	$ODENOS_MAIN -s -S $MANAGER -o ${REST_PORT} -h ${REST_ROOT} \
@@ -353,8 +351,6 @@ start_process()
 	if [ $PROC_TYPE = "java" ] ;then
 	    # start java RemoteObjectManager
 	    $JAVA ${ODENOS_OPT} ${ZOOKEEPER_OPT} \
-		-Dlog4j.configuration=file:${ODENOS_CONF}/log_java.conf \
-		-Dapp.log=${ODENOS_LOG}/odenos_${PROC_NAME}.log \
 		-Dlog4j.configurationFile=file:${ODENOS_CONF}/log4j2_java.yaml \
 		-Dlog4j2_app.log=${ODENOS_LOG}/log4j2_odenos_${PROC_NAME}.log \
 		$ODENOS_MAIN -r "${PROC_NAME}" -d "${PROC_DIRS}" \

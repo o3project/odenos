@@ -49,4 +49,8 @@ configuration:
         - ref: File
 #        - ref: Syslog
 #        - ref: CassandraAppender
-
+    logger:
+      name: org.apache.zookeeper
+      level: error
+      AppenderRef:
+        - ref: File
