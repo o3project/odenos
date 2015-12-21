@@ -89,7 +89,7 @@ public class RestServlet extends HttpServlet {
 
 
       Path path = Paths.get(root, req.getPathInfo());
-      log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Trying to read \"{}\".", path));
+      log.debug("Trying to read \"{}\".", path);
 
       if (Files.isReadable(path)) {
         if (Files.isDirectory(path)) {
@@ -101,7 +101,7 @@ public class RestServlet extends HttpServlet {
           Files.copy(path, out);
         } catch (IOException e) {
           // just ignore.
-          log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Failed serving {}", path), e);
+          log.error("Failed serving {}", path, e);
           resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
         return;
@@ -132,8 +132,8 @@ public class RestServlet extends HttpServlet {
     try {
       odenosResp = translator.request(objectId, method, path, LogMessage.getSavedTxid(), reqBody);
     } catch (Exception e) {
-      this.log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Failed to request [{}, {}, {}, {}]",
-          objectId, method, path, reqBody), e);
+      this.log.debug("Failed to request [{}, {}, {}, {}]",
+          objectId, method, path, reqBody, e);
       resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
       return;
     }
@@ -145,8 +145,8 @@ public class RestServlet extends HttpServlet {
         byte[] packed = this.messagePack.write(odenosResp);
         value = this.messagePack.read(packed);
       } catch (IOException e) {
-        this.log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Failed to serialize a response body. /req:[{}, {}, {}, {}]",
-            objectId, method, path, reqBody));
+        this.log.debug("Failed to serialize a response body. /req:[{}, {}, {}, {}]",
+            objectId, method, path, reqBody);
         resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         return;
       }

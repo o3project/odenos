@@ -116,7 +116,7 @@ public class EventManager extends RemoteObject {
 
   @Override
   protected final Response onRequest(final Request request) {
-    log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "received {}", request.path));
+    log.debug("received {}", request.path);
     Response res;
 
     try {
@@ -138,7 +138,7 @@ public class EventManager extends RemoteObject {
       res = callback.process(parsed);
       return res;
     } catch (Exception ex) {
-      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Error unknown request"), ex);
+      log.error("Error unknown request", ex);
       res = new Response(Response.BAD_REQUEST, "Error unknown request");
       return res;
     }
@@ -153,7 +153,7 @@ public class EventManager extends RemoteObject {
    */
   private Response putSubscription(String subscriberId, EventSubscription subscription) {
     if (log.isDebugEnabled()) {
-      log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "subscriberId {}", subscriberId));
+      log.debug("subscriberId {}", subscriberId);
     }
 
     if (StringUtils.isEmpty(subscriberId)) {

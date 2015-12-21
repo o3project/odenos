@@ -52,13 +52,6 @@ Then build ODENOS:
 $ mvn package
 ```
 
-You need to also uncomment the following lines in etc/log_java.conf: (for log4j)
-```
-log4j.appender.CASS=com.datastax.logging.appender.CassandraAppender
-log4j.appender.CASS.hosts = 127.0.0.1
-log4j.rootLogger=info, file, stdout, CASS
-```
-
 You need to uncomment the following entries in etc/log4j2_java.yaml: (for log4j2)
 
   - CassandraAppender:

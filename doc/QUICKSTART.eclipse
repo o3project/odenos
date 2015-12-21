@@ -46,7 +46,7 @@ Please specify your favourite workspace :-)
    * Switch to Arguments tab, fill followings to Program arguments:
      -s
    * Switch to Arguments tab, fill followings to VM arguments:
-     -Dlog4j.configuration=file:etc/log_java.conf -Dapp.log=var/log/odenos_system.log
+     -Dlog4j.configurationFile=file:etc/log4j2_java.yaml -Dlog4j2_app.log=var/log/odenos_system.log
    * Click "Debug", then select "Window" > "Open Perspective" > "Debug", then check that Odenos application is running.
 
  4.7. In Package Explorer, "src/main/java/" > "org.o3project.odenos.core"
@@ -55,7 +55,7 @@ Please specify your favourite workspace :-)
    * Switch to Arguments tab, fill followings to Program arguments:
      -r romgr1 -d apps/java/sample_components/target/classes
    * Switch to Arguments tab, fill followings to VM arguments:
-     -Dlog4j.configuration=file:etc/log_java.conf -Dapp.log=var/log/odenos_romgr1.log
+     -Dlog4j.configurationFile=file:etc/log4j2_java.yaml -Dlog4j2_app.log=var/log/odenos_romgr1.log
 
  4.8. Select "Window" > "Open Perspective" > "PyDev"
    * Click <repository> with right, select "PyDev" > "Set as PyDev Project"

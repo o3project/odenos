@@ -215,11 +215,10 @@ set_classpath()
 purge_zk_log()
 {
     # Purges ZooKeeper's transaction logs
-    $JAVA -Dlog4j.configuration=file:${ODENOS_CONF}/log_java.conf \
-	  -Dapp.log=${ODENOS_LOG}/$1 \
-          -Dlog4j.configurationFile=file:${ODENOS_CONF}/log4j2_java.yaml \
-	  org.apache.zookeeper.server.PurgeTxnLog \
-	  ${ZOOKEEPER_LOG} ${ZOOKEEPER_LOG} -n 3
+     $JAVA -Dlog4j.configurationFile=file:${ODENOS_CONF}/log4j2_java.yaml \
+           -Dlog4j2_app.log=$1 \
+           org.apache.zookeeper.server.PurgeTxnLog \
+	   ${ZOOKEEPER_LOG} ${ZOOKEEPER_LOG} -n 3
 }
 
 get_txoffset()
@@ -258,9 +257,7 @@ start_system()
     fi
     purge_zk_log odenos_system.log
     $JAVA ${ODENOS_OPT} ${ZOOKEEPER_OPT} \
-	-Dlog4j.configuration=file:${ODENOS_CONF}/log_java.conf \
 	-Dlog4j.configurationFile=file:${ODENOS_CONF}/log4j2_java.yaml \
-	-Dapp.log=${ODENOS_LOG}/odenos_system.log \
 	-Dlog4j2_app.log=${ODENOS_LOG}/log4j2_odenos_system.log \
 	$ODENOS_MAIN -s -S $MANAGER -o ${REST_PORT} -h ${REST_ROOT} \
 	-i $HOST_M -p $PORT_M -I $HOST_B -P $PORT_B -t $TXOFFSET_SYSTEM \
@@ -290,7 +287,11 @@ check_start_system()
 	esac
 	case "${reply_code}" in
 	200)
-	    echo "Started System Manager" >&2
+	    if [ -n "${MANAGER_ENABLED}" ] ;then
+		echo "Started System Manager" >&2
+	    else
+		echo "Started System Manager on ${REST_HOST}:${REST_PORT}" >&2
+	    fi
 	    ;;
 	000|404)    # 000 is not connected
 	    ret_val=10
@@ -348,12 +349,9 @@ start_process()
 	proc_list="${proc_list:+${proc_list} }${PROC_NAME}"
 
 	if [ $PROC_TYPE = "java" ] ;then
-            purge_zk_log odenos_${PROC_NAME}.log
 	    # start java RemoteObjectManager
 	    $JAVA ${ODENOS_OPT} ${ZOOKEEPER_OPT} \
-		-Dlog4j.configuration=file:${ODENOS_CONF}/log_java.conf \
 		-Dlog4j.configurationFile=file:${ODENOS_CONF}/log4j2_java.yaml \
-		-Dapp.log=${ODENOS_LOG}/odenos_${PROC_NAME}.log \
 		-Dlog4j2_app.log=${ODENOS_LOG}/log4j2_odenos_${PROC_NAME}.log \
 		$ODENOS_MAIN -r "${PROC_NAME}" -d "${PROC_DIRS}" \
 		-S $MANAGER -i $HOST_M -p $PORT_M -I $HOST_B -P $PORT_B -t $PROC_TXOFFSET \
