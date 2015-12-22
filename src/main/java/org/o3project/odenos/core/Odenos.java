@@ -383,7 +383,7 @@ public final class Odenos {
         if (new File(rootDir).isDirectory()) {
           classes.addAll(ComponentLoader.load(rootDir));
         } else {
-          log.warn("not a directory: ''{}''  (ignored)", rootDir);
+          log.warn("not a directory: '{}'  (ignored)", rootDir);
         }
       }
     } catch (Exception e) {

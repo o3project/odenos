@@ -385,11 +385,11 @@ public abstract class Logic extends Component {
   // //////////////////////////////////////////////////
   @Override
   protected void onEvent(final Event event) {
-    log.debug("onEvent : objectId = ''{}''.", this.getObjectId());
+    log.debug("onEvent : objectId = '{}'.", this.getObjectId());
 
     try {
       if (ComponentConnectionChanged.TYPE.equals(event.eventType)) {
-        log.debug("onEvent ConnectionChanged : objectId = ''{}''.",
+        log.debug("onEvent ConnectionChanged : objectId = '{}'.",
             this.getObjectId());
         onEventComponentConnection(event
             .getBody(ComponentConnectionChanged.class));

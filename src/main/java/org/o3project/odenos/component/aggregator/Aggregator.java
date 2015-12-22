@@ -893,7 +893,7 @@ public class Aggregator extends Logic {
 
     FlowSet flowSet = orgNetworkIf.getFlowSet();
     for (String flowId : flowSet.flows.keySet()) {
-      log.debug(">> target flow : ''{}''", flowId);
+      log.debug(">> target flow : '{}'", flowId);
       BasicFlow orgFlow = (BasicFlow) flowSet.flows.get(flowId);
       // Get aggregated_network's flowId from orgFlowId.
       String aggFlowId = getConvFlowId(
@@ -904,7 +904,7 @@ public class Aggregator extends Logic {
         continue;
       }
       String[] list = aggFlowId.split("::");
-      log.debug(">> conversion flow : ''{}''", list[1]);
+      log.debug(">> conversion flow : '{}'", list[1]);
 
       orgFlow = getFlow(orgNetworkIf, flowId);
       BasicFlow aggFlow = getFlow(aggNetworkIf, list[1]);

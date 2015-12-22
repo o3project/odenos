@@ -66,7 +66,7 @@ public class SystemManagerInterface {
   public SystemManagerInterface(
       final MessageDispatcher dispatcher) {
     this.dispatcher = dispatcher;
-    log.debug("Create SystemManagerInterface : Id = ''{}''.", this.getSystemManagerId());
+    log.debug("Create SystemManagerInterface : Id = '{}'.", this.getSystemManagerId());
   }
 
   /**
@@ -79,7 +79,7 @@ public class SystemManagerInterface {
       final String sourceObjectId) {
     this.dispatcher = dispatcher;
     this.sourceObjectId = sourceObjectId;
-    log.debug("Create SystemManagerInterface : Id = ''{}''.", this.getSystemManagerId());
+    log.debug("Create SystemManagerInterface : Id = '{}'.", this.getSystemManagerId());
   }
   
   /**
@@ -501,7 +501,7 @@ public class SystemManagerInterface {
       return new Response(Response.BAD_REQUEST, null);
     }
     String path = String.format(SEQUENCE_PATH, seqId);
-    log.debug("seqId=''{}'', spec={}", seqId, spec);
+    log.debug("seqId='{}', spec={}", seqId, spec);
     return putObjectToSystemMng(path, spec);
   }
 
@@ -526,7 +526,7 @@ public class SystemManagerInterface {
     } else {
       path = String.format(SEQUENCE_PATH, seqId) + "/curr";
     }
-    log.debug("seqId=''{}''", seqId);
+    log.debug("seqId='{}'", seqId);
     return getObjectToSystemMng(path);
   }
 
@@ -537,7 +537,7 @@ public class SystemManagerInterface {
    */
   public final Response delSequence(final String seqId) {
     String path = String.format(SEQUENCE_PATH, seqId);
-    log.debug("seqId=''{}''", seqId);
+    log.debug("seqId='{}'", seqId);
     return delObjectToSystemMng(path);
   }
 

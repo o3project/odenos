@@ -1622,7 +1622,7 @@ public class SystemManager extends RemoteObject {
           valueCurr = Long.valueOf(value);
         }
       } catch (Exception ex) {
-        log.warn("Bad Sequence Spec: seqId=''{}'', {}", seqId, spec, ex);
+        log.warn("Bad Sequence Spec: seqId='{}', {}", seqId, spec, ex);
         return new Response(Response.BAD_REQUEST, "Bad Sequence Spec");
       }
 
@@ -1661,7 +1661,7 @@ public class SystemManager extends RemoteObject {
     Long valuePrev, valueCurr;
     Map<String, Long> ent = SequenceMap.get(seqId);
     if (ent == null) {
-      log.warn("Not Exsists Sequence ID: seqId=''{}''", seqId);
+      log.warn("Not Exsists Sequence ID: seqId='{}'", seqId);
       return new Response(Response.NOT_FOUND, "Not Exsists Sequence ID");
     }
     if (isNext) {
@@ -1679,13 +1679,13 @@ public class SystemManager extends RemoteObject {
         }
       }
       ent.put("curr", valueCurr);
-      log.debug("get next value: seqId=''{}'', prev={}, curr={}", seqId, valuePrev, valueCurr);
+      log.debug("get next value: seqId='{}', prev={}, curr={}", seqId, valuePrev, valueCurr);
     } else {
       valueCurr = ent.get("curr");
       if (valueCurr == null) {
         valueCurr = ent.get("start");
       }
-      log.debug("get curr value: seqId=''{}'', curr={}", seqId, valueCurr);
+      log.debug("get curr value: seqId='{}', curr={}", seqId, valueCurr);
     }
     return new Response(Response.OK, String.valueOf(valueCurr));
   }
@@ -1693,11 +1693,11 @@ public class SystemManager extends RemoteObject {
   private Response deleteSequence(final String seqId) {
     Map<String, Long> ent = SequenceMap.get(seqId);
     if (ent == null) {
-      log.warn("Not Exsists Sequence ID: seqId=''{}''", seqId);
+      log.warn("Not Exsists Sequence ID: seqId='{}'", seqId);
       return new Response(Response.NOT_FOUND, "Not Exsists Sequence ID");
     }
     SequenceMap.remove(seqId);
-    log.info("removed: seqId=''{}''", seqId);
+    log.info("removed: seqId='{}'", seqId);
     return new Response(Response.OK, null);
   }
 
