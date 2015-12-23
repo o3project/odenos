@@ -14,7 +14,7 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <jettyVersion>9.0.5.v20130815</jettyVersion>
-    <argLine></argLine>
+    <argLine>-Xmx1g</argLine>
   </properties>
 
   <profiles>
