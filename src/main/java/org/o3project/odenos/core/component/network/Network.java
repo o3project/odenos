@@ -202,7 +202,7 @@ public class Network extends Component {
       log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(),
           "Exception in onRequest() : [case:{}] [msg:{}]",
           request.path, e.getClass().getSimpleName()));
-      res = createErrorResponse(Response.BAD_REQUEST,
+      res = createErrorResponse(Response.BAD_REQUEST, null,
           "Error while processing : [" + request.method + "] "
               + request.path);
       return res;
@@ -255,25 +255,25 @@ public class Network extends Component {
      * check new topology.
      */
     if (!newTopology.validate()) {
-      return createErrorResponse(Response.BAD_REQUEST, String.format(
+      return createErrorResponse(Response.BAD_REQUEST, null, String.format(
           "Invalid Topology Format. [invalid topology: %s]", newTopology));
     }
     Map<String, Link> newLinks = newTopology.getLinkMap();
     Map<String, Node> newNodes = newTopology.getNodeMap();
     for (Link link : newLinks.values()) {
       if (link == null || !link.validate()) {
-        return createErrorResponse(Response.BAD_REQUEST, String.format(
+        return createErrorResponse(Response.BAD_REQUEST, null, String.format(
             "Invalid Topology's link Format. [invalid link: %s]", link));
       }
     }
     for (Node node : newNodes.values()) {
       if (node == null || !node.validate()) {
-        return createErrorResponse(Response.BAD_REQUEST, String.format(
+        return createErrorResponse(Response.BAD_REQUEST, null, String.format(
             "Invalid Topology's node Format. [invalid node: %s]", node));
       }
       for (Port port : node.getPortMap().values()) {
         if (port == null || !port.validate()) {
-          return createErrorResponse(Response.BAD_REQUEST, String.format(
+          return createErrorResponse(Response.BAD_REQUEST, null, String.format(
               "Invalid Topology's port Format. [invalid port: %s]", port));
         }
       }
@@ -358,7 +358,7 @@ public class Network extends Component {
     }
     Node node = topology.createNode(msg);
     if (node == null) {
-      return createErrorResponse(Response.BAD_REQUEST,
+      return createErrorResponse(Response.BAD_REQUEST, null,
           "not compatible object");
     }
 
@@ -376,7 +376,7 @@ public class Network extends Component {
     if (hasQuery) {
       NodeQuery query = new NodeQuery(queriesString);
       if (!query.parse()) {
-        return createErrorResponse(Response.BAD_REQUEST,
+        return createErrorResponse(Response.BAD_REQUEST, null,
             "Query is invalid.");
       }
       return new Response(Response.OK, topology.getNodeMessages(query));
@@ -401,13 +401,13 @@ public class Network extends Component {
     log.debug("");
 
     if (msg == null) {
-      return createErrorResponse(Response.BAD_REQUEST,
+      return createErrorResponse(Response.BAD_REQUEST, null,
           "invalid request's body.");
     }
 
     msg.setId(nodeId);
     if (!msg.validate()) {
-      return createErrorResponse(Response.BAD_REQUEST, "invalid nodeId.");
+      return createErrorResponse(Response.BAD_REQUEST, null, "invalid nodeId.");
     }
 
     Node nodeOld;
@@ -440,7 +440,7 @@ public class Network extends Component {
     }
 
     if (node == null) {
-      return createErrorResponse(Response.BAD_REQUEST,
+      return createErrorResponse(Response.BAD_REQUEST, null,
           "not compatible object");
     }
 
@@ -511,7 +511,7 @@ public class Network extends Component {
     }
 
     if (port == null) {
-      return createErrorResponse(Response.BAD_REQUEST,
+      return createErrorResponse(Response.BAD_REQUEST, null,
           "not compatible object");
     }
 
@@ -528,7 +528,7 @@ public class Network extends Component {
     if (hasQuery) {
       PortQuery query = new PortQuery(queriesString);
       if (!query.parse()) {
-        return createErrorResponse(Response.BAD_REQUEST,
+        return createErrorResponse(Response.BAD_REQUEST, null,
             "Query is invalid.");
       }
       return new Response(Response.OK, topology.getPortMessages(query,
@@ -560,14 +560,14 @@ public class Network extends Component {
     log.debug("");
 
     if (msg == null) {
-      return createErrorResponse(Response.BAD_REQUEST,
+      return createErrorResponse(Response.BAD_REQUEST, null,
           "invalid request's body");
     }
 
     msg.setNode(nodeId);
     msg.setId(portId);
     if (!msg.validate()) {
-      return createErrorResponse(Response.BAD_REQUEST,
+      return createErrorResponse(Response.BAD_REQUEST, null,
           "invalid content id");
     }
 
@@ -614,7 +614,7 @@ public class Network extends Component {
     }
 
     if (port == null) {
-      return createErrorResponse(Response.BAD_REQUEST,
+      return createErrorResponse(Response.BAD_REQUEST, null,
           "not compatible object");
     }
 
@@ -852,7 +852,7 @@ public class Network extends Component {
     if (hasQuery) {
       LinkQuery query = new LinkQuery(queriesString);
       if (!query.parse()) {
-        return createErrorResponse(Response.BAD_REQUEST,
+        return createErrorResponse(Response.BAD_REQUEST, null,
             "Query is invalid.");
       }
       return new Response(Response.OK, topology.getLinkMessages(query));
@@ -874,13 +874,13 @@ public class Network extends Component {
     log.debug("");
 
     if (msg == null) {
-      return createErrorResponse(Response.BAD_REQUEST,
+      return createErrorResponse(Response.BAD_REQUEST, null,
           "invalid request's body");
     }
 
     msg.setId(linkId);
     if (!msg.validate()) {
-      return createErrorResponse(Response.BAD_REQUEST, "invalid linkId");
+      return createErrorResponse(Response.BAD_REQUEST, null, "invalid linkId");
     }
 
     Node srcNodePrev = topology.getNode(msg.getSrcNode()).clone();
@@ -1073,11 +1073,11 @@ public class Network extends Component {
 
     if (msg == null) {
       return createErrorResponse(
-          Response.BAD_REQUEST, "Bad format: Flow is expected");
+          Response.BAD_REQUEST, null, "Bad format: Flow is expected");
     }
     if (!msg.validate()) {
       return createErrorResponse(
-          Response.BAD_REQUEST, "Bad format: Flow object was invalid");
+          Response.BAD_REQUEST, null, "Bad format: Flow object was invalid");
     }
 
     if (msg.getStatus() == null) {
@@ -1086,7 +1086,7 @@ public class Network extends Component {
 
     Flow flow = flowset.createFlow(msg);
     if (flow == null) {
-      return createErrorResponse(Response.BAD_REQUEST, "Invalid flow type");
+      return createErrorResponse(Response.BAD_REQUEST, null, "Invalid flow type");
     }
     notifyFlowChanged(null, flow, FlowChanged.Action.add);
 
@@ -1098,11 +1098,11 @@ public class Network extends Component {
     if (hasQuery) {
       FlowQuery query = FlowQueryFactory.create(queriesString);
       if (query == null) {
-        return createErrorResponse(Response.BAD_REQUEST,
+        return createErrorResponse(Response.BAD_REQUEST, null,
             "Query is invalid.");
       }
       if (!query.parse()) {
-        return createErrorResponse(Response.BAD_REQUEST,
+        return createErrorResponse(Response.BAD_REQUEST, null,
             "Query is invalid.");
       }
       query.setTopology(topology);
@@ -1128,13 +1128,13 @@ public class Network extends Component {
     Flow flowOld = null;
 
     if (msg == null) {
-      return createErrorResponse(Response.BAD_REQUEST,
+      return createErrorResponse(Response.BAD_REQUEST, null,
           "Flow object is expected");
     }
 
     if (!msg.validate()) {
       return createErrorResponse(
-          Response.BAD_REQUEST, "Bad format: Flow object was invalid");
+          Response.BAD_REQUEST, null, "Bad format: Flow object was invalid");
     }
     Flow flow = flowset.getFlow(flowId);
 
@@ -1180,12 +1180,12 @@ public class Network extends Component {
           returnCode = Response.OK;
           break;
         default:
-          return createErrorResponse(Response.BAD_REQUEST, "Bad Sequence");
+          return createErrorResponse(Response.BAD_REQUEST, null, "Bad Sequence");
       }
     }
 
     if (flow == null) {
-      return createErrorResponse(Response.BAD_REQUEST, "Not compatible object");
+      return createErrorResponse(Response.BAD_REQUEST, null, "Not compatible object");
     }
     if (action != null) {
       notifyFlowChanged(flowOld, flow.clone(), action);
@@ -2074,15 +2074,16 @@ public class Network extends Component {
   }
 
   private Response createErrorResponse(int code, Object body) {
-    log.debug("");
     return createErrorResponse(code, body, body.toString());
   }
 
   private Response createErrorResponse(int code, Object body, String msg) {
-    log.debug("");
-    Response rsp = new Response(code, body);
+    log.debug("status={}, msg='{}'", code, msg);
+    Response rsp;
     if (body == null) {
       rsp = new Response(code, msg);
+    } else {
+      rsp = new Response(code, body);
     }
     return rsp;
   }
