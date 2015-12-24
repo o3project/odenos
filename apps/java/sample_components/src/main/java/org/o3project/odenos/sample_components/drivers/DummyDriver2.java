@@ -30,6 +30,9 @@ import org.o3project.odenos.core.component.network.packet.OutPacketAdded;
 import org.o3project.odenos.core.manager.system.ComponentConnection;
 import org.o3project.odenos.core.manager.system.ComponentConnectionLogicAndNetwork;
 import org.o3project.odenos.core.manager.system.event.ComponentConnectionChanged;
+import org.o3project.odenos.remoteobject.RequestParser;
+import org.o3project.odenos.remoteobject.message.Request;
+import org.o3project.odenos.remoteobject.message.Request.Method;
 import org.o3project.odenos.remoteobject.message.Response;
 import org.o3project.odenos.remoteobject.messagingclient.MessageDispatcher;
 import org.apache.logging.log4j.Logger;
@@ -52,11 +55,11 @@ public class DummyDriver2 extends Driver {
   private static final Logger log = LogManager.getLogger(DummyDriver2.class);
   private static final String description = "dummy driver 2";
   private String network = null;
-  private Timer timer;
-
-  private static final long TIMER_PACKET_IN_START = 10000;	// msec
-  private static final long TIMER_PACKET_IN_INTERVAL = 5000;	// msec
-  private static final int TIMER_PACKET_IN_TIMES = 10;
+  private Timer timer = null;
+  private long packetIn_timer_start = 10000;	// msec
+  private long packetIn_timer_interval = 5000;	// msec
+  private int packetIn_timer_times = 10;
+  protected final RequestParser<IActionCallback> parser;
 
   /**
    * Constructor.
@@ -72,6 +75,7 @@ public class DummyDriver2 extends Driver {
       final String baseUri,
       final MessageDispatcher dispatcher) throws Exception {
     super(objectId, baseUri, dispatcher);
+    parser = createParser();
     resetEventSubscription();
     log.info(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "created."));
   }
@@ -86,6 +90,7 @@ public class DummyDriver2 extends Driver {
       final String objectId,
       final MessageDispatcher dispatcher) throws Exception {
     super(objectId, dispatcher);
+    parser = createParser();
     resetEventSubscription();
     log.info(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "created."));
   }
@@ -139,8 +144,19 @@ public class DummyDriver2 extends Driver {
         ComponentConnectionLogicAndNetwork.NETWORK_ID);
     log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "called: {}", network));
 
-    // start dummy PacketIn
+    subscribeNetworkComponent();
+    // Changed ConectionProperty's status.
+    curr.setConnectionState(ComponentConnection.State.RUNNING);
+    systemMngInterface().putConnection(curr);
+  }
+
+  // start dummy PacketIn
+  private void startDummyPacketIn() {
     try {
+      if (timer != null) {
+        timer.cancel();
+        timer = null;
+      }
       timer = new Timer("timer-dummyPacketIn");
       TimerTask task = new TimerTask() {
         private int cnt = 0;
@@ -148,23 +164,21 @@ public class DummyDriver2 extends Driver {
         public void run() {
           cnt++;
           dummyPacketIn(cnt);
-          if (cnt >= TIMER_PACKET_IN_TIMES) {
-            timer.cancel();
+          if (cnt >= packetIn_timer_times) {
+            if (timer != null) {
+              timer.cancel();
+              timer = null;
+            }
           }
         }
       };
-      if ((TIMER_PACKET_IN_INTERVAL <= 0) || (TIMER_PACKET_IN_TIMES <= 1)) {
-        timer.schedule(task, TIMER_PACKET_IN_START);
+      if ((packetIn_timer_interval <= 0) || (packetIn_timer_times <= 1)) {
+        timer.schedule(task, packetIn_timer_start);
       } else {
-        timer.schedule(task, TIMER_PACKET_IN_START, TIMER_PACKET_IN_INTERVAL);
+        timer.schedule(task, packetIn_timer_start, packetIn_timer_interval);
       }
     } catch(Exception ex) {
     }
-
-    subscribeNetworkComponent();
-    // Changed ConectionProperty's status.
-    curr.setConnectionState(ComponentConnection.State.RUNNING);
-    systemMngInterface().putConnection(curr);
   }
 
   @Override
@@ -180,7 +194,10 @@ public class DummyDriver2 extends Driver {
     unsubscribeNetworkComponent();
     this.network = null;
 
-    timer.cancel();
+    if (timer != null) {
+      timer.cancel();
+      timer = null;
+    }
 
     // Changed ConectionProperty's status.
     curr.setConnectionState(ComponentConnection.State.NONE);
@@ -219,6 +236,162 @@ public class DummyDriver2 extends Driver {
   // //////////////////////////////////////////////////
   // Event method override
   // //////////////////////////////////////////////////
+
+  private RequestParser<IActionCallback> createParser() {
+    log.debug("");
+
+    return new RequestParser<IActionCallback>() {
+      {
+        addRule(Method.POST,
+            "settings/packet_in",
+            new IActionCallback() {
+              @Override
+              public Response process(
+                  final RequestParser<IActionCallback>.ParsedRequest parsed)
+                  throws Exception {
+                Map<String, String> settings = null;
+                try {
+                  settings = parsed.getRequest().getBodyAsStringMap();
+                } catch (Exception ex) {
+                  log.error("illegal data: {}", parsed.getRequest().getBodyValue());
+                  return new Response(Response.BAD_REQUEST, "Error illegal data");
+                }
+                return postPacketInSetting(settings);
+              }
+            });
+        addRule(Method.PUT,
+            "settings/packet_in/<setting_id>",
+            new IActionCallback() {
+              @Override
+              public Response process(
+                  final RequestParser<IActionCallback>.ParsedRequest parsed)
+                  throws Exception {
+                Map<String, String> settings = null;
+                try {
+                  settings = parsed.getRequest().getBodyAsStringMap();
+                } catch (Exception ex) {
+                  log.error("illegal data: {}", parsed.getRequest().getBodyValue());
+                  return new Response(Response.BAD_REQUEST, "Error illegal data");
+                }
+                return putPacketInSetting(
+                    parsed.getParam("setting_id"), settings);
+              }
+            });
+        addRule(Method.GET,
+            "settings/packet_in/<setting_id>",
+            new IActionCallback() {
+              @Override
+              public Response process(
+                  final RequestParser<IActionCallback>.ParsedRequest parsed)
+                  throws Exception {
+                return getPacketInSetting(parsed.getParam("setting_id"));
+              }
+            });
+        addRule(Method.DELETE,
+            "settings/packet_in/<setting_id>",
+            new IActionCallback() {
+              @Override
+              public Response process(
+                  final RequestParser<IActionCallback>.ParsedRequest parsed)
+                  throws Exception {
+                return deletePacketInSetting(parsed.getParam("setting_id"));
+              }
+            });
+      }
+    };
+  }
+
+  protected Response postPacketInSetting(Map<String, String> packetInSetting) {
+    parsePacketInSetting(packetInSetting);
+    if (timer == null) {
+      startDummyPacketIn();
+    }
+    return new Response(Response.CREATED, generatePacketInSetting());
+  }
+
+  protected Response putPacketInSetting(String packetInSettingId, Map<String, String> packetInSetting) {
+    if (timer != null) {
+      timer.cancel();
+      timer = null;
+    }
+    parsePacketInSetting(packetInSetting);
+    startDummyPacketIn();
+    return new Response(Response.ACCEPTED, generatePacketInSetting());
+  }
+
+  protected Response getPacketInSetting(String packetInSettingId) {
+    return new Response(Response.OK, generatePacketInSetting());
+  }
+
+  protected Response deletePacketInSetting(String packetInSettingId) {
+    if (timer != null) {
+      timer.cancel();
+      timer = null;
+    }
+    return new Response(Response.OK, null);
+  }
+
+  private void parsePacketInSetting(Map<String, String> packetInSetting) {
+    String valueStr;
+    long value;
+    if (packetInSetting == null) {
+      return;
+    }
+    if ((valueStr = packetInSetting.get("timer_start")) != null) {
+      value = Long.valueOf(valueStr);
+      if (value >= 0) {
+        packetIn_timer_start = value;
+      }
+    }
+    if ((valueStr = packetInSetting.get("timer_interval")) != null) {
+      value = Long.valueOf(valueStr);
+      if (value >= 0) {
+        packetIn_timer_interval = value;
+      }
+    }
+    if ((valueStr = packetInSetting.get("timer_times")) != null) {
+      value = Long.valueOf(valueStr);
+      if (value > 0) {
+        packetIn_timer_times = (int)value;
+      }
+    }
+  }
+
+  private Map<String, String> generatePacketInSetting() {
+    Map<String, String> packetInSetting = new HashMap<String, String>();
+    packetInSetting.put("timer_start", String.valueOf(packetIn_timer_start));
+    packetInSetting.put("timer_interval", String.valueOf(packetIn_timer_interval));
+    packetInSetting.put("timer_times", String.valueOf(packetIn_timer_times));
+    return packetInSetting;
+  }
+
+  @Override
+  protected Response onRequest(Request request) {
+    log.debug("received {}", request.path);
+
+    Response res;
+    try {
+      RequestParser<IActionCallback>.ParsedRequest parsed =
+          parser.parse(request);
+      if (parsed == null) {
+        res = new Response(Response.BAD_REQUEST, "Error unknown request");
+        return res;
+      }
+
+      IActionCallback callback = parsed.getResult();
+      if (callback == null) {
+        res = new Response(Response.BAD_REQUEST, "Error illegal request");
+        return res;
+      }
+      // Get response.
+      res = callback.process(parsed);
+      return res;
+    } catch (Exception ex) {
+      log.error("Error on processing request", ex);
+      res = new Response(Response.BAD_REQUEST, "Error on processing request");
+      return res;
+    }
+  }
 
   private void dummyPacketIn(int count) {
     String packetId;
