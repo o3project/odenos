@@ -187,19 +187,22 @@ public class DummyDriver extends Driver {
     }
 
     // Status ... "None" => "Establishing" => "Established"
-    if (targetFlow.getStatus()
-        .equals(FlowObject.FlowStatus.NONE.toString())
-        && targetFlow.getEnabled()) {
-      targetFlow.setStatus(FlowObject.FlowStatus.ESTABLISHING.toString());
-      networkIf.putFlow(targetFlow);
+    if (targetFlow.getEnabled()) {
+      if (targetFlow.getStatus().equals(FlowObject.FlowStatus.NONE.toString())) {
+        targetFlow.setStatus(FlowObject.FlowStatus.ESTABLISHING.toString());
+        networkIf.putFlow(targetFlow);
+        targetFlow = getFlow(networkIf, flow.getFlowId());
+      }
 
-      // Driver needs to set Flow to physical switch here.
-      // Setting of Flow After completing the physical switch,
-      // to "Established".
+      if (targetFlow.getStatus().equals(FlowObject.FlowStatus.ESTABLISHING.toString())) {
+        // Driver needs to set Flow to physical switch here.
+        // Setting of Flow After completing the physical switch,
+        // to "Established".
+        log.info(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "added Flow: network={}, flow=''{}''", networkId, targetFlow.toString()));
 
-      targetFlow = getFlow(networkIf, flow.getFlowId());
-      targetFlow.setStatus(FlowObject.FlowStatus.ESTABLISHED.toString());
-      networkIf.putFlow(targetFlow);
+        targetFlow.setStatus(FlowObject.FlowStatus.ESTABLISHED.toString());
+        networkIf.putFlow(targetFlow);
+      }
     }
   }
 
@@ -211,17 +214,7 @@ public class DummyDriver extends Driver {
       final ArrayList<String> attributesList) {
 
     log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "{} prev:{} curr:{}", networkId, prev, curr));
-    NetworkInterface networkIf = networkInterfaces().get(this.network);
-    BasicFlow targetFlow = getFlow(networkIf, curr.getFlowId());
-    if (targetFlow == null) {
-      return;
-    }
-
-    if (targetFlow.getEnabled()) {
-      this.onFlowAdded(networkId, curr);
-    } else {
-      this.onFlowDelete(networkId, curr);
-    }
+    this.onFlowAdded(networkId, curr);
   }
 
   @Override
@@ -237,18 +230,26 @@ public class DummyDriver extends Driver {
       return;
     }
 
-    if (targetFlow.getStatus().equals(
-          FlowObject.FlowStatus.ESTABLISHED.toString())) {
-      targetFlow.setStatus(FlowObject.FlowStatus.TEARDOWN.toString());
-      networkIf.putFlow(targetFlow);
-
-      // Driver needs to delete Flow to physical switch here.
-      // Deleting of Flow After completing the physical switch,
-      // to "None".
-
-      targetFlow = getFlow(networkIf, flow.getFlowId());
+    if (!targetFlow.getEnabled()) {
       targetFlow.setStatus(FlowObject.FlowStatus.NONE.toString());
       networkIf.putFlow(targetFlow);
+    } else {
+      if (targetFlow.getStatus().equals(FlowObject.FlowStatus.ESTABLISHING.toString())
+          || targetFlow.getStatus().equals(FlowObject.FlowStatus.ESTABLISHED.toString())) {
+        targetFlow.setStatus(FlowObject.FlowStatus.TEARDOWN.toString());
+        networkIf.putFlow(targetFlow);
+        targetFlow = getFlow(networkIf, flow.getFlowId());
+      }
+
+      if (targetFlow.getStatus().equals(FlowObject.FlowStatus.TEARDOWN.toString())) {
+        // Driver needs to delete Flow to physical switch here.
+        // Deleting of Flow After completing the physical switch,
+        // to "None".
+        log.info(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "deleted Flow: network={}", networkId));
+
+        targetFlow.setStatus(FlowObject.FlowStatus.NONE.toString());
+        networkIf.putFlow(targetFlow);
+      }
     }
   }
 
