@@ -3,6 +3,10 @@ configuration:
   status: warn
   name: Odenos Logging
   packages: com.datastax.logging.appender
+  properties:
+    property:
+      name: log4j2_app.log
+      value: odenos.log
 
   appenders:
     Console:

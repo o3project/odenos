@@ -255,7 +255,7 @@ start_system()
         echo "odenos core system is already running"
         return 1
     fi
-    purge_zk_log odenos_system.log
+    purge_zk_log ${ODENOS_LOG}/log4j2_odenos_system.log
     $JAVA ${ODENOS_OPT} ${ZOOKEEPER_OPT} \
 	-Dlog4j.configurationFile=file:${ODENOS_CONF}/log4j2_java.yaml \
 	-Dlog4j2_app.log=${ODENOS_LOG}/log4j2_odenos_system.log \
