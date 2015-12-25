@@ -218,6 +218,7 @@ purge_zk_log()
     $JAVA -Dlog4j.configuration=file:${ODENOS_CONF}/log_java.conf \
 	  -Dapp.log=${ODENOS_LOG}/$1 \
           -Dlog4j.configurationFile=file:${ODENOS_CONF}/log4j2_java.yaml \
+          -Dlog4j2_app.log=${ODENOS_LOG}/$1 \
 	  org.apache.zookeeper.server.PurgeTxnLog \
 	  ${ZOOKEEPER_LOG} ${ZOOKEEPER_LOG} -n 3
 }

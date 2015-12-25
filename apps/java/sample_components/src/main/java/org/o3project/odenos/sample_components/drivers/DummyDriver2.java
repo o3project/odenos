@@ -460,9 +460,20 @@ public class DummyDriver2 extends Driver {
       final Flow prev,
       final Flow curr,
       final ArrayList<String> attributesList) {
-    log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "called"));
-    this.onFlowAdded(networkId, curr);
 
+    log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "called"));
+
+    NetworkInterface networkIf = networkInterfaces().get(this.network);
+    BasicFlow targetFlow = getFlow(networkIf, curr.getFlowId());
+    if (targetFlow == null) {
+      return;
+    }
+
+    if (targetFlow.getEnabled()) {
+      this.onFlowAdded(networkId, curr);
+    } else {
+      this.onFlowDelete(networkId, curr);
+    }
   }
 
   @Override

@@ -38,8 +38,8 @@ import java.util.ArrayList;
  */
 public class DummyDriver extends Driver {
   private static final Logger log = LogManager.getLogger(DummyDriver.class);
-  private static String network;
   private static final String description = "dummy driver";
+  private String network = null;
 
   /**
    * Constructor.
@@ -177,7 +177,6 @@ public class DummyDriver extends Driver {
   protected void onFlowAdded(
       final String networkId,
       final Flow flow) {
-
     log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "{} : {} ", networkId, flow));
 
     NetworkInterface networkIf = networkInterfaces().get(this.network);
@@ -214,14 +213,24 @@ public class DummyDriver extends Driver {
       final ArrayList<String> attributesList) {
 
     log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "{} prev:{} curr:{}", networkId, prev, curr));
-    this.onFlowAdded(networkId, curr);
+
+    NetworkInterface networkIf = networkInterfaces().get(this.network);
+    BasicFlow targetFlow = getFlow(networkIf, curr.getFlowId());
+    if (targetFlow == null) {
+      return;
+    }
+
+    if (targetFlow.getEnabled()) {
+      this.onFlowAdded(networkId, curr);
+    } else {
+      this.onFlowDelete(networkId, curr);
+    }
   }
 
   @Override
   protected void onFlowDelete(
       final String networkId,
       final Flow flow) {
-
     log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "{} : {} ",networkId, flow));
 
     NetworkInterface networkIf = networkInterfaces().get(this.network);

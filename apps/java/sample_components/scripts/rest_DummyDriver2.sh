@@ -190,6 +190,7 @@ run curl -w "$FORMAT" http://$ADDRESS:10080/driver2/settings/packet_in/timer -X 
 # delete network
 sleep 1
 run curl -w "$FORMAT" http://$ADDRESS:10080/systemmanager/connections/conn2 -X DELETE
+sleep 1
 run curl -w "$FORMAT" http://$ADDRESS:10080/systemmanager/components/driver2 -X DELETE
 run curl -w "$FORMAT" http://$ADDRESS:10080/systemmanager/components/network2 -X DELETE
 

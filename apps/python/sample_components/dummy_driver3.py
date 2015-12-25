@@ -15,6 +15,7 @@
 # limitations under the License.                                           #
 
 import logging
+import time
 
 from org.o3project.odenos.core.component.driver import Driver
 from org.o3project.odenos.core.component.network.flow.flow import Flow
@@ -33,7 +34,7 @@ from org.o3project.odenos.core.component.network.packet.out_packet_added import 
 
 
 class DummyDriver3(Driver):
-    DESCRIPTION = "DummyDriver for python"
+    DESCRIPTION = "DummyDriver 3 for python"
 
     def __init__(self, object_id, dispatcher):
         self.__network_id = None
@@ -101,7 +102,7 @@ class DummyDriver3(Driver):
         self.__unsubscribe_network_component()
         self.__network_id = None
 
-        #Changed ConectionProperty's status.
+        # Changed ConectionProperty's status.
         component_connection.state = ComponentConnection.State.NONE
         self._sys_manager_interface.put_connection(component_connection)
         return
@@ -152,7 +153,19 @@ class DummyDriver3(Driver):
 
     # override
     def _on_flow_update(self, network_id, prev, curr, attrs):
-        self._on_flow_added(network_id, curr)
+        if network_id not in self._network_interfaces:
+            return
+
+        # update flow is status changed
+        network_if = self._network_interfaces[network_id]
+        target_flow = network_if.get_flow(flow.flow_id)
+        if target_flow is None:
+            return
+
+        if target_flow.enabled:
+            self._on_flow_added(network_id, curr)
+        else:
+            self._on_flow_delete(network_id, curr)
 
     # override
     def _on_flow_delete(self, network_id, flow):
@@ -201,5 +214,6 @@ class DummyDriver3(Driver):
         if network_id not in self._network_interfaces:
             return
 
+        time.sleep(0.1)
         network_if = self._network_interfaces[network_id]
         network_if.del_out_packet(out_packet_added.id)

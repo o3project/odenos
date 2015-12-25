@@ -152,7 +152,19 @@ class DummyDriver(Driver):
 
     # override
     def _on_flow_update(self, network_id, prev, curr, attrs):
-        self._on_flow_added(network_id, curr)
+        if network_id not in self._network_interfaces:
+            return
+
+        # update flow is status changed
+        network_if = self._network_interfaces[network_id]
+        target_flow = network_if.get_flow(flow.flow_id)
+        if target_flow is None:
+            return
+
+        if target_flow.enabled:
+            self._on_flow_added(network_id, curr)
+        else:
+            self._on_flow_delete(network_id, curr)
 
     # override
     def _on_flow_delete(self, network_id, flow):
