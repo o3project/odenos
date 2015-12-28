@@ -50,7 +50,7 @@ import java.nio.ByteBuffer;
  */
 public class DummyDriver2 extends Driver {
   private static final Logger log = LogManager.getLogger(DummyDriver2.class);
-  private static String network;
+  private String network;
   private static final String description = "dummy driver 2";
   private static Timer timer;
 

@@ -38,7 +38,7 @@ import java.util.ArrayList;
  */
 public class DummyDriver extends Driver {
   private static final Logger log = LogManager.getLogger(DummyDriver.class);
-  private static String network;
+  private String network;
   private static final String description = "dummy driver";
 
   /**

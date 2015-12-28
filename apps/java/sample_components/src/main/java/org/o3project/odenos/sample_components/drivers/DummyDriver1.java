@@ -40,7 +40,7 @@ import java.util.ArrayList;
  */
 public class DummyDriver1 extends Driver {
   private static final Logger log = LogManager.getLogger(DummyDriver1.class);
-  private static String network;
+  private String network;
   private static final String description = "dummy driver 1";
 
   /**
