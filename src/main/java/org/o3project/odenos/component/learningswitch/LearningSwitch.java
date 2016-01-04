@@ -107,7 +107,7 @@ public class LearningSwitch extends Logic {
     this.pathCalculator = new PathCalculator();
     this.idleTimeout = DEFAULT_IDLE_TIMER;
     this.hardTimeout = DEFAULT_HARD_TIMER;
-    log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "created"));
+    log.debug("created");
   }
 
   /**
@@ -280,7 +280,7 @@ public class LearningSwitch extends Logic {
     try {
       applyEventSubscription();
     } catch (Exception e) {
-      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Recieved Message Exception."), e);
+      log.error("Recieved Message Exception.", e);
     }
   }
 
@@ -296,7 +296,7 @@ public class LearningSwitch extends Logic {
     try {
       applyEventSubscription();
     } catch (Exception e) {
-      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Recieved Message Exception."), e);
+      log.error("Recieved Message Exception.", e);
     }
   }
 
@@ -387,7 +387,7 @@ public class LearningSwitch extends Logic {
       return new Response(Response.BAD_REQUEST, "Error unknown request ");
     }
 
-    log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "received {}", request.path));
+    log.debug("received {}", request.path);
     Response res;
 
     RequestParser<IActionCallback>.ParsedRequest parsed =
@@ -408,7 +408,7 @@ public class LearningSwitch extends Logic {
       res = callback.process(parsed);
       return res;
     } catch (Exception e) {
-      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Error unknown request"));
+      log.error("Error unknown request");
       res = new Response(Response.BAD_REQUEST, "Error unknown request ");
       return res;
     }
@@ -431,7 +431,7 @@ public class LearningSwitch extends Logic {
         respBody.put(mac, vals);
       }
     } catch (Exception e) {
-      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Recieved Message Exception."), e);
+      log.error("Recieved Message Exception.", e);
       return new Response(Response.INTERNAL_SERVER_ERROR, null);
     }
     return new Response(Response.OK, respBody);
@@ -488,7 +488,7 @@ public class LearningSwitch extends Logic {
       }
       keyMac = sb.toString();
     } catch (Exception e) {
-      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Recieved Message Exception."), e);
+      log.error("Recieved Message Exception.", e);
       return new Response(Response.INTERNAL_SERVER_ERROR, null);
     }
     this.fdb.remove(keyMac);
@@ -691,7 +691,7 @@ public class LearningSwitch extends Logic {
     log.debug("");
 
     if (msg.getId() == null) {
-      log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), ">> PacketId does not exist."));
+      log.debug(">> PacketId does not exist.");
       return;
     }
     // Create NetworkInterface
@@ -704,12 +704,12 @@ public class LearningSwitch extends Logic {
       return;
     }
     if (inPacket.getHeader() == null) {
-      log.info(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), ">> InPacket's header does not exist."));
+      log.info(">> InPacket's header does not exist.");
       return;
     }
     if (!inPacket.getHeader().getType().equals(
         OFPFlowMatch.class.getSimpleName())) {
-      log.info(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), ">> InPacket is not 'OFPInPacket'."));
+      log.info(">> InPacket is not 'OFPInPacket'.");
       return;
     }
     OFPFlowMatch header =
@@ -718,7 +718,7 @@ public class LearningSwitch extends Logic {
         || header.getInPort() == null
         || header.getEthDst() == null
         || header.getEthSrc() == null) {
-      log.info(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), ">> Invalid InPacket's header."));
+      log.info(">> Invalid InPacket's header.");
       return;
     }
     // Delete Network's InPacket.
@@ -753,7 +753,7 @@ public class LearningSwitch extends Logic {
       BasicFlow sendFlow =
           createOFPFlow(inPacket, dstPList[0], dstPList[1], path);
       // PUT flow
-      log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Fegisted flow info: {}", this.flows));
+      log.debug("Fegisted flow info: {}", this.flows);
       if (!isRegisteredFlow(sendFlow)) {
         networkIf.putFlow(sendFlow);
         this.flows.put(sendFlow.getFlowId(), sendFlow);
@@ -806,7 +806,7 @@ public class LearningSwitch extends Logic {
     try {
       header = (OFPFlowMatch) inPacket.getHeader();
     } catch (ClassCastException e) {
-      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Recieved Message ClassCastException."), e);
+      log.error("Recieved Message ClassCastException.", e);
       return null;
     }
 
@@ -965,7 +965,7 @@ public class LearningSwitch extends Logic {
         }
       }
     } catch (Exception ex) {
-      log.warn(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Receive Exception."), ex);
+      log.warn("Receive Exception.", ex);
       return false;
     }
     return false;

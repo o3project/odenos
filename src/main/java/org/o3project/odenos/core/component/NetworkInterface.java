@@ -87,7 +87,7 @@ public class NetworkInterface {
       final String nwcId) {
     this.networkId = nwcId;
     this.dispatcher = dispatcher;
-    log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Create NetworkInterface : networkId = ''{}''.", this.networkId));
+    log.debug("Create NetworkInterface : networkId = '{}'.", this.networkId);
   }
 
   /**
@@ -102,7 +102,7 @@ public class NetworkInterface {
     this.networkId = nwcId;
     this.dispatcher = dispatcher;
     this.sourceObjectId = sourceObjectId;
-    log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Create NetworkInterface : networkId = ''{}''.", this.networkId));
+    log.debug("Create NetworkInterface : networkId = '{}'.", this.networkId);
   }
 
   /**
@@ -139,7 +139,7 @@ public class NetworkInterface {
    */
   public final Topology getTopology() {
     String path = TOPOLOGY_PATH;
-    log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), ">>  [networkId : ''{}'']", this.networkId));
+    log.debug(">>  [networkId : '{}']", this.networkId);
     Response resp = getObjectToNetwork(this.networkId, path);
     if (resp == null) {
       return null;
@@ -147,7 +147,7 @@ public class NetworkInterface {
     try {
       return resp.getBody(Topology.class);
     } catch (Exception e) {
-      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Recieved Message Exception."), e);
+      log.error("Recieved Message Exception.", e);
       return null;
     }
   }
@@ -165,7 +165,7 @@ public class NetworkInterface {
    */
   public final Response putTopology(final Topology body) {
     String path = TOPOLOGY_PATH;
-    log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), ">>  [networkId : ''{}'']", this.networkId));
+    log.debug(">>  [networkId : '{}']", this.networkId);
     return putObjectToNetwork(this.networkId, path, body);
   }
 
@@ -188,7 +188,7 @@ public class NetworkInterface {
    */
   public final Response postNode(final Node body) {
     String path = NODES_PATH;
-    log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), ">>  [networkId : ''{}'']", this.networkId));
+    log.debug(">>  [networkId : '{}']", this.networkId);
     return postObjectToNetwork(this.networkId, path, body);
   }
 
@@ -204,7 +204,7 @@ public class NetworkInterface {
    */
   public final Map<String, Node> getNodes() {
     String path = NODES_PATH;
-    log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), ">>  [networkId : ''{}'']", this.networkId));
+    log.debug(">>  [networkId : '{}']", this.networkId);
     Response resp = getObjectToNetwork(this.networkId, path);
     if (resp == null) {
       return null;
@@ -212,7 +212,7 @@ public class NetworkInterface {
     try {
       return resp.getBodyAsMap(Node.class);
     } catch (Exception e) {
-      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Recieved Message Exception."), e);
+      log.error("Recieved Message Exception.", e);
       return null;
     }
   }
@@ -230,7 +230,7 @@ public class NetworkInterface {
    */
   public final Node getNode(final String nodeId) {
     String path = String.format(NODE_PATH, nodeId);
-    log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), ">>  [networkId : ''{}'']", this.networkId));
+    log.debug(">>  [networkId : '{}']", this.networkId);
     Response resp = getObjectToNetwork(this.networkId, path);
     if (resp == null) {
       return null;
@@ -238,7 +238,7 @@ public class NetworkInterface {
     try {
       return resp.getBody(Node.class);
     } catch (Exception e) {
-      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Recieved Message Exception."), e);
+      log.error("Recieved Message Exception.", e);
       return null;
     }
   }
@@ -256,7 +256,7 @@ public class NetworkInterface {
    */
   public final Response putNode(final Node body) {
     String path = String.format(NODE_PATH, body.getId());
-    log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), ">>  [networkId : ''{}'']", this.networkId));
+    log.debug(">>  [networkId : '{}']", this.networkId);
     return putObjectToNetwork(this.networkId, path, body);
   }
 
@@ -274,7 +274,7 @@ public class NetworkInterface {
    */
   public final Response putNodeAttributes(final Node node, final Map<String, String> body) {
     String path = String.format(NODE_PATH + "/attributes", node.getId());
-    log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), ">>  [networkId : ''{}'']", this.networkId));
+    log.debug(">>  [networkId : '{}']", this.networkId);
     return putObjectToNetwork(this.networkId, path, body);
   }
 
@@ -291,7 +291,7 @@ public class NetworkInterface {
    */
   public final Response delNode(final String nodeId) {
     String path = String.format(NODE_PATH, nodeId);
-    log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), ">>  [networkId : ''{}'']", this.networkId));
+    log.debug(">>  [networkId : '{}']", this.networkId);
     return delObjectToNetwork(this.networkId, path);
   }
 
@@ -308,7 +308,7 @@ public class NetworkInterface {
    */
   public final Node getPhysicalNode(final String physicalId) {
     String path = String.format(PHYSICAL_NODES_PATH, physicalId);
-    log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), ">>  [networkId : ''{}'']", this.networkId));
+    log.debug(">>  [networkId : '{}']", this.networkId);
     Response resp = getObjectToNetwork(this.networkId, path);
     if (resp == null) {
       return null;
@@ -316,7 +316,7 @@ public class NetworkInterface {
     try {
       return resp.getBody(Node.class);
     } catch (Exception e) {
-      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Recieved Message Exception."), e);
+      log.error("Recieved Message Exception.", e);
       return null;
     }
   }
@@ -335,7 +335,7 @@ public class NetworkInterface {
   public final Response putPhysicalNode(final Node body) {
     String path = String.format(PHYSICAL_NODES_PATH,
         body.getAttribute(Logic.AttrElements.PHYSICAL_ID));
-    log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), ">>  [networkId : ''{}'']", this.networkId));
+    log.debug(">>  [networkId : '{}']", this.networkId);
     return putObjectToNetwork(this.networkId, path, body);
   }
 
@@ -354,7 +354,7 @@ public class NetworkInterface {
   public final Response putPhysicalNodeAttributes(final Node node, final Map<String, String> body) {
     String path = String.format(PHYSICAL_NODES_PATH + "/attributes",
                                 node.getAttribute(Logic.AttrElements.PHYSICAL_ID));
-    log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), ">>  [networkId : ''{}'']", this.networkId));
+    log.debug(">>  [networkId : '{}']", this.networkId);
     return putObjectToNetwork(this.networkId, path, body);
   }
 
@@ -371,7 +371,7 @@ public class NetworkInterface {
    */
   public final Response delPhysicalNode(final String physicalId) {
     String path = String.format(PHYSICAL_NODES_PATH, physicalId);
-    log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), ">>  [networkId : ''{}'']", this.networkId));
+    log.debug(">>  [networkId : '{}']", this.networkId);
     return delObjectToNetwork(this.networkId, path);
   }
 
@@ -394,7 +394,7 @@ public class NetworkInterface {
    */
   public final Response postPort(final Port body) {
     String path = String.format(PORTS_PATH, body.getNode());
-    log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), ">>  [networkId : ''{}'']", this.networkId));
+    log.debug(">>  [networkId : '{}']", this.networkId);
     return postObjectToNetwork(this.networkId, path, body);
   }
 
@@ -411,7 +411,7 @@ public class NetworkInterface {
    */
   public final Map<String, Port> getPorts(String nodeId) {
     String path = String.format(PORTS_PATH, nodeId);
-    log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), ">>  [networkId : ''{}'']", this.networkId));
+    log.debug(">>  [networkId : '{}']", this.networkId);
     Response resp = getObjectToNetwork(this.networkId, path);
     if (resp == null) {
       return null;
@@ -419,7 +419,7 @@ public class NetworkInterface {
     try {
       return resp.getBodyAsMap(Port.class);
     } catch (Exception e) {
-      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Recieved Message Exception."), e);
+      log.error("Recieved Message Exception.", e);
       return null;
     }
   }
@@ -439,7 +439,7 @@ public class NetworkInterface {
   public final Port getPort(
       final String nodeId, final String portId) {
     String path = String.format(PORT_PATH, nodeId, portId);
-    log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), ">>  [networkId : ''{}'']", this.networkId));
+    log.debug(">>  [networkId : '{}']", this.networkId);
     Response resp = getObjectToNetwork(this.networkId, path);
     if (resp == null) {
       return null;
@@ -447,7 +447,7 @@ public class NetworkInterface {
     try {
       return resp.getBody(Port.class);
     } catch (Exception e) {
-      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Recieved Message Exception."), e);
+      log.error("Recieved Message Exception.", e);
       return null;
     }
   }
@@ -466,7 +466,7 @@ public class NetworkInterface {
   public final Response putPort(final Port body) {
     String path =
         String.format(PORT_PATH, body.getNode(), body.getId());
-    log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), ">>  [networkId : ''{}'']", this.networkId));
+    log.debug(">>  [networkId : '{}']", this.networkId);
     return putObjectToNetwork(this.networkId, path, body);
   }
 
@@ -485,7 +485,7 @@ public class NetworkInterface {
   public final Response putPortAttributes(final Port port, final Map<String, String> body) {
     String path =
         String.format(PORT_PATH + "/attributes", port.getNode(), port.getId());
-    log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), ">>  [networkId : ''{}'']", this.networkId));
+    log.debug(">>  [networkId : '{}']", this.networkId);
     return putObjectToNetwork(this.networkId, path, body);
   }
 
@@ -504,7 +504,7 @@ public class NetworkInterface {
   public final Response delPort(
       final String nodeId, final String portId) {
     String path = String.format(PORT_PATH, nodeId, portId);
-    log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), ">>  [networkId : ''{}'']", this.networkId));
+    log.debug(">>  [networkId : '{}']", this.networkId);
     return delObjectToNetwork(this.networkId, path);
   }
 
@@ -521,7 +521,7 @@ public class NetworkInterface {
    */
   public final Port getPhysicalPort(final String physicalId) {
     String path = String.format(PHYSICAL_PORTS_PATH, physicalId);
-    log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), ">>  [networkId : ''{}'']", this.networkId));
+    log.debug(">>  [networkId : '{}']", this.networkId);
     Response resp = getObjectToNetwork(this.networkId, path);
     if (resp == null) {
       return null;
@@ -529,7 +529,7 @@ public class NetworkInterface {
     try {
       return resp.getBody(Port.class);
     } catch (Exception e) {
-      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Recieved Message Exception."), e);
+      log.error("Recieved Message Exception.", e);
       return null;
     }
   }
@@ -548,7 +548,7 @@ public class NetworkInterface {
   public final Response putPhysicalPort(final Port body) {
     String path = String.format(PHYSICAL_PORTS_PATH,
         body.getAttribute(Logic.AttrElements.PHYSICAL_ID));
-    log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), ">>  [networkId : ''{}'']", this.networkId));
+    log.debug(">>  [networkId : '{}']", this.networkId);
     return putObjectToNetwork(this.networkId, path, body);
   }
 
@@ -567,7 +567,7 @@ public class NetworkInterface {
   public final Response putPhysicalPortAttributes(final Port port, final Map<String, String> body) {
     String path = String.format(PHYSICAL_PORTS_PATH + "/attributes",
         port.getAttribute(Logic.AttrElements.PHYSICAL_ID));
-    log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), ">>  [networkId : ''{}'']", this.networkId));
+    log.debug(">>  [networkId : '{}']", this.networkId);
     return putObjectToNetwork(this.networkId, path, body);
   }
 
@@ -584,7 +584,7 @@ public class NetworkInterface {
    */
   public final Response delPhysicalPort(final String physicalId) {
     String path = String.format(PHYSICAL_PORTS_PATH, physicalId);
-    log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), ">>  [networkId : ''{}'']", this.networkId));
+    log.debug(">>  [networkId : '{}']", this.networkId);
 
     return delObjectToNetwork(this.networkId, path);
   }
@@ -608,7 +608,7 @@ public class NetworkInterface {
    */
   public final Response postLink(final Link body) {
     String path = LINKS_PATH;
-    log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), ">>  [networkId : ''{}'']", this.networkId));
+    log.debug(">>  [networkId : '{}']", this.networkId);
     return postObjectToNetwork(this.networkId, path, body);
   }
 
@@ -624,7 +624,7 @@ public class NetworkInterface {
    */
   public final Map<String, Link> getLinks() {
     String path = LINKS_PATH;
-    log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), ">>  [networkId : ''{}'']", this.networkId));
+    log.debug(">>  [networkId : '{}']", this.networkId);
     Response resp = getObjectToNetwork(this.networkId, path);
     if (resp == null) {
       return null;
@@ -632,7 +632,7 @@ public class NetworkInterface {
     try {
       return resp.getBodyAsMap(Link.class);
     } catch (Exception e) {
-      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Recieved Message Exception."), e);
+      log.error("Recieved Message Exception.", e);
       return null;
     }
   }
@@ -650,7 +650,7 @@ public class NetworkInterface {
    */
   public final Link getLink(final String linkId) {
     String path = String.format(LINK_PATH, linkId);
-    log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), ">>  [networkId : ''{}'']", this.networkId));
+    log.debug(">>  [networkId : '{}']", this.networkId);
     Response resp = getObjectToNetwork(this.networkId, path);
     if (resp == null) {
       return null;
@@ -658,7 +658,7 @@ public class NetworkInterface {
     try {
       return resp.getBody(Link.class);
     } catch (Exception e) {
-      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Recieved Message Exception."), e);
+      log.error("Recieved Message Exception.", e);
       return null;
     }
   }
@@ -676,7 +676,7 @@ public class NetworkInterface {
    */
   public final Response putLink(final Link body) {
     String path = String.format(LINK_PATH, body.getId());
-    log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), ">>  [networkId : ''{}'']", this.networkId));
+    log.debug(">>  [networkId : '{}']", this.networkId);
     return putObjectToNetwork(this.networkId, path, body);
   }
 
@@ -694,7 +694,7 @@ public class NetworkInterface {
    */
   public final Response putLinkAttributes(final Link link, final Map<String, String> body) {
     String path = String.format(LINK_PATH + "/attributes", link.getId());
-    log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), ">>  [networkId : ''{}'']", this.networkId));
+    log.debug(">>  [networkId : '{}']", this.networkId);
     return putObjectToNetwork(this.networkId, path, body);
   }
 
@@ -711,7 +711,7 @@ public class NetworkInterface {
    */
   public final Response delLink(final String linkId) {
     String path = String.format(LINK_PATH, linkId);
-    log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), ">>  [networkId : ''{}'']", this.networkId));
+    log.debug(">>  [networkId : '{}']", this.networkId);
     return delObjectToNetwork(this.networkId, path);
   }
 
@@ -734,7 +734,7 @@ public class NetworkInterface {
    */
   public final Response postFlow(final Flow body) {
     String path = FLOWS_PATH;
-    log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), ">>  [networkId : ''{}'']", this.networkId));
+    log.debug(">>  [networkId : '{}']", this.networkId);
     return postObjectToNetwork(this.networkId, path, body);
   }
 
@@ -750,7 +750,7 @@ public class NetworkInterface {
    */
   public final FlowSet getFlowSet() {
     String path = FLOWS_PATH;
-    log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), ">>  [networkId : ''{}'']", this.networkId));
+    log.debug(">>  [networkId : '{}']", this.networkId);
     Response resp = getObjectToNetwork(this.networkId, path);
     if (resp == null) {
       return null;
@@ -758,7 +758,7 @@ public class NetworkInterface {
     try {
       return resp.getBody(FlowSet.class);
     } catch (Exception e) {
-      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Recieved Message Exception."), e);
+      log.error("Recieved Message Exception.", e);
       return null;
     }
   }
@@ -776,7 +776,7 @@ public class NetworkInterface {
    */
   public final Flow getFlow(final String flowId) {
     String path = String.format(FLOW_PATH, flowId);
-    log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), ">>  [networkId : ''{}'']", this.networkId));
+    log.debug(">>  [networkId : '{}']", this.networkId);
     Response resp = getObjectToNetwork(this.networkId, path);
     if (resp == null) {
       return null;
@@ -784,7 +784,7 @@ public class NetworkInterface {
     try {
       return FlowObject.readFlowMessageFrom(resp.getBodyValue());
     } catch (Exception e) {
-      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Recieved Message Exception."), e);
+      log.error("Recieved Message Exception.", e);
       return null;
     }
   }
@@ -802,7 +802,7 @@ public class NetworkInterface {
    */
   public final Response putFlow(final Flow body) {
     String path = String.format(FLOW_PATH, body.getFlowId());
-    log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), ">>  [networkId : ''{}''] {}", this.networkId, body.getFlowId()));
+    log.debug(">>  [networkId : '{}'] {}", this.networkId, body.getFlowId());
     return putObjectToNetwork(this.networkId, path, body);
   }
 
@@ -820,7 +820,7 @@ public class NetworkInterface {
    */
   public final Response putFlowAttributes(final Flow flow, final Map<String, String> body) {
     String path = String.format(FLOW_PATH + "/attributes", flow.getFlowId());
-    log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), ">>  [networkId : ''{}''] {}", this.networkId, flow.getFlowId()));
+    log.debug(">>  [networkId : '{}'] {}", this.networkId, flow.getFlowId());
     return putObjectToNetwork(this.networkId, path, body);
   }
 
@@ -837,7 +837,7 @@ public class NetworkInterface {
    */
   public final Response delFlow(final String flowId) {
     String path = String.format(FLOW_PATH, flowId);
-    log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), ">>  [networkId : ''{}''] {}", this.networkId, flowId));
+    log.debug(">>  [networkId : '{}'] {}", this.networkId, flowId);
 
     Flow flow = getFlow(flowId);
     if (flow == null) {
@@ -848,11 +848,11 @@ public class NetworkInterface {
       Response resp = sendRequest(this.networkId,
           Request.Method.DELETE, path, LogMessage.getSavedTxid(), flow);
       if (resp.isError("DELETE")) {
-        log.warn(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "invalid DELETE:{}", resp.statusCode));
+        log.warn("invalid DELETE:{}", resp.statusCode);
       }
       return resp;
     } catch (Exception e) {
-      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Recieved Message Exception."), e);
+      log.error("Recieved Message Exception.", e);
       return new Response(Response.INTERNAL_SERVER_ERROR, null);
     }
   }
@@ -875,7 +875,7 @@ public class NetworkInterface {
    */
   public final PacketStatus getPackets() {
     String path = PACKETS_PATH;
-    log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), ">>  [networkId : ''{}'']", this.networkId));
+    log.debug(">>  [networkId : '{}']", this.networkId);
     Response resp = getObjectToNetwork(this.networkId, path);
     if (resp == null) {
       return null;
@@ -883,7 +883,7 @@ public class NetworkInterface {
     try {
       return resp.getBody(PacketStatus.class);
     } catch (Exception e) {
-      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Recieved Message Exception."), e);
+      log.error("Recieved Message Exception.", e);
       return null;
     }
   }
@@ -901,7 +901,7 @@ public class NetworkInterface {
    */
   public final Response postInPacket(final InPacket body) {
     String path = INPACKETS_PATH;
-    log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), ">>  [networkId : ''{}'']", this.networkId));
+    log.debug(">>  [networkId : '{}']", this.networkId);
     return postObjectToNetwork(this.networkId, path, body);
   }
 
@@ -917,7 +917,7 @@ public class NetworkInterface {
    */
   public final PacketStatus getInPackets() {
     String path = INPACKETS_PATH;
-    log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), ">>  [networkId : ''{}'']", this.networkId));
+    log.debug(">>  [networkId : '{}']", this.networkId);
     Response resp = getObjectToNetwork(this.networkId, path);
     if (resp == null) {
       return null;
@@ -925,7 +925,7 @@ public class NetworkInterface {
     try {
       return resp.getBody(PacketStatus.class);
     } catch (Exception e) {
-      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Recieved Message Exception."), e);
+      log.error("Recieved Message Exception.", e);
       return null;
     }
   }
@@ -942,7 +942,7 @@ public class NetworkInterface {
    */
   public final Response delInPackets() {
     String path = INPACKETS_PATH;
-    log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), ">>  [networkId : ''{}'']", this.networkId));
+    log.debug(">>  [networkId : '{}']", this.networkId);
     return delObjectToNetwork(this.networkId, path);
   }
 
@@ -958,7 +958,7 @@ public class NetworkInterface {
    */
   public final InPacket getInPacketHead() {
     String path = INPACKETS_HEAD_PATH;
-    log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), ">>  [networkId : ''{}'']", this.networkId));
+    log.debug(">>  [networkId : '{}']", this.networkId);
     Response resp = getObjectToNetwork(this.networkId, path);
     if (resp == null) {
       return null;
@@ -966,7 +966,7 @@ public class NetworkInterface {
     try {
       return PacketObject.readInPacketFrom(resp.getBodyValue());
     } catch (Exception e) {
-      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Recieved Message Exception."), e);
+      log.error("Recieved Message Exception.", e);
       return null;
     }
   }
@@ -983,7 +983,7 @@ public class NetworkInterface {
    */
   public final Response delInPacketHead() {
     String path = INPACKETS_HEAD_PATH;
-    log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), ">>  [networkId : ''{}'']", this.networkId));
+    log.debug(">>  [networkId : '{}']", this.networkId);
     return delObjectToNetwork(this.networkId, path);
   }
 
@@ -1000,7 +1000,7 @@ public class NetworkInterface {
    */
   public final InPacket getInPacket(final String packetId) {
     String path = String.format(INPACKET_PATH, packetId);
-    log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), ">>  [networkId : ''{}'']", this.networkId));
+    log.debug(">>  [networkId : '{}']", this.networkId);
     Response resp = getObjectToNetwork(this.networkId, path);
     if (resp == null) {
       return null;
@@ -1008,7 +1008,7 @@ public class NetworkInterface {
     try {
       return PacketObject.readInPacketFrom(resp.getBodyValue());
     } catch (Exception e) {
-      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Recieved Message Exception."), e);
+      log.error("Recieved Message Exception.", e);
       return null;
     }
   }
@@ -1026,7 +1026,7 @@ public class NetworkInterface {
    */
   public final Response delInPacket(final String id) {
     String path = String.format(INPACKET_PATH, id);
-    log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), ">>  [networkId : ''{}'']", this.networkId));
+    log.debug(">>  [networkId : '{}']", this.networkId);
     return delObjectToNetwork(this.networkId, path);
   }
 
@@ -1043,7 +1043,7 @@ public class NetworkInterface {
    */
   public final Response postOutPacket(final OutPacket body) {
     String path = OUTPACKETS_PATH;
-    log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), ">>  [networkId : ''{}'']", this.networkId));
+    log.debug(">>  [networkId : '{}']", this.networkId);
     return postObjectToNetwork(this.networkId, path, body);
   }
 
@@ -1059,7 +1059,7 @@ public class NetworkInterface {
    */
   public final PacketStatus getOutPackets() {
     String path = OUTPACKETS_PATH;
-    log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), ">>  [networkId : ''{}'']", this.networkId));
+    log.debug(">>  [networkId : '{}']", this.networkId);
     Response resp = getObjectToNetwork(this.networkId, path);
     if (resp == null) {
       return null;
@@ -1067,7 +1067,7 @@ public class NetworkInterface {
     try {
       return resp.getBody(PacketStatus.class);
     } catch (Exception e) {
-      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Recieved Message Exception."), e);
+      log.error("Recieved Message Exception.", e);
       return null;
     }
   }
@@ -1084,7 +1084,7 @@ public class NetworkInterface {
    */
   public final Response delOutPackets() {
     String path = OUTPACKETS_PATH;
-    log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), ">>  [networkId : ''{}'']", this.networkId));
+    log.debug(">>  [networkId : '{}']", this.networkId);
     return delObjectToNetwork(this.networkId, path);
   }
 
@@ -1099,7 +1099,7 @@ public class NetworkInterface {
    */
   public final OutPacket getOutPacketHead() {
     String path = OUTPACKETS_HEAD_PATH;
-    log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), ">>  [networkId : ''{}'']", this.networkId));
+    log.debug(">>  [networkId : '{}']", this.networkId);
     Response resp = getObjectToNetwork(this.networkId, path);
     if (resp == null) {
       return null;
@@ -1107,7 +1107,7 @@ public class NetworkInterface {
     try {
       return PacketObject.readOutPacketFrom(resp.getBodyValue());
     } catch (Exception e) {
-      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Recieved Message Exception."), e);
+      log.error("Recieved Message Exception.", e);
       return null;
     }
   }
@@ -1123,7 +1123,7 @@ public class NetworkInterface {
    */
   public final Response delOutPacketHead() {
     String path = OUTPACKETS_HEAD_PATH;
-    log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), ">>  [networkId : ''{}'']", this.networkId));
+    log.debug(">>  [networkId : '{}']", this.networkId);
     return delObjectToNetwork(this.networkId, path);
   }
 
@@ -1139,7 +1139,7 @@ public class NetworkInterface {
    */
   public final OutPacket getOutPacket(final String packetId) {
     String path = String.format(OUTPACKET_PATH, packetId);
-    log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), ">>  [networkId : ''{}'']", this.networkId));
+    log.debug(">>  [networkId : '{}']", this.networkId);
     Response resp = getObjectToNetwork(this.networkId, path);
     if (resp == null) {
       return null;
@@ -1147,7 +1147,7 @@ public class NetworkInterface {
     try {
       return PacketObject.readOutPacketFrom(resp.getBodyValue());
     } catch (Exception e) {
-      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Recieved Message Exception."), e);
+      log.error("Recieved Message Exception.", e);
       return null;
     }
   }
@@ -1166,7 +1166,7 @@ public class NetworkInterface {
   public final Response delOutPacket(
       final String id) {
     String path = String.format(OUTPACKET_PATH, id);
-    log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), ">>  [networkId : ''{}'']", this.networkId));
+    log.debug(">>  [networkId : '{}']", this.networkId);
     return delObjectToNetwork(this.networkId, path);
   }
 
@@ -1183,7 +1183,7 @@ public class NetworkInterface {
    */
   public final Response putAttributeOfNode(
       final Map<String, String> attributes) {
-    log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), ">>  [networkId : ''{}'']", this.networkId));
+    log.debug(">>  [networkId : '{}']", this.networkId);
 
     Response resp = new Response(Response.OK, null);
     if (attributes == null || attributes.size() == 0) {
@@ -1211,7 +1211,7 @@ public class NetworkInterface {
         }
       }
     } catch (Exception e) {
-      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Recieved Message Exception."), e);
+      log.error("Recieved Message Exception.", e);
       return new Response(Response.INTERNAL_SERVER_ERROR, null);
     }
     return resp;
@@ -1222,7 +1222,7 @@ public class NetworkInterface {
    * @return list of responses.
    */
   public final List<Response> putStatusFaildAllFlow() {
-    log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), ">>  [networkId : ''{}'']", this.networkId));
+    log.debug(">>  [networkId : '{}']", this.networkId);
 
     List<Response> resps = new ArrayList<Response>();
     FlowSet flowSet = this.getFlowSet();
@@ -1244,7 +1244,7 @@ public class NetworkInterface {
    * @return list of response.
    */
   public final List<Response> deleteAllFlow() {
-    log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), ">>  [networkId : ''{}'']", this.networkId));
+    log.debug(">>  [networkId : '{}']", this.networkId);
 
     List<Response> resps = new ArrayList<Response>();
     FlowSet flowSet = this.getFlowSet();
@@ -1264,7 +1264,7 @@ public class NetworkInterface {
    * @return list of response.
    */
   public final List<Response> deleteTopology() {
-    log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), ">>  [networkId : ''{}'']", this.networkId));
+    log.debug(">>  [networkId : '{}']", this.networkId);
 
     List<Response> resps = new ArrayList<Response>();
     Topology topology = this.getTopology();
@@ -1327,34 +1327,34 @@ public class NetworkInterface {
 
   private Response postObjectToNetwork(
       final String nwcId, final String path, final Object body) {
-    log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), ">>  [networkId : ''{}'']", this.networkId));
+    log.debug(">>  [networkId : '{}']", this.networkId);
 
     try {
       Response resp = sendRequest(nwcId, Request.Method.POST, path, LogMessage.getSavedTxid(), body);
       if (resp.isError("POST")) {
-        log.warn(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "invalid POST({}) to {}: ''{}'' {}",
-            resp.statusCode, nwcId, path, resp.getBodyValue()));
+        log.warn("invalid POST({}) to {}: '{}' {}",
+            resp.statusCode, nwcId, path, resp.getBodyValue());
       }
       return resp;
     } catch (Exception e) {
-      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Recieved Message Exception."), e);
+      log.error("Recieved Message Exception.", e);
       return new Response(Response.INTERNAL_SERVER_ERROR, null);
     }
   }
 
   private Response putObjectToNetwork(
       final String nwcId, final String path, final Object body) {
-    log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), ">>  [networkId : ''{}'']", this.networkId));
+    log.debug(">>  [networkId : '{}']", this.networkId);
 
     try {
       Response resp = sendRequest(nwcId, Request.Method.PUT, path, LogMessage.getSavedTxid(), body);
       if (resp.isError("PUT")) {
-        log.warn(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "invalid PUT({}) to {}: ''{}'' {}",
-            resp.statusCode, nwcId, path, resp.getBodyValue()));
+        log.warn("invalid PUT({}) to {}: '{}' {}",
+            resp.statusCode, nwcId, path, resp.getBodyValue());
       }
       return resp;
     } catch (Exception e) {
-      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Recieved Message Exception."), e);
+      log.error("Recieved Message Exception.", e);
       return new Response(Response.INTERNAL_SERVER_ERROR, null);
     }
   }
@@ -1362,50 +1362,50 @@ public class NetworkInterface {
   private Response delObjectToNetwork(
       final String nwcId,
       final String path) {
-    log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), ">>  [networkId : ''{}'']", this.networkId));
+    log.debug(">>  [networkId : '{}']", this.networkId);
 
     try {
       Response resp = sendRequest(nwcId, Request.Method.DELETE, path, LogMessage.getSavedTxid(),
           null);
       if (resp.isError("DELETE")) {
-        log.warn(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "invalid DELETE({}) to {}: ''{}'' {}",
-            resp.statusCode, nwcId, path, resp.getBodyValue()));
+        log.warn("invalid DELETE({}) to {}: '{}' {}",
+            resp.statusCode, nwcId, path, resp.getBodyValue());
       }
       return resp;
     } catch (Exception e) {
-      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Recieved Message Exception."), e);
+      log.error("Recieved Message Exception.", e);
       return new Response(Response.INTERNAL_SERVER_ERROR, null);
     }
   }
 
   private Response getObjectToNetwork(
       String nwcId, String path) {
-    log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), ">>  [networkId : ''{}'']", this.networkId));
+    log.debug(">>  [networkId : '{}']", this.networkId);
 
     try {
       Response resp = sendRequest(nwcId, Request.Method.GET, path, LogMessage.getSavedTxid(), null);
       if (resp.isError("GET")) {
-        log.warn(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "invalid GET({}) to {}: ''{}'' {}",
-            resp.statusCode, nwcId, path, resp.getBodyValue()));
+        log.warn("invalid GET({}) to {}: '{}' {}",
+            resp.statusCode, nwcId, path, resp.getBodyValue());
         return null;
       }
       return resp;
     } catch (Exception e) {
-      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Recieved Message Exception."), e);
+      log.error("Recieved Message Exception.", e);
       return new Response(Response.INTERNAL_SERVER_ERROR, null);
     }
   }
 
   private Response sendRequest(final String objId,
       final Request.Method method, final String path, final String txid, final Object body) {
-    log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), ">>  [networkId : ''{}'']", this.networkId));
+    log.debug(">>  [networkId : '{}']", this.networkId);
 
     Response rsp = null;
     Request req = new Request(objId, method, path, txid, body);
     try {
       rsp = this.dispatcher.requestSync(req, sourceObjectId);
     } catch (Exception e) {
-      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Recieved Message Exception."), e);
+      log.error("Recieved Message Exception.", e);
       return new Response(Response.INTERNAL_SERVER_ERROR, null);
     }
     return rsp;

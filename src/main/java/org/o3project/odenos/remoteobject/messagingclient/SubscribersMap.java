@@ -98,7 +98,7 @@ public class SubscribersMap {
           return false;
         }
       } else {
-        log.warn(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "channel already unregistered"));
+        log.warn("channel already unregistered");
         return false;
       }
     }

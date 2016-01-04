@@ -62,12 +62,12 @@ public abstract class Boundary extends OdenosMessage {
   public Boundary(String id, String type) {
 
     if (StringUtils.isBlank(id)) {
-      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "id is null"));
+      log.error("id is null");
       throw new IllegalArgumentException("id is null");
     }
 
     if (StringUtils.isBlank(type)) {
-      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "type is null"));
+      log.error("type is null");
       throw new IllegalArgumentException("type is null");
     }
 

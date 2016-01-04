@@ -263,7 +263,7 @@ public class LinkLayerizerBoundary extends Boundary implements Serializable {
       return true;
 
     } catch (IllegalArgumentException ex) {
-      log.warn(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), ex.getMessage()), ex);
+      log.warn(ex.getMessage(), ex);
       return false;
     }
   }
@@ -323,7 +323,7 @@ public class LinkLayerizerBoundary extends Boundary implements Serializable {
       return true;
 
     } catch (IllegalArgumentException ex) {
-      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), ex.getMessage()), ex);
+      log.error(ex.getMessage(), ex);
       return false;
     }
   }
@@ -335,7 +335,7 @@ public class LinkLayerizerBoundary extends Boundary implements Serializable {
   @Override
   public boolean writeValueSub(Map<String, Value> values) {
     if (values == null) {
-      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "values is null"));
+      log.error("values is null");
       throw new IllegalArgumentException("values is null");
     }
 

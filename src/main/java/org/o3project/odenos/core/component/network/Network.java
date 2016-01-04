@@ -107,9 +107,8 @@ public class Network extends Component {
                     "false"))) {
           verbosePortEvent = Boolean.valueOf(value);
         } else {
-          log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), 
-              "{} is wrong as a value of a key {}. expect true or false.",
-              value, key));
+          log.error("{} is wrong as a value of a key {}. expect true or false.",
+              value, key);
         }
       }
 
@@ -120,9 +119,8 @@ public class Network extends Component {
                     "false"))) {
           verboseLinkEvent = Boolean.valueOf(value);
         } else {
-          log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(),
-              "{} is wrong as a value of a key {}. expect true or false.",
-              value, key));
+          log.error("{} is wrong as a value of a key {}. expect true or false.",
+              value, key);
         }
       }
 
@@ -189,19 +187,16 @@ public class Network extends Component {
     Response res;
 
     try {
-      log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Received request : {}, {} {}",
-          getObjectId(), request.method, request.path));
-      log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Received body    : {}, {}", getObjectId(),
-          request.getBodyValue()));
+      log.debug("Received request : {}, {} {}", getObjectId(), request.method, request.path);
+      log.debug("Received body    : {}, {}", getObjectId(), request.getBodyValue());
       RequestParser<IActionCallback>.ParsedRequest parsed = parser
           .parse(request);
       IActionCallback callback = parsed.getResult();
       res = callback.process(parsed);
       return res;
     } catch (Exception e) {
-      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(),
-          "Exception in onRequest() : [case:{}] [msg:{}]",
-          request.path, e.getClass().getSimpleName()));
+      log.error("Exception in onRequest() : [case:{}] [msg:{}]",
+          request.path, e.getClass().getSimpleName());
       res = createErrorResponse(Response.BAD_REQUEST,
           "Error while processing : [" + request.method + "] "
               + request.path);

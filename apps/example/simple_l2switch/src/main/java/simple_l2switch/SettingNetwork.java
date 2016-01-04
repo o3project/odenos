@@ -51,7 +51,7 @@ public class SettingNetwork extends StartSimpleL2Switch {
       String txid = LogMessage.createTxid();
       LogMessage.setSavedTxid(txid);
 
-      log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Start initialization..."));
+      log.debug("Start initialization...");
 
         // /////////////////////////////////////
         // Set MessageDispatcher.

@@ -132,7 +132,7 @@ public class RedisClient implements Closeable {
         outputStream = new RedisOutputStream(socket.getOutputStream());
         inputStream = new RedisInputStream(socket.getInputStream());
         if (log.isDebugEnabled()) {
-          log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "host: {}, port: {}", host, port));
+          log.debug("host: {}, port: {}", host, port);
         }
       } catch (IOException e) {
         throw new JedisConnectionException(e);

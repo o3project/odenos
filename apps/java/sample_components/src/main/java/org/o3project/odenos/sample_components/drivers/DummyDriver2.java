@@ -73,7 +73,7 @@ public class DummyDriver2 extends Driver {
       final MessageDispatcher dispatcher) throws Exception {
     super(objectId, baseUri, dispatcher);
     resetEventSubscription();
-    log.info(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "created."));
+    log.info("created.");
   }
 
   /**
@@ -87,7 +87,7 @@ public class DummyDriver2 extends Driver {
       final MessageDispatcher dispatcher) throws Exception {
     super(objectId, dispatcher);
     resetEventSubscription();
-    log.info(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "created."));
+    log.info("created.");
   }
 
   /**
@@ -107,7 +107,7 @@ public class DummyDriver2 extends Driver {
   @Override
   protected final boolean onConnectionChangedAddedPre(
       final ComponentConnectionChanged msg) {
-    log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "called"));
+    log.debug("called");
 
     if (!msg.curr().getObjectType()
         .equals(ComponentConnectionLogicAndNetwork.TYPE)) {
@@ -133,7 +133,7 @@ public class DummyDriver2 extends Driver {
   @Override
   protected final void onConnectionChangedAdded(
       final ComponentConnectionChanged msg) {
-    log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "called"));
+    log.debug("called");
 
     ComponentConnection curr = msg.curr();
     this.network = curr.getProperty(
@@ -170,7 +170,7 @@ public class DummyDriver2 extends Driver {
   @Override
   protected final void onConnectionChangedDelete(
       final ComponentConnectionChanged message) {
-    log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "called"));
+    log.debug("called");
 
     ComponentConnection curr = message.curr();
     // Changed ConectionProperty's status.
@@ -188,7 +188,7 @@ public class DummyDriver2 extends Driver {
   }
 
   private void subscribeNetworkComponent() {
-    log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "called"));
+    log.debug("called");
 
     addEntryEventSubscription(FLOW_CHANGED, this.network);
     addEntryEventSubscription(OUT_PACKET_ADDED, this.network);
@@ -199,12 +199,12 @@ public class DummyDriver2 extends Driver {
     try {
       applyEventSubscription();
     } catch (Exception e) {
-      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Recieved Message Exception."), e);
+      log.error("Recieved Message Exception.", e);
     }
   }
 
   private void unsubscribeNetworkComponent() {
-    log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "called"));
+    log.debug("called");
     removeEntryEventSubscription(FLOW_CHANGED, this.network);
     removeEntryEventSubscription(OUT_PACKET_ADDED, this.network);
     // removeEntryEventSubscription(IN_PACKET_ADDED, this.network);
@@ -212,7 +212,7 @@ public class DummyDriver2 extends Driver {
     try {
       applyEventSubscription();
     } catch (Exception e) {
-      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Recieved Message Exception."), e);
+      log.error("Recieved Message Exception.", e);
     }
   }
 
@@ -238,8 +238,7 @@ public class DummyDriver2 extends Driver {
     }
 
     packetId = String.format("%010d", count - 1);
-    log.info(LogMessage.buildLogMessage(LogMessage.getSavedTxid(),
-      "dummyPacketIn: packetId={}", packetId));
+    log.info("dummyPacketIn: packetId={}", packetId);
     BasicFlowMatch header = new BasicFlowMatch(nodeId, portId);
     NetworkInterface networkIf = networkInterfaces().get(network);
 
@@ -253,7 +252,7 @@ public class DummyDriver2 extends Driver {
   protected void onFlowAdded(
       final String networkId,
       final Flow flow) {
-    log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "{} : {} ", networkId, flow));
+    log.debug("{} : {} ", networkId, flow);
 
     NetworkInterface networkIf = networkInterfaces().get(this.network);
     BasicFlow targetFlow = getFlow(networkIf, flow.getFlowId());
@@ -271,7 +270,7 @@ public class DummyDriver2 extends Driver {
       // Driver needs to set Flow to physical switch here.
       // Setting of Flow After completing the physical switch,
       // to "Established".
-      log.info(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "added Flow: network={}, flow=''{}''", networkId, targetFlow.toString()));
+      log.info("added Flow: network={}, flow='{}'", networkId, targetFlow.toString());
 
       targetFlow = getFlow(networkIf, flow.getFlowId());
       targetFlow.setStatus(FlowObject.FlowStatus.ESTABLISHED.toString());
@@ -285,7 +284,7 @@ public class DummyDriver2 extends Driver {
       final Flow prev,
       final Flow curr,
       final ArrayList<String> attributesList) {
-    log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "called"));
+    log.debug("called");
     this.onFlowAdded(networkId, curr);
 
   }
@@ -294,7 +293,7 @@ public class DummyDriver2 extends Driver {
   protected void onFlowDelete(
       final String networkId,
       final Flow flow) {
-    log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "{} : {} ",networkId, flow));
+    log.debug("{} : {} ",networkId, flow);
 
     NetworkInterface networkIf = networkInterfaces().get(this.network);
     BasicFlow targetFlow = getFlow(networkIf, flow.getFlowId());
@@ -310,7 +309,7 @@ public class DummyDriver2 extends Driver {
       // Driver needs to delete Flow to physical switch here.
       // Deleting of Flow After completing the physical switch,
       // to "None".
-      log.info(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "deleted Flow: network={}", networkId));
+      log.info("deleted Flow: network={}", networkId);
 
       targetFlow = getFlow(networkIf, flow.getFlowId());
       targetFlow.setStatus(FlowObject.FlowStatus.NONE.toString());
@@ -322,11 +321,11 @@ public class DummyDriver2 extends Driver {
   protected void onInPacketAdded(
       final String networkId,
       final InPacketAdded msg) {
-    log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "called"));
+    log.debug("called");
 
     if (onInPacketAddedPre(networkId, msg)) {
       String packetId = msg.getId();
-      log.info(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "receive InPacket: packetId={}", packetId));
+      log.info("receive InPacket: packetId={}", packetId);
       msleep(100);		// @@ for DEBUG
       HashMap<String, Response> respList = conversion(networkId, msg);
       onInPacketAddedPost(networkId, msg, respList);
@@ -337,20 +336,20 @@ public class DummyDriver2 extends Driver {
   protected final void onOutPacketAdded(
       final String networkId,
       final OutPacketAdded msg) {
-    log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "called"));
+    log.debug("called");
 
     // GET Packet to Drop
     String packetId = msg.getId();
-    log.info(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "receive OutPacket: {}", packetId));
+    log.info("receive OutPacket: {}", packetId);
     try {
       msleep(100);		// @@ for DEBUG
       NetworkInterface networkIf = networkInterfaces().get(networkId);
       Response resp = networkIf.delOutPacket(packetId);
       if (resp.isError("DELETE")) {
-        log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "invalid DELETE Packet:{}", resp.statusCode));
+        log.error("invalid DELETE Packet:{}", resp.statusCode);
       }
     } catch (Exception e) {
-      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Recieved Message Exception."), e);
+      log.error("Recieved Message Exception.", e);
     }
   }
 
@@ -364,7 +363,7 @@ public class DummyDriver2 extends Driver {
   protected BasicFlow getFlow(
       final NetworkInterface nwIf,
       final String flowId) {
-    log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "called"));
+    log.debug("called");
 
     if (nwIf == null || flowId == null) {
       return null;

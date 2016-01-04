@@ -62,7 +62,7 @@ public class StartOneBigL2Switch extends SimpleControllerBase {
         String txid = LogMessage.createTxid();
         LogMessage.setSavedTxid(txid);
 
-        log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Start initialization..."));
+        log.debug("Start initialization...");
 
         // /////////////////////////////////////
         // Set MessageDispatcher.
@@ -99,7 +99,7 @@ public class StartOneBigL2Switch extends SimpleControllerBase {
         if (rsp == null || getProperty == null
                 || !getProperty.getObjectId().equals(
                         sendProperty.getObjectId())) {
-            log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Failed."));
+            log.error("Failed.");
             return;
         }
         outMsg("  -PUT Compoent(Original Netowrk). ");
@@ -122,7 +122,7 @@ public class StartOneBigL2Switch extends SimpleControllerBase {
         if (rsp == null || getProperty == null
                 || !getProperty.getObjectId().equals(
                         sendProperty.getObjectId())) {
-            log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Failed."));
+            log.error("Failed.");
             return;
         }
         outMsg("  -PUT Compoent(Aggregated Netowrk). ");
@@ -147,7 +147,7 @@ public class StartOneBigL2Switch extends SimpleControllerBase {
         if (rsp == null || getProperty == null
                 || !getProperty.getObjectId().equals(
                         sendProperty.getObjectId())) {
-            log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Failed."));
+            log.error("Failed.");
             return;
         }
         outMsg("  -PUT Compoent(Aggregator). ");
@@ -172,7 +172,7 @@ public class StartOneBigL2Switch extends SimpleControllerBase {
         if (rsp == null || getProperty == null
                 || !getProperty.getObjectId().equals(
                         sendProperty.getObjectId())) {
-            log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Failed."));
+            log.error("Failed.");
             return;
         }
         outMsg("  -PUT Compoent(DummyDriver). ");
@@ -196,7 +196,7 @@ public class StartOneBigL2Switch extends SimpleControllerBase {
         if (rsp == null || getProperty == null
                 || !getProperty.getObjectId().equals(
                         sendProperty.getObjectId())) {
-            log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Failed."));
+            log.error("Failed.");
             return;
         }
         outMsg("  -PUT Compoent(LearningSwitch). ");
@@ -268,14 +268,14 @@ public class StartOneBigL2Switch extends SimpleControllerBase {
         Map<String, ComponentConnection> getConns =
                 systemMngInterface.getConnections();
         if (getConns == null || getConns.size() == 0) {
-            log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Failed."));
+            log.error("Failed.");
             return;
         }
         for (String conId : getConns.keySet()) {
             ComponentConnection getConn =
                     systemMngInterface.getConnection(conId);
             if (getConn == null) {
-                log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Failed."));
+                log.error("Failed.");
                 return;
             }
         }

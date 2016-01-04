@@ -3,12 +3,16 @@ configuration:
   status: warn
   name: Odenos Logging
   packages: com.datastax.logging.appender
+  properties:
+    property:
+      name: log4j2_app.log
+      value: odenos.log
 
   appenders:
     Console:
       name: Console
       PatternLayout:
-        Pattern: "%d{HH:mm:ss.SSS} %-5level %logger{2} - %msg%n"
+        Pattern: "%d{HH:mm:ss.SSS} %-5level %logger{2} txid: %replace{%X{txid}}{^$}{-} - %msg%n"
       ThresholdFilter:
         level: error
 
@@ -16,7 +20,7 @@ configuration:
       name: File
       fileName: "${sys:log4j2_app.log}"
       PatternLayout:
-        Pattern: "%d %-5level [%t] %logger{36}.%M - %msg%n"
+        Pattern: "%d %-5level [%t] %logger{36}.%M txid: %replace{%X{txid}}{^$}{-} - %msg%n"
 
     Syslog:
       name: Syslog
@@ -33,6 +37,8 @@ configuration:
             value: "%t"
           - key: "method"
             value: "%c.%M"
+          - key: "txid"
+            value: "%replace{%X{txid}}{^$}{-}"
 
 #   CassandraAppender:
 #      name: CassandraAppender
@@ -47,4 +53,8 @@ configuration:
         - ref: File
 #        - ref: Syslog
 #        - ref: CassandraAppender
-
+    logger:
+      name: org.apache.zookeeper
+      level: error
+      AppenderRef:
+        - ref: File

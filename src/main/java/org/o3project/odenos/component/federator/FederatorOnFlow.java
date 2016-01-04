@@ -84,8 +84,7 @@ public class FederatorOnFlow {
     List<String> fedFlowIds
         = conversionTable.getFlow(networkId, flow.getFlowId());
     if (fedFlowIds == null || fedFlowIds.size() == 0) {
-      log.warn(LogMessage.buildLogMessage(LogMessage.getSavedTxid(),
-        "no Federator Flows in conversionTable: {}::{}", networkId, flow.getFlowId()));
+      log.warn("no Federator Flows in conversionTable: {}::{}", networkId, flow.getFlowId());
       return;
     }
     String[] fedFlowId = fedFlowIds.get(0).split("::");
@@ -111,8 +110,7 @@ public class FederatorOnFlow {
     List<String> fedFlowIds
         = conversionTable.getFlow(networkId, flow.getFlowId());
     if (fedFlowIds == null || fedFlowIds.size() == 0) {
-      log.warn(LogMessage.buildLogMessage(LogMessage.getSavedTxid(),
-        "no Federator Flows in conversionTable: {}::{}", networkId, flow.getFlowId()));
+      log.warn("no Federator Flows in conversionTable: {}::{}", networkId, flow.getFlowId());
       return false;
     }
     String[] fedFlowId = fedFlowIds.get(0).split("::");
@@ -129,15 +127,15 @@ public class FederatorOnFlow {
       NetworkInterface orgNwIf = networkInterfaces.get(flowId[0]);
       Flow orgFlow = orgNwIf.getFlow(flowId[1]);
       if (orgFlow == null) {
-        log.warn(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "not found Original Flow: {}", flowId));
+        log.warn("not found Original Flow: {}", flowId);
         continue;
       }
       if (!FlowObject.FlowStatus.ESTABLISHED.toString().equalsIgnoreCase(orgFlow.getStatus())) {
-        log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "not flow's status established."));
+        log.debug("not flow's status established.");
         return false;
       }
     }
-    log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "next federate stauts:: established."));
+    log.debug("next federate stauts:: established.");
     return true;
   }
 
@@ -153,8 +151,7 @@ public class FederatorOnFlow {
     List<String> fedFlowIds
         = conversionTable.getFlow(networkId, flow.getFlowId());
     if (fedFlowIds == null || fedFlowIds.size() == 0) {
-      log.warn(LogMessage.buildLogMessage(LogMessage.getSavedTxid(),
-        "no Federator Flows in conversionTable: {}::{}", networkId, flow.getFlowId()));
+      log.warn("no Federator Flows in conversionTable: {}::{}", networkId, flow.getFlowId());
       return false;
     }
     String[] fedFlowId = fedFlowIds.get(0).split("::");
@@ -170,17 +167,17 @@ public class FederatorOnFlow {
       NetworkInterface orgNwIf = networkInterfaces.get(flowId[0]);
       Flow orgFlow = orgNwIf.getFlow(flowId[1]);
       if (orgFlow == null) {
-        log.warn(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "not found Original Flow: {}", flowId));
+        log.warn("not found Original Flow: {}", flowId);
         continue;
       }
 
       if (!FlowObject.FlowStatus.NONE.toString().equalsIgnoreCase(
           orgFlow.getStatus())) {
-        log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "not flow's status none."));
+        log.debug("not flow's status none.");
         return false;
       }
     }
-    log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "next federate stauts:: none"));
+    log.debug("next federate stauts:: none");
     return true;
   }
   
@@ -194,7 +191,7 @@ public class FederatorOnFlow {
     
     BasicFlowMatch flowMatch = flow.getMatches().get(0);
     if (flowMatch == null) {
-      log.warn(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "invalid federated flow."));
+      log.warn("invalid federated flow.");
       return;
     }
 
@@ -211,7 +208,7 @@ public class FederatorOnFlow {
     // Get Flow. and set version.
     Flow fedFlow = fedNwIf.getFlow(getConvFlowId(networkId, flowId));
     if (fedFlow == null) {
-      log.warn(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "not found Federator Flow: {}", flowId));
+      log.warn("not found Federator Flow: {}", flowId);
       return;
     }
     boolean updated = false;
@@ -315,7 +312,7 @@ public class FederatorOnFlow {
         ignorekeys.remove(updatekey);
       }
     }
-    log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "ignore key_list:: {}", ignorekeys));
+    log.debug("ignore key_list:: {}", ignorekeys);
     return ignorekeys;
   }
 
@@ -334,7 +331,7 @@ public class FederatorOnFlow {
     try {
       orgNwId = convertMatch(fedNwId, orgFlow);
     } catch (Exception e) {
-      log.warn(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "failed convert flow's actions."));
+      log.warn("failed convert flow's actions.");
       return ;
     }
 
@@ -346,8 +343,7 @@ public class FederatorOnFlow {
 
       Link fedLink = networkInterfaces.get(fedNwId).getLink(fedPathId);
       if (fedLink == null) {
-        log.warn(LogMessage.buildLogMessage(LogMessage.getSavedTxid(),
-          "not found Federator Link: {}, path={}", fedNwId, fedPathId));
+        log.warn("not found Federator Link: {}, path={}", fedNwId, fedPathId);
         continue;
       }
       edgeNode = fedLink.getDstNode();
@@ -376,7 +372,7 @@ public class FederatorOnFlow {
       setFlowMatch(orgFlow, dstPortIds[1], dstPortIds[2]);
     }
     if (orgNwId == null) {
-      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "no Original Network"));
+      log.error("no Original Network");
       return;
     }
 
@@ -385,7 +381,7 @@ public class FederatorOnFlow {
       orgFlow.putEdgeActions(
           convertAction(fedNwId, edgeNode, orgFlow.getEdgeActions()));
     } catch (Exception e) {
-      log.warn(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "failed convert flow's actions."));
+      log.warn("failed convert flow's actions.");
     }
     doFlowAddedSetFlowRegister(orgNwId, orgFlow);
   }
@@ -488,7 +484,7 @@ public class FederatorOnFlow {
       FlowActionOutput output = (FlowActionOutput) action;
       String orgPorts = getConvPortId(nwId, fedNodeId, output.getOutput());
       if (orgPorts == null) {
-        log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "edge action out port convert Error."));
+        log.error("edge action out port convert Error.");
         continue ;
       }
       String[] orgPort = orgPorts.split(Federator.SEPARATOR);
@@ -653,12 +649,12 @@ public class FederatorOnFlow {
     log.debug("");
 
     if (networkId == null || nodeId == null) {
-      log.warn(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "invalid param"));
+      log.warn("invalid param");
       return null;
     }
     ArrayList<String> convNodeId = conversionTable.getNode(networkId, nodeId);
     if (convNodeId.size() == 0) {
-      log.warn(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "invalid convNodeId"));
+      log.warn("invalid convNodeId");
       return null;
     }
     return convNodeId.get(0);

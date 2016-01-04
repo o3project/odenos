@@ -258,7 +258,7 @@ public class RemoteObject {
    */
   public Response dispatchRequest(Request request) {
     LogMessage.setSavedTxid(request.txid);
-    log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "dispatchRequest: {}, {}", request.method, request.path));
+    log.debug("dispatchRequest: {}, {}", request.method, request.path);
     if (StringUtils.stripToNull(request.path) == null) {
       return new Response(Response.BAD_REQUEST, null);
     }
@@ -277,7 +277,7 @@ public class RemoteObject {
       try {
         response = callback.process(parsed);
       } catch (Exception e) {
-        log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Exception Request: {}, {}", request.method, request.path));
+        log.error("Exception Request: {}, {}", request.method, request.path);
         response = new Response(Response.BAD_REQUEST, null);
       }
     }
@@ -440,7 +440,7 @@ public class RemoteObject {
     try {
       publishEvent(ObjectPropertyChanged.TYPE, msg);
     } catch (Exception e) {
-      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Failed to ObjectPropertyChanged."), e);
+      log.error("Failed to ObjectPropertyChanged.", e);
     }
   }
 
@@ -452,7 +452,7 @@ public class RemoteObject {
     try {
       publishEvent(ObjectSettingsChanged.TYPE, msg);
     } catch (Exception e) {
-      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Failed to ObjectSettingsChanged."), e);
+      log.error("Failed to ObjectSettingsChanged.", e);
     }
   }
 
@@ -518,7 +518,7 @@ public class RemoteObject {
    */
   public void zkDeletePath(final String path) {
     if (keepAliveClient == null) {
-      log.warn(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "No ZooKeeper connectivity"));
+      log.warn("No ZooKeeper connectivity");
     }
     keepAliveClient.deletePath(path);
   }

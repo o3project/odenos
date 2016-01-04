@@ -84,7 +84,7 @@ public class StartSliverNetwork extends SimpleControllerBase{
         String txid = LogMessage.createTxid();
         LogMessage.setSavedTxid(txid);
 
-        log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Start initialization..."));
+        log.debug("Start initialization...");
 
         // /////////////////////////////////////
         // Set MessageDispatcher.
@@ -353,7 +353,7 @@ public class StartSliverNetwork extends SimpleControllerBase{
         if (sendProp == null || getProp == null
                 || !getProp.getObjectId().equals(
                         sendProp.getObjectId())) {
-            log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Failed."));
+            log.error("Failed.");
             return false;
         } 
         return true;
