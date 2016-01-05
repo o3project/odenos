@@ -66,7 +66,7 @@ public class SystemManagerInterface {
   public SystemManagerInterface(
       final MessageDispatcher dispatcher) {
     this.dispatcher = dispatcher;
-    log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Create SystemManagerInterface : Id = ''{}''.", this.getSystemManagerId()));
+    log.debug("Create SystemManagerInterface : Id = '{}'.", this.getSystemManagerId());
   }
 
   /**
@@ -79,7 +79,7 @@ public class SystemManagerInterface {
       final String sourceObjectId) {
     this.dispatcher = dispatcher;
     this.sourceObjectId = sourceObjectId;
-    log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Create SystemManagerInterface : Id = ''{}''.", this.getSystemManagerId()));
+    log.debug("Create SystemManagerInterface : Id = '{}'.", this.getSystemManagerId());
   }
   
   /**
@@ -129,7 +129,7 @@ public class SystemManagerInterface {
     try {
       return resp.getBody(ObjectProperty.class);
     } catch (Exception e) {
-      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Recieved Message Exception."), e);
+      log.error("Recieved Message Exception.", e);
       return null;
     }
   }
@@ -148,7 +148,7 @@ public class SystemManagerInterface {
     try {
       return resp.getBody(ObjectSettings.class);
     } catch (Exception e) {
-      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Recieved Message Exception."), e);
+      log.error("Recieved Message Exception.", e);
       return null;
     }
   }
@@ -167,7 +167,7 @@ public class SystemManagerInterface {
     try {
       return resp.getBody(ObjectPropertyList.class);
     } catch (Exception e) {
-      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Recieved Message Exception."), e);
+      log.error("Recieved Message Exception.", e);
       return null;
     }
   }
@@ -186,7 +186,7 @@ public class SystemManagerInterface {
     try {
       return resp.getBody(ObjectProperty.class);
     } catch (Exception e) {
-      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Recieved Message Exception."), e);
+      log.error("Recieved Message Exception.", e);
       return null;
     }
   }
@@ -205,7 +205,7 @@ public class SystemManagerInterface {
     try {
       return resp.getBody(ComponentTypesHash.class);
     } catch (Exception e) {
-      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Recieved Message Exception."), e);
+      log.error("Recieved Message Exception.", e);
       return null;
     }
   }
@@ -224,7 +224,7 @@ public class SystemManagerInterface {
     try {
       return resp.getBody(ObjectPropertiesHash.class);
     } catch (Exception e) {
-      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Recieved Message Exception."), e);
+      log.error("Recieved Message Exception.", e);
       return null;
     }
   }
@@ -243,7 +243,7 @@ public class SystemManagerInterface {
     try {
       return resp.getBodyAsMap(ComponentConnection.class);
     } catch (Exception e) {
-      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Recieved Message Exception."), e);
+      log.error("Recieved Message Exception.", e);
       return null;
     }
   }
@@ -264,7 +264,7 @@ public class SystemManagerInterface {
     try {
       return resp.getBody(ObjectProperty.class);
     } catch (Exception e) {
-      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Recieved Message Exception."), e);
+      log.error("Recieved Message Exception.", e);
       return null;
     }
   }
@@ -285,7 +285,7 @@ public class SystemManagerInterface {
     try {
       return resp.getBody(ObjectPropertyList.class);
     } catch (Exception e) {
-      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Recieved Message Exception."), e);
+      log.error("Recieved Message Exception.", e);
       return null;
     }
   }
@@ -306,7 +306,7 @@ public class SystemManagerInterface {
     try {
       return resp.getBody(ObjectProperty.class);
     } catch (Exception e) {
-      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Recieved Message Exception."), e);
+      log.error("Recieved Message Exception.", e);
       return null;
     }
   }
@@ -327,7 +327,7 @@ public class SystemManagerInterface {
     try {
       return resp.getBody(ComponentConnection.class);
     } catch (Exception e) {
-      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Recieved Message Exception."), e);
+      log.error("Recieved Message Exception.", e);
       return null;
     }
   }
@@ -348,7 +348,7 @@ public class SystemManagerInterface {
     try {
       return resp.getBody(ObjectProperty.class);
     } catch (Exception e) {
-      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Recieved Message Exception."), e);
+      log.error("Recieved Message Exception.", e);
       return null;
     }
   }
@@ -501,7 +501,7 @@ public class SystemManagerInterface {
       return new Response(Response.BAD_REQUEST, null);
     }
     String path = String.format(SEQUENCE_PATH, seqId);
-    log.debug("seqId=''{}'', spec={}", seqId, spec);
+    log.debug("seqId='{}', spec={}", seqId, spec);
     return putObjectToSystemMng(path, spec);
   }
 
@@ -526,7 +526,7 @@ public class SystemManagerInterface {
     } else {
       path = String.format(SEQUENCE_PATH, seqId) + "/curr";
     }
-    log.debug("seqId=''{}''", seqId);
+    log.debug("seqId='{}'", seqId);
     return getObjectToSystemMng(path);
   }
 
@@ -537,7 +537,7 @@ public class SystemManagerInterface {
    */
   public final Response delSequence(final String seqId) {
     String path = String.format(SEQUENCE_PATH, seqId);
-    log.debug("seqId=''{}''", seqId);
+    log.debug("seqId='{}'", seqId);
     return delObjectToSystemMng(path);
   }
 
@@ -560,11 +560,11 @@ public class SystemManagerInterface {
     try {
       Response resp = sendRequest(Request.Method.POST, path, body);
       if (resp.isError("POST")) {
-        log.warn(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "invalid POST:{}", resp.statusCode));
+        log.warn( "invalid POST:{}", resp.statusCode);
       }
       return resp;
     } catch (Exception e) {
-      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Recieved Message Exception."), e);
+      log.error("Recieved Message Exception.", e);
       return new Response(Response.INTERNAL_SERVER_ERROR, null);
     }
   }
@@ -582,11 +582,11 @@ public class SystemManagerInterface {
     try {
       Response resp = sendRequest(Request.Method.PUT, path, body);
       if (resp.isError("PUT")) {
-        log.warn(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "invalid PUT:{}", resp.statusCode));
+        log.warn("invalid PUT:{}", resp.statusCode);
       }
       return resp;
     } catch (Exception e) {
-      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Recieved Message Exception."), e);
+      log.error("Recieved Message Exception.", e);
       return new Response(Response.INTERNAL_SERVER_ERROR, null);
     }
   }
@@ -602,11 +602,11 @@ public class SystemManagerInterface {
     try {
       Response resp = sendRequest(Request.Method.DELETE, path, null);
       if (resp.isError("DELETE")) {
-        log.warn(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "invalid DELETE:{}", resp.statusCode));
+        log.warn("invalid DELETE:{}", resp.statusCode);
       }
       return resp;
     } catch (Exception e) {
-      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Recieved Message Exception."), e);
+      log.error("Recieved Message Exception.", e);
       return new Response(Response.INTERNAL_SERVER_ERROR, null);
     }
   }
@@ -622,11 +622,11 @@ public class SystemManagerInterface {
     try {
       Response resp = sendRequest(Request.Method.GET, path, null);
       if (resp.isError("GET")) {
-        log.warn(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "invalid GET:{}", resp.statusCode));
+        log.warn("invalid GET:{}", resp.statusCode);
       }
       return resp;
     } catch (Exception e) {
-      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Recieved Message Exception."), e);
+      log.error("Recieved Message Exception.", e);
       return new Response(Response.INTERNAL_SERVER_ERROR, null);
     }
   }
@@ -638,12 +638,12 @@ public class SystemManagerInterface {
     Response rsp = null;
     Request req = new Request(
         this.dispatcher.getSystemManagerId(), method, path, LogMessage.getSavedTxid(), body);
-    log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "   {}", req.getBodyValue()));
+    log.debug("   {}", req.getBodyValue());
     try {
       rsp = this.dispatcher.requestSync(req, sourceObjectId);
 
     } catch (Exception e) {
-      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Recieved Message Exception."), e);
+      log.error("Recieved Message Exception.", e);
       return new Response(Response.INTERNAL_SERVER_ERROR, null);
     }
     return rsp;

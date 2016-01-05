@@ -88,7 +88,7 @@ public class RESTTranslator extends RemoteObject {
     public void sessionDestroyed(HttpSessionEvent se) {
       HttpSession session = se.getSession();
       String subscriptionId = session.getId();
-      RESTTranslator.this.log.info(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "A session ({}) has been destroyed.", subscriptionId));
+      RESTTranslator.this.log.info("A session ({}) has been destroyed.", subscriptionId);
 
       AsyncContext context = RESTTranslator.this.removeAsyncContext(subscriptionId);
       context.complete(); // need it?
@@ -143,7 +143,7 @@ public class RESTTranslator extends RemoteObject {
         try {
           this.server.stop();
         } catch (Exception e) {
-          this.log.warn(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Failed to stop the existing Jetty server."), e);
+          this.log.warn("Failed to stop the existing Jetty server.", e);
         } finally {
           this.server = null;
         }
@@ -192,7 +192,7 @@ public class RESTTranslator extends RemoteObject {
           try {
             RESTTranslator.this.server.start();
           } catch (Exception e) {
-            RESTTranslator.this.log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Failed to start the Jetty server."), e);
+            RESTTranslator.this.log.error("Failed to start the Jetty server.", e);
             return;
           }
         }
@@ -200,7 +200,7 @@ public class RESTTranslator extends RemoteObject {
         try {
           RESTTranslator.this.server.join();
         } catch (InterruptedException e) {
-          RESTTranslator.this.log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Failed to join the Jetty server."), e);
+          RESTTranslator.this.log.error("Failed to join the Jetty server.", e);
           return;
         }
       }
@@ -300,7 +300,7 @@ public class RESTTranslator extends RemoteObject {
     try {
       this.applyEventSubscription();
     } catch (Exception e) {
-      this.log.warn(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Failed to update the ODENOS Event subscription."), e);
+      this.log.warn("Failed to update the ODENOS Event subscription.", e);
     }
   }
 
@@ -318,16 +318,15 @@ public class RESTTranslator extends RemoteObject {
       subscriptionIds =
           this.distributionTable.get(new DistKey(event.publisherId, event.eventType));
       if (subscriptionIds == null || subscriptionIds.isEmpty()) {
-        this.log.warn(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "No one subscribes the {} of objectId:{}.",
-            event.publisherId, event.eventType));
+        this.log.warn("No one subscribes the {} of objectId:{}.",
+            event.publisherId, event.eventType);
 
         this.distributionTable.remove(new DistKey(event.publisherId, event.eventType));
         this.eventSubscription.removeFilter(event.publisherId, event.eventType);
         try {
           this.applyEventSubscription();
         } catch (Exception e) {
-          this.log.warn(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), 
-              "Failed to update the ODENOS Event subscription."), e);
+          this.log.warn("Failed to update the ODENOS Event subscription.", e);
         }
         return;
       }
@@ -338,7 +337,7 @@ public class RESTTranslator extends RemoteObject {
       byte[] packed = this.messagePack.write(event);
       value = this.messagePack.read(packed);
     } catch (IOException e) {
-      this.log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Failed to reserialize the Event object."), e);
+      this.log.error("Failed to reserialize the Event object.", e);
       return;
     }
 
@@ -351,7 +350,7 @@ public class RESTTranslator extends RemoteObject {
       try {
         context.getResponse().getWriter().write(value.toString());
       } catch (IOException e) {
-        this.log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "Failed to write the Event object as an HTTP response"), e);
+        this.log.error("Failed to write the Event object as an HTTP response", e);
       }
       context.complete();
     }

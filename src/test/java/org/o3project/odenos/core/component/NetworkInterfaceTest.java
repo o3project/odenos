@@ -1523,7 +1523,7 @@ public class NetworkInterfaceTest {
     PowerMockito.doReturn(settingResponse).when(target, "sendRequest",
         "NetworkId",
         Request.Method.DELETE,
-        "flows/FlowId", "", settingFlow);
+        "flows/FlowId", "-", settingFlow);
 
     /*
      * test
@@ -1535,7 +1535,7 @@ public class NetworkInterfaceTest {
      * check
      */
     PowerMockito.verifyPrivate(target).invoke("sendRequest", "NetworkId",
-        Request.Method.DELETE, "flows/FlowId", "",  
+        Request.Method.DELETE, "flows/FlowId", "-",  
         settingFlow);
 
     assertThat(result.statusCode, is(Response.OK));
@@ -2377,7 +2377,7 @@ public class NetworkInterfaceTest {
     PowerMockito.doReturn(new Response(Response.OK, "Body")).when(target,
         "sendRequest",
         "NetworkId",
-        Request.Method.POST, "Path", "", "Body");
+        Request.Method.POST, "Path", "-", "Body");
 
     /*
      * test
@@ -2391,7 +2391,7 @@ public class NetworkInterfaceTest {
      */
     PowerMockito.verifyPrivate(target).invoke("sendRequest", "NetworkId",
         Request.Method.POST,
-        "Path", "", "Body");
+        "Path", "-", "Body");
 
     assertThat(result.statusCode, is(Response.OK));
 
@@ -2412,7 +2412,7 @@ public class NetworkInterfaceTest {
      */
     PowerMockito.doThrow(new RuntimeException()).when(target,
         "sendRequest", "NetworkId",
-        Request.Method.POST, "Path", "", "Body");
+        Request.Method.POST, "Path", "-", "Body");
 
     /*
      * test
@@ -2426,7 +2426,7 @@ public class NetworkInterfaceTest {
      */
     PowerMockito.verifyPrivate(target).invoke("sendRequest", "NetworkId",
         Request.Method.POST,
-        "Path", "", "Body");
+        "Path", "-", "Body");
 
     assertThat(result.statusCode, is(Response.INTERNAL_SERVER_ERROR));
 
@@ -2448,7 +2448,7 @@ public class NetworkInterfaceTest {
     PowerMockito.doReturn(new Response(Response.OK, "Body")).when(target,
         "sendRequest",
         "NetworkId",
-        Request.Method.PUT, "Path", "", "Body");
+        Request.Method.PUT, "Path", "-", "Body");
 
     /*
      * test
@@ -2462,7 +2462,7 @@ public class NetworkInterfaceTest {
      */
     PowerMockito.verifyPrivate(target).invoke("sendRequest", "NetworkId",
         Request.Method.PUT,
-        "Path", "", "Body");
+        "Path", "-", "Body");
 
     assertThat(result.statusCode, is(Response.OK));
   }
@@ -2482,7 +2482,7 @@ public class NetworkInterfaceTest {
      */
     PowerMockito.doThrow(new RuntimeException()).when(target,
         "sendRequest", "NetworkId",
-        Request.Method.PUT, "Path", "", "Body");
+        Request.Method.PUT, "Path", "-", "Body");
 
     /*
      * test
@@ -2496,7 +2496,7 @@ public class NetworkInterfaceTest {
      */
     PowerMockito.verifyPrivate(target).invoke("sendRequest", "NetworkId",
         Request.Method.PUT,
-        "Path", "", "Body");
+        "Path", "-", "Body");
 
     assertThat(result.statusCode, is(Response.INTERNAL_SERVER_ERROR));
   }
@@ -2517,7 +2517,7 @@ public class NetworkInterfaceTest {
     PowerMockito.doReturn(new Response(Response.OK, "Body")).when(target,
         "sendRequest",
         "NetworkId",
-        Request.Method.DELETE, "Path", "", null);
+        Request.Method.DELETE, "Path", "-", null);
 
     /*
      * test
@@ -2529,7 +2529,7 @@ public class NetworkInterfaceTest {
      * check
      */
     PowerMockito.verifyPrivate(target).invoke("sendRequest", "NetworkId",
-        Request.Method.DELETE, "Path", "", null);
+        Request.Method.DELETE, "Path", "-", null);
 
     assertThat(result.statusCode, is(Response.OK));
   }
@@ -2549,7 +2549,7 @@ public class NetworkInterfaceTest {
      */
     PowerMockito.doThrow(new RuntimeException()).when(target,
         "sendRequest", "NetworkId",
-        Request.Method.DELETE, "Path", "", null);
+        Request.Method.DELETE, "Path", "-", null);
 
     /*
      * test
@@ -2561,7 +2561,7 @@ public class NetworkInterfaceTest {
      * check
      */
     PowerMockito.verifyPrivate(target).invoke("sendRequest", "NetworkId",
-        Request.Method.DELETE, "Path", "", null);
+        Request.Method.DELETE, "Path", "-", null);
 
     assertThat(result.statusCode, is(Response.INTERNAL_SERVER_ERROR));
   }
@@ -2582,7 +2582,7 @@ public class NetworkInterfaceTest {
     PowerMockito.doReturn(new Response(Response.OK, "Body")).when(target,
         "sendRequest",
         "NetworkId",
-        Request.Method.GET, "Path", "", null);
+        Request.Method.GET, "Path", "-", null);
 
     /*
      * test
@@ -2595,7 +2595,7 @@ public class NetworkInterfaceTest {
      */
     PowerMockito.verifyPrivate(target).invoke("sendRequest", "NetworkId",
         Request.Method.GET,
-        "Path", "", null);
+        "Path", "-", null);
 
     assertThat(result.statusCode, is(Response.OK));
   }
@@ -2615,7 +2615,7 @@ public class NetworkInterfaceTest {
      */
     PowerMockito.doThrow(new RuntimeException()).when(target,
         "sendRequest", "NetworkId",
-        Request.Method.GET, "Path", "", null);
+        Request.Method.GET, "Path", "-", null);
 
     /*
      * test
@@ -2628,7 +2628,7 @@ public class NetworkInterfaceTest {
      */
     PowerMockito.verifyPrivate(target).invoke("sendRequest", "NetworkId",
         Request.Method.GET,
-        "Path", "", null);
+        "Path", "-", null);
 
     assertThat(result.statusCode, is(Response.INTERNAL_SERVER_ERROR));
   }

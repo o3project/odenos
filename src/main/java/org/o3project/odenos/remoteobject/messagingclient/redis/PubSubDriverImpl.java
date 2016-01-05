@@ -146,8 +146,8 @@ public class PubSubDriverImpl implements IPubSubDriver, Closeable {
 
     // Creates a set of pubsub clients
     if (log.isDebugEnabled()) {
-      log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "[Redis server] host: {}, port: {}, bridged: {}",
-          redisServerAddress.getHost(), redisServerAddress.getPort(), bridged));
+      log.debug("[Redis server] host: {}, port: {}, bridged: {}",
+          redisServerAddress.getHost(), redisServerAddress.getPort(), bridged);
     }
 
     this.publisherClient =
@@ -173,7 +173,7 @@ public class PubSubDriverImpl implements IPubSubDriver, Closeable {
     try {
       Thread.sleep(1000);
     } catch (InterruptedException e) {
-      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "thread error"), e);
+      log.error("thread error", e);
     }
 
     boolean logOutput = false;
@@ -183,14 +183,14 @@ public class PubSubDriverImpl implements IPubSubDriver, Closeable {
         break;
       } else {
         if (!logOutput) {
-          log.warn(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "unable to get access to Redis server (host: {}, port: {})",
-                                              redisServerAddress.getHost(), redisServerAddress.getPort()));
+          log.warn("unable to get access to Redis server (host: {}, port: {})",
+              redisServerAddress.getHost(), redisServerAddress.getPort());
           logOutput = true;
         }
         try {
           Thread.sleep(3000);
         } catch (InterruptedException e) {
-          log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "thread error"), e);
+          log.error("thread error", e);
         }
       }
     }
@@ -302,7 +302,7 @@ public class PubSubDriverImpl implements IPubSubDriver, Closeable {
     if (publisherClient.isConnected() && subscriberClient.isConnected()
         && acceptedOnReconnected < sessionId) {
       if (log.isDebugEnabled()) {  // checks if this is monitoring-only client or not.
-        log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "sessionId: {}, acceptedOnReconnected: {}", sessionId, acceptedOnReconnected));
+        log.debug("sessionId: {}, acceptedOnReconnected: {}", sessionId, acceptedOnReconnected);
       }
       acceptedOnReconnected = sessionId;
       if (listener != null) {  // checks if this is monitoring-only client or not.
@@ -322,7 +322,7 @@ public class PubSubDriverImpl implements IPubSubDriver, Closeable {
   public synchronized void onDisconnected(int sessionId) {
     if (connected && acceptedOnDisconnected < sessionId) {
       if (log.isDebugEnabled()) {
-        log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "sessionId: {}, acceptedOnDisconnected: {}", sessionId, acceptedOnDisconnected));
+        log.debug("sessionId: {}, acceptedOnDisconnected: {}", sessionId, acceptedOnDisconnected);
       }
       acceptedOnDisconnected = sessionId;
       close();

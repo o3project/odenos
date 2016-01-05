@@ -14,7 +14,7 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <jettyVersion>9.0.5.v20130815</jettyVersion>
-    <argLine></argLine>
+    <argLine>-Xmx1g</argLine>
   </properties>
 
   <profiles>
@@ -58,13 +58,18 @@
       <scope>compile</scope>
     </dependency>
     <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-log4j12</artifactId>
-      <version>1.6.1</version>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-core</artifactId>
+      <version>2.3</version>
     </dependency>
     <dependency>
-    <groupId>org.apache.logging.log4j</groupId>
-      <artifactId>log4j-core</artifactId>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-api</artifactId>
+      <version>2.3</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-1.2-api</artifactId>
       <version>2.3</version>
     </dependency>
     <dependency>
@@ -180,7 +185,7 @@
       <artifactId>jung2</artifactId>
       <version>2.0.1</version>
       <type>pom</type>
-    </dependency> 
+    </dependency>
     <dependency>
       <groupId>net.sf.jung</groupId>
       <artifactId>jung-graph-impl</artifactId>
@@ -207,7 +212,7 @@
       <version>3.1.0</version>
     </dependency>
     -->
-  </dependencies> 
+  </dependencies>
 
   <build>
     <resources>
@@ -218,7 +223,6 @@
 	</excludes>
       </resource>
     </resources>
-    
     <pluginManagement>
       <plugins>
 	<plugin>
@@ -260,6 +264,22 @@
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-clean-plugin</artifactId>
           <version>2.6.1</version>
+          <configuration>
+            <filesets>
+              <fileset>
+                <directory>${basedir}/lib/java</directory>
+              </fileset>
+              <fileset>
+                <directory>${basedir}/lib/python</directory>
+              </fileset>
+              <fileset>
+                <directory>${basedir}/lib/ruby</directory>
+              </fileset>
+              <fileset>
+                <directory>${basedir}/doc/java</directory>
+              </fileset>
+            </filesets>
+          </configuration>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
@@ -373,7 +393,7 @@
           <target>1.7</target>
 	  <excludes>
 	    <exclude>**/src/main/resource*</exclude>
-	  </excludes>	    
+	  </excludes>
         </configuration>
       </plugin>
       <plugin>
@@ -391,12 +411,10 @@
         <configuration>
           <argLine>${test.argLine} ${argLine}</argLine>
           <systemPropertyVariables>
-            <log4j.configuration>file:${basedir}/etc/log4j-silent.properties</log4j.configuration>
             <log4j.configurationFile>file:${basedir}/etc/log4j2-silent.yaml</log4j.configurationFile>
           </systemPropertyVariables>
         </configuration>
       </plugin>
-
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
@@ -409,8 +427,6 @@
           <reportOutputDirectory>doc/java/</reportOutputDirectory>
        </configuration>
      </plugin>
-
-
     </plugins>
   </build>
 </project>

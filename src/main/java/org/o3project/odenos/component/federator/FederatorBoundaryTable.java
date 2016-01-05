@@ -84,7 +84,7 @@ public class FederatorBoundaryTable {
       throws FederatorException {
 
     if (boundary == null) {
-      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "boundary is null"));
+      log.error("boundary is null");
       throw new IllegalArgumentException("boundary is null");
     }
 
@@ -93,11 +93,11 @@ public class FederatorBoundaryTable {
     }
 
     if (log.isDebugEnabled()) {
-      log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "addEntry: {}", boundaryId));
+      log.debug("addEntry: {}", boundaryId);
     }
 
     if (StringUtils.equals(boundaryId, boundary.getId())) {
-      log.warn(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "set boundaryId: {}", boundary));
+      log.warn("set boundaryId: {}", boundary);
       boundary.setId(boundaryId);
     }
 
@@ -123,7 +123,7 @@ public class FederatorBoundaryTable {
    */
   public FederatorBoundary getEntry(String boundaryId) {
     if (log.isDebugEnabled()) {
-      log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "getEntry: {}", boundaryId));
+      log.debug("getEntry: {}", boundaryId);
     }
     return boundaries.get(boundaryId);
   }
@@ -135,7 +135,7 @@ public class FederatorBoundaryTable {
    */
   public FederatorBoundary deleteEntry(String boundaryId) {
     if (log.isDebugEnabled()) {
-      log.debug(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "deleteEntry: {}", boundaryId));
+      log.debug("deleteEntry: {}", boundaryId);
     }
 
     if (!boundaries.containsKey(boundaryId)) {

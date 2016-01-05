@@ -131,7 +131,7 @@ public abstract class SliceCondition implements MessagePackable {
       }
 
     } catch (IOException ex) {
-      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "fail to read packer"), ex);
+      log.error("fail to read packer", ex);
       throw ex;
 
     } finally {
@@ -157,7 +157,7 @@ public abstract class SliceCondition implements MessagePackable {
       }
 
     } catch (IOException ex) {
-      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), ex.getMessage()), ex);
+      log.error(ex.getMessage(), ex);
       throw ex;
     }
   }
@@ -178,7 +178,7 @@ public abstract class SliceCondition implements MessagePackable {
         return str;
       }
     } catch (IOException ex) {
-      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), ex.getMessage()), ex);
+      log.error(ex.getMessage(), ex);
       throw ex;
     }
   }
@@ -199,7 +199,7 @@ public abstract class SliceCondition implements MessagePackable {
       doWriteTo(pk);
 
     } catch (IOException ex) {
-      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), "fail to write packer"), ex);
+      log.error("fail to write packer", ex);
       throw ex;
 
     } finally {
@@ -220,7 +220,7 @@ public abstract class SliceCondition implements MessagePackable {
       pk.write(getConnection());
 
     } catch (IOException ex) {
-      log.error(LogMessage.buildLogMessage(LogMessage.getSavedTxid(), ex.getMessage()), ex);
+      log.error(ex.getMessage(), ex);
       throw ex;
     }
 
