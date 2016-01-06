@@ -49,6 +49,10 @@ class BasicFlow(Flow):
     def path(self):
         return self._body[self.PATH]
 
+    @path.setter
+    def path(self, path):
+        self._body[self.PATH] = path
+
     @property
     def edge_actions(self):
         return self._body[self.EDGE_ACTIONS]
