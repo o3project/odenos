@@ -161,10 +161,11 @@ run curl -w "$FORMAT" http://$ADDRESS:10080/network2/packets/out/0000000000 -X G
 run curl -w "$FORMAT" http://$ADDRESS:10080/network2/packets/out/0000000001 -X GET
 
 echo "------ InPacket -------"
+run curl -w "$FORMAT" http://$ADDRESS:10080/driver2/settings/packet_in -X POST -d '{"timer_interval": "5000","timer_times": "10","timer_start": "2"}'
 run curl -w "$FORMAT" http://$ADDRESS:10080/network2/packets/in -X GET
 # status code is 404 for a following request
 run curl -w "$FORMAT" http://$ADDRESS:10080/network2/packets/in/0000000000 -X GET
-waiting 8
+waiting 1
 run curl -w "$FORMAT" http://$ADDRESS:10080/network2/packets/in -X GET
 run curl -w "$FORMAT" http://$ADDRESS:10080/network2/packets/in/0000000000 -X GET
 run curl -w "$FORMAT" http://$ADDRESS:10080/network2/packets/in/0000000000 -X GET
@@ -183,10 +184,13 @@ waiting 10
 run curl -w "$FORMAT" http://$ADDRESS:10080/network2/packets/in -X GET
 run curl -w "$FORMAT" http://$ADDRESS:10080/network2/packets/in -X DELETE
 run curl -w "$FORMAT" http://$ADDRESS:10080/network2/packets/in -X GET
+waiting 1
+run curl -w "$FORMAT" http://$ADDRESS:10080/driver2/settings/packet_in/timer -X DELETE
 
 # delete network
 sleep 1
 run curl -w "$FORMAT" http://$ADDRESS:10080/systemmanager/connections/conn2 -X DELETE
+sleep 1
 run curl -w "$FORMAT" http://$ADDRESS:10080/systemmanager/components/driver2 -X DELETE
 run curl -w "$FORMAT" http://$ADDRESS:10080/systemmanager/components/network2 -X DELETE
 

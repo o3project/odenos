@@ -15,6 +15,7 @@
 # limitations under the License.                                           #
 
 import logging
+import time
 
 from org.o3project.odenos.core.component.driver import Driver
 from org.o3project.odenos.core.component.network.flow.flow import Flow
@@ -33,7 +34,7 @@ from org.o3project.odenos.core.component.network.packet.out_packet_added import 
 
 
 class DummyDriver3(Driver):
-    DESCRIPTION = "DummyDriver for python"
+    DESCRIPTION = "DummyDriver 3 for python"
 
     def __init__(self, object_id, dispatcher):
         self.__network_id = None
@@ -86,7 +87,7 @@ class DummyDriver3(Driver):
         self.__subscribe_network_component()
 
         component_connection = msg.curr
-        #Changed ConectionProperty's status.
+        # Changed ConectionProperty's status.
         component_connection.state = ComponentConnection.State.RUNNING
         self._sys_manager_interface.put_connection(component_connection)
         return
@@ -94,14 +95,14 @@ class DummyDriver3(Driver):
     # override
     def _connection_changed_delete(self, msg):
         component_connection = msg.prev
-        #Changed ConectionProperty's status.
+        # Changed ConectionProperty's status.
         component_connection.state = ComponentConnection.State.FINALIZING
         self._sys_manager_interface.put_connection(component_connection)
 
         self.__unsubscribe_network_component()
         self.__network_id = None
 
-        #Changed ConectionProperty's status.
+        # Changed ConectionProperty's status.
         component_connection.state = ComponentConnection.State.NONE
         self._sys_manager_interface.put_connection(component_connection)
         return
@@ -134,23 +135,37 @@ class DummyDriver3(Driver):
             return
 
         # Status ... "None" => "Establishing" => "Established"
-        if target_flow.status == Flow.Status.NONE and\
-           target_flow.enabled:
-            target_flow.status = Flow.Status.ESTABLISHING
-            network_if.put_flow(target_flow)
+        if target_flow.enabled:
+            if target_flow.status == Flow.Status.NONE:
+                target_flow.status = Flow.Status.ESTABLISHING
+                network_if.put_flow(target_flow)
+                target_flow = network_if.get_flow(flow.flow_id)
 
-            # Driver needs to set Flow to physical switch here.
-            # Setting of Flow After completing the physical switch,
-            # to "Established".
-            target_flow = network_if.get_flow(flow.flow_id)
-            target_flow.status = Flow.Status.ESTABLISHED
-            network_if.put_flow(target_flow)
+            if target_flow.status == Flow.Status.ESTABLISHING:
+                # Driver needs to set Flow to physical switch here.
+                # Setting of Flow After completing the physical switch,
+                # to "Established".
+                logging.info("added Flow: network=%s, flow='%s'", network_id, str(flow.packed_object()))
+                target_flow.status = Flow.Status.ESTABLISHED
+                network_if.put_flow(target_flow)
 
         return
 
     # override
     def _on_flow_update(self, network_id, prev, curr, attrs):
-        self._on_flow_added(network_id, curr)
+        if network_id not in self._network_interfaces:
+            return
+
+        # update flow is status changed
+        network_if = self._network_interfaces[network_id]
+        target_flow = network_if.get_flow(flow.flow_id)
+        if target_flow is None:
+            return
+
+        if target_flow.enabled:
+            self._on_flow_added(network_id, curr)
+        else:
+            self._on_flow_delete(network_id, curr)
 
     # override
     def _on_flow_delete(self, network_id, flow):
@@ -163,17 +178,22 @@ class DummyDriver3(Driver):
             return
 
         # Status ... "Established" => "Teardown" => "None"
-        if target_flow.status == Flow.Status.ESTABLISHED and\
-           target_flow.enabled:
-            target_flow.status = Flow.Status.TEARDOWN
-            network_if.put_flow(target_flow)
-
-            # Driver needs to set Flow to physical switch here.
-            # Setting of Flow After completing the physical switch,
-            # to "None".
-            target_flow = network_if.get_flow(flow.flow_id)
+        if not target_flow.enabled:
             target_flow.status = Flow.Status.NONE
             network_if.put_flow(target_flow)
+        else:
+            if target_flow.status == Flow.Status.ESTABLISHING \
+              or target_flow.status == Flow.Status.ESTABLISHED:
+                target_flow.status = Flow.Status.TEARDOWN
+                network_if.put_flow(target_flow)
+                target_flow = network_if.get_flow(flow.flow_id)
+
+            if target_flow.status == Flow.Status.TEARDOWN:
+                # Driver needs to set Flow to physical switch here.
+                # Setting of Flow After completing the physical switch,
+                # to "None".
+                target_flow.status = Flow.Status.NONE
+                network_if.put_flow(target_flow)
 
         return
 
@@ -194,5 +214,6 @@ class DummyDriver3(Driver):
         if network_id not in self._network_interfaces:
             return
 
+        time.sleep(0.1)
         network_if = self._network_interfaces[network_id]
         network_if.del_out_packet(out_packet_added.id)
