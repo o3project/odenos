@@ -50,7 +50,7 @@ class MessageDispatcherTest(unittest.TestCase):
     result = ""
 
     def setUp(self):
-        self.target = MessageDispatcher()
+        self.target = MessageDispatcher(enable_monitor=True)
 
     def tearDown(self):
         self.target = None
@@ -248,7 +248,7 @@ class MessageDispatcherTest(unittest.TestCase):
             mock_Queue.return_value = "mock_Queue"
             mock_EventSubscriptionMap.return_value =\
                 "mock_EventSubscriptionMap"
-            self.target = MessageDispatcher()
+            self.target = MessageDispatcher(enable_monitor=True)
 
             self.assertEqual(self.target._MessageDispatcher__clients, {})
             self.assertEqual(
@@ -386,6 +386,69 @@ class MessageDispatcherTest(unittest.TestCase):
             self.assertEqual(
                 self.result.data, resb_check)
 
+
+    def test_redisSubscriberRunnable_TYPE_REQUEST_except(self):
+        request = Request("object_id", "method", "path", None)
+        request_packed = request.packed_object()
+        response = Response(200, "body")
+        response_packed = response.packed_object()
+
+        pk = msgpack.Packer()
+        resb = bytearray()
+        resb.extend(pk.pack(0))
+        resb.extend(pk.pack(0))
+        resb.extend(pk.pack("object_id"))
+        resb.extend(pk.pack(request_packed))
+        self.value = {"type": "message",
+                      "data": resb,
+                      "channel": "object_id"}
+        self.value02 = {"type": "ERROR",
+                        "data": resb}
+
+        resb_check = bytearray()
+        resb_check.extend(pk.pack(1))
+        resb_check.extend(pk.pack(0))
+        resb_check.extend(pk.pack("object_id"))
+        resb_check.extend(pk.pack(response_packed))
+
+        self.target.thread_pool = futures.ThreadPoolExecutor(max_workers=8)
+        self.target._MessageDispatcher__redisSubscriber = redis.StrictRedis(
+            host=self.target._MessageDispatcher__redisServer,
+            port=self.target._MessageDispatcher__redisPort)
+        self.target._MessageDispatcher__redisSubscriber =\
+            self.target._MessageDispatcher__redisSubscriber.pubsub()
+
+        def dummy_request_runnable(arg, request, sno, srcid):
+            arg(request, sno, srcid)
+
+        with nested(
+            patch("redis.client.PubSub.subscribe"),
+                patch("redis.client.PubSub.unsubscribe"),
+                patch("logging.error"),
+                patch("redis.client.PubSub.listen"),
+                patch("concurrent.futures.ThreadPoolExecutor.submit"),
+                patch(self.REQUEST_PATH + ".create_from_packed"),
+                patch(self.DISPATCHER_PATH + ".dispatch_request")) as (
+                mock_subscribe,
+                mock_unsubscribe,
+                logging_error,
+                mock_listen,
+                mock_submit,
+                mock_request,
+                mock_dispatch_request):
+            mock_subscribe.return_value = None
+            mock_unsubscribe.return_value = None
+            mock_listen.return_value = [self.value, self.value02]
+            mock_request.return_value = request
+            mock_submit.side_effect = dummy_request_runnable
+            mock_dispatch_request.side_effect = Exception()
+
+            self.target._MessageDispatcher__redisSubscriberRunnable()
+            #self.result = self.target._MessageDispatcher__pubsqueue.get()
+
+            self.assertEqual(mock_dispatch_request.call_count, 1)
+
+
     def test_redisSubscriberRunnable_TYPE_RESPONSE(self):
         clients = self.target._MessageDispatcher__clients
         remote_msg_trans = RemoteMessageTransport("publisher_id:event_type",
@@ -393,13 +456,14 @@ class MessageDispatcherTest(unittest.TestCase):
         clients["publisher_id:event_type"] = remote_msg_trans
 
         response = Response(200, "remote_msg_trans")
+        response_packed = response.packed_object()
 
         pk = msgpack.Packer()
         resb = bytearray()
         resb.extend(pk.pack(1))
         resb.extend(pk.pack(0))
         resb.extend(pk.pack("publisher_id:event_type"))
-        resb.extend(pk.pack(response.packed_object()))
+        resb.extend(pk.pack(response_packed))
         self.value = {"type": "message",
                       "data": resb,
                       "channel": "publisher_id:event_type"}
@@ -422,11 +486,10 @@ class MessageDispatcherTest(unittest.TestCase):
             mock_subscribe.return_value = None
             mock_unsubscribe.return_value = None
             mock_listen.return_value = [self.value]
+            mock_response.return_value = response
 
             self.target._MessageDispatcher__redisSubscriberRunnable()
-
-            mock_response.assert_called_once_with(
-                [200, "remote_msg_trans"])
+            mock_response.assert_called_once_with([200, "remote_msg_trans"])
 
     def test_redisSubscriberRunnable_TYPE_EVENT(self):
         event = Event("publisher_id", "event_type", "event_body")
@@ -477,7 +540,8 @@ class MessageDispatcherTest(unittest.TestCase):
             mock_event.assert_called_once_with(
                 ["publisher_id", "event_type", "*", "event_body"])
 
-    def test_redisSubscriberRunnable_except(self):
+
+    def test_redisSubscriberRunnable_TYPE_EVENT_except(self):
         event = Event("publisher_id", "event_type", "event_body")
 
         pk = msgpack.Packer()
@@ -489,6 +553,57 @@ class MessageDispatcherTest(unittest.TestCase):
         self.value = {"type": "message",
                       "data": resb,
                       "channel": "publisher_id:event_type"}
+
+        self.target.thread_pool = futures.ThreadPoolExecutor(max_workers=8)
+        self.target._MessageDispatcher__redisSubscriber = redis.StrictRedis(
+            host=self.target._MessageDispatcher__redisServer,
+            port=self.target._MessageDispatcher__redisPort)
+        self.target._MessageDispatcher__redisSubscriber =\
+            self.target._MessageDispatcher__redisSubscriber.pubsub()
+
+        def dummy_event_runnable(arg, event):
+            arg(event)
+
+        with nested(
+            patch("redis.client.PubSub.subscribe"),
+                patch("logging.error"),
+                patch("redis.client.PubSub.unsubscribe"),
+                patch("redis.client.PubSub.listen"),
+                patch("concurrent.futures.ThreadPoolExecutor.submit"),
+                patch(self.DISPATCHER_PATH + ".dispatch_event"),
+                patch(self.EVENT_PATH + ".create_from_packed")) as (
+                mock_subscribe,
+                logging_error,
+                mock_unsubscribe,
+                mock_listen,
+                mock_submit,
+                mock_dispatch_event,
+                mock_event):
+            mock_subscribe.return_value = None
+            mock_unsubscribe.return_value = None
+            mock_listen.return_value = [self.value]
+            mock_dispatch_event.side_effect = Exception()
+            mock_submit.side_effect = dummy_event_runnable
+
+            self.target._MessageDispatcher__redisSubscriberRunnable()
+
+            mock_event.assert_called_once_with(
+                ["publisher_id", "event_type", "*", "event_body"])
+            self.assertEqual(mock_dispatch_event.call_count, 1)
+
+
+    def test_redisSubscriberRunnable_except(self):
+        event = Event("publisher_id", "event_type", "event_body")
+
+        pk = msgpack.Packer()
+        resb = bytearray()
+        resb.extend(pk.pack(2))
+        resb.extend(pk.pack(0))
+        resb.extend(pk.pack("publisher_id_except:event_type"))
+        resb.extend(pk.pack(event.packed_object()))
+        self.value = {"type": "message",
+                      "data": resb,
+                      "channel": "publisher_id_except:event_type"}
 
         with nested(
             patch("redis.client.PubSub.subscribe"),
@@ -848,6 +963,7 @@ class MessageDispatcherTest(unittest.TestCase):
             self.result.body, None)
 
     def test_dispatch_event(self):
+        self.target = MessageDispatcher(enable_monitor=True)
         event = Event("key01", "value01", "event_body")
         subscription_map =\
             self.target._MessageDispatcher__subscription_map

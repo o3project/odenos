@@ -88,7 +88,7 @@ class RemoteMessageTransport(BaseMessageTransport):
                 if source_object_id:
                     reqb.extend(pk.pack(source_object_id))  # Uses source_object_id instead.
                 else:
-                    logging.warning("source_object_id unset")
+                    logging.warn("source_object_id unset")
             else:
                 reqb.extend(pk.pack(self.dispatcher.get_source_dispatcher_id()))
             reqb.extend(pk.pack(request.packed_object()))

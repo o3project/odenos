@@ -1831,6 +1831,33 @@ class LogicTest(unittest.TestCase):
                 conversion_table._ConversionTable__link_conversion_table,
                 {})
 
+    def test_add_flow_conversion_error(self):
+        conversion_table = self.target._conversion_table
+        with nested(patch("logging.debug"),
+                    patch("logging.error"),
+                    patch("org.o3project.odenos.core.util."
+                          "network_interface.NetworkInterface."
+                          "_put_object_to_remote_object")
+                    ) as (logging_debug,
+                          logging_error,
+                          mock_put_object):
+
+            conversion_table._ConversionTable__network_conversion_table =\
+                {"network1": ["network2"]}
+            flow = Flow("BasicFlow", "1", "FlowId", "Owner",
+                        True, 123456789, "establishing",
+                        {"PortKey": "PortVal"})
+            self.target._network_interfaces["network2"] = \
+                NetworkInterface(self.target.dispatcher, "network2")
+            self.value = Response(200, {"key": "error"})
+
+            mock_put_object.return_value = self.value
+            self.result = self.target._add_flow_conversion("network1", flow)
+
+            self.assertEqual(logging_error.call_count, 1)
+            self.assertEqual(self.result["network2"].body, {"key": "error"})
+            self.assertEqual(conversion_table._ConversionTable__flow_conversion_table, {})
+
     def test_add_flow_conversion_success(self):
         conversion_table = self.target._conversion_table
         with nested(patch("logging.debug"),
@@ -1858,13 +1885,10 @@ class LogicTest(unittest.TestCase):
             mock_flow.return_value = flow
             mock_put_object.return_value = self.value
 
-            self.result = self.target._add_flow_conversion("network1",
-                                                           flow)
+            self.result = self.target._add_flow_conversion("network1", flow)
 
-            self.assertEqual(
-                logging_error.call_count, 0)
-            self.assertEqual(
-                self.result["network2"].body, "flow_item")
+            self.assertEqual(logging_error.call_count, 0)
+            self.assertEqual(self.result["network2"].body, "flow_item")
 
     def test_add_flow_conversion_not_in_network_interfaces(self):
         conversion_table = self.target._conversion_table
@@ -1888,8 +1912,7 @@ class LogicTest(unittest.TestCase):
 
             mock_put_object.return_value = self.value
 
-            self.result = self.target._add_flow_conversion("network1",
-                                                           flow)
+            self.result = self.target._add_flow_conversion("network1", flow)
 
             self.assertEqual(
                 logging_error.call_count, 0)

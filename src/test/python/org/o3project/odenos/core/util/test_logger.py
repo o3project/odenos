@@ -15,13 +15,22 @@
 # limitations under the License.                                           #
 
 from org.o3project.odenos.core.util.logger import Logger
+from org.o3project.odenos.core.util.logger import ContextFilter
 from io import BytesIO
 import sys
 import logging
 import unittest
 from mock import patch
 from contextlib import nested
+import os.path
 
+
+class ContextFilterTest(unittest.TestCase):
+
+    def test_fileter(self):
+        record = "test.py"
+        self.target = ContextFilter()
+        self.target.fileter(record)
 
 class LoggerTest(unittest.TestCase):
 

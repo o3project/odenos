@@ -132,11 +132,21 @@ class RemoteMessageTransportTest(unittest.TestCase):
 
         self.target.dispatcher.get_source_dispatcher_id = Mock(
             return_value="dispatcher_id")
-        self.target.dispatcher.monitor_enabled = Mock(
-            return_value=False)
+        self.target.dispatcher.monitor_enabled = Mock(return_value=False)
 
         self.result01 = self.target.addRequet(self.value01)
 
+        self.assertEqual(len(self.target.responseMap), 1)
+        self.assertEqual(self.target.responseMap[1], self.result01)
+
+    def test_addRequest_success2(self):
+        self.value01 = ObjectProperty("object_type", "object_id")
+
+        self.target.dispatcher.get_source_dispatcher_id = Mock(
+            return_value="dispatcher_id")
+        self.target.dispatcher.monitor_enabled = Mock(return_value=True)
+
+        self.result01 = self.target.addRequet(self.value01, "object_id")
         self.assertEqual(len(self.target.responseMap), 1)
         self.assertEqual(self.target.responseMap[1], self.result01)
 
@@ -162,6 +172,19 @@ class RemoteMessageTransportTest(unittest.TestCase):
             except:
                 self.assertEqual(logging_exception.call_count, 1)
                 self.assertEqual(len(self.target.responseMap), 0)
+
+    def test_addRequest_error2(self):
+        with nested(
+            patch("logging.warn")) as (logging_warn):
+            self.value01 = ObjectProperty("object_type", "object_id")
+
+            self.target.dispatcher.get_source_dispatcher_id = Mock(
+                return_value="dispatcher_id")
+            self.target.dispatcher.monitor_enabled = Mock(return_value=True)
+
+            self.result01 = self.target.addRequet(self.value01)
+            self.assertEqual(len(self.target.responseMap), 1)
+            self.assertEqual(self.target.responseMap[1], self.result01)
 
     def test_signalResponse(self):
         with patch("org.o3project.odenos.remoteobject.transport." +
