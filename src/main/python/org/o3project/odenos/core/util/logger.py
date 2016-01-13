@@ -23,7 +23,8 @@ import logging.config
 class ContextFilter(logging.Filter):
     def fileter(self, record):
         # get basename from filename by removing '.py'
-        record.module = ".".join(record.filename.split(".")[:-1])
+        #record.module = ".".join(record.filename.split(".")[:-1])
+        pass
 
 
 class Logger(object):

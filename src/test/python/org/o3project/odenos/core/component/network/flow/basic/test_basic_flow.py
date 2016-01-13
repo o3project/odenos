@@ -33,6 +33,7 @@ class BasicFlowTest(unittest.TestCase):
 #    Matches = [["BasicFlowMatch", "NODE_ID_1", "ANY"]]
     Matches = [["BasicFlowMatch", "NODE_ID_1", "ANY"]]
     Path = ["LINK_ID1"]
+    Path2 = ["LINK_ID2"]
     Edge_actions = {"NODE_ID_1": ["FlowActionOutput", "ANY"]}
 
     def setUp(self):
@@ -46,34 +47,29 @@ class BasicFlowTest(unittest.TestCase):
         self.target = None
 
     def test_constructor(self):
-        self.assertEqual(self.target._body[self.target.TYPE],
-                         self.Type)
-        self.assertEqual(self.target._body[self.target.VERSION],
-                         self.Version)
-        self.assertEqual(self.target._body[self.target.FLOW_ID],
-                         self.Flow_id)
-        self.assertEqual(self.target._body[self.target.OWNER],
-                         self.Owner)
-        self.assertEqual(self.target._body[self.target.ENABLED],
-                         self.Enabled)
-        self.assertEqual(self.target._body[self.target.PRIORITY],
-                         self.Priority)
-        self.assertEqual(self.target._body[self.target.STATUS],
-                         self.Status)
-        self.assertEqual(self.target._body[self.target.ATTRIBUTES],
-                         self.Attributes)
-        self.assertEqual(self.target._body[self.target.MATCHES],
-                         self.Matches)
-        self.assertEqual(self.target._body[self.target.PATH],
-                         self.Path)
-        self.assertEqual(self.target._body[self.target.EDGE_ACTIONS],
-                         self.Edge_actions)
+        self.assertEqual(self.target._body[self.target.TYPE], self.Type)
+        self.assertEqual(self.target._body[self.target.VERSION], self.Version)
+        self.assertEqual(self.target._body[self.target.FLOW_ID], self.Flow_id)
+        self.assertEqual(self.target._body[self.target.OWNER], self.Owner)
+        self.assertEqual(self.target._body[self.target.ENABLED], self.Enabled)
+        self.assertEqual(self.target._body[self.target.PRIORITY], self.Priority)
+        self.assertEqual(self.target._body[self.target.STATUS], self.Status)
+        self.assertEqual(self.target._body[self.target.ATTRIBUTES], self.Attributes)
+        self.assertEqual(self.target._body[self.target.MATCHES], self.Matches)
+        self.assertEqual(self.target._body[self.target.PATH], self.Path)
+        self.assertEqual(self.target._body[self.target.EDGE_ACTIONS], self.Edge_actions)
 
     def test_matches_property(self):
         self.assertEqual(self.target.matches, self.Matches)
 
     def test_path_property(self):
         self.assertEqual(self.target.path, self.Path)
+
+    def test_path_setter(self):
+        self.assertEqual(self.target.path, self.Path)
+        self.target.path = self.Path2
+        self.assertEqual(self.target.path, self.Path2)
+        self.target.path = self.Path
 
     def test_edge_actions__property(self):
         self.assertEqual(self.target.edge_actions, self.Edge_actions)
