@@ -37,10 +37,13 @@ class TestComponentManager < MiniTest::Test
     @dispatcher = mock()
     @dispatcher.expects(:add_local_object).at_least_once
     @target = ComponentManager.new(@object_id, @dispatcher)
+    @driver_dispatcher = mock()
+    @target.instance_variable_set(:@driver_dispatcher, @driver_dispatcher)
   end
 
   def teardown
     @dispatcher = nil
+    @driver_dispatcher = nil
     @target = nil
   end
 
@@ -213,10 +216,10 @@ class TestComponentManager < MiniTest::Test
   end
 
   def test_do_get_component_types_success
-    @dispatcher.expects(:add_local_object).once
-    @dispatcher.expects(:system_manager_id).once
-    @dispatcher.expects(:system_manager_id).once
-    @dispatcher.expects(:subscribe_event).once
+    @driver_dispatcher.expects(:add_local_object).once
+    @driver_dispatcher.expects(:system_manager_id).once
+    @driver_dispatcher.expects(:system_manager_id).once
+    @driver_dispatcher.expects(:subscribe_event).once
     @target.register_component_type(SampleDriver)
 
     response = @target.do_get_component_types
@@ -230,7 +233,7 @@ class TestComponentManager < MiniTest::Test
   end
 
   def test_do_get_component_types_failed_rescue
-    @dispatcher.expects(:system_manager_id).raises().once
+    @driver_dispatcher.expects(:system_manager_id).raises().once
     @target.register_component_type(SampleDriver)
 
     response = @target.do_get_component_types
@@ -277,10 +280,11 @@ class TestComponentManager < MiniTest::Test
   end
 
   def test_do_put_component_success
-    @dispatcher.expects(:subscribe_event).at_least_once
     @dispatcher.expects(:publish_event_async).at_least_once
-    @dispatcher.expects(:system_manager_id).at_least_once   
-    @dispatcher.expects(:add_local_object).at_least_once
+    @driver_dispatcher.expects(:subscribe_event).at_least_once
+    @driver_dispatcher.expects(:publish_event_async).at_least_once
+    @driver_dispatcher.expects(:system_manager_id).at_least_once
+    @driver_dispatcher.expects(:add_local_object).at_least_once
     @target.register_component_type(Driver)
     prop = {"type" => "Driver", "id" => "driver"}
     
@@ -300,10 +304,11 @@ class TestComponentManager < MiniTest::Test
   end
 
   def test_do_put_component_failure_conflict
-    @dispatcher.expects(:subscribe_event).at_least_once
     @dispatcher.expects(:publish_event_async).at_least_once
-    @dispatcher.expects(:system_manager_id).at_least_once
-    @dispatcher.expects(:add_local_object).at_least_once
+    @driver_dispatcher.expects(:subscribe_event).at_least_once
+    @driver_dispatcher.expects(:publish_event_async).at_least_once
+    @driver_dispatcher.expects(:system_manager_id).at_least_once
+    @driver_dispatcher.expects(:add_local_object).at_least_once
     @target.register_component_type(Driver)
     prop = {"type" => "Driver", "id" => "driver"}
 
@@ -314,10 +319,11 @@ class TestComponentManager < MiniTest::Test
   end
 
   def test_do_delete_component_created
-    @dispatcher.expects(:subscribe_event).at_least_once
     @dispatcher.expects(:publish_event_async).at_least_once
-    @dispatcher.expects(:system_manager_id).at_least_once
-    @dispatcher.expects(:add_local_object).at_least_once
+    @driver_dispatcher.expects(:subscribe_event).at_least_once
+    @driver_dispatcher.expects(:publish_event_async).at_least_once
+    @driver_dispatcher.expects(:system_manager_id).at_least_once
+    @driver_dispatcher.expects(:add_local_object).at_least_once
     @target.register_component_type(Driver)
     prop = {"type" => "Driver", "id" => "driver"}
     @target.do_put_component(prop, "driver")

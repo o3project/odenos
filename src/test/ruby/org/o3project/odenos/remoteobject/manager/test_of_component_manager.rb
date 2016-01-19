@@ -34,10 +34,13 @@ class TestOFComponentManager < MiniTest::Test
     @controller = mock()
     @dispatcher.expects(:add_local_object).at_least_once
     @target = OFComponentManager.new('of_comp_mgr', @dispatcher, @controller)
+    @driver_dispatcher = mock()
+    @target.instance_variable_set(:@driver_dispatcher, @driver_dispatcher)
   end
 
   def teardown
     @dispatcher = nil
+    @driver_dispatcher = nil
     @controller = nil
     @target = nil
   end
@@ -66,10 +69,10 @@ class TestOFComponentManager < MiniTest::Test
   end
 
   def test_do_get_component_types_success
-    @dispatcher.expects(:add_local_object).once
-    @dispatcher.expects(:system_manager_id).once
-    @dispatcher.expects(:system_manager_id).once
-    @dispatcher.expects(:subscribe_event).once
+    @driver_dispatcher.expects(:add_local_object).once
+    @driver_dispatcher.expects(:system_manager_id).once
+    @driver_dispatcher.expects(:system_manager_id).once
+    @driver_dispatcher.expects(:subscribe_event).once
     @target.register_component_type(SampleDriver)
 
     response = @target.do_get_component_types
@@ -185,7 +188,7 @@ class TestOFComponentManager < MiniTest::Test
   def test_create_openflow_driver_component
     ofd = mock()
     OFDriver::OpenFlowDriver.expects(:new).with('open_flow_driver',
-                                                      @dispatcher,
+                                                      @driver_dispatcher,
                                                       @controller).returns(ofd).once
 
     ret = @target.create_openflow_driver_component('open_flow_driver')
