@@ -61,8 +61,8 @@ class TestOFComponentManager < MiniTest::Test
   end
 
   def test_initialize
-    assert_equal(@target.instance_variable_get(:@driver_component), nil)
-    assert_equal(@target.instance_variable_get(:@controller), @controller)
+    assert_equal(nil, @target.instance_variable_get(:@driver_component))
+    assert_equal(@controller, @target.instance_variable_get(:@controller))
   end
 
   def test_do_get_component_types_success
@@ -74,7 +74,7 @@ class TestOFComponentManager < MiniTest::Test
 
     response = @target.do_get_component_types
 
-    assert_equal(response.status_code, Response::OK)
+    assert_equal(Response::OK, response.status_code)
     assert_includes(response.body['SampleDriver']['type'], 'SampleDriver')
     assert_includes(response.body['SampleDriver']['super_type'], 'Driver')
     assert_includes(response.body['SampleDriver']['connection_types']['original'], '1')
@@ -88,7 +88,7 @@ class TestOFComponentManager < MiniTest::Test
 
     response = @target.do_get_component_types
 
-    assert_equal(response.status_code, Response::INTERNAL_SERVER_ERROR)
+    assert_equal(Response::INTERNAL_SERVER_ERROR, response.status_code)
   end
 
   def test_do_get_components_existence
@@ -96,7 +96,7 @@ class TestOFComponentManager < MiniTest::Test
 
     response = @target.do_get_components
 
-    assert_equal(response.status_code, Response::OK)
+    assert_equal(Response::OK, response.status_code)
     assert_equal(response.body['open_flow_driver'],
                  @target.instance_variable_get(:@driver_component).property)
   end
@@ -104,8 +104,8 @@ class TestOFComponentManager < MiniTest::Test
   def test_do_get_components_not_existence
     response = @target.do_get_components
 
-    assert_equal(response.status_code, Response::OK)
-    assert_equal(response.body, {})
+    assert_equal(Response::OK, response.status_code)
+    assert_equal({}, response.body)
   end
 
   def test_do_put_component_success
@@ -124,10 +124,10 @@ class TestOFComponentManager < MiniTest::Test
     
     response = @target.do_put_component(ofd_prop, ofd_prop[:id])
 
-    assert_equal(response.status_code, Response::CREATED)
-    assert_equal(response.body, ofd_comp.property)
-    assert_equal(@target.instance_variable_get(:@driver_component), ofd_comp)
-    assert_equal(@target.instance_variable_get(:@components)['open_flow_driver'], ofd_comp)
+    assert_equal(Response::CREATED, response.status_code)
+    assert_equal(ofd_comp.property, response.body)
+    assert_equal(ofd_comp, @target.instance_variable_get(:@driver_component))
+    assert_equal(ofd_comp, @target.instance_variable_get(:@components)['open_flow_driver'])
   end
 
   def test_do_put_component_not_support_type
@@ -136,8 +136,8 @@ class TestOFComponentManager < MiniTest::Test
 
     response = @target.do_put_component(vxlan_prop, vxlan_prop[:id])
 
-    assert_equal(response.status_code, Response::FORBIDDEN)
-    assert_equal(response.body, 'Unsupported type')
+    assert_equal(Response::FORBIDDEN, response.status_code)
+    assert_equal('Unsupported type', response.body)
   end
 
   def test_do_put_component_already_created
@@ -147,8 +147,8 @@ class TestOFComponentManager < MiniTest::Test
 
     response = @target.do_put_component(ofd_prop, ofd_prop[:id])
 
-    assert_equal(response.status_code, Response::CONFLICT)
-    assert_equal(response.body, 'Cannot overwrite existing instance.')
+    assert_equal(Response::CONFLICT, response.status_code)
+    assert_equal('Cannot overwrite existing instance.', response.body)
   end
 
   def test_do_delete_component_success
@@ -162,15 +162,15 @@ class TestOFComponentManager < MiniTest::Test
 
     response = @target.do_delete_component('open_flow_driver')
 
-    assert_equal(response.status_code, Response::OK)
-    assert_equal(response.body, nil)
+    assert_equal(Response::OK, response.status_code)
+    assert_equal(nil, response.body)
   end
 
   def test_do_delete_component_not_created
     response = @target.do_delete_component('open_flow_driver')
 
-    assert_equal(response.status_code, Response::NOT_FOUND)
-    assert_equal(response.body, 'open_flow_driver Not Found')
+    assert_equal(Response::NOT_FOUND, response.status_code)
+    assert_equal('open_flow_driver Not Found', response.body)
   end
 
   def test_do_delete_component_diff_comp_id
@@ -178,8 +178,8 @@ class TestOFComponentManager < MiniTest::Test
 
     response = @target.do_delete_component('open_flow_driver1')
 
-    assert_equal(response.status_code, Response::NOT_FOUND)
-    assert_equal(response.body, 'open_flow_driver1 Not Found')
+    assert_equal(Response::NOT_FOUND, response.status_code)
+    assert_equal('open_flow_driver1 Not Found', response.body)
   end
 
   def test_create_openflow_driver_component
@@ -190,7 +190,7 @@ class TestOFComponentManager < MiniTest::Test
 
     ret = @target.create_openflow_driver_component('open_flow_driver')
 
-    assert_equal(ret, ofd)
+    assert_equal(ofd, ret)
   end
 
 end

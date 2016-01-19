@@ -42,8 +42,8 @@ class TestArrayAccessor < MiniTest::Test
     ar.instance_variable_get(:@array_read)[0] = "aaa"
     ar.instance_variable_get(:@array_read)[1] = "bbb"
 
-    assert_equal(ar.key11, "aaa")
-    assert_equal(ar.key12, "bbb")
+    assert_equal("aaa", ar.key11)
+    assert_equal("bbb", ar.key12)
   end
 
   def test_array_reader_aragument_error
@@ -57,8 +57,8 @@ class TestArrayAccessor < MiniTest::Test
     aw.key21 = "aaa"
     aw.key22 = "bbb"
 
-    assert_equal(aw.instance_variable_get(:@array_write)[0], "aaa")
-    assert_equal(aw.instance_variable_get(:@array_write)[1], "bbb")
+    assert_equal("aaa", aw.instance_variable_get(:@array_write)[0])
+    assert_equal("bbb", aw.instance_variable_get(:@array_write)[1])
   end
 
   def test_array_writer_aragument_error
@@ -72,8 +72,8 @@ class TestArrayAccessor < MiniTest::Test
     aa.key31 = "aaa"
     aa.key32 = "bbb"
 
-    assert_equal(aa.key31, "aaa")
-    assert_equal(aa.key32, "bbb")
+    assert_equal("aaa", aa.key31)
+    assert_equal("bbb", aa.key32)
   end
 
 end

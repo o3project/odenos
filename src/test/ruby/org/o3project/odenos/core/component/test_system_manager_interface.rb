@@ -41,8 +41,8 @@ class TestSystemManagerInterface < MiniTest::Test
   end
 
   def test_initialize
-    assert_equal(@target.instance_variable_get(:@dispatcher), @dispatcher)
-    assert_equal(@target.instance_variable_get(:@sysmgr_id), SYSTEM_MANAGER_ID)
+    assert_equal(@dispatcher, @target.instance_variable_get(:@dispatcher))
+    assert_equal(SYSTEM_MANAGER_ID, @target.instance_variable_get(:@sysmgr_id))
   end
 
   def test_get_component_managers_success
@@ -60,9 +60,9 @@ class TestSystemManagerInterface < MiniTest::Test
 
     comp_mgrs.each_pair do |id, prop|
       if id == "compmgr_java"
-        assert_equal(prop, prop1)
+        assert_equal(prop1, prop)
       else
-        assert_equal(prop, prop2)
+        assert_equal(prop2, prop)
       end
     end
   end
@@ -73,7 +73,7 @@ class TestSystemManagerInterface < MiniTest::Test
 
     comp_mgrs = @target.get_component_managers
 
-    assert_equal(comp_mgrs, nil)
+    assert_equal(nil, comp_mgrs)
   end
 
   def test_get_component_managers_exception
@@ -82,7 +82,7 @@ class TestSystemManagerInterface < MiniTest::Test
 
     comp_mgrs = @target.get_component_managers
 
-    assert_equal(comp_mgrs, nil)
+    assert_equal(nil, comp_mgrs)
   end
 
   def test_get_event_manager_success
@@ -94,7 +94,7 @@ class TestSystemManagerInterface < MiniTest::Test
 
     evt_prop = @target.get_event_manager
 
-    assert_equal(evt_prop, prop)
+    assert_equal(prop, evt_prop)
   end
 
   def test_get_event_manager_failure
@@ -103,7 +103,7 @@ class TestSystemManagerInterface < MiniTest::Test
 
     evt_prop = @target.get_event_manager
 
-    assert_equal(evt_prop, nil)
+    assert_equal(nil, evt_prop)
   end
 
   def test_test_get_event_manager_exception
@@ -112,7 +112,7 @@ class TestSystemManagerInterface < MiniTest::Test
 
     evt_prop = @target.get_event_manager
 
-    assert_equal(evt_prop, nil)
+    assert_equal(nil, evt_prop)
   end
 
   def test_get_component_types_success
@@ -134,15 +134,15 @@ class TestSystemManagerInterface < MiniTest::Test
 
     comp_types.each_pair do |type, prop_list|
       if type == "Slicer"
-        assert_equal(prop_list.length, 1)
-        assert_equal(prop_list[0], prop1)
+        assert_equal(1, prop_list.length)
+        assert_equal(prop1, prop_list[0])
       elsif type == "Aggregator"
-        assert_equal(prop_list.length, 1)
-        assert_equal(prop_list[0], prop1)
+        assert_equal(1, prop_list.length)
+        assert_equal(prop1, prop_list[0])
       else
-        assert_equal(prop_list.length, 2)
-        assert_equal(prop_list[0], prop1)
-        assert_equal(prop_list[1], prop2)
+        assert_equal(2, prop_list.length)
+        assert_equal(prop1, prop_list[0])
+        assert_equal(prop2, prop_list[1])
       end
     end
   end
@@ -153,7 +153,7 @@ class TestSystemManagerInterface < MiniTest::Test
 
     comp_types = @target.get_component_types
 
-    assert_equal(comp_types, nil)
+    assert_equal(nil, comp_types)
   end
 
   def test_get_component_types_exception
@@ -169,7 +169,7 @@ class TestSystemManagerInterface < MiniTest::Test
 
     comp_types = @target.get_component_types
 
-    assert_equal(comp_types, nil)
+    assert_equal(nil, comp_types)
   end
 
   def test_get_components_success
@@ -188,9 +188,9 @@ class TestSystemManagerInterface < MiniTest::Test
 
     comps.each_pair do |id, prop|
       if id == "network1"
-        assert_equal(prop, prop1)
+        assert_equal(prop1, prop)
       else
-        assert_equal(prop, prop2)
+        assert_equal(prop2, prop)
       end
     end
   end
@@ -201,7 +201,7 @@ class TestSystemManagerInterface < MiniTest::Test
 
     comps = @target.get_components
 
-    assert_equal(comps, nil)
+    assert_equal(nil, comps)
   end
 
   def test_get_components_exception
@@ -215,7 +215,7 @@ class TestSystemManagerInterface < MiniTest::Test
 
     comps = @target.get_components
 
-    assert_equal(comps, nil)
+    assert_equal(nil, comps)
   end
 
   def test_get_connections_success
@@ -237,9 +237,9 @@ class TestSystemManagerInterface < MiniTest::Test
 
     conns.each_pair do |id, connection|
       if id == "1"
-        assert_equal(connection.to_hash, Hash[conn.map{|(k,v)| [k.to_sym,v]}])
+        assert_equal(Hash[conn.map{|(k,v)| [k.to_sym,v]}], connection.to_hash)
       else
-        assert_equal(connection.to_hash, Hash[conn_log_net.map{|(k,v)| [k.to_sym,v]}])
+        assert_equal(Hash[conn_log_net.map{|(k,v)| [k.to_sym,v]}], connection.to_hash)
       end
     end
   end
@@ -250,7 +250,7 @@ class TestSystemManagerInterface < MiniTest::Test
 
     conns = @target.get_connections
 
-    assert_equal(conns, nil)
+    assert_equal(nil, conns)
   end
 
   def test_get_connections_exception
@@ -264,7 +264,7 @@ class TestSystemManagerInterface < MiniTest::Test
 
     conns = @target.get_connections
 
-    assert_equal(conns, nil)
+    assert_equal(nil, conns)
   end
 
   def test_get_component_manager_success
@@ -278,7 +278,7 @@ class TestSystemManagerInterface < MiniTest::Test
 
     compmgr = @target.get_component_manager(object_id)
 
-    assert_equal(compmgr, prop)
+    assert_equal(prop, compmgr)
   end
 
   def test_get_component_manager_failure
@@ -289,7 +289,7 @@ class TestSystemManagerInterface < MiniTest::Test
 
     compmgr = @target.get_component_manager(object_id)
 
-    assert_equal(compmgr, nil)
+    assert_equal(nil, compmgr)
   end
 
   def test_get_component_manager_exception
@@ -300,7 +300,7 @@ class TestSystemManagerInterface < MiniTest::Test
 
     compmgr = @target.get_component_manager(object_id)
 
-    assert_equal(compmgr, nil)
+    assert_equal(nil, compmgr)
   end
 
   def test_get_component_type_success
@@ -319,8 +319,8 @@ class TestSystemManagerInterface < MiniTest::Test
 
     types = @target.get_component_type(comp_type)
 
-    assert_equal(types[0], prop1)
-    assert_equal(types[1], prop2)
+    assert_equal(prop1, types[0])
+    assert_equal(prop2, types[1])
   end
 
   def test_get_component_type_failure
@@ -331,7 +331,7 @@ class TestSystemManagerInterface < MiniTest::Test
 
     types = @target.get_component_type(comp_type)
 
-    assert_equal(types, nil)
+    assert_equal(nil, types)
   end
 
   def test_get_component_type_exception
@@ -346,7 +346,7 @@ class TestSystemManagerInterface < MiniTest::Test
 
     types = @target.get_component_type(comp_type)
 
-    assert_equal(types, nil)
+    assert_equal(nil, types)
   end
 
   def test_get_component_success
@@ -360,7 +360,7 @@ class TestSystemManagerInterface < MiniTest::Test
 
     comp = @target.get_component(object_id)
 
-    assert_equal(comp, prop)
+    assert_equal(prop, comp)
   end
 
   def test_get_component_failure
@@ -371,7 +371,7 @@ class TestSystemManagerInterface < MiniTest::Test
 
     comp = @target.get_component(object_id)
 
-    assert_equal(comp, nil)
+    assert_equal(nil, comp)
   end
 
   def test_get_component_exception
@@ -382,7 +382,7 @@ class TestSystemManagerInterface < MiniTest::Test
 
     comp = @target.get_component(object_id)
 
-    assert_equal(comp, nil)
+    assert_equal(nil, comp)
   end
 
   def test_get_connection_success_base_connection
@@ -397,7 +397,7 @@ class TestSystemManagerInterface < MiniTest::Test
 
     connection = @target.get_connection(conn_id)
 
-    assert_equal(connection.to_hash, Hash[conn.map{|(k,v)| [k.to_sym,v]}])
+    assert_equal(Hash[conn.map{|(k,v)| [k.to_sym,v]}], connection.to_hash)
   end
 
   def test_get_connection_success_logic_and_network_connection
@@ -415,7 +415,7 @@ class TestSystemManagerInterface < MiniTest::Test
 
     connection = @target.get_connection(conn_id)
 
-    assert_equal(connection.to_hash, Hash[conn_log_net.map{|(k,v)| [k.to_sym,v]}])
+    assert_equal(Hash[conn_log_net.map{|(k,v)| [k.to_sym,v]}], connection.to_hash)
   end
 
   def test_get_connection_failure
@@ -426,7 +426,7 @@ class TestSystemManagerInterface < MiniTest::Test
 
     connection = @target.get_connection(conn_id)
 
-    assert_equal(connection, nil)
+    assert_equal(nil, connection)
   end
 
   def test_get_connection_exception
@@ -437,7 +437,7 @@ class TestSystemManagerInterface < MiniTest::Test
 
     connection = @target.get_connection(conn_id)
 
-    assert_equal(connection, nil)
+    assert_equal(nil, connection)
   end
 
   def test_get_object_success
@@ -451,7 +451,7 @@ class TestSystemManagerInterface < MiniTest::Test
 
     comp = @target.get_object(object_id)
 
-    assert_equal(comp, prop)
+    assert_equal(prop, comp)
   end
 
   def test_get_object_failure
@@ -462,7 +462,7 @@ class TestSystemManagerInterface < MiniTest::Test
 
     comp = @target.get_object(object_id)
 
-    assert_equal(comp, nil)
+    assert_equal(nil, comp)
   end
 
   def test_get_object_exception
@@ -473,7 +473,7 @@ class TestSystemManagerInterface < MiniTest::Test
 
     comp = @target.get_object(object_id)
 
-    assert_equal(comp, nil)
+    assert_equal(nil, comp)
   end
 
   def test_put_connection
@@ -492,7 +492,7 @@ class TestSystemManagerInterface < MiniTest::Test
     
     resp = @target.put_connection(connection)
 
-    assert_equal(resp, response)
+    assert_equal(response, resp)
   end
 
   def test_put_component_managers
@@ -506,7 +506,7 @@ class TestSystemManagerInterface < MiniTest::Test
 
     resp = @target.put_component_managers(property)
 
-    assert_equal(resp, response)
+    assert_equal(response, resp)
   end
 
   def test_put_components
@@ -520,7 +520,7 @@ class TestSystemManagerInterface < MiniTest::Test
 
     resp = @target.put_components(property)
 
-    assert_equal(resp, response)
+    assert_equal(response, resp)
   end
   
   def test_post_components
@@ -534,7 +534,7 @@ class TestSystemManagerInterface < MiniTest::Test
 
     resp = @target.post_components(property)
 
-    assert_equal(resp, response)
+    assert_equal(response, resp)
   end
 
   def test_post_conections
@@ -551,7 +551,7 @@ class TestSystemManagerInterface < MiniTest::Test
 
     resp = @target.post_connections(connection)
 
-    assert_equal(resp, response)
+    assert_equal(response, resp)
   end
 
   def test_del_component_managers
@@ -562,7 +562,7 @@ class TestSystemManagerInterface < MiniTest::Test
 
     resp = @target.del_component_managers(object_id)
 
-    assert_equal(resp, response)
+    assert_equal(response, resp)
   end
 
   def test_del_components
@@ -573,7 +573,7 @@ class TestSystemManagerInterface < MiniTest::Test
 
     resp = @target.del_components(object_id)
 
-    assert_equal(resp, response)
+    assert_equal(response, resp)
   end
 
   def test_del_connections
@@ -584,7 +584,7 @@ class TestSystemManagerInterface < MiniTest::Test
 
     resp = @target.del_connections(conn_id)
 
-    assert_equal(resp, response)
+    assert_equal(response, resp)
   end
 
   def test_post_object_to_sysmgr
@@ -598,7 +598,7 @@ class TestSystemManagerInterface < MiniTest::Test
 
     resp = @target.post_object_to_sysmgr(path, body)
 
-    assert_equal(resp, response)
+    assert_equal(response, resp)
   end
 
   def test_put_object_to_sysmgr
@@ -612,7 +612,7 @@ class TestSystemManagerInterface < MiniTest::Test
 
     resp = @target.put_object_to_sysmgr(path, body)
 
-    assert_equal(resp, response)
+    assert_equal(response, resp)
   end
 
   def test_del_object_to_sysmgr
@@ -625,7 +625,7 @@ class TestSystemManagerInterface < MiniTest::Test
 
     resp = @target.del_object_to_sysmgr(path)
 
-    assert_equal(resp, response)
+    assert_equal(response, resp)
   end
 
   def test_get_object_to_sysmgr
@@ -638,14 +638,14 @@ class TestSystemManagerInterface < MiniTest::Test
 
     resp = @target.get_object_to_sysmgr(path)
 
-    assert_equal(resp, response)
+    assert_equal(response, resp)
   end
 
   def test_dump_error
     begin
       fail "test_dump_error"
     rescue => ex
-      assert_equal(@target.send(:dump_error, ex), nil)
+      assert_equal(nil, @target.send(:dump_error, ex))
     end
   end
 
@@ -659,7 +659,7 @@ class TestSystemManagerInterface < MiniTest::Test
 
     resp = @target.send(:send_request, obj_id, method, path, body)
 
-    assert_equal(resp, response)
+    assert_equal(response, resp)
   end
 
   def test_send_request_exception
@@ -671,8 +671,8 @@ class TestSystemManagerInterface < MiniTest::Test
 
     resp = @target.send(:send_request, obj_id, method, path, body)
 
-    assert_equal(resp.status_code, Response::INTERNAL_SERVER_ERROR)
-    assert_equal(resp.body, nil)
+    assert_equal(Response::INTERNAL_SERVER_ERROR, resp.status_code)
+    assert_equal(nil, resp.body)
   end
 
 end
