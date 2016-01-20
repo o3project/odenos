@@ -34,78 +34,78 @@ class TestObjectProperty < MiniTest::Test
   end
 
   def test_initialize
-    assert_equal(@target.get_property(:type), "ComponentManager")
-    assert_equal(@target.get_property(:id), "compmgr_ruby")
+    assert_equal("ComponentManager", @target.get_property(:type))
+    assert_equal("compmgr_ruby", @target.get_property(:id))
   end
 
   def test_remote_object_type
-    assert_equal(@target.remote_object_type, "ComponentManager")
+    assert_equal("ComponentManager", @target.remote_object_type)
   end
 
   def test_remote_object_type=
     @target.remote_object_type = "SystemManager"
 
-    assert_equal(@target.remote_object_type, "SystemManager")
+    assert_equal("SystemManager", @target.remote_object_type)
   end
 
   def test_remote_object_id
-    assert_equal(@target.remote_object_id, "compmgr_ruby")
+    assert_equal("compmgr_ruby", @target.remote_object_id)
   end
 
   def test_remote_object_id=
     @target.remote_object_id = "compmgr_python"
 
-    assert_equal(@target.remote_object_id, "compmgr_python")
+    assert_equal("compmgr_python", @target.remote_object_id)
   end
 
   def test_set_property_key_string
     result = @target.set_property("key", "Value")
 
-    assert_equal(result, nil)
-    assert_equal(@target.get_property("key"), "Value")
+    assert_equal(nil, result)
+    assert_equal("Value", @target.get_property("key"))
   end
 
   def test_set_property_key_symbol
     @target.set_property(:key, "Value")
     result = @target.set_property(:key, "Value2")
 
-    assert_equal(result, "Value")
-    assert_equal(@target.get_property(:key), "Value2")
+    assert_equal("Value", result)
+    assert_equal("Value2", @target.get_property(:key))
   end
 
   def test_get_property_key_string
     @target.set_property("key", "Value")
 
-    assert_equal(@target.get_property("key"), "Value")
+    assert_equal("Value", @target.get_property("key"))
   end
 
   def test_get_property_key_symbol
     @target.set_property(:key, "Value")
 
-    assert_equal(@target.get_property(:key), "Value")
+    assert_equal("Value", @target.get_property(:key))
   end
 
   def test_delete_property_key_string
     @target.set_property("key", "Value")
     result = @target.delete_property("key")
 
-    assert_equal(result, "Value")
-    assert_equal(@target.get_property("key"), nil)
+    assert_equal("Value", result)
+    assert_equal(nil, @target.get_property("key"))
   end
 
   def test_delete_property_key_symbol
     @target.set_property(:key, "Value")
     result = @target.delete_property(:key)
 
-    assert_equal(result, "Value")
-    assert_equal(@target.get_property(:key), nil)
+    assert_equal("Value", result)
+    assert_equal(nil, @target.get_property(:key))
   end
 
   def test_delete_property_read_only_key
     result = @target.delete_property(:id)
 
-    assert_equal(result, nil)
-    assert_equal(@target.get_property(:id), "compmgr_ruby")
+    assert_equal(nil, result)
+    assert_equal("compmgr_ruby", @target.get_property(:id))
   end
 
   def test_put_property
@@ -115,26 +115,26 @@ class TestObjectProperty < MiniTest::Test
     new_prop = {:add_key => 3, :update_key => 4}
     @target.put_property(new_prop)
 
-    assert_equal(@target.get_property(:del_key), nil)
-    assert_equal(@target.get_property(:add_key), 3)
-    assert_equal(@target.get_property(:update_key), 4)
+    assert_equal(nil, @target.get_property(:del_key))
+    assert_equal(3, @target.get_property(:add_key))
+    assert_equal(4, @target.get_property(:update_key))
   end
 
   def test_equal_true
     new_prop = {:type => "ComponentManager", :id => "compmgr_ruby"}
 
-    assert_equal(@target == new_prop, true)
+    assert_equal(true, @target == new_prop)
   end
 
   def test_equal_false
     new_prop = {:type => "ComponentManagers", :id => "compmgr_ruby"}
-    assert_equal(@target == new_prop, false)
+    assert_equal(false, @target == new_prop)
 
     new_prop = {:id => "compmgr_ruby"}    
-    assert_equal(@target == new_prop, false)
+    assert_equal(false, @target == new_prop)
 
     new_prop = {:type => "ComponentManagers", :id => "compmgr_ruby", :state => "error"}
-    assert_equal(@target == new_prop, false)
+    assert_equal(false, @target == new_prop)
   end
 
   def test_clone
@@ -143,19 +143,19 @@ class TestObjectProperty < MiniTest::Test
     @target.connection_types = "connection_type"
     clone_obj = @target.clone
 
-    assert_equal(@target == clone_obj.to_hash, true)
+    assert_equal(true, @target == clone_obj.to_hash)
   end
 
   def test_read_only_true
-    assert_equal(@target.read_only?(:type), true)
-    assert_equal(@target.read_only?(:id), true)
-    assert_equal(@target.read_only?(:super_type), true)
-    assert_equal(@target.read_only?(:description), true)
-    assert_equal(@target.read_only?(:connection_types), true)
+    assert_equal(true, @target.read_only?(:type))
+    assert_equal(true, @target.read_only?(:id))
+    assert_equal(true, @target.read_only?(:super_type))
+    assert_equal(true, @target.read_only?(:description))
+    assert_equal(true, @target.read_only?(:connection_types))
   end
 
   def test_read_only_false
-    assert_equal(@target.read_only?(:state), false)
+    assert_equal(false, @target.read_only?(:state))
   end
 
 end
@@ -185,15 +185,15 @@ class TestRemoteObject < MiniTest::Test
   end
 
   def test_remote_object_id
-    assert_equal(@target.remote_object_id, 'object_id')
+    assert_equal('object_id', @target.remote_object_id)
   end
 
   def test_state
-    assert_equal(@target.state, ObjectProperty::State::INITIALIZING)
+    assert_equal(ObjectProperty::State::INITIALIZING, @target.state)
   end
 
   def test_on_initialize
-    assert_equal(@target.on_initialize, true)
+    assert_equal(true, @target.on_initialize)
   end
 
   def test_on_finalize_state_to_finalizing
@@ -204,7 +204,7 @@ class TestRemoteObject < MiniTest::Test
 
     @target.on_finalize
 
-    assert_equal(@target.state, ObjectProperty::State::FINALIZING)
+    assert_equal(ObjectProperty::State::FINALIZING, @target.state)
   end
 
   def test_on_finalize_already_state_finalizing
@@ -224,7 +224,7 @@ class TestRemoteObject < MiniTest::Test
 
     @target.set_state(ObjectProperty::State::RUNNING)
 
-    assert_equal(@target.state, ObjectProperty::State::RUNNING)
+    assert_equal(ObjectProperty::State::RUNNING, @target.state)
   end
 
   def test_set_state_no_change_state
@@ -234,7 +234,7 @@ class TestRemoteObject < MiniTest::Test
 
     @target.set_state(ObjectProperty::State::INITIALIZING)
 
-    assert_equal(@target.state, ObjectProperty::State::INITIALIZING)
+    assert_equal(ObjectProperty::State::INITIALIZING, @target.state)
   end
 
   def test_request_sync
@@ -243,7 +243,7 @@ class TestRemoteObject < MiniTest::Test
 
     response = @target.request_sync('systemmanager', :GET, 'property', nil)
 
-    assert_equal(response, ex_response)
+    assert_equal(ex_response, response)
   end
 
   def test_request
@@ -255,7 +255,7 @@ class TestRemoteObject < MiniTest::Test
 
     response = @target.request('systemmanager', :GET, 'property', nil)
 
-    assert_equal(response, ex_response)
+    assert_equal(ex_response, response)
   end
 
   def test_publish_event_async
@@ -283,7 +283,7 @@ class TestRemoteObject < MiniTest::Test
 
     response = @target.dispatch_request(request)
 
-    assert_equal(response.status_code, Response::OK)
+    assert_equal(Response::OK, response.status_code)
     assert_equal(response.body, @target.property)
   end
 
@@ -294,7 +294,7 @@ class TestRemoteObject < MiniTest::Test
 
     response = @target.dispatch_request(request)
 
-    assert_equal(response, ex_response)
+    assert_equal(ex_response, response)
   end
 
   def test_dispatch_request_exception
@@ -303,8 +303,8 @@ class TestRemoteObject < MiniTest::Test
 
     response = @target.dispatch_request(request)
 
-    assert_equal(response.status_code, Response::INTERNAL_SERVER_ERROR)
-    assert_equal(response.body, nil)
+    assert_equal(Response::INTERNAL_SERVER_ERROR, response.status_code)
+    assert_equal(nil, response.body)
   end
 
   def test_dispatch_event
@@ -365,7 +365,7 @@ class TestRemoteObject < MiniTest::Test
 
     resp = @target.on_request(request)
 
-    assert_equal(resp.status_code, Response::BAD_REQUEST)
+    assert_equal(Response::BAD_REQUEST, resp.status_code)
   end
 
   def test_on_event
@@ -406,7 +406,7 @@ class TestRemoteObject < MiniTest::Test
   def test_do_get_property
     response = @target.send(:do_get_property)
 
-    assert_equal(response.status_code, Response::OK)
+    assert_equal(Response::OK, response.status_code)
     assert_equal(response.body, @target.property)
   end
 
@@ -423,7 +423,7 @@ class TestRemoteObject < MiniTest::Test
 
     response = @target.send(:do_put_property, request)
 
-    assert_equal(response.status_code, Response::OK)
+    assert_equal(Response::OK, response.status_code)
     assert_equal(response.body, @target.property)
   end
 
@@ -436,7 +436,7 @@ class TestRemoteObject < MiniTest::Test
 
     response = @target.send(:do_put_property, request)
 
-    assert_equal(response.status_code, Response::OK)
+    assert_equal(Response::OK, response.status_code)
     assert_equal(response.body, @target.property)
   end
 
@@ -454,14 +454,14 @@ class TestRemoteObject < MiniTest::Test
 
     response = @target.send(:do_put_property, request)
 
-    assert_equal(response.status_code, Response::OK)
+    assert_equal(Response::OK, response.status_code)
     assert_equal(response.body, @target.property)
   end
 
   def test_do_get_settings
     response = @target.send(:do_get_settings)
 
-    assert_equal(response.status_code, Response::OK)
+    assert_equal(Response::OK, response.status_code)
     assert_equal(response.body, @target.settings)
   end
 
@@ -476,7 +476,7 @@ class TestRemoteObject < MiniTest::Test
 
     response = @target.send(:do_put_settings, request)
 
-    assert_equal(response.status_code, Response::OK)
+    assert_equal(Response::OK, response.status_code)
     assert_equal(response.body, @target.settings)
   end
 
@@ -491,7 +491,7 @@ class TestRemoteObject < MiniTest::Test
 
     response = @target.send(:do_put_settings, request)
 
-    assert_equal(response.status_code, Response::OK)
+    assert_equal(Response::OK, response.status_code)
     assert_equal(response.body, @target.settings)
   end
 
@@ -506,7 +506,7 @@ class TestRemoteObject < MiniTest::Test
 
     response = @target.send(:do_post_event, event)
 
-    assert_equal(response.status_code, Response::ACCEPTED)
+    assert_equal(Response::ACCEPTED, response.status_code)
   end
 
 end

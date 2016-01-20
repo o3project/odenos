@@ -37,18 +37,21 @@ class TestComponentManager < MiniTest::Test
     @dispatcher = mock()
     @dispatcher.expects(:add_local_object).at_least_once
     @target = ComponentManager.new(@object_id, @dispatcher)
+    @driver_dispatcher = mock()
+    @target.instance_variable_set(:@driver_dispatcher, @driver_dispatcher)
   end
 
   def teardown
     @dispatcher = nil
+    @driver_dispatcher = nil
     @target = nil
   end
 
   def test_initialize
-    assert_equal(@target.instance_variable_get(:@component_classes), {})
-    assert_equal(@target.instance_variable_get(:@components), {})
+    assert_equal({}, @target.instance_variable_get(:@component_classes))
+    assert_equal({}, @target.instance_variable_get(:@components))
     assert_instance_of(RequestParser, @target.instance_variable_get(:@parser))
-    assert_equal(@target.property.state, ObjectProperty::State::RUNNING)
+    assert_equal(ObjectProperty::State::RUNNING, @target.property.state)
   end
 
   def test_register_to_system_manager
@@ -157,25 +160,25 @@ class TestComponentManager < MiniTest::Test
     @target.register_component_type(Driver)
     
     assert_equal(Driver, @target.instance_variable_get(:@component_classes)["Driver"])
-    assert_equal(@target.property.component_types, "Driver")
+    assert_equal("Driver", @target.property.component_types)
 
     @target.register_component_type(Component)
 
     assert_equal(Driver, @target.instance_variable_get(:@component_classes)["Driver"])
     assert_equal(Component, @target.instance_variable_get(:@component_classes)["Component"])
-    assert_equal(@target.property.component_types, "Driver,Component")
+    assert_equal("Driver,Component", @target.property.component_types)
   end
 
   def test_register_component_type_include_component_classes
     @target.register_component_type(Driver)
 
     assert_equal(Driver, @target.instance_variable_get(:@component_classes)["Driver"])
-    assert_equal(@target.property.component_types, "Driver")
+    assert_equal("Driver", @target.property.component_types)
 
     @target.register_component_type(Driver)
 
     assert_equal(Driver, @target.instance_variable_get(:@component_classes)["Driver"])
-    assert_equal(@target.property.component_types, "Driver")
+    assert_equal("Driver", @target.property.component_types)
   end
 
   def test_local_add_rules
@@ -213,15 +216,15 @@ class TestComponentManager < MiniTest::Test
   end
 
   def test_do_get_component_types_success
-    @dispatcher.expects(:add_local_object).once
-    @dispatcher.expects(:system_manager_id).once
-    @dispatcher.expects(:system_manager_id).once
-    @dispatcher.expects(:subscribe_event).once
+    @driver_dispatcher.expects(:add_local_object).once
+    @driver_dispatcher.expects(:system_manager_id).once
+    @driver_dispatcher.expects(:system_manager_id).once
+    @driver_dispatcher.expects(:subscribe_event).once
     @target.register_component_type(SampleDriver)
 
     response = @target.do_get_component_types
 
-    assert_equal(response.status_code, Response::OK)
+    assert_equal(Response::OK, response.status_code)
     assert_includes(response.body['SampleDriver']['type'], 'SampleDriver')
     assert_includes(response.body['SampleDriver']['super_type'], 'Driver')
     assert_includes(response.body['SampleDriver']['connection_types']['original'], '1')
@@ -230,12 +233,12 @@ class TestComponentManager < MiniTest::Test
   end
 
   def test_do_get_component_types_failed_rescue
-    @dispatcher.expects(:system_manager_id).raises().once
+    @driver_dispatcher.expects(:system_manager_id).raises().once
     @target.register_component_type(SampleDriver)
 
     response = @target.do_get_component_types
 
-    assert_equal(response.status_code, Response::INTERNAL_SERVER_ERROR)
+    assert_equal(Response::INTERNAL_SERVER_ERROR, response.status_code)
   end
 
   def test_do_get_components
@@ -250,11 +253,11 @@ class TestComponentManager < MiniTest::Test
 
     response = @target.do_get_components
 
-    assert_equal(response.status_code, Response::OK)
-    assert_equal(response.body["driver"].remote_object_id, "driver")
-    assert_equal(response.body["driver"].remote_object_type, "Driver")
-    assert_equal(response.body["component"].remote_object_id, "component")
-    assert_equal(response.body["component"].remote_object_type, "Component")
+    assert_equal(Response::OK, response.status_code)
+    assert_equal("driver", response.body["driver"].remote_object_id)
+    assert_equal("Driver", response.body["driver"].remote_object_type)
+    assert_equal("component", response.body["component"].remote_object_id)
+    assert_equal("Component", response.body["component"].remote_object_type)
   end
 
   def test_do_get_component_success
@@ -265,30 +268,31 @@ class TestComponentManager < MiniTest::Test
 
     response = @target.do_get_component("driver")
 
-    assert_equal(response.status_code, Response::OK)
-    assert_equal(response.body.remote_object_id, "driver")
-    assert_equal(response.body.remote_object_type, "Driver")
+    assert_equal(Response::OK, response.status_code)
+    assert_equal("driver", response.body.remote_object_id)
+    assert_equal("Driver", response.body.remote_object_type)
   end
 
   def test_do_get_component_failure_not_found
     response = @target.do_get_component("driver")
 
-    assert_equal(response.status_code, Response::NOT_FOUND)
+    assert_equal(Response::NOT_FOUND, response.status_code)
   end
 
   def test_do_put_component_success
-    @dispatcher.expects(:subscribe_event).at_least_once
     @dispatcher.expects(:publish_event_async).at_least_once
-    @dispatcher.expects(:system_manager_id).at_least_once   
-    @dispatcher.expects(:add_local_object).at_least_once
+    @driver_dispatcher.expects(:subscribe_event).at_least_once
+    @driver_dispatcher.expects(:publish_event_async).at_least_once
+    @driver_dispatcher.expects(:system_manager_id).at_least_once
+    @driver_dispatcher.expects(:add_local_object).at_least_once
     @target.register_component_type(Driver)
     prop = {"type" => "Driver", "id" => "driver"}
     
     response = @target.do_put_component(prop, "driver")
 
-    assert_equal(response.status_code, Response::CREATED)
-    assert_equal(response.body.remote_object_id, "driver")
-    assert_equal(response.body.remote_object_type, "Driver")
+    assert_equal(Response::CREATED, response.status_code)
+    assert_equal("driver", response.body.remote_object_id)
+    assert_equal("Driver", response.body.remote_object_type)
   end
 
   def test_do_put_component_failure_unknown_type
@@ -296,28 +300,30 @@ class TestComponentManager < MiniTest::Test
 
     response = @target.do_put_component(prop, "driver")
 
-    assert_equal(response.status_code, Response::BAD_REQUEST)
+    assert_equal(Response::BAD_REQUEST, response.status_code)
   end
 
   def test_do_put_component_failure_conflict
-    @dispatcher.expects(:subscribe_event).at_least_once
     @dispatcher.expects(:publish_event_async).at_least_once
-    @dispatcher.expects(:system_manager_id).at_least_once
-    @dispatcher.expects(:add_local_object).at_least_once
+    @driver_dispatcher.expects(:subscribe_event).at_least_once
+    @driver_dispatcher.expects(:publish_event_async).at_least_once
+    @driver_dispatcher.expects(:system_manager_id).at_least_once
+    @driver_dispatcher.expects(:add_local_object).at_least_once
     @target.register_component_type(Driver)
     prop = {"type" => "Driver", "id" => "driver"}
 
     @target.do_put_component(prop, "driver")
     response = @target.do_put_component(prop, "driver")
 
-    assert_equal(response.status_code, Response::CONFLICT)
+    assert_equal(Response::CONFLICT, response.status_code)
   end
 
   def test_do_delete_component_created
-    @dispatcher.expects(:subscribe_event).at_least_once
     @dispatcher.expects(:publish_event_async).at_least_once
-    @dispatcher.expects(:system_manager_id).at_least_once
-    @dispatcher.expects(:add_local_object).at_least_once
+    @driver_dispatcher.expects(:subscribe_event).at_least_once
+    @driver_dispatcher.expects(:publish_event_async).at_least_once
+    @driver_dispatcher.expects(:system_manager_id).at_least_once
+    @driver_dispatcher.expects(:add_local_object).at_least_once
     @target.register_component_type(Driver)
     prop = {"type" => "Driver", "id" => "driver"}
     @target.do_put_component(prop, "driver")
@@ -329,14 +335,14 @@ class TestComponentManager < MiniTest::Test
 
     response = @target.do_delete_component("driver")
 
-    assert_equal(response.status_code, Response::OK)
-    assert_equal(@target.instance_variable_get(:@components)["driver"], nil)
+    assert_equal(Response::OK, response.status_code)
+    assert_equal(nil, @target.instance_variable_get(:@components)["driver"])
   end
 
   def test_do_delete_component_not_created
     response = @target.do_delete_component("driver")
 
-    assert_equal(response.status_code, Response::OK)
+    assert_equal(Response::OK, response.status_code)
   end
 
   def test_do_component_changed

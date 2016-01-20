@@ -40,21 +40,21 @@ class TestHashAccessor < MiniTest::Test
     hr = TestHash.new
     hr.instance_variable_get(:@hash_read)[:key1] = "aaa"
     
-    assert_equal(hr.key1, "aaa")   
+    assert_equal("aaa", hr.key1)
   end
 
   def test_hash_writer
     hw = TestHash.new
     hw.key2 = "bbb"
 
-    assert_equal(hw.instance_variable_get(:@hash_write)[:key2], "bbb")
+    assert_equal("bbb", hw.instance_variable_get(:@hash_write)[:key2])
   end
 
   def test_hash_accessor
     ha = TestHash.new
     ha.key3 = "ccc"
 
-    assert_equal(ha.key3, "ccc")
+    assert_equal("ccc", ha.key3)
   end
 
 end
