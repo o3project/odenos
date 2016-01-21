@@ -231,6 +231,11 @@ public class OFPFlowMatch extends BasicFlowMatch {
     this.wcInPhyPort = false;
   }
 
+  public void resetInPhyPort() {
+    this.inPhyPort = 0L;
+    this.wcInPhyPort = true;
+  }
+
   public String getMetadata() {
     if (isWcMetadata()) {
       return null;
@@ -241,6 +246,11 @@ public class OFPFlowMatch extends BasicFlowMatch {
   public void setMetadata(String metadata) {
     this.metadata = metadata;
     this.wcMetadata = false;
+  }
+
+  public void resetMetadata() {
+    this.metadata = "0";
+    this.wcMetadata = true;
   }
 
   public String getMetadataMask() {
@@ -255,6 +265,11 @@ public class OFPFlowMatch extends BasicFlowMatch {
     this.wcMetadataMask = false;
   }
 
+  public void resetMetadataMask() {
+    this.metadataMask = "0";
+    this.wcMetadataMask = true;
+  }
+
   public String getEthSrc() {
     if (isWcEthSrc()) {
       return null;
@@ -265,6 +280,11 @@ public class OFPFlowMatch extends BasicFlowMatch {
   public void setEthSrc(String ethSrc) {
     this.ethSrc = ethSrc;
     this.wcEthSrc = false;
+  }
+
+  public void resetEthSrc() {
+    this.ethSrc = "";
+    this.wcEthSrc = true;
   }
 
   public String getEthSrcMask() {
@@ -279,6 +299,11 @@ public class OFPFlowMatch extends BasicFlowMatch {
     this.wcEthSrcMask = false;
   }
 
+  public void resetEthSrcMask() {
+    this.ethSrcMask = "";
+    this.wcEthSrcMask = true;
+  }
+
   public String getEthDst() {
     if (isWcEthDst()) {
       return null;
@@ -289,6 +314,11 @@ public class OFPFlowMatch extends BasicFlowMatch {
   public void setEthDst(String ethDst) {
     this.ethDst = ethDst;
     this.wcEthDst = false;
+  }
+
+  public void resetEthDst() {
+    this.ethDst = "";
+    this.wcEthDst = true;
   }
 
   public String getEthDstMask() {
@@ -303,6 +333,11 @@ public class OFPFlowMatch extends BasicFlowMatch {
     this.wcEthDstMask = false;
   }
 
+  public void resetEthDstMask() {
+    this.ethDstMask = "";
+    this.wcEthDstMask = true;
+  }
+
   public Integer getVlanVid() {
     if (isWcVlanVid()) {
       return null;
@@ -313,6 +348,11 @@ public class OFPFlowMatch extends BasicFlowMatch {
   public void setVlanVid(Integer vlanVid) {
     this.vlanVid = vlanVid;
     this.wcVlanVid = false;
+  }
+
+  public void resetVlanVid() {
+    this.vlanVid = 0;
+    this.wcVlanVid = true;
   }
 
   public Integer getVlanVidMask() {
@@ -327,6 +367,11 @@ public class OFPFlowMatch extends BasicFlowMatch {
     this.wcVlanVidMask = false;
   }
 
+  public void resetVlanVidMask() {
+    this.vlanVidMask = 0;
+    this.wcVlanVidMask = true;
+  }
+
   public Integer getVlanPcp() {
     if (isWcVlanPcp()) {
       return null;
@@ -337,6 +382,11 @@ public class OFPFlowMatch extends BasicFlowMatch {
   public void setVlanPcp(Integer vlanPcp) {
     this.vlanPcp = vlanPcp;
     this.wcVlanPcp = false;
+  }
+
+  public void resetVlanPcp() {
+    this.vlanPcp = 0;
+    this.wcVlanPcp = true;
   }
 
   public Integer getEthType() {
@@ -351,6 +401,11 @@ public class OFPFlowMatch extends BasicFlowMatch {
     this.wcEthType = false;
   }
 
+  public void resetEthType() {
+    this.ethType = 0;
+    this.wcEthType = true;
+  }
+
   public Integer getIpDscp() {
     if (isWcIpDscp()) {
       return null;
@@ -361,6 +416,11 @@ public class OFPFlowMatch extends BasicFlowMatch {
   public void setIpDscp(Integer ipDscp) {
     this.ipDscp = ipDscp;
     this.wcIpDscp = false;
+  }
+
+  public void resetIpDscp() {
+    this.ipDscp = 0; // 6bit in Tos field
+    this.wcIpDscp = true;
   }
 
   public Integer getIpEcn() {
@@ -375,6 +435,11 @@ public class OFPFlowMatch extends BasicFlowMatch {
     this.wcIpEcn = false;
   }
 
+  public void resetIpEcn() {
+    this.ipEcn = 0; // 2bit in Tos field
+    this.wcIpEcn = true;
+  }
+
   public Integer getIpProto() {
     if (isWcIpProto()) {
       return null;
@@ -385,6 +450,11 @@ public class OFPFlowMatch extends BasicFlowMatch {
   public void setIpProto(Integer ipProto) {
     this.ipProto = ipProto;
     this.wcIpProto = false;
+  }
+
+  public void resetIpProto() {
+    this.ipProto = 0;
+    this.wcIpProto = true;
   }
 
   public String getIpv4Src() {
@@ -399,6 +469,11 @@ public class OFPFlowMatch extends BasicFlowMatch {
     this.wcIpv4Src = false;
   }
 
+  public void resetIpv4Src() {
+    this.ipv4Src = "";
+    this.wcIpv4Src = true;
+  }
+
   public String getIpv4SrcMask() {
     if (isWcIpv4SrcMask()) {
       return null;
@@ -409,6 +484,11 @@ public class OFPFlowMatch extends BasicFlowMatch {
   public void setIpv4SrcMask(String ipv4SrcMask) {
     this.ipv4SrcMask = ipv4SrcMask;
     this.wcIpv4SrcMask = false;
+  }
+
+  public void resetIpv4SrcMask() {
+    this.ipv4SrcMask = "";
+    this.wcIpv4SrcMask = true;
   }
 
   public String getIpv4Dst() {
@@ -423,6 +503,11 @@ public class OFPFlowMatch extends BasicFlowMatch {
     this.wcIpv4Dst = false;
   }
 
+  public void resetIpv4Dst() {
+    this.ipv4Dst = "";
+    this.wcIpv4Dst = true;
+  }
+
   public String getIpv4DstMask() {
     if (isWcIpv4DstMask()) {
       return null;
@@ -433,6 +518,11 @@ public class OFPFlowMatch extends BasicFlowMatch {
   public void setIpv4DstMask(String ipv4DstMask) {
     this.ipv4DstMask = ipv4DstMask;
     this.wcIpv4DstMask = false;
+  }
+
+  public void resetIpv4DstMask() {
+    this.ipv4DstMask = "";
+    this.wcIpv4DstMask = true;
   }
 
   public Integer getTcpSrc() {
@@ -447,6 +537,11 @@ public class OFPFlowMatch extends BasicFlowMatch {
     this.wcTcpSrc = false;
   }
 
+  public void resetTcpSrc() {
+    this.tcpSrc = 0;
+    this.wcTcpSrc = true;
+  }
+
   public Integer getTcpDst() {
     if (isWcTcpDst()) {
       return null;
@@ -457,6 +552,11 @@ public class OFPFlowMatch extends BasicFlowMatch {
   public void setTcpDst(Integer tcpDst) {
     this.tcpDst = tcpDst;
     this.wcTcpDst = false;
+  }
+
+  public void resetTcpDst() {
+    this.tcpDst = 0;
+    this.wcTcpDst = true;
   }
 
   public Integer getUdpSrc() {
@@ -471,6 +571,11 @@ public class OFPFlowMatch extends BasicFlowMatch {
     this.wcUdpSrc = false;
   }
 
+  public void resetUdpSrc() {
+    this.udpSrc = 0;
+    this.wcUdpSrc = true;
+  }
+
   public Integer getUdpDst() {
     if (isWcUdpDst()) {
       return null;
@@ -481,6 +586,11 @@ public class OFPFlowMatch extends BasicFlowMatch {
   public void setUdpDst(Integer udpDst) {
     this.udpDst = udpDst;
     this.wcUdpDst = false;
+  }
+
+  public void resetUdpDst() {
+    this.udpDst = 0;
+    this.wcUdpDst = true;
   }
 
   public Integer getSctpSrc() {
@@ -495,6 +605,11 @@ public class OFPFlowMatch extends BasicFlowMatch {
     this.wcSctpSrc = false;
   }
 
+  public void resetSctpSrc() {
+    this.sctpSrc = 0;
+    this.wcSctpSrc = true;
+  }
+
   public Integer getSctpDst() {
     if (isWcSctpDst()) {
       return null;
@@ -505,6 +620,11 @@ public class OFPFlowMatch extends BasicFlowMatch {
   public void setSctpDst(Integer sctpDst) {
     this.sctpDst = sctpDst;
     this.wcSctpDst = false;
+  }
+
+  public void resetSctpDst() {
+    this.sctpDst = 0;
+    this.wcSctpDst = true;
   }
 
   public Integer getIcmpv4Type() {
@@ -519,6 +639,11 @@ public class OFPFlowMatch extends BasicFlowMatch {
     this.wcIcmpv4Type = false;
   }
 
+  public void resetIcmpv4Type() {
+    this.icmpv4Type = 0;
+    this.wcIcmpv4Type = true;
+  }
+
   public Integer getIcmpv4Code() {
     if (isWcIcmpv4Code()) {
       return null;
@@ -529,6 +654,11 @@ public class OFPFlowMatch extends BasicFlowMatch {
   public void setIcmpv4Code(Integer icmpv4Code) {
     this.icmpv4Code = icmpv4Code;
     this.wcIcmpv4Code = false;
+  }
+
+  public void resetIcmpv4Code() {
+    this.icmpv4Code = 0;
+    this.wcIcmpv4Code = true;
   }
 
   public Integer getArpOp() {
@@ -543,6 +673,11 @@ public class OFPFlowMatch extends BasicFlowMatch {
     this.wcArpOp = false;
   }
 
+  public void resetArpOp() {
+    this.arpOp = 0;
+    this.wcArpOp = true;
+  }
+
   public String getArpSpa() {
     if (isWcArpSpa()) {
       return null;
@@ -553,6 +688,11 @@ public class OFPFlowMatch extends BasicFlowMatch {
   public void setArpSpa(String arpSpa) {
     this.arpSpa = arpSpa;
     this.wcArpSpa = false;
+  }
+
+  public void resetArpSpa() {
+    this.arpSpa = "";
+    this.wcArpSpa = true;
   }
 
   public String getArpSpaMask() {
@@ -567,6 +707,11 @@ public class OFPFlowMatch extends BasicFlowMatch {
     this.wcArpSpaMask = false;
   }
 
+  public void resetArpSpaMask() {
+    this.arpSpaMask = "";
+    this.wcArpSpaMask = true;
+  }
+
   public String getArpTpa() {
     if (isWcArpTpa()) {
       return null;
@@ -577,6 +722,11 @@ public class OFPFlowMatch extends BasicFlowMatch {
   public void setArpTpa(String arpTpa) {
     this.arpTpa = arpTpa;
     this.wcArpTpa = false;
+  }
+
+  public void resetArpTpa() {
+    this.arpTpa = "";
+    this.wcArpTpa = true;
   }
 
   public String getArpTpaMask() {
@@ -591,6 +741,11 @@ public class OFPFlowMatch extends BasicFlowMatch {
     this.wcArpTpaMask = false;
   }
 
+  public void resetArpTpaMask() {
+    this.arpTpaMask = "";
+    this.wcArpTpaMask = true;
+  }
+
   public String getArpSha() {
     if (isWcArpSha()) {
       return null;
@@ -601,6 +756,11 @@ public class OFPFlowMatch extends BasicFlowMatch {
   public void setArpSha(String arpSha) {
     this.arpSha = arpSha;
     this.wcArpSha = false;
+  }
+
+  public void resetArpSha() {
+    this.arpSha = "";
+    this.wcArpSha = true;
   }
 
   public String getArpShaMask() {
@@ -615,6 +775,11 @@ public class OFPFlowMatch extends BasicFlowMatch {
     this.wcArpShaMask = false;
   }
 
+  public void resetArpShaMask() {
+    this.arpShaMask = "";
+    this.wcArpShaMask = true;
+  }
+
   public String getArpTha() {
     if (isWcArpTha()) {
       return null;
@@ -625,6 +790,11 @@ public class OFPFlowMatch extends BasicFlowMatch {
   public void setArpTha(String arpTha) {
     this.arpTha = arpTha;
     this.wcArpTha = false;
+  }
+
+  public void resetArpTha() {
+    this.arpTha = "";
+    this.wcArpTha = true;
   }
 
   public String getArpThaMask() {
@@ -639,6 +809,11 @@ public class OFPFlowMatch extends BasicFlowMatch {
     this.wcArpThaMask = false;
   }
 
+  public void resetArpThaMask() {
+    this.arpThaMask = "";
+    this.wcArpThaMask = true;
+  }
+
   public String getIpv6Src() {
     if (isWcIpv6Src()) {
       return null;
@@ -649,6 +824,11 @@ public class OFPFlowMatch extends BasicFlowMatch {
   public void setIpv6Src(String ipv6Src) {
     this.ipv6Src = ipv6Src;
     this.wcIpv6Src = false;
+  }
+
+  public void resetIpv6Src() {
+    this.ipv6Src = "";
+    this.wcIpv6Src = true;
   }
 
   public String getIpv6SrcMask() {
@@ -663,6 +843,11 @@ public class OFPFlowMatch extends BasicFlowMatch {
     this.wcIpv6SrcMask = false;
   }
 
+  public void resetIpv6SrcMask() {
+    this.ipv6SrcMask = "";
+    this.wcIpv6SrcMask = true;
+  }
+
   public String getIpv6Dst() {
     if(isWcIpv6Dst()) {
       return null;
@@ -673,6 +858,11 @@ public class OFPFlowMatch extends BasicFlowMatch {
   public void setIpv6Dst(String ipv6Dst) {
     this.ipv6Dst = ipv6Dst;
     this.wcIpv6Dst = false;
+  }
+
+  public void resetIpv6Dst() {
+    this.ipv6Dst = "";
+    this.wcIpv6Dst = true;
   }
 
   public String getIpv6DstMask() {
@@ -687,6 +877,11 @@ public class OFPFlowMatch extends BasicFlowMatch {
     this.wcIpv6DstMask = false;
   }
 
+  public void resetIpv6DstMask() {
+    this.ipv6DstMask = "";
+    this.wcIpv6DstMask = true;
+  }
+
   public Long getIpv6Flabel() {
     if (isWcIpv6Flabel()) {
       return null;
@@ -697,6 +892,11 @@ public class OFPFlowMatch extends BasicFlowMatch {
   public void setIpv6Flabel(Long ipv6Flabel) {
     this.ipv6Flabel = ipv6Flabel;
     this.wcIpv6Flabel = false;
+  }
+
+  public void resetIpv6Flabel() {
+    this.ipv6Flabel = 0L;
+    this.wcIpv6Flabel = true;
   }
 
   public Long getIpv6FlabelMask() {
@@ -711,6 +911,11 @@ public class OFPFlowMatch extends BasicFlowMatch {
     this.wcIpv6FlabelMask = false;
   }
 
+  public void resetIpv6FlabelMask() {
+    this.ipv6FlabelMask = 0L;
+    this.wcIpv6FlabelMask = true;
+  }
+
   public Integer getIcmpv6Type() {
     if (isWcIcmpv6Type()) {
       return null;
@@ -721,6 +926,11 @@ public class OFPFlowMatch extends BasicFlowMatch {
   public void setIcmpv6Type(Integer icmpv6Type) {
     this.icmpv6Type = icmpv6Type;
     this.wcIcmpv6Type = false;
+  }
+
+  public void resetIcmpv6Type() {
+    this.icmpv6Type = 0;
+    this.wcIcmpv6Type = true;
   }
 
   public Integer getIcmpv6Code() {
@@ -735,6 +945,11 @@ public class OFPFlowMatch extends BasicFlowMatch {
     this.wcIcmpv6Code = false;
   }
 
+  public void resetIcmpv6Code() {
+    this.icmpv6Code = 0;
+    this.wcIcmpv6Code = true;
+  }
+
   public String getIpv6NdTarget() {
     if(isWcIpv6NdTarget()) {
       return null;
@@ -745,6 +960,11 @@ public class OFPFlowMatch extends BasicFlowMatch {
   public void setIpv6NdTarget(String ipv6NdTarget) {
     this.ipv6NdTarget = ipv6NdTarget;
     this.wcIpv6NdTarget = false;
+  }
+
+  public void resetIpv6NdTarget() {
+    this.ipv6NdTarget = "";
+    this.wcIpv6NdTarget = true;
   }
 
   public String getIpv6NdSll() {
@@ -759,6 +979,11 @@ public class OFPFlowMatch extends BasicFlowMatch {
     this.wcIpv6NdSll = false;
   }
 
+  public void resetIpv6NdSll() {
+    this.ipv6NdSll = "";
+    this.wcIpv6NdSll = true;
+  }
+
   public String getIpv6NdTll() {
     if (isWcIpv6NdTll()) {
       return null;
@@ -769,6 +994,11 @@ public class OFPFlowMatch extends BasicFlowMatch {
   public void setIpv6NdTll(String ipv6NdTll) {
     this.ipv6NdTll = ipv6NdTll;
     this.wcIpv6NdTll = false;
+  }
+
+  public void resetIpv6NdTll() {
+    this.ipv6NdTll = "";
+    this.wcIpv6NdTll = true;
   }
 
   public Long getMplsLabel() {
@@ -783,6 +1013,11 @@ public class OFPFlowMatch extends BasicFlowMatch {
     this.wcMplsLabel = false;
   }
 
+  public void resetMplsLabel() {
+    this.mplsLabel = 0L;
+    this.wcMplsLabel = true;
+  }
+
   public Integer getMplsTc() {
     if (isWcMplsTc()) {
       return null;
@@ -793,6 +1028,11 @@ public class OFPFlowMatch extends BasicFlowMatch {
   public void setMplsTc(Integer mplsTc) {
     this.mplsTc = mplsTc;
     this.wcMplsTc = false;
+  }
+
+  public void resetMplsTc() {
+    this.mplsTc = 0;
+    this.wcMplsTc = true;
   }
 
   public Integer getMplsBos() {
@@ -807,6 +1047,11 @@ public class OFPFlowMatch extends BasicFlowMatch {
     this.wcMplsBos = false;
   }
 
+  public void resetMplsBos() {
+    this.mplsBos = 0;
+    this.wcMplsBos = true;
+  }
+
   public Long getPbbIsid() {
     if (isWcPbbIsid()) {
       return null;
@@ -817,6 +1062,11 @@ public class OFPFlowMatch extends BasicFlowMatch {
   public void setPbbIsid(Long pbbIsid) {
     this.pbbIsid = pbbIsid;
     this.wcPbbIsid = false;
+  }
+
+  public void resetPbbIsid() {
+    this.pbbIsid = 0L;
+    this.wcPbbIsid = true;
   }
 
   public Long getPbbIsidMask() {
@@ -831,6 +1081,11 @@ public class OFPFlowMatch extends BasicFlowMatch {
     this.wcPbbIsidMask = false;
   }
 
+  public void resetPbbIsidMask() {
+    this.pbbIsidMask = 0L;
+    this.wcPbbIsidMask = true;
+  }
+
   public String getTunnelId() {
     if (isWcTunnelId()) {
       return null;
@@ -841,6 +1096,11 @@ public class OFPFlowMatch extends BasicFlowMatch {
   public void setTunnelId(String tunnelId) {
     this.tunnelId = tunnelId;
     this.wcTunnelId = false;
+  }
+
+  public void resetTunnelId() {
+    this.tunnelId = "0";
+    this.wcTunnelId = true;
   }
 
   public String getTunnelIdMask() {
@@ -855,6 +1115,11 @@ public class OFPFlowMatch extends BasicFlowMatch {
     this.wcTunnelIdMask = false;
   }
 
+  public void resetTunnelIdMask() {
+    this.tunnelIdMask = "0";
+    this.wcTunnelIdMask = true;
+  }
+
   public Integer getIpv6Exthdr() {
     if (isWcIpv6Exthdr()) {
       return null;
@@ -867,6 +1132,11 @@ public class OFPFlowMatch extends BasicFlowMatch {
     this.wcIpv6Exthdr = false;
   }
 
+  public void resetIpv6Exthdr() {
+    this.ipv6Exthdr = 0;
+    this.wcIpv6Exthdr = true;
+  }
+
   public Integer getIpv6ExthdrMask() {
     if (isWcIpv6ExthdrMask()) {
       return null;
@@ -877,6 +1147,11 @@ public class OFPFlowMatch extends BasicFlowMatch {
   public void setIpv6ExthdrMask(Integer ipv6ExthdrMask) {
     this.ipv6ExthdrMask = ipv6ExthdrMask;
     this.wcIpv6ExthdrMask = false;
+  }
+
+  public void resetIpv6ExthdrMask() {
+    this.ipv6ExthdrMask = 0;
+    this.wcIpv6ExthdrMask = true;
   }
 
   public boolean isWcInPhyPort() {
