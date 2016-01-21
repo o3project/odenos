@@ -95,6 +95,19 @@ public class BasicFlowMatch extends OdenosMessage {
   }
 
   /**
+   * Sets a port ID.
+   * @param inPort port ID.
+   */
+  public void resetInPort() {
+    this.inPort = null;
+    this.wcInPort = true;
+  }
+
+  public boolean isWcInPort() {
+    return wcInPort;
+  }
+
+  /**
    * Returns a node ID.
    * @return node ID.
    */
