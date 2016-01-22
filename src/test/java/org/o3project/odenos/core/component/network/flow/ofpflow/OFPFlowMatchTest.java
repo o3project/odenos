@@ -4414,6 +4414,1052 @@ public class OFPFlowMatchTest {
 
   /**
    * Test method for
+   * {@link org.o3project.odenos.core.component.network.flow.ofpflow.OFPFlowMatchresetInPhyPort()}
+   */
+  @Test
+  public void testResetInPhyPort() {
+    /*
+     * test
+     */
+    target.setInPhyPort(MAX_UINT32);
+    target.resetInPhyPort();
+
+    /*
+     * check
+     */
+    assertThat(target.getInPhyPort(), is(nullValue()));
+    assertThat(target.isWcInPhyPort(), is(true));
+  }
+
+  /**
+   * Test method for
+   * {@link org.o3project.odenos.core.component.network.flow.ofpflow.OFPFlowMatchresetMetadata()}
+   */
+  @Test
+  public void testResetMetadata() {
+    /*
+     * test
+     */
+    target.setMetadata(MAX_UINT64);
+    target.resetMetadata();
+
+    /*
+     * check
+     */
+    assertThat(target.getMetadata(), is(nullValue()));
+    assertThat(target.isWcMetadata(), is(true));
+  }
+
+  /**
+   * Test method for
+   * {@link org.o3project.odenos.core.component.network.flow.ofpflow.OFPFlowMatchresetMetadataMask()}
+   */
+  @Test
+  public void testResetMetadataMask() {
+    /*
+     * test
+     */
+    target.setMetadataMask(MAX_UINT64);
+    target.resetMetadataMask();
+
+    /*
+     * check
+     */
+    assertThat(target.getMetadataMask(), is(nullValue()));
+    assertThat(target.isWcMetadataMask(), is(true));
+  }
+
+  /**
+   * Test method for
+   * {@link org.o3project.odenos.core.component.network.flow.ofpflow.OFPFlowMatchresetEthSrc()}
+   */
+  @Test
+  public void testResetEthSrc() {
+    /*
+     * test
+     */
+    target.setEthSrc("11:22:33:44:55:66");
+    target.resetEthSrc();
+
+    /*
+     * check
+     */
+    assertThat(target.getEthSrc(), is(nullValue()));
+    assertThat(target.isWcEthSrc(), is(true));
+  }
+
+  /**
+   * Test method for
+   * {@link org.o3project.odenos.core.component.network.flow.ofpflow.OFPFlowMatchresetEthSrcMask()}
+   */
+  @Test
+  public void testResetEthSrcMask() {
+    /*
+     * test
+     */
+    target.setEthSrcMask("ff:ff:ff:ff:ff:ff");
+    target.resetEthSrcMask();
+
+    /*
+     * check
+     */
+    assertThat(target.getEthSrcMask(), is(nullValue()));
+    assertThat(target.isWcEthSrcMask(), is(true));
+  }
+
+  /**
+   * Test method for
+   * {@link org.o3project.odenos.core.component.network.flow.ofpflow.OFPFlowMatchresetEthDst()}
+   */
+  @Test
+  public void testResetEthDst() {
+    /*
+     * test
+     */
+    target.setEthDst("11:22:33:44:55:66");
+    target.resetEthDst();
+
+    /*
+     * check
+     */
+    assertThat(target.getEthDst(), is(nullValue()));
+    assertThat(target.isWcEthDst(), is(true));
+  }
+
+  /**
+   * Test method for
+   * {@link org.o3project.odenos.core.component.network.flow.ofpflow.OFPFlowMatchresetEthDstMask()}
+   */
+  @Test
+  public void testResetEthDstMask() {
+    /*
+     * test
+     */
+    target.setEthDstMask("11:22:33:44:55:66");
+    target.resetEthDstMask();
+
+    /*
+     * check
+     */
+    assertThat(target.getEthDstMask(), is(nullValue()));
+    assertThat(target.isWcEthDstMask(), is(true));
+  }
+
+  /**
+   * Test method for
+   * {@link org.o3project.odenos.core.component.network.flow.ofpflow.OFPFlowMatchresetVlanVid()}
+   */
+  @Test
+  public void testResetVlanVid() {
+    /*
+     * test
+     */
+    target.setVlanVid(MAX_UINT16);
+    target.resetVlanVid();
+
+    /*
+     * check
+     */
+    assertThat(target.getVlanVid(), is(nullValue()));
+    assertThat(target.isWcVlanVid(), is(true));
+  }
+
+  /**
+   * Test method for
+   * {@link org.o3project.odenos.core.component.network.flow.ofpflow.OFPFlowMatchresetVlanVidMask()}
+   */
+  @Test
+  public void testResetVlanVidMask() {
+    /*
+     * test
+     */
+    target.setVlanVidMask(MAX_UINT16);
+    target.resetVlanVidMask();
+
+    /*
+     * check
+     */
+    assertThat(target.getVlanVidMask(), is(nullValue()));
+    assertThat(target.isWcVlanVidMask(), is(true));
+  }
+
+  /**
+   * Test method for
+   * {@link org.o3project.odenos.core.component.network.flow.ofpflow.OFPFlowMatchresetVlanPcp()}
+   */
+  @Test
+  public void testResetVlanPcp() {
+    /*
+     * test
+     */
+    target.setVlanPcp(MAX_UINT8);
+    target.resetVlanPcp();
+
+    /*
+     * check
+     */
+    assertThat(target.getVlanPcp(), is(nullValue()));
+    assertThat(target.isWcVlanPcp(), is(true));
+  }
+
+  /**
+   * Test method for
+   * {@link org.o3project.odenos.core.component.network.flow.ofpflow.OFPFlowMatchresetEthType()}
+   */
+  @Test
+  public void testResetEthType() {
+    /*
+     * test
+     */
+    target.setEthType(MAX_UINT16);
+    target.resetEthType();
+
+    /*
+     * check
+     */
+    assertThat(target.getEthType(), is(nullValue()));
+    assertThat(target.isWcEthType(), is(true));
+  }
+
+  /**
+   * Test method for
+   * {@link org.o3project.odenos.core.component.network.flow.ofpflow.OFPFlowMatchresetIpDscp()}
+   */
+  @Test
+  public void testResetIpDscp() {
+    /*
+     * test
+     */
+    target.setIpDscp(MAX_UINT16);
+    target.resetIpDscp();
+
+    /*
+     * check
+     */
+    assertThat(target.getIpDscp(), is(nullValue()));
+    assertThat(target.isWcIpDscp(), is(true));
+  }
+
+  /**
+   * Test method for
+   * {@link org.o3project.odenos.core.component.network.flow.ofpflow.OFPFlowMatchresetIpEcn()}
+   */
+  @Test
+  public void testResetIpEcn() {
+    /*
+     * test
+     */
+    target.setIpEcn(MAX_UINT8);
+    target.resetIpEcn();
+
+    /*
+     * check
+     */
+    assertThat(target.getIpEcn(), is(nullValue()));
+    assertThat(target.isWcIpEcn(), is(true));
+  }
+
+  /**
+   * Test method for
+   * {@link org.o3project.odenos.core.component.network.flow.ofpflow.OFPFlowMatchresetIpProto()}
+   */
+  @Test
+  public void testResetIpProto() {
+    /*
+     * test
+     */
+    target.setIpProto(MAX_UINT8);
+    target.resetIpProto();
+
+    /*
+     * check
+     */
+    assertThat(target.getIpProto(), is(nullValue()));
+    assertThat(target.isWcIpProto(), is(true));
+  }
+
+  /**
+   * Test method for
+   * {@link org.o3project.odenos.core.component.network.flow.ofpflow.OFPFlowMatchresetIpv4Src()}
+   */
+  @Test
+  public void testResetIpv4Src() {
+    /*
+     * test
+     */
+    target.setIpv4Src("127.0.0.1");
+    target.resetIpv4Src();
+
+    /*
+     * check
+     */
+    assertThat(target.getIpv4Src(), is(nullValue()));
+    assertThat(target.isWcIpv4Src(), is(true));
+  }
+
+  /**
+   * Test method for
+   * {@link org.o3project.odenos.core.component.network.flow.ofpflow.OFPFlowMatchresetIpv4SrcMask()}
+   */
+  @Test
+  public void testResetIpv4SrcMask() {
+    /*
+     * test
+     */
+    target.setIpv4SrcMask("255.0.0.0");
+    target.resetIpv4SrcMask();
+
+    /*
+     * check
+     */
+    assertThat(target.getIpv4SrcMask(), is(nullValue()));
+    assertThat(target.isWcIpv4SrcMask(), is(true));
+  }
+
+  /**
+   * Test method for
+   * {@link org.o3project.odenos.core.component.network.flow.ofpflow.OFPFlowMatchresetIpv4Dst()}
+   */
+  @Test
+  public void testResetIpv4Dst() {
+    /*
+     * test
+     */
+    target.setIpv4Dst("127.0.0.1");
+    target.resetIpv4Dst();
+
+    /*
+     * check
+     */
+    assertThat(target.getIpv4Dst(), is(nullValue()));
+    assertThat(target.isWcIpv4Dst(), is(true));
+  }
+
+  /**
+   * Test method for
+   * {@link org.o3project.odenos.core.component.network.flow.ofpflow.OFPFlowMatchresetIpv4DstMask()}
+   */
+  @Test
+  public void testResetIpv4DstMask() {
+    /*
+     * test
+     */
+    target.setIpv4DstMask("255.0.0.0");
+    target.resetIpv4DstMask();
+
+    /*
+     * check
+     */
+    assertThat(target.getIpv4DstMask(), is(nullValue()));
+    assertThat(target.isWcIpv4DstMask(), is(true));
+  }
+
+  /**
+   * Test method for
+   * {@link org.o3project.odenos.core.component.network.flow.ofpflow.OFPFlowMatchresetTcpSrc()}
+   */
+  @Test
+  public void testResetTcpSrc() {
+    /*
+     * test
+     */
+    target.setTcpSrc(MAX_UINT16);
+    target.resetTcpSrc();
+
+    /*
+     * check
+     */
+    assertThat(target.getTcpSrc(), is(nullValue()));
+    assertThat(target.isWcTcpSrc(), is(true));
+  }
+
+  /**
+   * Test method for
+   * {@link org.o3project.odenos.core.component.network.flow.ofpflow.OFPFlowMatchresetTcpDst()}
+   */
+  @Test
+  public void testResetTcpDst() {
+    /*
+     * test
+     */
+    target.setTcpDst(MAX_UINT16);
+    target.resetTcpDst();
+
+    /*
+     * check
+     */
+    assertThat(target.getTcpDst(), is(nullValue()));
+    assertThat(target.isWcTcpDst(), is(true));
+  }
+
+  /**
+   * Test method for
+   * {@link org.o3project.odenos.core.component.network.flow.ofpflow.OFPFlowMatchresetUdpSrc()}
+   */
+  @Test
+  public void testResetUdpSrc() {
+    /*
+     * test
+     */
+    target.setUdpSrc(MAX_UINT16);
+    target.resetUdpSrc();
+
+    /*
+     * check
+     */
+    assertThat(target.getUdpSrc(), is(nullValue()));
+    assertThat(target.isWcUdpSrc(), is(true));
+  }
+
+  /**
+   * Test method for
+   * {@link org.o3project.odenos.core.component.network.flow.ofpflow.OFPFlowMatchresetUdpDst()}
+   */
+  @Test
+  public void testResetUdpDst() {
+    /*
+     * test
+     */
+    target.setUdpDst(MAX_UINT16);
+    target.resetUdpDst();
+
+    /*
+     * check
+     */
+    assertThat(target.getUdpDst(), is(nullValue()));
+    assertThat(target.isWcUdpDst(), is(true));
+  }
+
+  /**
+   * Test method for
+   * {@link org.o3project.odenos.core.component.network.flow.ofpflow.OFPFlowMatchresetSctpSrc()}
+   */
+  @Test
+  public void testResetSctpSrc() {
+    /*
+     * test
+     */
+    target.setSctpSrc(MAX_UINT16);
+    target.resetSctpSrc();
+
+    /*
+     * check
+     */
+    assertThat(target.getSctpSrc(), is(nullValue()));
+    assertThat(target.isWcSctpSrc(), is(true));
+  }
+
+  /**
+   * Test method for
+   * {@link org.o3project.odenos.core.component.network.flow.ofpflow.OFPFlowMatchresetSctpDst()}
+   */
+  @Test
+  public void testResetSctpDst() {
+    /*
+     * test
+     */
+    target.setSctpDst(MAX_UINT16);
+    target.resetSctpDst();
+
+    /*
+     * check
+     */
+    assertThat(target.getSctpDst(), is(nullValue()));
+    assertThat(target.isWcSctpDst(), is(true));
+  }
+
+  /**
+   * Test method for
+   * {@link org.o3project.odenos.core.component.network.flow.ofpflow.OFPFlowMatchresetIcmpv4Type()}
+   */
+  @Test
+  public void testResetIcmpv4Type() {
+    /*
+     * test
+     */
+    target.setIcmpv4Type(MAX_UINT8);
+    target.resetIcmpv4Type();
+
+    /*
+     * check
+     */
+    assertThat(target.getIcmpv4Type(), is(nullValue()));
+    assertThat(target.isWcIcmpv4Type(), is(true));
+  }
+
+  /**
+   * Test method for
+   * {@link org.o3project.odenos.core.component.network.flow.ofpflow.OFPFlowMatchresetIcmpv4Code()}
+   */
+  @Test
+  public void testResetIcmpv4Code() {
+    /*
+     * test
+     */
+    target.setIcmpv4Code(MAX_UINT8);
+    target.resetIcmpv4Code();
+
+    /*
+     * check
+     */
+    assertThat(target.getIcmpv4Code(), is(nullValue()));
+    assertThat(target.isWcIcmpv4Code(), is(true));
+  }
+
+  /**
+   * Test method for
+   * {@link org.o3project.odenos.core.component.network.flow.ofpflow.OFPFlowMatchresetArpOp()}
+   */
+  @Test
+  public void testResetArpOp() {
+    /*
+     * test
+     */
+    target.setArpOp(MAX_UINT16);
+    target.resetArpOp();
+
+    /*
+     * check
+     */
+    assertThat(target.getArpOp(), is(nullValue()));
+    assertThat(target.isWcArpOp(), is(true));
+  }
+
+  /**
+   * Test method for
+   * {@link org.o3project.odenos.core.component.network.flow.ofpflow.OFPFlowMatchresetArpSpa()}
+   */
+  @Test
+  public void testResetArpSpa() {
+    /*
+     * test
+     */
+    target.setArpSpa("127.0.0.1");
+    target.resetArpSpa();
+
+    /*
+     * check
+     */
+    assertThat(target.getArpSpa(), is(nullValue()));
+    assertThat(target.isWcArpSpa(), is(true));
+  }
+
+  /**
+   * Test method for
+   * {@link org.o3project.odenos.core.component.network.flow.ofpflow.OFPFlowMatchresetArpSpaMask()}
+   */
+  @Test
+  public void testResetArpSpaMask() {
+    /*
+     * test
+     */
+    target.setArpSpaMask("255.0.0.0");
+    target.resetArpSpaMask();
+
+    /*
+     * check
+     */
+    assertThat(target.getArpSpaMask(), is(nullValue()));
+    assertThat(target.isWcArpSpaMask(), is(true));
+  }
+
+  /**
+   * Test method for
+   * {@link org.o3project.odenos.core.component.network.flow.ofpflow.OFPFlowMatchresetArpTpa()}
+   */
+  @Test
+  public void testResetArpTpa() {
+    /*
+     * test
+     */
+    target.setArpTpa("127.0.0.1");
+    target.resetArpTpa();
+
+    /*
+     * check
+     */
+    assertThat(target.getArpTpa(), is(nullValue()));
+    assertThat(target.isWcArpTpa(), is(true));
+  }
+
+  /**
+   * Test method for
+   * {@link org.o3project.odenos.core.component.network.flow.ofpflow.OFPFlowMatchresetArpTpaMask()}
+   */
+  @Test
+  public void testResetArpTpaMask() {
+    /*
+     * test
+     */
+    target.setArpTpaMask("255.0.0.0");
+    target.resetArpTpaMask();
+
+    /*
+     * check
+     */
+    assertThat(target.getArpTpaMask(), is(nullValue()));
+    assertThat(target.isWcArpTpaMask(), is(true));
+  }
+
+  /**
+   * Test method for
+   * {@link org.o3project.odenos.core.component.network.flow.ofpflow.OFPFlowMatchresetArpSha()}
+   */
+  @Test
+  public void testResetArpSha() {
+    /*
+     * test
+     */
+    target.setArpSha("127.0.0.1");
+    target.resetArpSha();
+
+    /*
+     * check
+     */
+    assertThat(target.getArpSha(), is(nullValue()));
+    assertThat(target.isWcArpSha(), is(true));
+  }
+
+  /**
+   * Test method for
+   * {@link org.o3project.odenos.core.component.network.flow.ofpflow.OFPFlowMatchresetArpShaMask()}
+   */
+  @Test
+  public void testResetArpShaMask() {
+    /*
+     * test
+     */
+    target.setArpShaMask("255.0.0.0");
+    target.resetArpShaMask();
+
+    /*
+     * check
+     */
+    assertThat(target.getArpShaMask(), is(nullValue()));
+    assertThat(target.isWcArpShaMask(), is(true));
+  }
+
+  /**
+   * Test method for
+   * {@link org.o3project.odenos.core.component.network.flow.ofpflow.OFPFlowMatchresetArpTha()}
+   */
+  @Test
+  public void testResetArpTha() {
+    /*
+     * test
+     */
+    target.setArpTha("127.0.0.1");
+    target.resetArpTha();
+
+    /*
+     * check
+     */
+    assertThat(target.getArpTha(), is(nullValue()));
+    assertThat(target.isWcArpTha(), is(true));
+  }
+
+  /**
+   * Test method for
+   * {@link org.o3project.odenos.core.component.network.flow.ofpflow.OFPFlowMatchresetArpThaMask()}
+   */
+  @Test
+  public void testResetArpThaMask() {
+    /*
+     * test
+     */
+    target.setArpThaMask("255.0.0.0");
+    target.resetArpThaMask();
+
+    /*
+     * check
+     */
+    assertThat(target.getArpThaMask(), is(nullValue()));
+    assertThat(target.isWcArpThaMask(), is(true));
+  }
+
+  /**
+   * Test method for
+   * {@link org.o3project.odenos.core.component.network.flow.ofpflow.OFPFlowMatchresetIpv6Src()}
+   */
+  @Test
+  public void testResetIpv6Src() {
+    /*
+     * test
+     */
+    target.setIpv6Src("::1");
+    target.resetIpv6Src();
+
+    /*
+     * check
+     */
+    assertThat(target.getIpv6Src(), is(nullValue()));
+    assertThat(target.isWcIpv6Src(), is(true));
+  }
+
+  /**
+   * Test method for
+   * {@link org.o3project.odenos.core.component.network.flow.ofpflow.OFPFlowMatchresetIpv6SrcMask()}
+   */
+  @Test
+  public void testResetIpv6SrcMask() {
+    /*
+     * test
+     */
+    target.setIpv6SrcMask("ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff");
+    target.resetIpv6SrcMask();
+
+    /*
+     * check
+     */
+    assertThat(target.getIpv6SrcMask(), is(nullValue()));
+    assertThat(target.isWcIpv6SrcMask(), is(true));
+  }
+
+  /**
+   * Test method for
+   * {@link org.o3project.odenos.core.component.network.flow.ofpflow.OFPFlowMatchresetIpv6Dst()}
+   */
+  @Test
+  public void testResetIpv6Dst() {
+    /*
+     * test
+     */
+    target.setIpv6Dst("::1");
+    target.resetIpv6Dst();
+
+    /*
+     * check
+     */
+    assertThat(target.getIpv6Dst(), is(nullValue()));
+    assertThat(target.isWcIpv6Dst(), is(true));
+  }
+
+  /**
+   * Test method for
+   * {@link org.o3project.odenos.core.component.network.flow.ofpflow.OFPFlowMatchresetIpv6DstMask()}
+   */
+  @Test
+  public void testResetIpv6DstMask() {
+    /*
+     * test
+     */
+    target.setIpv6DstMask("ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff");
+    target.resetIpv6DstMask();
+
+    /*
+     * check
+     */
+    assertThat(target.getIpv6DstMask(), is(nullValue()));
+    assertThat(target.isWcIpv6DstMask(), is(true));
+  }
+
+  /**
+   * Test method for
+   * {@link org.o3project.odenos.core.component.network.flow.ofpflow.OFPFlowMatchresetIpv6Flabel()}
+   */
+  @Test
+  public void testResetIpv6Flabel() {
+    /*
+     * test
+     */
+    target.setIpv6Flabel(MAX_UINT32);
+    target.resetIpv6Flabel();
+
+    /*
+     * check
+     */
+    assertThat(target.getIpv6Flabel(), is(nullValue()));
+    assertThat(target.isWcIpv6Flabel(), is(true));
+  }
+
+  /**
+   * Test method for
+   * {@link org.o3project.odenos.core.component.network.flow.ofpflow.OFPFlowMatchresetIpv6FlabelMask()}
+   */
+  @Test
+  public void testResetIpv6FlabelMask() {
+    /*
+     * test
+     */
+    target.setIpv6FlabelMask(MAX_UINT32);
+    target.resetIpv6FlabelMask();
+
+    /*
+     * check
+     */
+    assertThat(target.getIpv6FlabelMask(), is(nullValue()));
+    assertThat(target.isWcIpv6FlabelMask(), is(true));
+  }
+
+  /**
+   * Test method for
+   * {@link org.o3project.odenos.core.component.network.flow.ofpflow.OFPFlowMatchresetIcmpv6Type()}
+   */
+  @Test
+  public void testResetIcmpv6Type() {
+    /*
+     * test
+     */
+    target.setIcmpv6Type(MAX_UINT8);
+    target.resetIcmpv6Type();
+
+    /*
+     * check
+     */
+    assertThat(target.getIcmpv6Type(), is(nullValue()));
+    assertThat(target.isWcIcmpv6Type(), is(true));
+  }
+
+  /**
+   * Test method for
+   * {@link org.o3project.odenos.core.component.network.flow.ofpflow.OFPFlowMatchresetIcmpv6Code()}
+   */
+  @Test
+  public void testResetIcmpv6Code() {
+    /*
+     * test
+     */
+    target.setIcmpv6Code(MAX_UINT8);
+    target.resetIcmpv6Code();
+
+    /*
+     * check
+     */
+    assertThat(target.getIcmpv6Code(), is(nullValue()));
+    assertThat(target.isWcIcmpv6Code(), is(true));
+  }
+
+  /**
+   * Test method for
+   * {@link org.o3project.odenos.core.component.network.flow.ofpflow.OFPFlowMatchresetIpv6NdTarget()}
+   */
+  @Test
+  public void testResetIpv6NdTarget() {
+    /*
+     * test
+     */
+    target.setIpv6NdTarget("::1");
+    target.resetIpv6NdTarget();
+
+    /*
+     * check
+     */
+    assertThat(target.getIpv6NdTarget(), is(nullValue()));
+    assertThat(target.isWcIpv6NdTarget(), is(true));
+  }
+
+  /**
+   * Test method for
+   * {@link org.o3project.odenos.core.component.network.flow.ofpflow.OFPFlowMatchresetIpv6NdSll()}
+   */
+  @Test
+  public void testResetIpv6NdSll() {
+    /*
+     * test
+     */
+    target.setIpv6NdSll("11:22:33:44:55:66");
+    target.resetIpv6NdSll();
+
+    /*
+     * check
+     */
+    assertThat(target.getIpv6NdSll(), is(nullValue()));
+    assertThat(target.isWcIpv6NdSll(), is(true));
+  }
+
+  /**
+   * Test method for
+   * {@link org.o3project.odenos.core.component.network.flow.ofpflow.OFPFlowMatchresetIpv6NdTll()}
+   */
+  @Test
+  public void testResetIpv6NdTll() {
+    /*
+     * test
+     */
+    target.setIpv6NdTll("11:22:33:44:55:66");
+    target.resetIpv6NdTll();
+
+    /*
+     * check
+     */
+    assertThat(target.getIpv6NdTll(), is(nullValue()));
+    assertThat(target.isWcIpv6NdTll(), is(true));
+  }
+
+  /**
+   * Test method for
+   * {@link org.o3project.odenos.core.component.network.flow.ofpflow.OFPFlowMatchresetMplsLabel()}
+   */
+  @Test
+  public void testResetMplsLabel() {
+    /*
+     * test
+     */
+    target.setMplsLabel(MAX_UINT32);
+    target.resetMplsLabel();
+
+    /*
+     * check
+     */
+    assertThat(target.getMplsLabel(), is(nullValue()));
+    assertThat(target.isWcMplsLabel(), is(true));
+  }
+
+  /**
+   * Test method for
+   * {@link org.o3project.odenos.core.component.network.flow.ofpflow.OFPFlowMatchresetMplsTc()}
+   */
+  @Test
+  public void testResetMplsTc() {
+    /*
+     * test
+     */
+    target.setMplsTc(MAX_UINT8);
+    target.resetMplsTc();
+
+    /*
+     * check
+     */
+    assertThat(target.getMplsTc(), is(nullValue()));
+    assertThat(target.isWcMplsTc(), is(true));
+  }
+
+  /**
+   * Test method for
+   * {@link org.o3project.odenos.core.component.network.flow.ofpflow.OFPFlowMatchresetMplsBos()}
+   */
+  @Test
+  public void testResetMplsBos() {
+    /*
+     * test
+     */
+    target.setMplsBos(MAX_UINT8);
+    target.resetMplsBos();
+
+    /*
+     * check
+     */
+    assertThat(target.getMplsBos(), is(nullValue()));
+    assertThat(target.isWcMplsBos(), is(true));
+  }
+
+  /**
+   * Test method for
+   * {@link org.o3project.odenos.core.component.network.flow.ofpflow.OFPFlowMatchresetPbbIsid()}
+   */
+  @Test
+  public void testResetPbbIsid() {
+    /*
+     * test
+     */
+    target.setPbbIsid(MAX_UINT32);
+    target.resetPbbIsid();
+
+    /*
+     * check
+     */
+    assertThat(target.getPbbIsid(), is(nullValue()));
+    assertThat(target.isWcPbbIsid(), is(true));
+  }
+
+  /**
+   * Test method for
+   * {@link org.o3project.odenos.core.component.network.flow.ofpflow.OFPFlowMatchresetPbbIsidMask()}
+   */
+  @Test
+  public void testResetPbbIsidMask() {
+    /*
+     * test
+     */
+    target.setPbbIsidMask(MAX_UINT32);
+    target.resetPbbIsidMask();
+
+    /*
+     * check
+     */
+    assertThat(target.getPbbIsidMask(), is(nullValue()));
+    assertThat(target.isWcPbbIsidMask(), is(true));
+  }
+
+  /**
+   * Test method for
+   * {@link org.o3project.odenos.core.component.network.flow.ofpflow.OFPFlowMatchresetTunnelId()}
+   */
+  @Test
+  public void testResetTunnelId() {
+    /*
+     * test
+     */
+    target.setTunnelId(MAX_UINT64);
+    target.resetTunnelId();
+
+    /*
+     * check
+     */
+    assertThat(target.getTunnelId(), is(nullValue()));
+    assertThat(target.isWcTunnelId(), is(true));
+  }
+
+  /**
+   * Test method for
+   * {@link org.o3project.odenos.core.component.network.flow.ofpflow.OFPFlowMatchresetTunnelIdMask()}
+   */
+  @Test
+  public void testResetTunnelIdMask() {
+    /*
+     * test
+     */
+    target.setTunnelIdMask(MAX_UINT64);
+    target.resetTunnelIdMask();
+
+    /*
+     * check
+     */
+    assertThat(target.getTunnelIdMask(), is(nullValue()));
+    assertThat(target.isWcTunnelIdMask(), is(true));
+  }
+
+  /**
+   * Test method for
+   * {@link org.o3project.odenos.core.component.network.flow.ofpflow.OFPFlowMatchresetIpv6Exthdr()}
+   */
+  @Test
+  public void testResetIpv6Exthdr() {
+    /*
+     * test
+     */
+    target.setIpv6Exthdr(MAX_UINT16);
+    target.resetIpv6Exthdr();
+
+    /*
+     * check
+     */
+    assertThat(target.getIpv6Exthdr(), is(nullValue()));
+    assertThat(target.isWcIpv6Exthdr(), is(true));
+  }
+
+  /**
+   * Test method for
+   * {@link org.o3project.odenos.core.component.network.flow.ofpflow.OFPFlowMatchresetIpv6ExthdrMask()}
+   */
+  @Test
+  public void testResetIpv6ExthdrMask() {
+    /*
+     * test
+     */
+    target.setIpv6ExthdrMask(MAX_UINT16);
+    target.resetIpv6ExthdrMask();
+
+    /*
+     * check
+     */
+    assertThat(target.getIpv6ExthdrMask(), is(nullValue()));
+    assertThat(target.isWcIpv6ExthdrMask(), is(true));
+  }
+
+
+  /**
+   * Test method for
    * {@link org.o3project.odenos.core.component.network.flow.ofpflow.OFPFlowMatch#validate()}
    * .
    */

@@ -18,6 +18,7 @@ package org.o3project.odenos.core.component.network.flow.basic;
 
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -210,6 +211,32 @@ public class BasicFlowMatchTest {
     target.setInPort("port_a_01");
     assertThat(target.getInPort(), is("port_a_01"));
     assertThat((boolean) Whitebox.getInternalState(target, "wcInPort"), is(false));
+  }
+
+  /**
+   * Test method for
+   * {@link org.o3project.odenos.core.component.network.flow.basic.BasicFlowMatch#resetInPort()}
+   * .
+   */
+  @Test
+  public final void testResetInPort() {
+    target = new BasicFlowMatch();
+    target.setInPort("port_a_01");
+    target.resetInPort();
+    assertThat(target.getInPort(), is(nullValue()));
+    assertThat(target.isWcInPort(), is(true));
+  }
+
+  /**
+   * Test method for
+   * {@link org.o3project.odenos.core.component.network.flow.basic.BasicFlowMatch#isWcInPort()}
+   * .
+   */
+  @Test
+  public final void testIsWcInPort() {
+    target = new BasicFlowMatch();
+    target.setInPort("port_a_01");
+    assertThat(target.isWcInPort(), is(false));
   }
 
   /**
