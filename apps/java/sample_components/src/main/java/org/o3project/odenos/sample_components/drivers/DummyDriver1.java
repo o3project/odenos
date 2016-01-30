@@ -58,7 +58,6 @@ public class DummyDriver1 extends Driver {
       final MessageDispatcher dispatcher) throws Exception {
     super(objectId, baseUri, dispatcher);
     resetEventSubscription();
-    log.info("created.");
   }
 
   /**
@@ -72,7 +71,6 @@ public class DummyDriver1 extends Driver {
       final MessageDispatcher dispatcher) throws Exception {
     super(objectId, dispatcher);
     resetEventSubscription();
-    log.info("created.");
   }
 
   /**
@@ -92,7 +90,6 @@ public class DummyDriver1 extends Driver {
   @Override
   protected final boolean onConnectionChangedAddedPre(
       final ComponentConnectionChanged msg) {
-    log.debug("called");
 
     if (!msg.curr().getObjectType()
         .equals(ComponentConnectionLogicAndNetwork.TYPE)) {
@@ -131,10 +128,24 @@ public class DummyDriver1 extends Driver {
   }
 
   @Override
+  protected boolean onConnectionChangedDeletePre(
+      final ComponentConnectionChanged msg) {
+
+    if (!msg.curr().getObjectType()
+        .equals(ComponentConnectionLogicAndNetwork.TYPE)) {
+      return false;
+    }
+    String logicId = msg.curr().getProperty(
+        ComponentConnectionLogicAndNetwork.LOGIC_ID);
+    if (!this.getObjectId().equals(logicId)) {
+      return false;
+    }
+    return true;
+  }
+
+  @Override
   protected final void onConnectionChangedDelete(
       final ComponentConnectionChanged message) {
-    log.debug("called");
-
     ComponentConnection curr = message.curr();
     // Changed ConectionProperty's status.
     curr.setConnectionState(ComponentConnection.State.FINALIZING);
@@ -149,7 +160,6 @@ public class DummyDriver1 extends Driver {
   }
 
   private void subscribeNetworkComponent() {
-    log.debug("called");
 
     addEntryEventSubscription(FLOW_CHANGED, this.network);
     addEntryEventSubscription(OUT_PACKET_ADDED, this.network);
@@ -164,7 +174,6 @@ public class DummyDriver1 extends Driver {
   }
 
   private void unsubscribeNetworkComponent() {
-    log.debug("called");
     removeEntryEventSubscription(FLOW_CHANGED, this.network);
     removeEntryEventSubscription(OUT_PACKET_ADDED, this.network);
 
@@ -182,6 +191,7 @@ public class DummyDriver1 extends Driver {
   protected void onFlowAdded(
       final String networkId,
       final Flow flow) {
+
     log.debug("{} : {} ", networkId, flow);
 
     NetworkInterface networkIf = networkInterfaces().get(this.network);
@@ -200,7 +210,6 @@ public class DummyDriver1 extends Driver {
       // Driver needs to set Flow to physical switch here.
       // Setting of Flow After completing the physical switch,
       // to "Established".
-      log.info("added Flow: network={}, flow='{}'", networkId, targetFlow.toString());
 
       targetFlow = getFlow(networkIf, flow.getFlowId());
       targetFlow.setStatus(FlowObject.FlowStatus.ESTABLISHED.toString());
@@ -214,15 +223,26 @@ public class DummyDriver1 extends Driver {
       final Flow prev,
       final Flow curr,
       final ArrayList<String> attributesList) {
-    log.debug("called");
-    this.onFlowAdded(networkId, curr);
 
+    log.debug("{} prev:{} curr:{}", networkId, prev, curr);
+    NetworkInterface networkIf = networkInterfaces().get(this.network);
+    BasicFlow targetFlow = getFlow(networkIf, curr.getFlowId());
+    if (targetFlow == null) {
+      return;
+    }
+
+    if (targetFlow.getEnabled()) {
+      this.onFlowAdded(networkId, curr);
+    } else {
+      this.onFlowDelete(networkId, curr);
+    }
   }
 
   @Override
   protected void onFlowDelete(
       final String networkId,
       final Flow flow) {
+
     log.debug("{} : {} ",networkId, flow);
 
     NetworkInterface networkIf = networkInterfaces().get(this.network);
@@ -232,14 +252,13 @@ public class DummyDriver1 extends Driver {
     }
 
     if (targetFlow.getStatus().equals(
-        FlowObject.FlowStatus.ESTABLISHED.toString())) {
+          FlowObject.FlowStatus.ESTABLISHED.toString())) {
       targetFlow.setStatus(FlowObject.FlowStatus.TEARDOWN.toString());
       networkIf.putFlow(targetFlow);
 
       // Driver needs to delete Flow to physical switch here.
       // Deleting of Flow After completing the physical switch,
       // to "None".
-      log.info("deleted Flow: network={}", networkId);
 
       targetFlow = getFlow(networkIf, flow.getFlowId());
       targetFlow.setStatus(FlowObject.FlowStatus.NONE.toString());
@@ -251,11 +270,10 @@ public class DummyDriver1 extends Driver {
   protected final void onOutPacketAdded(
       final String networkId,
       final OutPacketAdded msg) {
-    log.debug("called");
 
     // GET Packet to Drop
     String packetId = msg.getId();
-    log.info("receive OutPacket: {}", packetId);
+    log.debug("receive OutPacket: {}", packetId);
     try {
       NetworkInterface networkIf = networkInterfaces().get(networkId);
       Response resp = networkIf.delOutPacket(packetId);
