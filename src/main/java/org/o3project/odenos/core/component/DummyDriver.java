@@ -56,7 +56,6 @@ public class DummyDriver extends Driver {
       final MessageDispatcher dispatcher) throws Exception {
     super(objectId, baseUri, dispatcher);
     resetEventSubscription();
-    log.debug("created.");
   }
 
   /**
@@ -70,7 +69,6 @@ public class DummyDriver extends Driver {
       final MessageDispatcher dispatcher) throws Exception {
     super(objectId, dispatcher);
     resetEventSubscription();
-    log.debug("created.");
   }
 
   /**
@@ -128,10 +126,24 @@ public class DummyDriver extends Driver {
   }
 
   @Override
+  protected boolean onConnectionChangedDeletePre(
+      final ComponentConnectionChanged msg) {
+
+    if (!msg.curr().getObjectType()
+        .equals(ComponentConnectionLogicAndNetwork.TYPE)) {
+      return false;
+    }
+    String logicId = msg.curr().getProperty(
+        ComponentConnectionLogicAndNetwork.LOGIC_ID);
+    if (!this.getObjectId().equals(logicId)) {
+      return false;
+    }
+    return true;
+  }
+
+  @Override
   protected final void onConnectionChangedDelete(
       final ComponentConnectionChanged message) {
-    log.debug("called");
-
     ComponentConnection curr = message.curr();
     // Changed ConectionProperty's status.
     curr.setConnectionState(ComponentConnection.State.FINALIZING);

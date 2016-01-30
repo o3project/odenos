@@ -209,6 +209,7 @@ public class Federator extends Logic {
     }
   }
 
+
   /* (non-JavaDoc)
    * @see org.o3project.odenos.component.Logic#onConnectionChangedDeletePre(org.o3project.odenos.manager.system.event.ComponentConnectionChanged)
    */
@@ -218,6 +219,14 @@ public class Federator extends Logic {
     log.debug("");
 
     ComponentConnection curr = msg.curr();
+    if (!curr.getObjectType().equals(ComponentConnectionLogicAndNetwork.TYPE)) {
+      return false;
+    }
+    String logicId = curr.getProperty(ComponentConnectionLogicAndNetwork.LOGIC_ID);
+    if (!this.getObjectId().equals(logicId)) {
+      return false;
+    }
+
     if (curr == null) {
       log.debug("curr is null");
       return false;
@@ -308,8 +317,7 @@ public class Federator extends Logic {
     log.debug("");
 
     ComponentConnection curr = msg.curr();
-    String networkId = curr.getProperty(
-        ComponentConnectionLogicAndNetwork.NETWORK_ID);
+    String networkId = curr.getProperty(ComponentConnectionLogicAndNetwork.NETWORK_ID);
     String type = curr.getConnectionType();
 
     // Changed ConectionProperty's status.

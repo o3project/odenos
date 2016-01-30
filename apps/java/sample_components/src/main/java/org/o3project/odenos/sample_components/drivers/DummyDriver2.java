@@ -73,7 +73,6 @@ public class DummyDriver2 extends Driver {
       final MessageDispatcher dispatcher) throws Exception {
     super(objectId, baseUri, dispatcher);
     resetEventSubscription();
-    log.info("created.");
   }
 
   /**
@@ -87,7 +86,6 @@ public class DummyDriver2 extends Driver {
       final MessageDispatcher dispatcher) throws Exception {
     super(objectId, dispatcher);
     resetEventSubscription();
-    log.info("created.");
   }
 
   /**
@@ -107,7 +105,6 @@ public class DummyDriver2 extends Driver {
   @Override
   protected final boolean onConnectionChangedAddedPre(
       final ComponentConnectionChanged msg) {
-    log.debug("called");
 
     if (!msg.curr().getObjectType()
         .equals(ComponentConnectionLogicAndNetwork.TYPE)) {
@@ -168,9 +165,24 @@ public class DummyDriver2 extends Driver {
   }
 
   @Override
+  protected boolean onConnectionChangedDeletePre(
+      final ComponentConnectionChanged msg) {
+
+    if (!msg.curr().getObjectType()
+        .equals(ComponentConnectionLogicAndNetwork.TYPE)) {
+      return false;
+    }
+    String logicId = msg.curr().getProperty(
+        ComponentConnectionLogicAndNetwork.LOGIC_ID);
+    if (!this.getObjectId().equals(logicId)) {
+      return false;
+    }
+    return true;
+  }
+
+  @Override
   protected final void onConnectionChangedDelete(
       final ComponentConnectionChanged message) {
-    log.debug("called");
 
     ComponentConnection curr = message.curr();
     // Changed ConectionProperty's status.
@@ -188,7 +200,6 @@ public class DummyDriver2 extends Driver {
   }
 
   private void subscribeNetworkComponent() {
-    log.debug("called");
 
     addEntryEventSubscription(FLOW_CHANGED, this.network);
     addEntryEventSubscription(OUT_PACKET_ADDED, this.network);
@@ -204,7 +215,6 @@ public class DummyDriver2 extends Driver {
   }
 
   private void unsubscribeNetworkComponent() {
-    log.debug("called");
     removeEntryEventSubscription(FLOW_CHANGED, this.network);
     removeEntryEventSubscription(OUT_PACKET_ADDED, this.network);
     // removeEntryEventSubscription(IN_PACKET_ADDED, this.network);
