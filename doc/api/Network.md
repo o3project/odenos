@@ -184,7 +184,7 @@ update the entire topology.
   * **Body** : [Topology](./DataClass.md#Topology)
 
 ---- 
-### <a name="POSTnodes">POST \<base_uri>/topology/nodes</a>  
+#### <a name="POSTnodes">POST \<base_uri>/topology/nodes</a>  
 add a Node to Network.id is granted automatically. (specified id is invalid)
 
 ##### [Request]:   
