@@ -82,21 +82,21 @@ public class LogicTest {
   private MessageDispatcher dispatcher;
 
   /**
-   * @throws java.lang.Exception
+   * @throws java.lang.Exception throws Exception in targets
    */
   @BeforeClass
   public static void setUpBeforeClass() throws Exception {
   }
 
   /**
-   * @throws java.lang.Exception
+   * @throws java.lang.Exception throws Exception in targets
    */
   @AfterClass
   public static void tearDownAfterClass() throws Exception {
   }
 
   /**
-   * @throws java.lang.Exception
+   * @throws java.lang.Exception throws Exception in targets
    */
   @Before
   public void setUp() throws Exception {
@@ -121,7 +121,7 @@ public class LogicTest {
   }
 
   /**
-   * @throws java.lang.Exception
+   * @throws java.lang.Exception throws Exception in targets
    */
   @After
   public void tearDown() throws Exception {
@@ -157,7 +157,7 @@ public class LogicTest {
    * {@link org.o3project.odenos.core.component.Logic#Logic(java.lang.String, org.o3project.odenos.remoteobject.messagingclient.MessageDispatcher)}
    * .
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testLogic() throws Exception {
@@ -240,7 +240,7 @@ public class LogicTest {
    * {@link org.o3project.odenos.core.component.Logic#onEvent(org.o3project.odenos.remoteobject.message.Event)}
    * .
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testOnEvent() throws Exception {
@@ -659,7 +659,7 @@ public class LogicTest {
    * {@link org.o3project.odenos.core.component.Logic#onNodeChanged(java.lang.String, org.o3project.odenos.core.component.network.topology.NodeChanged)}
    * .
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testOnNodeChanged() throws Exception {
@@ -693,7 +693,7 @@ public class LogicTest {
    * {@link org.o3project.odenos.core.component.Logic#onPortChanged(java.lang.String, org.o3project.odenos.core.component.network.topology.PortChanged)}
    * .
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testOnPortChanged() throws Exception {
@@ -727,7 +727,7 @@ public class LogicTest {
    * {@link org.o3project.odenos.core.component.Logic#onLinkChanged(java.lang.String, org.o3project.odenos.core.component.network.topology.LinkChanged)}
    * .
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testOnLinkChanged() throws Exception {
@@ -761,7 +761,7 @@ public class LogicTest {
    * {@link org.o3project.odenos.core.component.Logic#onFlowChanged(java.lang.String, org.o3project.odenos.core.component.network.flow.FlowChanged)}
    * .
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testOnFlowChanged() throws Exception {
@@ -806,7 +806,7 @@ public class LogicTest {
    * {@link org.o3project.odenos.core.component.Logic#onInPacketAdded(java.lang.String, org.o3project.odenos.core.component.network.packet.InPacketAdded)}
    * .
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testOnInPacketAdded() throws Exception {
@@ -888,7 +888,7 @@ public class LogicTest {
    * {@link org.o3project.odenos.core.component.Logic#onOutPacketAdded(java.lang.String, org.o3project.odenos.core.component.network.packet.OutPacketAdded)}
    * .
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testOnOutPacketAdded() throws Exception {
@@ -1294,7 +1294,7 @@ public class LogicTest {
    * {@link org.o3project.odenos.core.component.Logic#onNodeUpdate(java.lang.String, org.o3project.odenos.component.network.topology.TopologyObject.Node, org.o3project.odenos.component.network.topology.TopologyObject.Node, java.util.ArrayList)}
    * .
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @SuppressWarnings("unchecked")
   @Test
@@ -1393,7 +1393,7 @@ public class LogicTest {
    * {@link org.o3project.odenos.core.component.Logic#onPortUpdate(java.lang.String, org.o3project.odenos.component.network.topology.TopologyObject.Port, org.o3project.odenos.component.network.topology.TopologyObject.Port, java.util.ArrayList)}
    * .
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @SuppressWarnings("unchecked")
   @Test
@@ -1493,7 +1493,7 @@ public class LogicTest {
    * {@link org.o3project.odenos.core.component.Logic#onLinkUpdate(java.lang.String, org.o3project.odenos.component.network.topology.TopologyObject.Link, org.o3project.odenos.component.network.topology.TopologyObject.Link, java.util.ArrayList)}
    * .
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @SuppressWarnings("unchecked")
   @Test
@@ -1595,7 +1595,7 @@ public class LogicTest {
    * {@link org.o3project.odenos.core.component.Logic#onFlowUpdate(java.lang.String, org.o3project.odenos.core.component.network.flow.FlowObject.Flow, org.o3project.odenos.core.component.network.flow.FlowObject.Flow, java.util.ArrayList)}
    * .
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @SuppressWarnings("unchecked")
   @Test
@@ -1693,7 +1693,7 @@ public class LogicTest {
    * {@link org.o3project.odenos.core.component.Logic#onNodeDelete(java.lang.String, org.o3project.odenos.component.network.topology.TopologyObject.Node)}
    * .
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testOnNodeDelete() throws Exception {
@@ -1781,7 +1781,7 @@ public class LogicTest {
    * {@link org.o3project.odenos.core.component.Logic#onPortDelete(java.lang.String, org.o3project.odenos.component.network.topology.TopologyObject.Port)}
    * .
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testOnPortDelete() throws Exception {
@@ -1869,7 +1869,7 @@ public class LogicTest {
    * {@link org.o3project.odenos.core.component.Logic#onLinkDelete(java.lang.String, org.o3project.odenos.component.network.topology.TopologyObject.Link)}
    * .
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testOnLinkDelete() throws Exception {
@@ -1958,7 +1958,7 @@ public class LogicTest {
    * {@link org.o3project.odenos.core.component.Logic#onFlowDelete(java.lang.String, org.o3project.odenos.core.component.network.flow.FlowObject.Flow)}
    * .
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testOnFlowDelete() throws Exception {
@@ -2047,7 +2047,7 @@ public class LogicTest {
    * {@link org.o3project.odenos.core.component.Logic#conversion(java.lang.String, org.o3project.odenos.component.network.topology.TopologyObject.Node)}
    * .
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testConversionStringNode() throws Exception {
@@ -2094,7 +2094,7 @@ public class LogicTest {
    * {@link org.o3project.odenos.core.component.Logic#conversion(java.lang.String, org.o3project.odenos.component.network.topology.TopologyObject.Port)}
    * .
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testConversionStringPort() throws Exception {
@@ -2183,7 +2183,7 @@ public class LogicTest {
    * {@link org.o3project.odenos.core.component.Logic#conversion(java.lang.String, org.o3project.odenos.core.component.network.flow.FlowObject.Flow)}
    * .
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testConversionStringFlow() throws Exception {
@@ -2834,7 +2834,7 @@ public class LogicTest {
 
   /**
    * Test method for {@link org.o3project.odenos.core.component.Logic#onEventComponentConnection(ComponentConnectionChanged)}.
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testOnEventComponentConnection_Add() throws Exception {
@@ -2867,7 +2867,7 @@ public class LogicTest {
 
   /**
    * Test method for {@link org.o3project.odenos.core.component.Logic#onEventComponentConnection(ComponentConnectionChanged)}.
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testOnEventComponentConnection_Update() throws Exception {
@@ -2896,7 +2896,7 @@ public class LogicTest {
 
   /**
    * Test method for {@link org.o3project.odenos.core.component.Logic#onEventComponentConnection(ComponentConnectionChanged)}.
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testOnEventComponentConnection_Delete() throws Exception {
@@ -2929,8 +2929,8 @@ public class LogicTest {
   }
 
   /**
-   * Test method for {@literal org.o3project.odenos.component.Logic#getIgnoreKeys(ArrayList<String>, ArrayList<String>)}.
-   * @throws Exception
+   * Test method for {@literal org.o3project.odenos.component.Logic#getIgnoreKeys(ArrayList, ArrayList)}.
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testGetIgnoreKeys() throws Exception {

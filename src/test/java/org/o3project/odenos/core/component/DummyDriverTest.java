@@ -65,21 +65,21 @@ public class DummyDriverTest {
   private MessageDispatcher dispatcher;
 
   /**
-   * @throws java.lang.Exception
+   * @throws java.lang.Exception throws Exception in targets
    */
   @BeforeClass
   public static void setUpBeforeClass() throws Exception {
   }
 
   /**
-   * @throws java.lang.Exception
+   * @throws java.lang.Exception throws Exception in targets
    */
   @AfterClass
   public static void tearDownAfterClass() throws Exception {
   }
 
   /**
-   * @throws java.lang.Exception
+   * @throws java.lang.Exception throws Exception in targets
    */
   @Before
   public void setUp() throws Exception {
@@ -90,7 +90,7 @@ public class DummyDriverTest {
   }
 
   /**
-   * @throws java.lang.Exception
+   * @throws java.lang.Exception throws Exception in targets
    */
   @After
   public void tearDown() throws Exception {
@@ -104,7 +104,7 @@ public class DummyDriverTest {
    * {@link org.o3project.odenos.core.component.DummyDriver#DummyDriver(java.lang.String, org.o3project.odenos.remoteobject.messagingclient.MessageDispatcher)}
    * .
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testDummyDriver_null() throws Exception {
@@ -188,7 +188,7 @@ public class DummyDriverTest {
    * {@link org.o3project.odenos.core.component.DummyDriver#onConnectionChangedAdded(org.o3project.odenos.core.manager.system.event.ComponentConnectionChanged)}
    * .
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testOnConnectionChangedAdded() throws Exception {
@@ -219,7 +219,7 @@ public class DummyDriverTest {
    * {@link org.o3project.odenos.core.component.DummyDriver#onConnectionChangedDelete(org.o3project.odenos.core.manager.system.event.ComponentConnectionChanged)}
    * .
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testOnConnectionChangedDelete() throws Exception {
@@ -305,7 +305,7 @@ public class DummyDriverTest {
    * {@link org.o3project.odenos.core.component.DummyDriver#onOutPacketAdded(java.lang.String, org.o3project.odenos.core.component.network.packet.OutPacketAdded)}
    * .
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testOnOutPacketAdded() throws Exception {
@@ -337,7 +337,7 @@ public class DummyDriverTest {
    * {@link org.o3project.odenos.core.component.DummyDriver#onOutPacketAdded(java.lang.String, org.o3project.odenos.core.component.network.packet.OutPacketAdded)}
    * .
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testOnOutPacketAdded_networkinterfaceEmpty() throws Exception {
@@ -360,7 +360,7 @@ public class DummyDriverTest {
   /**
    * Test method for {@link org.o3project.odenos.core.component.DummyDriver#subscribeNetworkComponent()}.
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testSubscribeNetworkComponent() throws Exception {
@@ -385,7 +385,7 @@ public class DummyDriverTest {
   /**
    * Test method for {@link org.o3project.odenos.core.component.DummyDriver#unsubscribeNetworkComponent()}.
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testUnsubscribeNetworkComponent() throws Exception {

@@ -50,21 +50,21 @@ public class LinkLayerizerBoundaryTableTest {
   private LinkLayerizerBoundaryTable target;
 
   /**
-   * @throws java.lang.Exception
+   * @throws java.lang.Exception throws Exception in targets
    */
   @BeforeClass
   public static void setUpBeforeClass() throws Exception {
   }
 
   /**
-   * @throws java.lang.Exception
+   * @throws java.lang.Exception throws Exception in targets
    */
   @AfterClass
   public static void tearDownAfterClass() throws Exception {
   }
 
   /**
-   * @throws java.lang.Exception
+   * @throws java.lang.Exception throws Exception in targets
    */
   @Before
   public void setUp() throws Exception {
@@ -74,7 +74,7 @@ public class LinkLayerizerBoundaryTableTest {
   }
 
   /**
-   * @throws java.lang.Exception
+   * @throws java.lang.Exception throws Exception in targets
    */
   @After
   public void tearDown() throws Exception {
@@ -165,7 +165,7 @@ public class LinkLayerizerBoundaryTableTest {
 
   /**
    * Test method for {@link org.o3project.odenos.component.linklayerizer.LinkLayerizerBoundaryTable#addEntry(org.o3project.odenos.component.linklayerizer.LinkLayerizerBoundary)}.
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testAddEntry() throws Exception {
@@ -201,7 +201,7 @@ public class LinkLayerizerBoundaryTableTest {
 
   /**
    * Test method for {@link org.o3project.odenos.component.linklayerizer.LinkLayerizerBoundaryTable#updateEntry(java.lang.String, org.o3project.odenos.component.linklayerizer.LinkLayerizerBoundary)}.
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testUpdateEntry() throws Exception {
@@ -236,7 +236,7 @@ public class LinkLayerizerBoundaryTableTest {
 
   /**
    * Test method for {@link org.o3project.odenos.component.linklayerizer.LinkLayerizerBoundaryTable#updateEntry(java.lang.String, org.o3project.odenos.component.linklayerizer.LinkLayerizerBoundary)}.
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testUpdateEntry_DifferId() throws Exception {
@@ -276,7 +276,7 @@ public class LinkLayerizerBoundaryTableTest {
 
   /**
    * Test method for {@link org.o3project.odenos.component.linklayerizer.LinkLayerizerBoundaryTable#getEntry(java.lang.String)}.
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testGetEntry() throws Exception {
@@ -304,7 +304,7 @@ public class LinkLayerizerBoundaryTableTest {
 
   /**
    * Test method for {@link org.o3project.odenos.component.linklayerizer.LinkLayerizerBoundaryTable#getBoundary(java.lang.String, java.lang.String, java.lang.String)}.
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testGetBoundary() throws Exception {
@@ -345,7 +345,7 @@ public class LinkLayerizerBoundaryTableTest {
 
   /**
    * Test method for {@link org.o3project.odenos.component.linklayerizer.LinkLayerizerBoundaryTable#deleteEntry(java.lang.String)}.
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testDeleteEntry() throws Exception {
@@ -393,7 +393,7 @@ public class LinkLayerizerBoundaryTableTest {
 
   /**
    * Test method for {@link org.o3project.odenos.component.linklayerizer.LinkLayerizerBoundaryTable#getUniqueId()}.
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testGetUniqueId() throws Exception {

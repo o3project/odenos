@@ -91,21 +91,21 @@ public class LinkLayerizerTest {
   private LinkLayerizer target;
 
   /**
-   * @throws java.lang.Exception
+   * @throws java.lang.Exception throws Exception in targets
    */
   @BeforeClass
   public static void setUpBeforeClass() throws Exception {
   }
 
   /**
-   * @throws java.lang.Exception
+   * @throws java.lang.Exception throws Exception in targets
    */
   @AfterClass
   public static void tearDownAfterClass() throws Exception {
   }
 
   /**
-   * @throws java.lang.Exception
+   * @throws java.lang.Exception throws Exception in targets
    */
   @Before
   public void setUp() throws Exception {
@@ -117,7 +117,7 @@ public class LinkLayerizerTest {
   }
 
   /**
-   * @throws java.lang.Exception
+   * @throws java.lang.Exception throws Exception in targets
    */
   @After
   public void tearDown() throws Exception {
@@ -138,7 +138,7 @@ public class LinkLayerizerTest {
 
   /**
    * Test method for {@link org.o3project.odenos.component.linklayerizer.LinkLayerizer#LinkLayerizer(java.lang.String, org.o3project.odenos.remoteobject.messagingclient.MessageDispatcher)}.
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testLinkLayerizer() throws Exception {
@@ -254,7 +254,7 @@ public class LinkLayerizerTest {
 
   /**
    * Test method for {@link org.o3project.odenos.component.linklayerizer.LinkLayerizer#onConnectionChangedAddedPre(org.o3project.odenos.core.manager.system.event.ComponentConnectionChanged)}.
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testOnConnectionChangedAddedPre_Lower() throws Exception {
@@ -284,7 +284,7 @@ public class LinkLayerizerTest {
 
   /**
    * Test method for {@link org.o3project.odenos.component.linklayerizer.LinkLayerizer#onConnectionChangedAddedPre(org.o3project.odenos.core.manager.system.event.ComponentConnectionChanged)}.
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testOnConnectionChangedAddedPre_Upper() throws Exception {
@@ -314,7 +314,7 @@ public class LinkLayerizerTest {
 
   /**
    * Test method for {@link org.o3project.odenos.component.linklayerizer.LinkLayerizer#onConnectionChangedAddedPre(org.o3project.odenos.core.manager.system.event.ComponentConnectionChanged)}.
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testOnConnectionChangedAddedPre_layerized() throws Exception {
@@ -344,7 +344,7 @@ public class LinkLayerizerTest {
 
   /**
    * Test method for {@link org.o3project.odenos.component.linklayerizer.LinkLayerizer#onConnectionChangedUpdatePre(org.o3project.odenos.core.manager.system.event.ComponentConnectionChanged)}.
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testOnConnectionChangedUpdatePre() throws Exception {
@@ -374,7 +374,7 @@ public class LinkLayerizerTest {
 
   /**
    * Test method for {@link org.o3project.odenos.component.linklayerizer.LinkLayerizer#onConnectionChangedDeletePre(org.o3project.odenos.core.manager.system.event.ComponentConnectionChanged)}.
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testOnConnectionChangedDeletePre_Lower() throws Exception {
@@ -408,7 +408,7 @@ public class LinkLayerizerTest {
 
   /**
    * Test method for {@link org.o3project.odenos.component.linklayerizer.LinkLayerizer#onConnectionChangedDeletePre(org.o3project.odenos.core.manager.system.event.ComponentConnectionChanged)}.
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testOnConnectionChangedDeletePre_Upper() throws Exception {
@@ -442,7 +442,7 @@ public class LinkLayerizerTest {
 
   /**
    * Test method for {@link org.o3project.odenos.component.linklayerizer.LinkLayerizer#onConnectionChangedDeletePre(org.o3project.odenos.core.manager.system.event.ComponentConnectionChanged)}.
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testOnConnectionChangedDeletePre_Layerized() throws Exception {
@@ -476,7 +476,7 @@ public class LinkLayerizerTest {
 
   /**
    * Test method for {@link org.o3project.odenos.component.linklayerizer.LinkLayerizer#onConnectionChangedAdded(org.o3project.odenos.core.manager.system.event.ComponentConnectionChanged)}.
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testOnConnectionChangedAdded_lower() throws Exception {
@@ -513,7 +513,7 @@ public class LinkLayerizerTest {
 
   /**
    * Test method for {@link org.o3project.odenos.component.linklayerizer.LinkLayerizer#onConnectionChangedAdded(org.o3project.odenos.core.manager.system.event.ComponentConnectionChanged)}.
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testOnConnectionChangedAdded_Upper() throws Exception {
@@ -565,7 +565,7 @@ public class LinkLayerizerTest {
 
   /**
    * Test method for {@link org.o3project.odenos.component.linklayerizer.LinkLayerizer#onConnectionChangedAdded(org.o3project.odenos.core.manager.system.event.ComponentConnectionChanged)}.
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testOnConnectionChangedAdded_Layerized() throws Exception {
@@ -643,7 +643,7 @@ public class LinkLayerizerTest {
 
   /**
    * Test method for {@link org.o3project.odenos.component.linklayerizer.LinkLayerizer#onConnectionChangedDelete(org.o3project.odenos.core.manager.system.event.ComponentConnectionChanged)}.
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testOnConnectionChangedDelete_Lower() throws Exception {
@@ -702,7 +702,7 @@ public class LinkLayerizerTest {
 
   /**
    * Test method for {@link org.o3project.odenos.component.linklayerizer.LinkLayerizer#onConnectionChangedDelete(org.o3project.odenos.core.manager.system.event.ComponentConnectionChanged)}.
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testOnConnectionChangedDelete_Upper() throws Exception {
@@ -761,7 +761,7 @@ public class LinkLayerizerTest {
 
   /**
    * Test method for {@link org.o3project.odenos.component.linklayerizer.LinkLayerizer#onConnectionChangedDelete(org.o3project.odenos.core.manager.system.event.ComponentConnectionChanged)}.
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testOnConnectionChangedDelete_Layerized() throws Exception {
@@ -820,7 +820,7 @@ public class LinkLayerizerTest {
 
   /**
    * Test method for {@link org.o3project.odenos.component.linklayerizer.LinkLayerizer#subscribeLower(java.lang.String)}.
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testSubscribeLower() throws Exception {
@@ -853,7 +853,7 @@ public class LinkLayerizerTest {
 
   /**
    * Test method for {@link org.o3project.odenos.component.linklayerizer.LinkLayerizer#subscribeUpper(java.lang.String)}.
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testSubscribeUpper() throws Exception {
@@ -926,7 +926,7 @@ public class LinkLayerizerTest {
 
   /**
    * Test method for {@link org.o3project.odenos.component.linklayerizer.LinkLayerizer#subscribeLayerized(java.lang.String)}.
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testSubscribeLayerized() throws Exception {
@@ -987,7 +987,7 @@ public class LinkLayerizerTest {
 
   /**
    * Test method for {@link org.o3project.odenos.component.linklayerizer.LinkLayerizer#unsubscribeLower(java.lang.String)}.
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testUnsubscribeLower() throws Exception {
@@ -1015,7 +1015,7 @@ public class LinkLayerizerTest {
 
   /**
    * Test method for {@link org.o3project.odenos.component.linklayerizer.LinkLayerizer#unsubscribeUpper(java.lang.String)}.
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testUnsubscribeUpper() throws Exception {
@@ -1049,7 +1049,7 @@ public class LinkLayerizerTest {
 
   /**
    * Test method for {@link org.o3project.odenos.component.linklayerizer.LinkLayerizer#unsubscribeLayerized(java.lang.String)}.
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testUnsubscribeLayerized() throws Exception {
@@ -1108,7 +1108,7 @@ public class LinkLayerizerTest {
 
   /**
    * Test method for {@link org.o3project.odenos.component.linklayerizer.LinkLayerizer#onLinkAddedPre(java.lang.String, org.o3project.odenos.core.component.network.topology.Link)}.
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testOnLinkAddedPre() throws Exception {
@@ -1160,7 +1160,7 @@ public class LinkLayerizerTest {
   
   /**
    * Test method for {@link org.o3project.odenos.component.linklayerizer.LinkLayerizer#onLinkAddedPre(java.lang.String, org.o3project.odenos.core.component.network.topology.Link)}.
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testOnLinkAddedPreSyncFlow() throws Exception {
@@ -1241,7 +1241,7 @@ public class LinkLayerizerTest {
   
   /**
    * Test method for {@link org.o3project.odenos.component.linklayerizer.LinkLayerizer#onLinkUpdatePre(java.lang.String, org.o3project.odenos.core.component.network.topology.Link, org.o3project.odenos.core.component.network.topology.Link, java.util.ArrayList)}.
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testOnLinkUpdatePre() throws Exception {
@@ -1286,7 +1286,7 @@ public class LinkLayerizerTest {
 
   /**
    * Test method for {@link org.o3project.odenos.component.linklayerizer.LinkLayerizer#onLinkDeletePre(java.lang.String, org.o3project.odenos.core.component.network.topology.Link)}.
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testOnLinkDeletePre() throws Exception {
@@ -1327,7 +1327,7 @@ public class LinkLayerizerTest {
 
   /**
    * Test method for {@link org.o3project.odenos.component.linklayerizer.LinkLayerizer#onFlowAddedPre(java.lang.String, org.o3project.odenos.core.component.network.flow.Flow)}.
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testOnFlowAddedPre_Lower() throws Exception {
@@ -1409,7 +1409,7 @@ public class LinkLayerizerTest {
 
   /**
    * Test method for {@link org.o3project.odenos.component.linklayerizer.LinkLayerizer#onFlowAddedPre(java.lang.String, org.o3project.odenos.core.component.network.flow.Flow)}.
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testOnFlowAddedPre_Upper() throws Exception {
@@ -1491,7 +1491,7 @@ public class LinkLayerizerTest {
 
   /**
    * Test method for {@link org.o3project.odenos.component.linklayerizer.LinkLayerizer#onFlowAddedPre(java.lang.String, org.o3project.odenos.core.component.network.flow.Flow)}.
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testOnFlowAddedPre_Layerized() throws Exception {
@@ -1570,7 +1570,7 @@ public class LinkLayerizerTest {
 
   /**
    * Test method for {@link org.o3project.odenos.component.linklayerizer.LinkLayerizer#onFlowUpdatePre(java.lang.String, org.o3project.odenos.core.component.network.flow.Flow, org.o3project.odenos.core.component.network.flow.Flow, java.util.ArrayList)}.
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @SuppressWarnings("unchecked")
   @Test
@@ -1657,7 +1657,7 @@ public class LinkLayerizerTest {
 
   /**
    * Test method for {@link org.o3project.odenos.component.linklayerizer.LinkLayerizer#onFlowUpdatePre(java.lang.String, org.o3project.odenos.core.component.network.flow.Flow, org.o3project.odenos.core.component.network.flow.Flow, java.util.ArrayList)}.
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @SuppressWarnings("unchecked")
   @Test
@@ -1748,7 +1748,7 @@ public class LinkLayerizerTest {
 
   /**
    * Test method for {@link org.o3project.odenos.component.linklayerizer.LinkLayerizer#onFlowUpdatePre(java.lang.String, org.o3project.odenos.core.component.network.flow.Flow, org.o3project.odenos.core.component.network.flow.Flow, java.util.ArrayList)}.
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @SuppressWarnings("unchecked")
   @Test
@@ -1835,7 +1835,7 @@ public class LinkLayerizerTest {
 
   /**
    * Test method for {@link org.o3project.odenos.component.linklayerizer.LinkLayerizer#onFlowDeletePre(java.lang.String, org.o3project.odenos.core.component.network.flow.Flow)}.
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testOnFlowDeletePre_Lower() throws Exception {
@@ -1903,7 +1903,7 @@ public class LinkLayerizerTest {
 
   /**
    * Test method for {@link org.o3project.odenos.component.linklayerizer.LinkLayerizer#onFlowDeletePre(java.lang.String, org.o3project.odenos.core.component.network.flow.Flow)}.
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testOnFlowDeletePre_Upper() throws Exception {
@@ -1972,7 +1972,7 @@ public class LinkLayerizerTest {
 
   /**
    * Test method for {@link org.o3project.odenos.component.linklayerizer.LinkLayerizer#onFlowDeletePre(java.lang.String, org.o3project.odenos.core.component.network.flow.Flow)}.
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testOnFlowDeletePre_Layerized() throws Exception {
@@ -2041,7 +2041,7 @@ public class LinkLayerizerTest {
 
   /**
    * Test method for {@link org.o3project.odenos.component.linklayerizer.LinkLayerizer#onInPacketAddedPre(java.lang.String, org.o3project.odenos.core.component.network.packet.InPacketAdded)}.
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testOnInPacketAddedPre() throws Exception {
@@ -2097,7 +2097,7 @@ public class LinkLayerizerTest {
 
   /**
    * Test method for {@link org.o3project.odenos.component.linklayerizer.LinkLayerizer#getFlow(java.lang.String, org.o3project.odenos.core.component.network.flow.Flow)}.
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testGetFlowStringFlow() throws Exception {
@@ -2171,7 +2171,7 @@ public class LinkLayerizerTest {
 
   /**
    * Test method for {@link org.o3project.odenos.component.linklayerizer.LinkLayerizer#doOnConnectionChangedAddedLower(java.lang.String)}.
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testDoOnConnectionChangedAddedLower() throws Exception {
@@ -2240,7 +2240,7 @@ public class LinkLayerizerTest {
 
   /**
    * Test method for {@link org.o3project.odenos.component.linklayerizer.LinkLayerizer#doOnConnectionChangedAddedUpper(java.lang.String)}.
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testDoOnConnectionChangedAddedUpper() throws Exception {
@@ -2300,7 +2300,7 @@ public class LinkLayerizerTest {
 
   /**
    * Test method for {@link org.o3project.odenos.component.linklayerizer.LinkLayerizer#doOnConnectionChangedAddedLayerized(java.lang.String)}.
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testDoOnConnectionChangedAddedLayerized() throws Exception {
@@ -2426,7 +2426,7 @@ public class LinkLayerizerTest {
 
   /**
    * Test method for {@link org.o3project.odenos.component.linklayerizer.LinkLayerizer#doOnConnectionChangedDeleteLower(java.lang.String)}.
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testDoOnConnectionChangedDeleteLower() throws Exception {
@@ -2501,7 +2501,7 @@ public class LinkLayerizerTest {
 
   /**
    * Test method for {@link org.o3project.odenos.component.linklayerizer.LinkLayerizer#doOnConnectionChangedDeleteUpper(java.lang.String)}.
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testDoOnConnectionChangedDeleteUpper() throws Exception {
@@ -2639,7 +2639,7 @@ public class LinkLayerizerTest {
 
   /**
    * Test method for {@link org.o3project.odenos.component.linklayerizer.LinkLayerizer#doOnConnectionChangedDeleteLayerized(java.lang.String)}.
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testDoOnConnectionChangedDeleteLayerized() throws Exception {
@@ -2789,7 +2789,7 @@ public class LinkLayerizerTest {
 
   /**
    * Test method for {@link org.o3project.odenos.component.linklayerizer.LinkLayerizer#createParser()}.
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testCreateParser() throws Exception {
@@ -2811,7 +2811,7 @@ public class LinkLayerizerTest {
 
   /**
    * Test method for {@link org.o3project.odenos.component.linklayerizer.LinkLayerizer#putUpperLinkSync(Boolean)}.
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testPutUpperLinkSync() throws Exception {
@@ -2836,7 +2836,7 @@ public class LinkLayerizerTest {
 
   /**
    * Test method for {@link org.o3project.odenos.component.linklayerizer.LinkLayerizer#postBoundary(LinkLayerizerBoundary)}.
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testPostBoundary() throws Exception {
@@ -2883,7 +2883,7 @@ public class LinkLayerizerTest {
 
   /**
    * Test method for {@link org.o3project.odenos.component.linklayerizer.LinkLayerizer#getBoundaries()}.
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testGetBoundaries() throws Exception {
@@ -2913,7 +2913,7 @@ public class LinkLayerizerTest {
 
   /**
    * Test method for {@link org.o3project.odenos.component.linklayerizer.LinkLayerizer#getBoundary(java.lang.String)}.
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testGetBoundary() throws Exception {
@@ -2945,7 +2945,7 @@ public class LinkLayerizerTest {
 
   /**
    * Test method for {@link org.o3project.odenos.component.linklayerizer.LinkLayerizer#putBoundary(java.lang.String, LinkLayerizerBoundary)}.
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testPutBoundary_Add() throws Exception {
@@ -2983,7 +2983,7 @@ public class LinkLayerizerTest {
 
   /**
    * Test method for {@link org.o3project.odenos.component.linklayerizer.LinkLayerizer#putBoundary(java.lang.String, LinkLayerizerBoundary)}.
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testPutBoundary_Update() throws Exception {
@@ -3031,7 +3031,7 @@ public class LinkLayerizerTest {
 
   /**
    * Test method for {@link org.o3project.odenos.component.linklayerizer.LinkLayerizer#deleteBoundary(java.lang.String)}.
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testDeleteBoundary() throws Exception {
@@ -3074,7 +3074,7 @@ public class LinkLayerizerTest {
 
   /**
    * Test method for {@link org.o3project.odenos.component.linklayerizer.LinkLayerizer#getLowerFlows()}.
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @SuppressWarnings("unchecked")
   @Test
@@ -3109,7 +3109,7 @@ public class LinkLayerizerTest {
 
   /**
    * Test method for {@link org.o3project.odenos.component.linklayerizer.LinkLayerizer#getLowerFlows(java.lang.String)}.
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testGetLowerFlowsString() throws Exception {
@@ -3143,7 +3143,7 @@ public class LinkLayerizerTest {
 
   /**
    * Test method for {@link org.o3project.odenos.component.linklayerizer.LinkLayerizer#getLayerizedlinks()}.
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testGetLayerizedlinks() throws Exception {
@@ -3174,7 +3174,7 @@ public class LinkLayerizerTest {
 
   /**
    * Test method for {@link org.o3project.odenos.component.linklayerizer.LinkLayerizer#getLayerizedLink(java.lang.String)}.
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testGetLayerizedLink() throws Exception {
@@ -3207,7 +3207,7 @@ public class LinkLayerizerTest {
 
   /**
    * Test method for {@link org.o3project.odenos.component.linklayerizer.LinkLayerizer#setBoundaryPortAttr()}.
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testSetBoundaryPortAttr() throws Exception {
@@ -3294,7 +3294,7 @@ public class LinkLayerizerTest {
 
   /**
    * Test method for {@link org.o3project.odenos.component.linklayerizer.LinkLayerizer#unsetBoundaryPortAttr(java.lang.String)}.
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testUnsetBoundaryPortAttr() throws Exception {
@@ -3397,7 +3397,7 @@ public class LinkLayerizerTest {
 
   /**
    * Test method for {@link org.o3project.odenos.component.linklayerizer.LinkLayerizer#getLowerNetworkIds()}.
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testGetLowerNetworkIds() throws Exception {
@@ -3431,7 +3431,7 @@ public class LinkLayerizerTest {
 
   /**
    * Test method for {@link org.o3project.odenos.component.linklayerizer.LinkLayerizer#getUpperNetworkIds()}.
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testGetUpperNetworkIds() throws Exception {
@@ -3465,7 +3465,7 @@ public class LinkLayerizerTest {
 
   /**
    * Test method for {@link org.o3project.odenos.component.linklayerizer.LinkLayerizer#getLayerizedNetworkIds()}.
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testGetLayerizedNetworkIds() throws Exception {
@@ -3499,7 +3499,7 @@ public class LinkLayerizerTest {
 
   /**
    * Test method for {@link org.o3project.odenos.component.linklayerizer.LinkLayerizer#getNetworkIds(java.lang.String)}.
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testGetNetworkIds() throws Exception {
@@ -3542,7 +3542,7 @@ public class LinkLayerizerTest {
 
   /**
    * Test method for {@link org.o3project.odenos.component.linklayerizer.LinkLayerizer#getUpperNetworkIf()}.
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testGetUpperNetworkIf() throws Exception {
@@ -3589,7 +3589,7 @@ public class LinkLayerizerTest {
 
   /**
    * Test method for {@link org.o3project.odenos.component.linklayerizer.LinkLayerizer#getLayerizedNetworkIf()}.
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testGetLayerizedNetworkIf() throws Exception {
@@ -3636,7 +3636,7 @@ public class LinkLayerizerTest {
 
   /**
    * Test method for {@link org.o3project.odenos.component.linklayerizer.LinkLayerizer#getNetworkIf(java.lang.String)}.
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testGetNetworkIfString() throws Exception {
@@ -3688,8 +3688,8 @@ public class LinkLayerizerTest {
   }
 
   /**
-   * Test method for {@literal org.o3project.odenos.component.linklayerizer.LinkLayerizer#getNetworkIf(List<java.lang.String>)}.
-   * @throws Exception
+   * Test method for {@literal org.o3project.odenos.component.linklayerizer.LinkLayerizer#getNetworkIf(List)}.
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testGetNetworkIfListString() throws Exception {
@@ -3738,7 +3738,7 @@ public class LinkLayerizerTest {
 
   /**
    * Test method for {@link org.o3project.odenos.component.linklayerizer.LinkLayerizer#isConnectionType(java.lang.String)}.
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testIsConnectionType() throws Exception {
@@ -3777,7 +3777,7 @@ public class LinkLayerizerTest {
 
   /**
    * Test method for {@link org.o3project.odenos.component.linklayerizer.LinkLayerizer#isConnectionType(java.lang.String)}.
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testIsConnectionType_NoConnection() throws Exception {
@@ -3803,7 +3803,7 @@ public class LinkLayerizerTest {
 
   /**
    * Test method for {@link org.o3project.odenos.component.linklayerizer.LinkLayerizer#isLayerizedNetwork(java.lang.String)}.
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testIsLayerizedNetwork() throws Exception {
@@ -3842,7 +3842,7 @@ public class LinkLayerizerTest {
 
   /**
    * Test method for {@link org.o3project.odenos.component.linklayerizer.LinkLayerizer#isLowerNetwork(java.lang.String)}.
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testIsLowerNetwork() throws Exception {
@@ -3881,7 +3881,7 @@ public class LinkLayerizerTest {
 
   /**
    * Test method for {@link org.o3project.odenos.component.linklayerizer.LinkLayerizer#isUpperNetwork(java.lang.String)}.
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testIsUpperNetwork() throws Exception {
@@ -3920,7 +3920,7 @@ public class LinkLayerizerTest {
 
   /**
    * Test method for {@link org.o3project.odenos.component.linklayerizer.LinkLayerizer#getConnectionType(java.lang.String)}.
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testGetConnectionType() throws Exception {

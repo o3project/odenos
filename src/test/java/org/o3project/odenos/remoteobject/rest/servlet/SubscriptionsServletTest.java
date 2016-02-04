@@ -68,21 +68,21 @@ public class SubscriptionsServletTest {
   private HttpSession session;
 
   /**
-   * @throws java.lang.Exception
+   * @throws java.lang.Exception throws Exception in targets
    */
   @BeforeClass
   public static void setUpBeforeClass() throws Exception {
   }
 
   /**
-   * @throws java.lang.Exception
+   * @throws java.lang.Exception throws Exception in targets
    */
   @AfterClass
   public static void tearDownAfterClass() throws Exception {
   }
 
   /**
-   * @throws java.lang.Exception
+   * @throws java.lang.Exception throws Exception in targets
    */
   @Before
   public void setUp() throws Exception {
@@ -96,7 +96,7 @@ public class SubscriptionsServletTest {
   }
 
   /**
-   * @throws java.lang.Exception
+   * @throws java.lang.Exception throws Exception in targets
    */
   @After
   public void tearDown() throws Exception {
@@ -112,7 +112,7 @@ public class SubscriptionsServletTest {
    * {@link org.o3project.odenos.remoteobject.rest.servlet.SubscriptionsServlet#service(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)}
    * .
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testServiceHttpServletRequestHttpServletResponse()
@@ -159,7 +159,7 @@ public class SubscriptionsServletTest {
    * {@link org.o3project.odenos.remoteobject.rest.servlet.SubscriptionsServlet#doGet(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)}
    * .
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testDoGetHttpServletRequestHttpServletResponse()
@@ -198,7 +198,7 @@ public class SubscriptionsServletTest {
    * {@link org.o3project.odenos.remoteobject.rest.servlet.SubscriptionsServlet#doPut(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)}
    * .
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testDoPutHttpServletRequestHttpServletResponse()
@@ -249,7 +249,7 @@ public class SubscriptionsServletTest {
   /**
    * Test method for {@link org.o3project.odenos.remoteobject.rest.servlet.SubscriptionsServlet#deserialize(String)}.
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testDeserialize() throws Exception {
@@ -274,9 +274,9 @@ public class SubscriptionsServletTest {
   }
 
   /**
-   * Test method for {@link org.o3project.odenos.remoteobject.rest.servlet.SubscriptionsServlet#toJsonStringFrom(Map<String, Set<String>>)}.
+   * Test method for {@link org.o3project.odenos.remoteobject.rest.servlet.SubscriptionsServlet#toJsonStringFrom(Map)}.
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testToJsonStringFrom() throws Exception {

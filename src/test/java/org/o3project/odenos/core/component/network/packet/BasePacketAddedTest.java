@@ -43,21 +43,21 @@ public class BasePacketAddedTest {
   private BasePacketAdded target;
 
   /**
-   * @throws java.lang.Exception
+   * @throws java.lang.Exception throws Exception in targets
    */
   @BeforeClass
   public static void setUpBeforeClass() throws Exception {
   }
 
   /**
-   * @throws java.lang.Exception
+   * @throws java.lang.Exception throws Exception in targets
    */
   @AfterClass
   public static void tearDownAfterClass() throws Exception {
   }
 
   /**
-   * @throws java.lang.Exception
+   * @throws java.lang.Exception throws Exception in targets
    */
   @Before
   public void setUp() throws Exception {
@@ -67,7 +67,7 @@ public class BasePacketAddedTest {
   }
 
   /**
-   * @throws java.lang.Exception
+   * @throws java.lang.Exception throws Exception in targets
    */
   @After
   public void tearDown() throws Exception {
@@ -164,7 +164,7 @@ public class BasePacketAddedTest {
    * {@link org.o3project.odenos.core.component.network.packet.BasePacketAdded#readFrom(org.msgpack.unpacker.Unpacker)}
    * .
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testReadFrom() throws Exception {
@@ -197,7 +197,7 @@ public class BasePacketAddedTest {
    * {@link org.o3project.odenos.core.component.network.packet.BasePacketAdded#writeTo(org.msgpack.packer.Packer)}
    * .
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testWriteTo() throws Exception {

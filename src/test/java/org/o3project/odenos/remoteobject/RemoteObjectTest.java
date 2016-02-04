@@ -67,21 +67,21 @@ public class RemoteObjectTest {
   private MessageDispatcher dispatcher;
 
   /**
-   * @throws java.lang.Exception
+   * @throws java.lang.Exception throws Exception in targets
    */
   @BeforeClass
   public static void setUpBeforeClass() throws Exception {
   }
 
   /**
-   * @throws java.lang.Exception
+   * @throws java.lang.Exception throws Exception in targets
    */
   @AfterClass
   public static void tearDownAfterClass() throws Exception {
   }
 
   /**
-   * @throws java.lang.Exception
+   * @throws java.lang.Exception throws Exception in targets
    */
   @Before
   public void setUp() throws Exception {
@@ -90,7 +90,7 @@ public class RemoteObjectTest {
   }
 
   /**
-   * @throws java.lang.Exception
+   * @throws java.lang.Exception throws Exception in targets
    */
   @After
   public void tearDown() throws Exception {
@@ -325,7 +325,7 @@ public class RemoteObjectTest {
    * {@link org.o3project.odenos.remoteobject.RemoteObject#addRemoteObject(java.lang.String, java.net.InetSocketAddress)}
    * .
    *
-   * @throws IOException
+   * @throws IOException throws IOException in targets
    */
   @Test
   public final void testAddRemoteObject() throws IOException {
@@ -343,7 +343,7 @@ public class RemoteObjectTest {
    * {@link org.o3project.odenos.remoteobject.RemoteObject#addRemoteObject(java.lang.String, java.net.InetSocketAddress)}
    * .
    *
-   * @throws IOException
+   * @throws IOException throws IOException in targets
    */
   //@Test(expected = IOException.class)
   @Test(expected = Exception.class)
@@ -383,7 +383,7 @@ public class RemoteObjectTest {
    * {@link org.o3project.odenos.remoteobject.RemoteObject#requestSync(java.lang.String, org.o3project.odenos.remoteobject.message.Request.Method, java.lang.String, java.lang.Object)}
    * .
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public final void testRequestSync() throws Exception {
@@ -406,7 +406,7 @@ public class RemoteObjectTest {
    * {@link org.o3project.odenos.remoteobject.RemoteObject#requestSync(java.lang.String, org.o3project.odenos.remoteobject.message.Request.Method, java.lang.String, java.lang.Object)}
    * .
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test(expected = Exception.class)
   public final void testrequestSyncWithException() throws Exception {
@@ -425,7 +425,7 @@ public class RemoteObjectTest {
    * {@link org.o3project.odenos.remoteobject.RemoteObject#request(java.lang.String, org.o3project.odenos.remoteobject.message.Request.Method, java.lang.String, java.lang.Object)}
    * .
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public final void testRequest() throws Exception {
@@ -449,7 +449,7 @@ public class RemoteObjectTest {
    * {@link org.o3project.odenos.remoteobject.RemoteObject#request(java.lang.String, org.o3project.odenos.remoteobject.message.Request.Method, java.lang.String, java.lang.Object)}
    * .
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test(expected = Exception.class)
   public final void testRequestWithException() throws Exception {
@@ -468,7 +468,7 @@ public class RemoteObjectTest {
    * {@link org.o3project.odenos.remoteobject.RemoteObject#publishEvent(java.lang.String, java.lang.Object)}
    * .
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public final void testPublishEvent() throws Exception {
@@ -485,7 +485,7 @@ public class RemoteObjectTest {
    * {@link org.o3project.odenos.remoteobject.RemoteObject#publishEvent(java.lang.String, java.lang.Object)}
    * .
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test(expected = Exception.class)
   public final void testPublishEventWithException() throws Exception {
@@ -503,7 +503,7 @@ public class RemoteObjectTest {
    * Test method for
    * {@link org.o3project.odenos.remoteobject.RemoteObject#applyEventSubscription()}.
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public final void testApplyEventSubscription() throws Exception {
@@ -524,7 +524,7 @@ public class RemoteObjectTest {
    * Test method for
    * {@link org.o3project.odenos.remoteobject.RemoteObject#applyEventSubscription()}.
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test(expected = Exception.class)
   public final void testApplyEventSubscriptionWithException()
@@ -545,7 +545,7 @@ public class RemoteObjectTest {
    * Test method for
    * {@link org.o3project.odenos.remoteobject.RemoteObject#createParser()}.
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public final void testCreateParser() throws Exception {
@@ -576,7 +576,7 @@ public class RemoteObjectTest {
    * {@link org.o3project.odenos.remoteobject.RemoteObject#dispatchRequest(org.o3project.odenos.remoteobject.message.Request)}
    * .
    *
-   * @throws ParseBodyException
+   * @throws ParseBodyException throws ParseBodyException in targets
    */
   @Test
   public final void testDispatchRequestSuccess() throws ParseBodyException {
@@ -603,7 +603,7 @@ public class RemoteObjectTest {
    * {@link org.o3project.odenos.remoteobject.RemoteObject#dispatchRequest(org.o3project.odenos.remoteobject.message.Request)}
    * .
    *
-   * @throws ParseBodyException
+   * @throws ParseBodyException throws ParseBodyException in targets
    */
   @Test
   public final void testDispatchRequestWithRequestPathIsNull()
@@ -630,7 +630,7 @@ public class RemoteObjectTest {
    * {@link org.o3project.odenos.remoteobject.RemoteObject#dispatchRequest(org.o3project.odenos.remoteobject.message.Request)}
    * .
    *
-   * @throws ParseBodyException
+   * @throws ParseBodyException throws ParseBodyException in targets
    */
   @Test
   public final void testDispatchRequestWithRequestPathEmpty()
@@ -657,7 +657,7 @@ public class RemoteObjectTest {
    * {@link org.o3project.odenos.remoteobject.RemoteObject#dispatchRequest(org.o3project.odenos.remoteobject.message.Request)}
    * .
    *
-   * @throws ParseBodyException
+   * @throws ParseBodyException throws ParseBodyException in targets
    */
   @Test
   public final void testDispatchRequestWithParseError()
@@ -684,7 +684,7 @@ public class RemoteObjectTest {
    * {@link org.o3project.odenos.remoteobject.RemoteObject#dispatchRequest(org.o3project.odenos.remoteobject.message.Request)}
    * .
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public final void testDispatchRequestWithParseResultNull() throws Exception {
@@ -721,7 +721,7 @@ public class RemoteObjectTest {
    * {@link org.o3project.odenos.remoteobject.RemoteObject#dispatchRequest(org.o3project.odenos.remoteobject.message.Request)}
    * .
    *
-   * @throws ParseBodyException
+   * @throws ParseBodyException throws ParseBodyException in targets
    */
   @Test
   public final void testDispatchRequestWithException()
@@ -791,7 +791,7 @@ public class RemoteObjectTest {
    * Test method for
    * {@link org.o3project.odenos.remoteobject.RemoteObject#doGetProperty()}.
    *
-   * @throws ParseBodyException
+   * @throws ParseBodyException throws ParseBodyException in targets
    */
   @Test
   public final void testDoGetProperty() throws ParseBodyException {
@@ -807,7 +807,7 @@ public class RemoteObjectTest {
    * {@link org.o3project.odenos.remoteobject.RemoteObject#doPutProperty(org.o3project.odenos.remoteobject.ObjectProperty)}
    * .
    *
-   * @throws ParseBodyException
+   * @throws ParseBodyException throws ParseBodyException in targets
    */
   @Test
   public final void testDoPutPropertyWithAdd() throws ParseBodyException {
@@ -833,7 +833,7 @@ public class RemoteObjectTest {
    * {@link org.o3project.odenos.remoteobject.RemoteObject#doPutProperty(org.o3project.odenos.remoteobject.ObjectProperty)}
    * .
    *
-   * @throws ParseBodyException
+   * @throws ParseBodyException throws ParseBodyException in targets
    */
   @Test
   public final void testDoPutPropertyWithDelete() throws ParseBodyException {
@@ -860,7 +860,7 @@ public class RemoteObjectTest {
    * {@link org.o3project.odenos.remoteobject.RemoteObject#doPutProperty(org.o3project.odenos.remoteobject.ObjectProperty)}
    * .
    *
-   * @throws ParseBodyException
+   * @throws ParseBodyException throws ParseBodyException in targets
    */
   @Test
   public final void testDoPutPropertyWithUpdate() throws ParseBodyException {
@@ -887,7 +887,7 @@ public class RemoteObjectTest {
    * {@link org.o3project.odenos.remoteobject.RemoteObject#doPutProperty(org.o3project.odenos.remoteobject.ObjectProperty)}
    * .
    *
-   * @throws ParseBodyException
+   * @throws ParseBodyException throws ParseBodyException in targets
    */
   @Test
   public final void testDoPutPropertyWithNothingUpdate()
@@ -914,7 +914,7 @@ public class RemoteObjectTest {
    * {@link org.o3project.odenos.remoteobject.RemoteObject#doPutProperty(org.o3project.odenos.remoteobject.ObjectProperty)}
    * .
    *
-   * @throws ParseBodyException
+   * @throws ParseBodyException throws ParseBodyException in targets
    */
   @Test
   public final void testDoPutPropertyWithStateChangeFinalizing()
@@ -933,7 +933,7 @@ public class RemoteObjectTest {
    * Test method for
    * {@link org.o3project.odenos.remoteobject.RemoteObject#doGetSettings()}.
    *
-   * @throws ParseBodyException
+   * @throws ParseBodyException throws ParseBodyException in targets
    */
   @Test
   public final void testDoGetSettings() throws ParseBodyException {
@@ -954,7 +954,7 @@ public class RemoteObjectTest {
    * {@link org.o3project.odenos.remoteobject.RemoteObject#doPutSettings(org.o3project.odenos.remoteobject.ObjectSettings)}
    * .
    *
-   * @throws ParseBodyException
+   * @throws ParseBodyException throws ParseBodyException in targets
    */
   @Test
   public final void testDoPutSettingsWithAdd() throws ParseBodyException {
@@ -980,7 +980,7 @@ public class RemoteObjectTest {
    * {@link org.o3project.odenos.remoteobject.RemoteObject#doPutSettings(org.o3project.odenos.remoteobject.ObjectSettings)}
    * .
    *
-   * @throws ParseBodyException
+   * @throws ParseBodyException throws ParseBodyException in targets
    */
   @Test
   public final void testDoPutSettingsWithDelete() throws ParseBodyException {
@@ -1008,7 +1008,7 @@ public class RemoteObjectTest {
    * {@link org.o3project.odenos.remoteobject.RemoteObject#doPutSettings(org.o3project.odenos.remoteobject.ObjectSettings)}
    * .
    *
-   * @throws ParseBodyException
+   * @throws ParseBodyException throws ParseBodyException in targets
    */
   @Test
   public final void testDoPutSettingsWithUpdate() throws ParseBodyException {
@@ -1036,7 +1036,7 @@ public class RemoteObjectTest {
    * {@link org.o3project.odenos.remoteobject.RemoteObject#doPutSettings(org.o3project.odenos.remoteobject.ObjectSettings)}
    * .
    *
-   * @throws ParseBodyException
+   * @throws ParseBodyException throws ParseBodyException in targets
    */
   @Test
   public final void testDoPutSettingsWithNothingUpdate()
@@ -1117,7 +1117,7 @@ public class RemoteObjectTest {
    * {@link org.o3project.odenos.remoteobject.RemoteObject#onPropertyChanged(java.lang.String, org.o3project.odenos.remoteobject.ObjectProperty, org.o3project.odenos.remoteobject.ObjectProperty)}
    * .
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public final void testOnPropertyChanged() throws Exception {
@@ -1139,7 +1139,7 @@ public class RemoteObjectTest {
    * {@link org.o3project.odenos.remoteobject.RemoteObject#onPropertyChanged(java.lang.String, org.o3project.odenos.remoteobject.ObjectProperty, org.o3project.odenos.remoteobject.ObjectProperty)}
    * .
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public final void testOnPropertyChangedWithException() throws Exception {
@@ -1165,7 +1165,7 @@ public class RemoteObjectTest {
    * {@link org.o3project.odenos.remoteobject.RemoteObject#onSettingsChanged(java.lang.String, org.o3project.odenos.remoteobject.ObjectSettings, org.o3project.odenos.remoteobject.ObjectSettings)}
    * .
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public final void testOnSettingsChanged() throws Exception {
@@ -1187,7 +1187,7 @@ public class RemoteObjectTest {
    * {@link org.o3project.odenos.remoteobject.RemoteObject#onSettingsChanged(java.lang.String, org.o3project.odenos.remoteobject.ObjectSettings, org.o3project.odenos.remoteobject.ObjectSettings)}
    * .
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public final void testOnSettingsChangedWithException() throws Exception {
@@ -1239,7 +1239,7 @@ public class RemoteObjectTest {
    * Test method for
    * {@link org.o3project.odenos.remoteobject.RemoteObject#isFinalize()}.
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public final void testIsFinalizeStateFinalizing() throws Exception {
@@ -1255,7 +1255,7 @@ public class RemoteObjectTest {
    * Test method for
    * {@link org.o3project.odenos.remoteobject.RemoteObject#isFinalize()}.
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public final void testIsFinalizeStateNotFinalizing() throws Exception {

@@ -94,21 +94,21 @@ public class PathCalculatorTest {
   private Link link2 = null;
 
   /**
-   * @throws java.lang.Exception
+   * @throws java.lang.Exception throws Exception in targets
    */
   @BeforeClass
   public static void setUpBeforeClass() throws Exception {
   }
 
   /**
-   * @throws java.lang.Exception
+   * @throws java.lang.Exception throws Exception in targets
    */
   @AfterClass
   public static void tearDownAfterClass() throws Exception {
   }
 
   /**
-   * @throws java.lang.Exception
+   * @throws java.lang.Exception throws Exception in targets
    */
   @Before
   public void setUp() throws Exception {
@@ -170,7 +170,7 @@ public class PathCalculatorTest {
   }
 
   /**
-   * @throws java.lang.Exception
+   * @throws java.lang.Exception throws Exception in targets
    */
   @After
   public void tearDown() throws Exception {
@@ -196,7 +196,7 @@ public class PathCalculatorTest {
    * {@link org.o3project.odenos.core.util.PathCalculator#addLink(org.o3project.odenos.component.network.topology.TopologyObject.LinkMessage)}
    * .
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
 
   @Test

@@ -46,21 +46,21 @@ public class PacketStatusTest {
   private PacketStatus target;
 
   /**
-   * @throws java.lang.Exception
+   * @throws java.lang.Exception throws Exception in targets
    */
   @BeforeClass
   public static void setUpBeforeClass() throws Exception {
   }
 
   /**
-   * @throws java.lang.Exception
+   * @throws java.lang.Exception throws Exception in targets
    */
   @AfterClass
   public static void tearDownAfterClass() throws Exception {
   }
 
   /**
-   * @throws java.lang.Exception
+   * @throws java.lang.Exception throws Exception in targets
    */
   @Before
   public void setUp() throws Exception {
@@ -68,7 +68,7 @@ public class PacketStatusTest {
   }
 
   /**
-   * @throws java.lang.Exception
+   * @throws java.lang.Exception throws Exception in targets
    */
   @After
   public void tearDown() throws Exception {
@@ -160,7 +160,7 @@ public class PacketStatusTest {
    * {@link org.o3project.odenos.core.component.network.packet.PacketStatus#readFrom(org.msgpack.unpacker.Unpacker)}
    * .
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testReadFrom() throws Exception {
@@ -219,7 +219,7 @@ public class PacketStatusTest {
    * {@link org.o3project.odenos.core.component.network.packet.PacketStatus#readFrom(org.msgpack.unpacker.Unpacker)}
    * .
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testReadFromSkipNil() throws Exception {
@@ -280,7 +280,7 @@ public class PacketStatusTest {
    * {@link org.o3project.odenos.core.component.network.packet.PacketStatus#readFrom(org.msgpack.unpacker.Unpacker)}
    * .
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testReadFromDefault() throws Exception {
@@ -339,7 +339,7 @@ public class PacketStatusTest {
    * {@link org.o3project.odenos.core.component.network.packet.PacketStatus#writeTo(org.msgpack.packer.Packer)}
    * .
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public final void testWriteTo() throws Exception {

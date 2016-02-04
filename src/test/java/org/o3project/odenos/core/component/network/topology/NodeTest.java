@@ -50,21 +50,21 @@ public class NodeTest {
   private Node target;
 
   /**
-   * @throws java.lang.Exception
+   * @throws java.lang.Exception throws Exception in targets
    */
   @BeforeClass
   public static void setUpBeforeClass() throws Exception {
   }
 
   /**
-   * @throws java.lang.Exception
+   * @throws java.lang.Exception throws Exception in targets
    */
   @AfterClass
   public static void tearDownAfterClass() throws Exception {
   }
 
   /**
-   * @throws java.lang.Exception
+   * @throws java.lang.Exception throws Exception in targets
    */
   @Before
   public void setUp() throws Exception {
@@ -85,7 +85,7 @@ public class NodeTest {
   }
 
   /**
-   * @throws java.lang.Exception
+   * @throws java.lang.Exception throws Exception in targets
    */
   @After
   public void tearDown() throws Exception {
@@ -139,7 +139,7 @@ public class NodeTest {
    * org.o3project.odenos.component.network.topology.Node#Node(java.lang.
    * String, java.lang.String, java.util.Map<java.lang.String,
    * org.o3project.odenos.component.network.topology.Port>,
-   * java.util.Map<java.lang.String, java.lang.String>)}.
+   * java.util.Map)}.
    */
   @Test
   public void testNodeWithPorts() {
@@ -342,9 +342,7 @@ public class NodeTest {
 
   /**
    * Test method for {@link
-   * org.o3project.odenos.component.network.topology.Node#setPorts(java.util.
-   * Map<java.lang.String,
-   * org.o3project.odenos.component.network.topology.Port>)}.
+   * org.o3project.odenos.component.network.topology.Node#setPorts(java.util.Map)}.
    */
   @Test
   public void testSetPorts() {

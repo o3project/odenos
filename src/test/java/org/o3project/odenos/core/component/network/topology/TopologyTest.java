@@ -77,21 +77,21 @@ public class TopologyTest {
   private Link link2;
 
   /**
-   * @throws java.lang.Exception
+   * @throws java.lang.Exception throws Exception in targets
    */
   @BeforeClass
   public static void setUpBeforeClass() throws Exception {
   }
 
   /**
-   * @throws java.lang.Exception
+   * @throws java.lang.Exception throws Exception in targets
    */
   @AfterClass
   public static void tearDownAfterClass() throws Exception {
   }
 
   /**
-   * @throws java.lang.Exception
+   * @throws java.lang.Exception throws Exception in targets
    */
   @Before
   public void setUp() throws Exception {
@@ -155,7 +155,7 @@ public class TopologyTest {
   }
 
   /**
-   * @throws java.lang.Exception
+   * @throws java.lang.Exception throws Exception in targets
    */
   @After
   public void tearDown() throws Exception {
@@ -180,8 +180,7 @@ public class TopologyTest {
    * Test method for {@link
    * org.o3project.odenos.component.network.topology.Topology#Topology(java.
    * util.Map<org.o3project.odenos.component.network.topology.Node>,
-   * java.util.Map<java.lang.String,
-   * org.o3project.odenos.component.network.topology.Link>)}.
+   * java.util.Map)}.
    */
   @Test
   public void testTopologyWithNodesAndLinks() {
@@ -209,8 +208,7 @@ public class TopologyTest {
    * org.o3project.odenos.component.network.topology.Topology#Topology(java.
    * util.Map<java.lang.String,
    * org.o3project.odenos.component.network.topology.Node>,
-   * java.util.Map<java.lang.String,
-   * org.o3project.odenos.component.network.topology.Link>)}.
+   * java.util.Map)}.
    */
   @Test
   public void testTopologyWithParams() {

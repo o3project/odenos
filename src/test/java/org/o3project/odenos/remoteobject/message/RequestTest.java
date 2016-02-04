@@ -47,21 +47,21 @@ public class RequestTest {
   private Object body = null;
 
   /**
-   * @throws java.lang.Exception
+   * @throws java.lang.Exception throws Exception in targets
    */
   @BeforeClass
   public static void setUpBeforeClass() throws Exception {
   }
 
   /**
-   * @throws java.lang.Exception
+   * @throws java.lang.Exception throws Exception in targets
    */
   @AfterClass
   public static void tearDownAfterClass() throws Exception {
   }
 
   /**
-   * @throws java.lang.Exception
+   * @throws java.lang.Exception throws Exception in targets
    */
   @Before
   public void setUp() throws Exception {
@@ -71,7 +71,7 @@ public class RequestTest {
   }
 
   /**
-   * @throws java.lang.Exception
+   * @throws java.lang.Exception throws Exception in targets
    */
   @After
   public void tearDown() throws Exception {
@@ -113,7 +113,7 @@ public class RequestTest {
 
   /**
    * Test method for {@link org.o3project.odenos.remoteobject.message.Request#readFrom(org.msgpack.unpacker.Unpacker)}.
-   * @throws IOException
+   * @throws IOException throws IOException in targets
    */
   @Test
   public final void testReadFrom() throws IOException {
@@ -132,7 +132,7 @@ public class RequestTest {
 
   /**
    * Test method for {@link org.o3project.odenos.remoteobject.message.Request#readFrom(org.msgpack.unpacker.Unpacker)}.
-   * @throws IOException
+   * @throws IOException throws IOException in targets
    */
   @Test(expected = IOException.class)
   public final void testReadFromWithIoException() throws IOException {
@@ -148,7 +148,7 @@ public class RequestTest {
 
   /**
    * Test method for {@link org.o3project.odenos.remoteobject.message.Request#writeTo(org.msgpack.packer.Packer)}.
-   * @throws IOException
+   * @throws IOException throws IOException in targets
    */
   @Test
   public final void testWriteTo() throws IOException {
@@ -169,7 +169,7 @@ public class RequestTest {
 
   /**
    * Test method for {@link org.o3project.odenos.remoteobject.message.Request#writeTo(org.msgpack.packer.Packer)}.
-   * @throws IOException
+   * @throws IOException throws IOException in targets
    */
   @Test
   public final void testWriteToWithBodyValue() throws IOException {
@@ -191,7 +191,7 @@ public class RequestTest {
 
   /**
    * Test method for {@link org.o3project.odenos.remoteobject.message.Request#writeTo(org.msgpack.packer.Packer)}.
-   * @throws IOException
+   * @throws IOException throws IOException in targets
    */
   @Test(expected = IOException.class)
   public final void testWriteToWithIoException() throws IOException {

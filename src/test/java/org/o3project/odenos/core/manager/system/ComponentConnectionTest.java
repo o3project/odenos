@@ -64,21 +64,21 @@ public class ComponentConnectionTest {
   private ComponentConnection mocktarget = null;
 
   /**
-   * @throws java.lang.Exception
+   * @throws java.lang.Exception throws Exception in targets
    */
   @BeforeClass
   public static void setUpBeforeClass() throws Exception {
   }
 
   /**
-   * @throws java.lang.Exception
+   * @throws java.lang.Exception throws Exception in targets
    */
   @AfterClass
   public static void tearDownAfterClass() throws Exception {
   }
 
   /**
-   * @throws java.lang.Exception
+   * @throws java.lang.Exception throws Exception in targets
    */
   @Before
   public void setUp() throws Exception {
@@ -87,7 +87,7 @@ public class ComponentConnectionTest {
   }
 
   /**
-   * @throws java.lang.Exception
+   * @throws java.lang.Exception throws Exception in targets
    */
   @After
   public void tearDown() throws Exception {
@@ -101,7 +101,7 @@ public class ComponentConnectionTest {
    * {@link org.o3project.odenos.core.manager.system.ComponentConnection#ComponentConnection(java.lang.String, java.lang.String, java.lang.String)}
    * .
    *
-   * @throws IOException
+   * @throws IOException throws IOException in targets
    */
   @SuppressWarnings("static-access")
   @Test
@@ -127,7 +127,7 @@ public class ComponentConnectionTest {
    * {@link org.o3project.odenos.core.manager.system.ComponentConnection#ComponentConnection(java.lang.String, java.lang.String, java.lang.String)}
    * .
    *
-   * @throws IOException
+   * @throws IOException throws IOException in targets
    */
   @SuppressWarnings("static-access")
   @Test
@@ -152,7 +152,7 @@ public class ComponentConnectionTest {
    * {@link org.o3project.odenos.core.manager.system.ComponentConnection#ComponentConnection(java.lang.String, java.lang.String, java.lang.String)}
    * .
    *
-   * @throws IOException
+   * @throws IOException throws IOException in targets
    */
   @SuppressWarnings("static-access")
   @Test
@@ -217,7 +217,7 @@ public class ComponentConnectionTest {
    * {@link org.o3project.odenos.core.manager.system.ComponentConnection#onInitializing(java.lang.String, java.lang.String, java.lang.String, java.lang.String)}.
    * .
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public final void testOnInitializing() throws Exception {
@@ -242,7 +242,7 @@ public class ComponentConnectionTest {
    * {@link org.o3project.odenos.core.manager.system.ComponentConnection#onInitializing(java.lang.String, java.lang.String, java.lang.String, java.lang.String)}.
    * .
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public final void testOnInitializingStateNull() throws Exception {
@@ -266,7 +266,7 @@ public class ComponentConnectionTest {
    * {@link org.o3project.odenos.core.manager.system.ComponentConnection#onInitializing(java.lang.String, java.lang.String, java.lang.String, java.lang.String)}.
    * .
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public final void testOnInitializingStateBlank() throws Exception {
@@ -474,7 +474,7 @@ public class ComponentConnectionTest {
    * {@link org.o3project.odenos.core.manager.system.ComponentConnection#writeTo(org.msgpack.packer.Packer)}
    * .
    *
-   * @throws IOException
+   * @throws IOException throws IOException in targets
    */
   @Test
   public void testWriteTo() throws IOException {

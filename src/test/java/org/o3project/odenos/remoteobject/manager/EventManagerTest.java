@@ -59,21 +59,21 @@ public class EventManagerTest {
   EventManager target = null;
 
   /**
-   * @throws java.lang.Exception
+   * @throws java.lang.Exception throws Exception in targets
    */
   @BeforeClass
   public static void setUpBeforeClass() throws Exception {
   }
 
   /**
-   * @throws java.lang.Exception
+   * @throws java.lang.Exception throws Exception in targets
    */
   @AfterClass
   public static void tearDownAfterClass() throws Exception {
   }
 
   /**
-   * @throws java.lang.Exception
+   * @throws java.lang.Exception throws Exception in targets
    */
   @Before
   public void setUp() throws Exception {
@@ -81,7 +81,7 @@ public class EventManagerTest {
   }
 
   /**
-   * @throws java.lang.Exception
+   * @throws java.lang.Exception throws Exception in targets
    */
   @After
   public void tearDown() throws Exception {
@@ -149,7 +149,7 @@ public class EventManagerTest {
 
   /**
    * Test method for {@link org.o3project.odenos.remoteobject.manager.EventManager#onRequest(org.o3project.odenos.remoteobject.message.Request)}.
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public final void testOnRequestWithSuccess() throws Exception {
@@ -174,7 +174,7 @@ public class EventManagerTest {
 
   /**
    * Test method for {@link org.o3project.odenos.remoteobject.manager.EventManager#onRequest(org.o3project.odenos.remoteobject.message.Request)}.
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public final void testOnRequestParsedNullNoMatch() throws Exception {
@@ -193,7 +193,7 @@ public class EventManagerTest {
 
   /**
    * Test method for {@link org.o3project.odenos.remoteobject.manager.EventManager#onRequest(org.o3project.odenos.remoteobject.message.Request)}.
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @SuppressWarnings("rawtypes")
   @Test
@@ -222,7 +222,7 @@ public class EventManagerTest {
 
   /**
    * Test method for {@link org.o3project.odenos.remoteobject.manager.EventManager#onRequest(org.o3project.odenos.remoteobject.message.Request)}.
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public final void testOnRequestWithException() throws Exception {
@@ -244,7 +244,7 @@ public class EventManagerTest {
 
   /**
    * Test method for {@link org.o3project.odenos.remoteobject.manager.EventManager#putSubscription(java.lang.String, org.o3project.odenos.remoteobject.manager.EventSubscriptionObject.EventSubscription)}.
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public final void testPutSubscription() throws Exception {
@@ -266,7 +266,7 @@ public class EventManagerTest {
 
   /**
    * Test method for {@link org.o3project.odenos.remoteobject.manager.EventManager#getSubscriptions()}.
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public final void testGetSubscriptions() throws Exception {
@@ -286,7 +286,7 @@ public class EventManagerTest {
 
   /**
    * Test method for {@link org.o3project.odenos.remoteobject.manager.EventManager#getSubscription(java.lang.String)}.
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public final void testGetSubscriptionSuccess() throws Exception {
@@ -305,7 +305,7 @@ public class EventManagerTest {
 
   /**
    * Test method for {@link org.o3project.odenos.remoteobject.manager.EventManager#getSubscription(java.lang.String)}.
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public final void testGetSubscriptionNotFound() throws Exception {
