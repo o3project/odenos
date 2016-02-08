@@ -77,7 +77,7 @@ public class RequestParserTest {
   }
 
   /**
-   * Test method for {@link
+   * Test method for {@literal
    * org.o3project.odenos.remoteobject.RequestParser.ParsedRequest#ParsedRequest(
    * org.o3project.odenos.remoteobject.message.Request,
    * java.lang.Object, java.util.Map, java.lang.String)}.

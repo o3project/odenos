@@ -136,10 +136,8 @@ public class NodeTest {
 
   /**
    * Test method for {@link
-   * org.o3project.odenos.component.network.topology.Node#Node(java.lang.
-   * String, java.lang.String, java.util.Map<java.lang.String,
-   * org.o3project.odenos.component.network.topology.Port>,
-   * java.util.Map)}.
+   * org.o3project.odenos.component.network.topology.Node#Node(java.lang.String,
+   * java.lang.String, java.util.Map, java.util.Map)}.
    */
   @Test
   public void testNodeWithPorts() {
@@ -520,7 +518,7 @@ public class NodeTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.topology.Node#readFrom(org.msgpack.packer.Packer)}
+   * {@link org.o3project.odenos.core.component.network.topology.Node#readFrom(Unpacker)}
    * .
    */
   @Test
@@ -580,7 +578,7 @@ public class NodeTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.topology.Port#readFrom(org.msgpack.packer.Packer)}
+   * {@link org.o3project.odenos.core.component.network.topology.Port#readFrom(Unpacker)}
    * .
    */
   @Test
@@ -642,7 +640,7 @@ public class NodeTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.topology.Node#readFrom(org.msgpack.packer.Packer)}
+   * {@link org.o3project.odenos.core.component.network.topology.Node#readFrom(Unpacker)}
    * .
    */
   @Test
@@ -694,7 +692,7 @@ public class NodeTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.topology.Node#readFrom(org.msgpack.packer.Packer)}
+   * {@link org.o3project.odenos.core.component.network.topology.Node#readFrom(Unpacker)}
    * .
    */
   @Test
@@ -746,7 +744,7 @@ public class NodeTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.topology.Node#readFrom(org.msgpack.packer.Packer)}
+   * {@link org.o3project.odenos.core.component.network.topology.Node#readFrom(Unpacker)}
    * .
    */
   @Test
@@ -796,7 +794,7 @@ public class NodeTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.topology.Node#writeTo(org.msgpack.unpacker.Unpacker)}
+   * {@link org.o3project.odenos.core.component.network.topology.Node#writeTo(Packer)}
    * .
    */
   @Test
@@ -843,7 +841,7 @@ public class NodeTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.topology.Node#writeTo(org.msgpack.unpacker.Unpacker)}
+   * {@link org.o3project.odenos.core.component.network.topology.Node#writeTo(Packer)}
    * .
    */
   @Test

@@ -193,7 +193,7 @@ public class PathCalculatorTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.util.PathCalculator#addLink(org.o3project.odenos.component.network.topology.TopologyObject.LinkMessage)}
+   * {@link org.o3project.odenos.core.util.PathCalculator#addLink(Link)}
    * .
    *
    * @throws Exception throws Exception in targets
@@ -234,7 +234,7 @@ public class PathCalculatorTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.util.PathCalculator#addLink(org.o3project.odenos.component.network.topology.TopologyObject.LinkMessage)}
+   * {@link org.o3project.odenos.core.util.PathCalculator#addLink(Link)}
    * .
    */
   @Test
@@ -267,7 +267,7 @@ public class PathCalculatorTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.util.PathCalculator#addLink(org.o3project.odenos.component.network.topology.TopologyObject.LinkMessage)}
+   * {@link org.o3project.odenos.core.util.PathCalculator#addLink(Link)}
    * .
    */
   @Test
@@ -300,7 +300,7 @@ public class PathCalculatorTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.util.PathCalculator#delLink(org.o3project.odenos.component.network.topology.TopologyObject.Link)}
+   * {@link org.o3project.odenos.core.util.PathCalculator#delLink(Link)}
    * .
    */
 
@@ -324,7 +324,7 @@ public class PathCalculatorTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.util.PathCalculator#delLink(org.o3project.odenos.component.network.topology.TopologyObject.Link)}
+   * {@link org.o3project.odenos.core.util.PathCalculator#delLink(Link)}
    * .
    */
   @Test
@@ -344,7 +344,7 @@ public class PathCalculatorTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.util.PathCalculator#delLink(org.o3project.odenos.component.network.topology.TopologyObject.Link)}
+   * {@link org.o3project.odenos.core.util.PathCalculator#delLink(Link)}
    * .
    */
   @Test
@@ -460,7 +460,7 @@ public class PathCalculatorTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.util.PathCalculator#getInNode(org.o3project.odenos.core.component.network.flow.FlowObject.BasicFlowMessage)}
+   * {@link org.o3project.odenos.core.util.PathCalculator#getInNode(BasicFlow)}
    * .
    */
   @SuppressWarnings({ "static-access" })
@@ -490,7 +490,7 @@ public class PathCalculatorTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.util.PathCalculator#getInNode(org.o3project.odenos.core.component.network.flow.FlowObject.BasicFlowMessage)}
+   * {@link org.o3project.odenos.core.util.PathCalculator#getInNode(BasicFlow)}
    * .
    */
 
@@ -507,7 +507,7 @@ public class PathCalculatorTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.util.PathCalculator#getInNode(org.o3project.odenos.core.component.network.flow.FlowObject.BasicFlowMessage)}
+   * {@link org.o3project.odenos.core.util.PathCalculator#getInNode(BasicFlow)}
    * .
    */
   @SuppressWarnings("static-access")
@@ -596,7 +596,7 @@ public class PathCalculatorTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.util.PathCalculator#getInNode(org.o3project.odenos.core.component.network.flow.FlowObject.BasicFlowMessage)}
+   * {@link org.o3project.odenos.core.util.PathCalculator#getInNode(BasicFlow)}
    * .
    */
   @SuppressWarnings("static-access")

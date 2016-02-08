@@ -63,7 +63,7 @@ public class NodeQueryTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.topology.NodeQuery#NodeQuery()}
+   * {@link org.o3project.odenos.core.component.network.topology.NodeQuery#NodeQuery(String)}
    * .
    */
   @Test
@@ -75,7 +75,7 @@ public class NodeQueryTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.topology.NodeQuery#NodeQuery()}
+   * {@link org.o3project.odenos.core.component.network.topology.NodeQuery#NodeQuery(String)}
    * .
    */
   @Test

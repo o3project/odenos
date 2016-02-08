@@ -101,7 +101,7 @@ public class LinkChangedTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.topology.LinkChanged#LinkChanged(org.o3project.odenos.core.component.network.topology.Link, org.o3project.odenos.core.component.network.topology.Link, org.o3project.odenos.component.network.topology.Action)}
+   * {@link org.o3project.odenos.core.component.network.topology.LinkChanged#LinkChanged(org.o3project.odenos.core.component.network.topology.Link, org.o3project.odenos.core.component.network.topology.Link, Action)}
    * .
    */
   @Test
@@ -126,7 +126,7 @@ public class LinkChangedTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.topology.LinkChanged#LinkChanged(org.o3project.odenos.core.component.network.topology.Link, org.o3project.odenos.core.component.network.topology.Link, org.o3project.odenos.component.network.topology.Action)}
+   * {@link org.o3project.odenos.core.component.network.topology.LinkChanged#LinkChanged(org.o3project.odenos.core.component.network.topology.Link, org.o3project.odenos.core.component.network.topology.Link, Action)}
    * .
    */
   @Test
@@ -151,7 +151,7 @@ public class LinkChangedTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.topology.LinkChanged#LinkChanged(org.o3project.odenos.core.component.network.topology.Link, org.o3project.odenos.core.component.network.topology.Link, org.o3project.odenos.component.network.topology.Action)}
+   * {@link org.o3project.odenos.core.component.network.topology.LinkChanged#LinkChanged(org.o3project.odenos.core.component.network.topology.Link, org.o3project.odenos.core.component.network.topology.Link, Action)}
    * .
    */
   @Test
@@ -176,7 +176,7 @@ public class LinkChangedTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.topology.LinkChanged#LinkChanged(org.o3project.odenos.core.component.network.topology.Link, org.o3project.odenos.core.component.network.topology.Link, org.o3project.odenos.component.network.topology.Action)}
+   * {@link org.o3project.odenos.core.component.network.topology.LinkChanged#LinkChanged(org.o3project.odenos.core.component.network.topology.Link, org.o3project.odenos.core.component.network.topology.Link, Action)}
    * .
    */
   @Test

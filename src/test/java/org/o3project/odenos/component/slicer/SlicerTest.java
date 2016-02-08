@@ -1045,7 +1045,7 @@ public class SlicerTest {
   }
 
   /**
-   * Test method for {@link org.o3project.odenos.component.slicer.Slicer#putSliceConditionTablePriority(java.lang.Integer, java.util.List)}.
+   * Test method for {@link org.o3project.odenos.component.slicer.Slicer#putSliceConditionTablePriority(String, java.util.List)}.
    * @throws Exception throws Exception in targets
    */
   @Test
@@ -1128,7 +1128,7 @@ public class SlicerTest {
   }
 
   /**
-   * Test method for {@link org.o3project.odenos.component.slicer.Slicer#putSliceConditionTableConditionId(java.lang.Integer, org.o3project.odenos.component.slicer.BasicSliceCondition)}.
+   * Test method for {@link org.o3project.odenos.component.slicer.Slicer#putSliceConditionTableConditionId(String, String, org.o3project.odenos.component.slicer.BasicSliceCondition)}.
    * @throws Exception throws Exception in targets
    */
   @Test
@@ -1168,7 +1168,7 @@ public class SlicerTest {
   }
 
   /**
-   * Test method for {@link org.o3project.odenos.component.slicer.Slicer#deleteSliceConditionTable(java.lang.Integer)}.
+   * Test method for {@link org.o3project.odenos.component.slicer.Slicer#deleteSliceConditionTable(String)}.
    * @throws Exception throws Exception in targets
    */
   @Test
@@ -1233,7 +1233,7 @@ public class SlicerTest {
   }
 
   /**
-   * Test method for {@link org.o3project.odenos.component.slicer.Slicer#getSliceConditionTablePriority(java.lang.Integer)}.
+   * Test method for {@link org.o3project.odenos.component.slicer.Slicer#getSliceConditionTablePriority(String)}.
    * @throws Exception throws Exception in targets
    */
   @Test
@@ -1352,7 +1352,7 @@ public class SlicerTest {
   }
 
   /**
-   * Test method for {@link org.o3project.odenos.component.slicer.Slicer#doOnConnectionDeleteSliver(org.o3project.odenos.component.networkinterface)}.
+   * Test method for {@link org.o3project.odenos.component.slicer.Slicer#doOnConnectionDeleteSliver(org.o3project.odenos.core.component.NetworkInterface)}.
    * @throws Exception throws Exception in targets
    */
   @Test
@@ -1366,7 +1366,7 @@ public class SlicerTest {
   }
   
   /**
-   * Test method for {@link org.o3project.odenos.component.slicer.Slicer#doOnConnectionDeleteOriginal(org.o3project.odenos.component.networkinterface)}.
+   * Test method for {@link org.o3project.odenos.component.slicer.Slicer#doOnConnectionDeleteOriginal(org.o3project.odenos.core.component.NetworkInterface)}.
    * @throws Exception throws Exception in targets
    */
   @Test
@@ -1382,7 +1382,7 @@ public class SlicerTest {
   }
 
   /**
-   * Test method for {@link org.o3project.odenos.component.slicer.Slicer#reflecteToSliverFromOriginal(org.o3project.odenos.component.networkinterface, org.o3project.odenos.component.networkinterface)}.
+   * Test method for {@link org.o3project.odenos.component.slicer.Slicer#reflecteToSliverFromOriginal(org.o3project.odenos.core.component.NetworkInterface, org.o3project.odenos.core.component.NetworkInterface)}.
    * @throws Exception throws Exception in targets
    */
   @Test

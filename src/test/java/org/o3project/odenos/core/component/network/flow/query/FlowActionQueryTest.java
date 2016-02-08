@@ -211,7 +211,7 @@ public class FlowActionQueryTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.flow.query.FlowActionQuery#matchExactly(org.o3project.odenos.component.network.flow.basic.BasicFlowAction)}
+   * {@link org.o3project.odenos.core.component.network.flow.query.FlowActionQuery#matchExactly(FlowAction)}
    * .
    */
   @Test

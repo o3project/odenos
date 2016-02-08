@@ -96,7 +96,7 @@ public class ComponentTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.Component#Component(java.lang.String, java.lang.String, org.o3project.odenos.remoteobject.messagingclient.MessageDispatcher)}
+   * {@link org.o3project.odenos.core.component.Component#Component(java.lang.String, org.o3project.odenos.remoteobject.messagingclient.MessageDispatcher)}
    * .
    *
    * @throws Exception throws Exception in targets
@@ -134,7 +134,7 @@ public class ComponentTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.Component#Component(java.lang.String, java.lang.String, org.o3project.odenos.remoteobject.messagingclient.MessageDispatcher)}
+   * {@link org.o3project.odenos.core.component.Component#Component(java.lang.String, org.o3project.odenos.remoteobject.messagingclient.MessageDispatcher)}
    * .
    */
   @Test

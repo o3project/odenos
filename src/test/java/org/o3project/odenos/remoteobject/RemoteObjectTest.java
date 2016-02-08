@@ -100,7 +100,7 @@ public class RemoteObjectTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.remoteobject.RemoteObject#RemoteObject(java.lang.String, java.lang.String, org.o3project.odenos.remoteobject.messagingclient.MessageDispatcher)}
+   * {@link org.o3project.odenos.remoteobject.RemoteObject#RemoteObject(java.lang.String, org.o3project.odenos.remoteobject.messagingclient.MessageDispatcher)}
    * .
    */
   @Test
@@ -322,7 +322,7 @@ public class RemoteObjectTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.remoteobject.RemoteObject#addRemoteObject(java.lang.String, java.net.InetSocketAddress)}
+   * {@link org.o3project.odenos.remoteobject.RemoteObject#addRemoteObject(java.lang.String)}
    * .
    *
    * @throws IOException throws IOException in targets
@@ -340,7 +340,7 @@ public class RemoteObjectTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.remoteobject.RemoteObject#addRemoteObject(java.lang.String, java.net.InetSocketAddress)}
+   * {@link org.o3project.odenos.remoteobject.RemoteObject#addRemoteObject(java.lang.String)}
    * .
    *
    * @throws IOException throws IOException in targets
@@ -380,7 +380,7 @@ public class RemoteObjectTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.remoteobject.RemoteObject#requestSync(java.lang.String, org.o3project.odenos.remoteobject.message.Request.Method, java.lang.String, java.lang.Object)}
+   * {@link org.o3project.odenos.remoteobject.RemoteObject#requestSync(java.lang.String, org.o3project.odenos.remoteobject.message.Request.Method, java.lang.String, java.lang.String, java.lang.Object)}
    * .
    *
    * @throws Exception throws Exception in targets
@@ -403,7 +403,7 @@ public class RemoteObjectTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.remoteobject.RemoteObject#requestSync(java.lang.String, org.o3project.odenos.remoteobject.message.Request.Method, java.lang.String, java.lang.Object)}
+   * {@link org.o3project.odenos.remoteobject.RemoteObject#requestSync(java.lang.String, org.o3project.odenos.remoteobject.message.Request.Method, java.lang.String, java.lang.String, java.lang.Object)}
    * .
    *
    * @throws Exception throws Exception in targets
@@ -422,7 +422,7 @@ public class RemoteObjectTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.remoteobject.RemoteObject#request(java.lang.String, org.o3project.odenos.remoteobject.message.Request.Method, java.lang.String, java.lang.Object)}
+   * {@link org.o3project.odenos.remoteobject.RemoteObject#request(java.lang.String, org.o3project.odenos.remoteobject.message.Request.Method, java.lang.String, java.lang.String, java.lang.Object)}
    * .
    *
    * @throws Exception throws Exception in targets
@@ -446,7 +446,7 @@ public class RemoteObjectTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.remoteobject.RemoteObject#request(java.lang.String, org.o3project.odenos.remoteobject.message.Request.Method, java.lang.String, java.lang.Object)}
+   * {@link org.o3project.odenos.remoteobject.RemoteObject#request(java.lang.String, org.o3project.odenos.remoteobject.message.Request.Method, java.lang.String, java.lang.String, java.lang.Object)}
    * .
    *
    * @throws Exception throws Exception in targets
@@ -1237,7 +1237,7 @@ public class RemoteObjectTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.remoteobject.RemoteObject#isFinalize()}.
+   * {@link org.o3project.odenos.remoteobject.RemoteObject#isFinalize(ObjectProperty)}.
    *
    * @throws Exception throws Exception in targets
    */
@@ -1253,7 +1253,7 @@ public class RemoteObjectTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.remoteobject.RemoteObject#isFinalize()}.
+   * {@link org.o3project.odenos.remoteobject.RemoteObject#isFinalize(ObjectProperty)}.
    *
    * @throws Exception throws Exception in targets
    */

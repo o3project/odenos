@@ -112,7 +112,7 @@ public class FlowChangedTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.flow.FlowChanged#FlowChanged(org.o3project.odenos.core.component.network.flow.FlowObject.FlowMessage, org.o3project.odenos.core.component.network.flow.FlowObject.FlowMessage, org.o3project.odenos.core.component.network.flow.FlowChanged.Action)}
+   * {@link org.o3project.odenos.core.component.network.flow.FlowChanged#FlowChanged(Flow, Flow, org.o3project.odenos.core.component.network.flow.FlowChanged.Action)}
    * .
    */
   @Test
@@ -131,7 +131,7 @@ public class FlowChangedTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.flow.FlowChanged#FlowChanged(org.o3project.odenos.core.component.network.flow.FlowObject.FlowMessage, org.o3project.odenos.core.component.network.flow.FlowObject.FlowMessage, org.o3project.odenos.core.component.network.flow.FlowChanged.Action)}
+   * {@link org.o3project.odenos.core.component.network.flow.FlowChanged#FlowChanged(Flow, Flow, org.o3project.odenos.core.component.network.flow.FlowChanged.Action)}
    * .
    */
   @Test
@@ -152,7 +152,7 @@ public class FlowChangedTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.flow.FlowChanged#FlowChanged(org.o3project.odenos.core.component.network.flow.FlowObject.FlowMessage, org.o3project.odenos.core.component.network.flow.FlowObject.FlowMessage, org.o3project.odenos.core.component.network.flow.FlowChanged.Action)}
+   * {@link org.o3project.odenos.core.component.network.flow.FlowChanged#FlowChanged(Flow, Flow, org.o3project.odenos.core.component.network.flow.FlowChanged.Action)}
    * .
    */
   @Test
@@ -170,7 +170,7 @@ public class FlowChangedTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.flow.FlowChanged#FlowChanged(org.o3project.odenos.core.component.network.flow.FlowObject.FlowMessage, org.o3project.odenos.core.component.network.flow.FlowObject.FlowMessage, org.o3project.odenos.core.component.network.flow.FlowChanged.Action)}
+   * {@link org.o3project.odenos.core.component.network.flow.FlowChanged#FlowChanged(Flow, Flow, org.o3project.odenos.core.component.network.flow.FlowChanged.Action)}
    * .
    */
   @Test
@@ -188,7 +188,7 @@ public class FlowChangedTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.flow.FlowChanged#FlowChanged(org.o3project.odenos.core.component.network.flow.FlowObject.FlowMessage, org.o3project.odenos.core.component.network.flow.FlowObject.FlowMessage, org.o3project.odenos.core.component.network.flow.FlowChanged.Action)}
+   * {@link org.o3project.odenos.core.component.network.flow.FlowChanged#FlowChanged(Flow, Flow, org.o3project.odenos.core.component.network.flow.FlowChanged.Action)}
    * .
    */
   @Test
@@ -205,7 +205,7 @@ public class FlowChangedTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.flow.FlowChanged#FlowChanged(org.o3project.odenos.core.component.network.flow.FlowObject.FlowMessage, org.o3project.odenos.core.component.network.flow.FlowObject.FlowMessage, org.o3project.odenos.core.component.network.flow.FlowChanged.Action)}
+   * {@link org.o3project.odenos.core.component.network.flow.FlowChanged#FlowChanged(Flow, Flow, org.o3project.odenos.core.component.network.flow.FlowChanged.Action)}
    * .
    */
   @Test
@@ -222,7 +222,7 @@ public class FlowChangedTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.flow.FlowChanged#FlowChanged(org.o3project.odenos.core.component.network.flow.FlowObject.FlowMessage, org.o3project.odenos.core.component.network.flow.FlowObject.FlowMessage, org.o3project.odenos.core.component.network.flow.FlowChanged.Action)}
+   * {@link org.o3project.odenos.core.component.network.flow.FlowChanged#FlowChanged(Flow, Flow, org.o3project.odenos.core.component.network.flow.FlowChanged.Action)}
    * .
    */
   @Test
@@ -236,7 +236,7 @@ public class FlowChangedTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.flow.FlowChanged#FlowChanged(org.o3project.odenos.core.component.network.flow.FlowObject.FlowMessage, org.o3project.odenos.core.component.network.flow.FlowObject.FlowMessage, org.o3project.odenos.core.component.network.flow.FlowChanged.Action)}
+   * {@link org.o3project.odenos.core.component.network.flow.FlowChanged#FlowChanged(Flow, Flow, org.o3project.odenos.core.component.network.flow.FlowChanged.Action)}
    * .
    */
   @Test
@@ -250,7 +250,7 @@ public class FlowChangedTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.flow.FlowChanged#FlowChanged(org.o3project.odenos.core.component.network.flow.FlowObject.FlowMessage, org.o3project.odenos.core.component.network.flow.FlowObject.FlowMessage, org.o3project.odenos.core.component.network.flow.FlowChanged.Action)}
+   * {@link org.o3project.odenos.core.component.network.flow.FlowChanged#FlowChanged(Flow, Flow, org.o3project.odenos.core.component.network.flow.FlowChanged.Action)}
    * .
    */
   @Test
@@ -264,7 +264,7 @@ public class FlowChangedTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.flow.FlowChanged#readFrom(org.msgpack.packer.Packer)}
+   * {@link org.o3project.odenos.core.component.network.flow.FlowChanged#readFrom(Unpacker)}
    * .
    */
   @Test
@@ -313,7 +313,7 @@ public class FlowChangedTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.flow.FlowChanged#readFrom(org.msgpack.packer.Packer)}
+   * {@link org.o3project.odenos.core.component.network.flow.FlowChanged#readFrom(Unpacker)}
    * .
    */
   @Test
@@ -364,7 +364,7 @@ public class FlowChangedTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.flow.FlowChanged#readFrom(org.msgpack.packer.Packer)}
+   * {@link org.o3project.odenos.core.component.network.flow.FlowChanged#readFrom(Unpacker)}
    * .
    */
   @Test
@@ -415,7 +415,7 @@ public class FlowChangedTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.flow.FlowChanged#readFrom(org.msgpack.packer.Packer)}
+   * {@link org.o3project.odenos.core.component.network.flow.FlowChanged#readFrom(Unpacker)}
    * .
    */
   @Test
@@ -465,7 +465,7 @@ public class FlowChangedTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.flow.FlowChanged#readFrom(org.msgpack.packer.Packer)}
+   * {@link org.o3project.odenos.core.component.network.flow.FlowChanged#readFrom(Unpacker)}
    * .
    */
   @Test
@@ -511,7 +511,7 @@ public class FlowChangedTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.flow.FlowChanged#readFrom(org.msgpack.packer.Packer)}
+   * {@link org.o3project.odenos.core.component.network.flow.FlowChanged#readFrom(Unpacker)}
    * .
    */
   @Test
@@ -557,7 +557,7 @@ public class FlowChangedTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.flow.FlowChanged#readFrom(org.msgpack.packer.Packer)}
+   * {@link org.o3project.odenos.core.component.network.flow.FlowChanged#readFrom(Unpacker)}
    * .
    */
   @Test

@@ -246,7 +246,7 @@ public class DummyDriverTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.DummyDriver#onFlowAdded(java.lang.String, org.o3project.odenos.core.component.network.flow.FlowObject.FlowMessage)}
+   * {@link org.o3project.odenos.core.component.DummyDriver#onFlowAdded(java.lang.String, Flow)}
    * .
    */
   @Test
@@ -273,7 +273,7 @@ public class DummyDriverTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.DummyDriver#onFlowUpdate(java.lang.String, org.o3project.odenos.core.component.network.flow.FlowObject.FlowMessage, org.o3project.odenos.core.component.network.flow.FlowObject.FlowMessage, java.util.ArrayList)}
+   * {@link org.o3project.odenos.core.component.DummyDriver#onFlowUpdate(java.lang.String, Flow, Flow, java.util.ArrayList)}
    * .
    */
   @Test

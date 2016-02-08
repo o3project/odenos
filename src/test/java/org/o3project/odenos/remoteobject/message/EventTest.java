@@ -80,7 +80,7 @@ public class EventTest {
   }
 
   /**
-   * Test method for {@link org.o3project.odenos.remoteobject.message.Event#Event(java.lang.String, java.lang.String, java.lang.Object)}.
+   * Test method for {@link org.o3project.odenos.remoteobject.message.Event#Event(java.lang.String, java.lang.String, java.lang.String, java.lang.Object)}.
    */
   @Test
   public final void testEventStringStringObject() {
@@ -164,7 +164,7 @@ public class EventTest {
   }
 
   /**
-   * Test method for {@link org.o3project.odenos.remoteobject.message.Event#setEventType()}.
+   * Test method for {@link org.o3project.odenos.remoteobject.message.Event#setEventType(String)}.
    */
   @Test
   public final void testSetEventType() {
@@ -304,7 +304,7 @@ public class EventTest {
   }
 
   /**
-   * Test method for {@link org.o3project.odenos.remoteobject.message.Event#equals(org.o3project.odenos.remoteobject.message.Event)}.
+   * Test method for {@link org.o3project.odenos.remoteobject.message.Event#equals(Object)}.
    */
   @Test
   public final void testHashCodeFalse() {
@@ -341,7 +341,7 @@ public class EventTest {
   }
 
   /**
-   * Test method for {@link org.o3project.odenos.remoteobject.message.Event#equals(org.o3project.odenos.remoteobject.message.Event)}.
+   * Test method for {@link org.o3project.odenos.remoteobject.message.Event#equals(Object)}.
    */
   @Test
   public final void testEqualsEventTrue() {

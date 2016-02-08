@@ -648,7 +648,7 @@ public class PacketObjectTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.packet.PacketObject#createInPacket(org.msgpack.type.Packet)}
+   * {@link org.o3project.odenos.core.component.network.packet.PacketObject#createInPacket(Packet)}
    * .
    */
   @Test
@@ -670,7 +670,7 @@ public class PacketObjectTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.packet.PacketObject#createInPacket(org.msgpack.type.Packet)}
+   * {@link org.o3project.odenos.core.component.network.packet.PacketObject#createInPacket(Packet)}
    * .
    */
   @Test
@@ -692,7 +692,7 @@ public class PacketObjectTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.packet.PacketObject#createInPacket(org.msgpack.type.Packet)}
+   * {@link org.o3project.odenos.core.component.network.packet.PacketObject#createInPacket(Packet)}
    * .
    */
   @Test
@@ -714,7 +714,7 @@ public class PacketObjectTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.packet.PacketObject#createOutPacket(org.msgpack.type.Packet)}
+   * {@link org.o3project.odenos.core.component.network.packet.PacketObject#createOutPacket(Packet)}
    * .
    */
   @Test
@@ -737,7 +737,7 @@ public class PacketObjectTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.packet.PacketObject#createOutPacket(org.msgpack.type.Packet)}
+   * {@link org.o3project.odenos.core.component.network.packet.PacketObject#createOutPacket(Packet)}
    * .
    */
   @Test
@@ -760,7 +760,7 @@ public class PacketObjectTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.packet.PacketObject#createOutPacket(org.msgpack.type.Packet)}
+   * {@link org.o3project.odenos.core.component.network.packet.PacketObject#createOutPacket(Packet)}
    * .
    */
   @Test

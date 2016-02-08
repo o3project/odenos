@@ -63,7 +63,7 @@ public class PortQueryTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.topology.PortQuery#PortQuery()}
+   * {@link org.o3project.odenos.core.component.network.topology.PortQuery#PortQuery(String)}
    * .
    */
   @Test
@@ -75,7 +75,7 @@ public class PortQueryTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.topology.PortQuery#PortQuery()}
+   * {@link org.o3project.odenos.core.component.network.topology.PortQuery#PortQuery(String)}
    * .
    */
   @Test

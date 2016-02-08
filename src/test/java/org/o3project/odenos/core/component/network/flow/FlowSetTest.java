@@ -958,7 +958,7 @@ public class FlowSetTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.flow.FlowSet#getFlowMessages(org.o3project.odenos.component.network.flow.FlowQuery)}
+   * {@link org.o3project.odenos.core.component.network.flow.FlowSet#getFlowMessages(org.o3project.odenos.core.component.network.flow.query.FlowQuery)}
    * .
    */
   @Test
@@ -993,7 +993,7 @@ public class FlowSetTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.flow.FlowSet#getFlowMessages(org.o3project.odenos.component.network.flow.FlowQuery)}
+   * {@link org.o3project.odenos.core.component.network.flow.FlowSet#getFlowMessages(org.o3project.odenos.core.component.network.flow.query.FlowQuery)}
    * .
    */
   @Test

@@ -97,7 +97,7 @@ public class RequestTest {
   }
 
   /**
-   * Test method for {@link org.o3project.odenos.remoteobject.message.Request#Request(java.lang.String, org.o3project.odenos.remoteobject.message.Request.Method, java.lang.String, java.lang.Object)}.
+   * Test method for {@link org.o3project.odenos.remoteobject.message.Request#Request(java.lang.String, org.o3project.odenos.remoteobject.message.Request.Method, java.lang.String, java.lang.String, java.lang.Object)}.
    */
   @SuppressWarnings("deprecation")
   @Test

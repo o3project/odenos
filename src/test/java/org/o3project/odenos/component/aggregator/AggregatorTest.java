@@ -1073,7 +1073,7 @@ public class AggregatorTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.component.aggregator.Aggregator#onNodeAdded(java.lang.String, org.o3project.odenos.component.network.topology.TopologyObject.NodeMessage)}
+   * {@link org.o3project.odenos.component.aggregator.Aggregator#onNodeAdded(java.lang.String, Node)}
    * .
    */
   @Test
@@ -1113,7 +1113,7 @@ public class AggregatorTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.component.aggregator.Aggregator#onNodeAdded(java.lang.String, org.o3project.odenos.component.network.topology.TopologyObject.NodeMessage)}
+   * {@link org.o3project.odenos.component.aggregator.Aggregator#onNodeAdded(java.lang.String, Node)}
    * .
    */
   @Test
@@ -1137,7 +1137,7 @@ public class AggregatorTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.component.aggregator.Aggregator#onNodeAdded(java.lang.String, org.o3project.odenos.component.network.topology.TopologyObject.NodeMessage)}
+   * {@link org.o3project.odenos.component.aggregator.Aggregator#onNodeAdded(java.lang.String, Node)}
    * .
    */
   @Test
@@ -1163,7 +1163,7 @@ public class AggregatorTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.component.aggregator.Aggregator#onNodeAdded(java.lang.String, org.o3project.odenos.component.network.topology.TopologyObject.NodeMessage)}
+   * {@link org.o3project.odenos.component.aggregator.Aggregator#onNodeAdded(java.lang.String, Node)}
    * .
    */
   @Test
@@ -1194,7 +1194,7 @@ public class AggregatorTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.component.aggregator.Aggregator#onNodeUpdatePre(java.lang.String, org.o3project.odenos.component.network.topology.TopologyObject.NodeMessage, org.o3project.odenos.component.network.topology.TopologyObject.NodeMessage, java.util.ArrayList)}
+   * {@link org.o3project.odenos.component.aggregator.Aggregator#onNodeUpdatePre(java.lang.String, Node, Node, java.util.ArrayList)}
    * .
    */
   @Test
@@ -1224,7 +1224,7 @@ public class AggregatorTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.component.aggregator.Aggregator#onNodeUpdatePre(java.lang.String, org.o3project.odenos.component.network.topology.TopologyObject.NodeMessage, org.o3project.odenos.component.network.topology.TopologyObject.NodeMessage, java.util.ArrayList)}
+   * {@link org.o3project.odenos.component.aggregator.Aggregator#onNodeUpdatePre(java.lang.String, Node, Node, java.util.ArrayList)}
    * .
    */
   @Test
@@ -1253,7 +1253,7 @@ public class AggregatorTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.component.aggregator.Aggregator#onNodeDeletePre(java.lang.String, org.o3project.odenos.component.network.topology.TopologyObject.NodeMessage)}
+   * {@link org.o3project.odenos.component.aggregator.Aggregator#onNodeDeletePre(java.lang.String, Node)}
    * .
    */
   @Test
@@ -1286,7 +1286,7 @@ public class AggregatorTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.component.aggregator.Aggregator#onNodeDeletePre(java.lang.String, org.o3project.odenos.component.network.topology.TopologyObject.NodeMessage)}
+   * {@link org.o3project.odenos.component.aggregator.Aggregator#onNodeDeletePre(java.lang.String, Node)}
    * .
    */
   @Test
@@ -1307,7 +1307,7 @@ public class AggregatorTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.component.aggregator.Aggregator#onNodeDeletePre(java.lang.String, org.o3project.odenos.component.network.topology.TopologyObject.NodeMessage)}
+   * {@link org.o3project.odenos.component.aggregator.Aggregator#onNodeDeletePre(java.lang.String, Node)}
    * .
    */
   @Test
@@ -1331,7 +1331,7 @@ public class AggregatorTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.component.aggregator.Aggregator#onNodeDeletePre(java.lang.String, org.o3project.odenos.component.network.topology.TopologyObject.NodeMessage)}
+   * {@link org.o3project.odenos.component.aggregator.Aggregator#onNodeDeletePre(java.lang.String, Node)}
    * .
    */
   @Test
@@ -1532,7 +1532,7 @@ public class AggregatorTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.component.aggregator.Aggregator#onLinkAdded(java.lang.String, org.o3project.odenos.component.network.topology.TopologyObject.LinkMessage)}
+   * {@link org.o3project.odenos.component.aggregator.Aggregator#onLinkAdded(java.lang.String, Link)}
    * .
    */
   @Test
@@ -1566,7 +1566,7 @@ public class AggregatorTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.component.aggregator.Aggregator#onLinkAdded(java.lang.String, org.o3project.odenos.component.network.topology.TopologyObject.LinkMessage)}
+   * {@link org.o3project.odenos.component.aggregator.Aggregator#onLinkAdded(java.lang.String, Link)}
    * .
    */
   @Test
@@ -1591,7 +1591,7 @@ public class AggregatorTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.component.aggregator.Aggregator#onLinkAdded(java.lang.String, org.o3project.odenos.component.network.topology.TopologyObject.LinkMessage)}
+   * {@link org.o3project.odenos.component.aggregator.Aggregator#onLinkAdded(java.lang.String, Link)}
    * .
    */
   @Test
@@ -1616,7 +1616,7 @@ public class AggregatorTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.component.aggregator.Aggregator#onLinkAdded(java.lang.String, org.o3project.odenos.component.network.topology.TopologyObject.LinkMessage)}
+   * {@link org.o3project.odenos.component.aggregator.Aggregator#onLinkAdded(java.lang.String, Link)}
    * .
    */
   @Test
@@ -1654,7 +1654,7 @@ public class AggregatorTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.component.aggregator.Aggregator#onLinkUpdate(java.lang.String, org.o3project.odenos.component.network.topology.TopologyObject.LinkMessage, org.o3project.odenos.component.network.topology.TopologyObject.LinkMessage, java.util.ArrayList)}
+   * {@link org.o3project.odenos.component.aggregator.Aggregator#onLinkUpdate(java.lang.String, Link, Link, java.util.ArrayList)}
    * .
    */
   @SuppressWarnings({ "rawtypes", "unchecked" })
@@ -1726,7 +1726,7 @@ public class AggregatorTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.component.aggregator.Aggregator#onLinkUpdate(java.lang.String, org.o3project.odenos.component.network.topology.TopologyObject.LinkMessage, org.o3project.odenos.component.network.topology.TopologyObject.LinkMessage, java.util.ArrayList)}
+   * {@link org.o3project.odenos.component.aggregator.Aggregator#onLinkUpdate(java.lang.String, Link, Link, java.util.ArrayList)}
    * .
    */
   @Test
@@ -1764,7 +1764,7 @@ public class AggregatorTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.component.aggregator.Aggregator#onLinkUpdate(java.lang.String, org.o3project.odenos.component.network.topology.TopologyObject.LinkMessage, org.o3project.odenos.component.network.topology.TopologyObject.LinkMessage, java.util.ArrayList)}
+   * {@link org.o3project.odenos.component.aggregator.Aggregator#onLinkUpdate(java.lang.String, Link, Link, java.util.ArrayList)}
    * .
    */
   @Test
@@ -1804,7 +1804,7 @@ public class AggregatorTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.component.aggregator.Aggregator#onLinkUpdate(java.lang.String, org.o3project.odenos.component.network.topology.TopologyObject.LinkMessage, org.o3project.odenos.component.network.topology.TopologyObject.LinkMessage, java.util.ArrayList)}
+   * {@link org.o3project.odenos.component.aggregator.Aggregator#onLinkUpdate(java.lang.String, Link, Link, java.util.ArrayList)}
    * .
    */
   @Test
@@ -1847,7 +1847,7 @@ public class AggregatorTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.component.aggregator.Aggregator#onLinkUpdate(java.lang.String, org.o3project.odenos.component.network.topology.TopologyObject.LinkMessage, org.o3project.odenos.component.network.topology.TopologyObject.LinkMessage, java.util.ArrayList)}
+   * {@link org.o3project.odenos.component.aggregator.Aggregator#onLinkUpdate(java.lang.String, Link, Link, java.util.ArrayList)}
    * .
    */
   @Test
@@ -1891,7 +1891,7 @@ public class AggregatorTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.component.aggregator.Aggregator#onLinkDelete(java.lang.String, org.o3project.odenos.component.network.topology.TopologyObject.LinkMessage)}
+   * {@link org.o3project.odenos.component.aggregator.Aggregator#onLinkDelete(java.lang.String, Link)}
    * .
    */
   @Test
@@ -1949,7 +1949,7 @@ public class AggregatorTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.component.aggregator.Aggregator#onLinkDelete(java.lang.String, org.o3project.odenos.component.network.topology.TopologyObject.LinkMessage)}
+   * {@link org.o3project.odenos.component.aggregator.Aggregator#onLinkDelete(java.lang.String, Link)}
    * .
    */
   @Test
@@ -1977,7 +1977,7 @@ public class AggregatorTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.component.aggregator.Aggregator#onLinkDelete(java.lang.String, org.o3project.odenos.component.network.topology.TopologyObject.LinkMessage)}
+   * {@link org.o3project.odenos.component.aggregator.Aggregator#onLinkDelete(java.lang.String, Link)}
    * .
    */
   @Test
@@ -2009,7 +2009,7 @@ public class AggregatorTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.component.aggregator.Aggregator#onLinkDelete(java.lang.String, org.o3project.odenos.component.network.topology.TopologyObject.LinkMessage)}
+   * {@link org.o3project.odenos.component.aggregator.Aggregator#onLinkDelete(java.lang.String, Link)}
    * .
    */
   @Test

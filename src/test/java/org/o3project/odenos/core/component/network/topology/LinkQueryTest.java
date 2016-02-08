@@ -63,7 +63,7 @@ public class LinkQueryTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.topology.LinkQuery#LinkQuery()}
+   * {@link org.o3project.odenos.core.component.network.topology.LinkQuery#LinkQuery(String)}
    * .
    */
   @Test
@@ -75,7 +75,7 @@ public class LinkQueryTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.topology.LinkQuery#LinkQuery()}
+   * {@link org.o3project.odenos.core.component.network.topology.LinkQuery#LinkQuery(String)}
    * .
    */
   @Test

@@ -78,7 +78,7 @@ public class ObjectPropertyListTest {
    * {@link org.o3project.odenos.remoteobject.manager.ObjectPropertyList#writeTo(org.msgpack.packer.Packer)}
    * .
    *
-   * @IOException
+   * @throws IOException throws IOException in targets
    */
   @Test
   public final void testWriteTo() throws IOException {
@@ -284,7 +284,7 @@ public class ObjectPropertyListTest {
    * {@link org.o3project.odenos.remoteobject.manager.ObjectPropertyList#readFrom(org.msgpack.unpacker.Unpacker)}
    * .
    *
-   * @IOException
+   * @throws IOException throws IOException in targets
    */
   @Test
   public final void testReadFrom() throws IOException {

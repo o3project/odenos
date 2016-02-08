@@ -431,7 +431,7 @@ public class OFPFlowQueryTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.flow.query.OFPFlowQuery#matchExactly(org.o3project.odenos.component.network.BaseObject)}
+   * {@link org.o3project.odenos.core.component.network.flow.query.OFPFlowQuery#matchExactly(org.o3project.odenos.remoteobject.message.BaseObject)}
    * .
    */
   @Test
@@ -487,7 +487,7 @@ public class OFPFlowQueryTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.flow.query.OFPFlowQuery#matchExactly(org.o3project.odenos.component.network.BaseObject)}
+   * {@link org.o3project.odenos.core.component.network.flow.query.OFPFlowQuery#matchExactly(org.o3project.odenos.remoteobject.message.BaseObject)}
    * .
    */
   @Test
@@ -516,7 +516,7 @@ public class OFPFlowQueryTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.flow.query.OFPFlowQuery#matchExactly(org.o3project.odenos.component.network.BaseObject)}
+   * {@link org.o3project.odenos.core.component.network.flow.query.OFPFlowQuery#matchExactly(org.o3project.odenos.remoteobject.message.BaseObject)}
    * .
    */
   @Test
@@ -570,7 +570,7 @@ public class OFPFlowQueryTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.flow.query.OFPFlowQuery#matchExactly(org.o3project.odenos.component.network.BaseObject)}
+   * {@link org.o3project.odenos.core.component.network.flow.query.OFPFlowQuery#matchExactly(org.o3project.odenos.remoteobject.message.BaseObject)}
    * .
    */
   @Test
@@ -621,7 +621,7 @@ public class OFPFlowQueryTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.flow.query.OFPFlowQuery#matchExactly(org.o3project.odenos.component.network.BaseObject)}
+   * {@link org.o3project.odenos.core.component.network.flow.query.OFPFlowQuery#matchExactly(org.o3project.odenos.remoteobject.message.BaseObject)}
    * .
    */
   @Test
@@ -672,7 +672,7 @@ public class OFPFlowQueryTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.flow.query.OFPFlowQuery#matchExactly(org.o3project.odenos.component.network.BaseObject)}
+   * {@link org.o3project.odenos.core.component.network.flow.query.OFPFlowQuery#matchExactly(org.o3project.odenos.remoteobject.message.BaseObject)}
    * .
    */
   @Test
@@ -729,7 +729,7 @@ public class OFPFlowQueryTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.flow.query.OFPFlowQuery#matchExactly(org.o3project.odenos.component.network.BaseObject)}
+   * {@link org.o3project.odenos.core.component.network.flow.query.OFPFlowQuery#matchExactly(org.o3project.odenos.remoteobject.message.BaseObject)}
    * .
    */
   @Test
@@ -778,7 +778,7 @@ public class OFPFlowQueryTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.flow.query.OFPFlowQuery#matchExactly(org.o3project.odenos.component.network.BaseObject)}
+   * {@link org.o3project.odenos.core.component.network.flow.query.OFPFlowQuery#matchExactly(org.o3project.odenos.remoteobject.message.BaseObject)}
    * .
    */
   @Test
@@ -834,7 +834,7 @@ public class OFPFlowQueryTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.flow.query.OFPFlowQuery#matchExactly(org.o3project.odenos.component.network.BaseObject)}
+   * {@link org.o3project.odenos.core.component.network.flow.query.OFPFlowQuery#matchExactly(org.o3project.odenos.remoteobject.message.BaseObject)}
    * .
    */
   @Test
@@ -893,7 +893,7 @@ public class OFPFlowQueryTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.flow.query.OFPFlowQuery#matchExactly(org.o3project.odenos.component.network.BaseObject)}
+   * {@link org.o3project.odenos.core.component.network.flow.query.OFPFlowQuery#matchExactly(org.o3project.odenos.remoteobject.message.BaseObject)}
    * .
    */
   @Test
@@ -956,7 +956,7 @@ public class OFPFlowQueryTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.flow.query.OFPFlowQuery#matchExactly(org.o3project.odenos.component.network.BaseObject)}
+   * {@link org.o3project.odenos.core.component.network.flow.query.OFPFlowQuery#matchExactly(org.o3project.odenos.remoteobject.message.BaseObject)}
    * .
    */
   @Test
@@ -1019,7 +1019,7 @@ public class OFPFlowQueryTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.flow.query.OFPFlowQuery#matchExactly(org.o3project.odenos.component.network.BaseObject)}
+   * {@link org.o3project.odenos.core.component.network.flow.query.OFPFlowQuery#matchExactly(org.o3project.odenos.remoteobject.message.BaseObject)}
    * .
    */
   @Test
@@ -1081,7 +1081,7 @@ public class OFPFlowQueryTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.flow.query.OFPFlowQuery#matchExactly(org.o3project.odenos.component.network.BaseObject)}
+   * {@link org.o3project.odenos.core.component.network.flow.query.OFPFlowQuery#matchExactly(org.o3project.odenos.remoteobject.message.BaseObject)}
    * .
    */
   @Test
@@ -1130,7 +1130,7 @@ public class OFPFlowQueryTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.flow.query.OFPFlowQuery#matchExactly(org.o3project.odenos.component.network.BaseObject)}
+   * {@link org.o3project.odenos.core.component.network.flow.query.OFPFlowQuery#matchExactly(org.o3project.odenos.remoteobject.message.BaseObject)}
    * .
    */
   @Test

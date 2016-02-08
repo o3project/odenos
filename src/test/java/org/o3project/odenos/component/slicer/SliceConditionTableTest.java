@@ -136,7 +136,7 @@ public class SliceConditionTableTest {
   }
 
   /**
-   * Test method for {@link org.o3project.odenos.component.slicer.SliceConditionTable#getConditionIdList(java.lang.Integer)}.
+   * Test method for {@link org.o3project.odenos.component.slicer.SliceConditionTable#getConditionIdList(String)}.
    */
   @Test
   public void testGetConditionIdList() {
@@ -260,7 +260,7 @@ public class SliceConditionTableTest {
   }
 
   /**
-   * Test method for {@link org.o3project.odenos.component.slicer.SliceConditionTable#addEntryToPriorityTable(java.lang.Integer)}.
+   * Test method for {@link org.o3project.odenos.component.slicer.SliceConditionTable#addEntryToPriorityTable(String)}.
    */
   @Test
   public void testAddEntryToPriorityTable_NonExist() {
@@ -281,7 +281,7 @@ public class SliceConditionTableTest {
   }
 
   /**
-   * Test method for {@link org.o3project.odenos.component.slicer.SliceConditionTable#addEntryToPriorityTable(java.lang.Integer)}.
+   * Test method for {@link org.o3project.odenos.component.slicer.SliceConditionTable#addEntryToPriorityTable(String)}.
    */
   @Test
   public void testAddEntryToPriorityTable_Exist() {
@@ -387,7 +387,7 @@ public class SliceConditionTableTest {
   }
 
   /**
-   * Test method for {@link org.o3project.odenos.component.slicer.SliceConditionTable#addEntryToSliceCondition(java.lang.Integer, org.o3project.odenos.component.slicer.SliceCondition)}.
+   * Test method for {@link org.o3project.odenos.component.slicer.SliceConditionTable#addEntryToSliceCondition(String, org.o3project.odenos.component.slicer.SliceCondition)}.
    * @throws Exception throws Exception in targets
    */
   @Test
@@ -485,7 +485,7 @@ public class SliceConditionTableTest {
   }
 
   /**
-   * Test method for {@link org.o3project.odenos.component.slicer.SliceConditionTable#deleteSliceConditionTable(java.lang.Integer)}.
+   * Test method for {@link org.o3project.odenos.component.slicer.SliceConditionTable#deleteSliceConditionTable(String)}.
    * @throws Exception throws Exception in targets
    */
   @Test

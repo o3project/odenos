@@ -272,7 +272,7 @@ public class PortTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.topology.Port#readFrom(org.msgpack.packer.Packer)}
+   * {@link org.o3project.odenos.core.component.network.topology.Port#readFrom(Unpacker)}
    * .
    */
   @Test
@@ -324,7 +324,7 @@ public class PortTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.topology.Port#readFrom(org.msgpack.packer.Packer)}
+   * {@link org.o3project.odenos.core.component.network.topology.Port#readFrom(Unpacker)}
    * .
    */
   @Test
@@ -378,7 +378,7 @@ public class PortTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.topology.Port#readFrom(org.msgpack.packer.Packer)}
+   * {@link org.o3project.odenos.core.component.network.topology.Port#readFrom(Unpacker)}
    * .
    */
   @Test
@@ -427,7 +427,7 @@ public class PortTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.topology.Port#readFrom(org.msgpack.packer.Packer)}
+   * {@link org.o3project.odenos.core.component.network.topology.Port#readFrom(Unpacker)}
    * .
    */
   @Test
@@ -476,7 +476,7 @@ public class PortTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.topology.Port#readFrom(org.msgpack.packer.Packer)}
+   * {@link org.o3project.odenos.core.component.network.topology.Port#readFrom(Unpacker)}
    * .
    */
   @Test
@@ -530,7 +530,7 @@ public class PortTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.topology.Port#readFrom(org.msgpack.packer.Packer)}
+   * {@link org.o3project.odenos.core.component.network.topology.Port#readFrom(Unpacker)}
    * .
    */
   @Test
@@ -584,7 +584,7 @@ public class PortTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.topology.Port#readFrom(org.msgpack.packer.Packer)}
+   * {@link org.o3project.odenos.core.component.network.topology.Port#readFrom(Unpacker)}
    * .
    */
   @Test
@@ -638,7 +638,7 @@ public class PortTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.topology.Port#writeTo(org.msgpack.unpacker.Unpacker)}
+   * {@link org.o3project.odenos.core.component.network.topology.Port#writeTo(Packer)}
    * .
    */
   @Test
@@ -676,7 +676,7 @@ public class PortTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.topology.Port#writeTo(org.msgpack.unpacker.Unpacker)}
+   * {@link org.o3project.odenos.core.component.network.topology.Port#writeTo(Packer)}
    * .
    */
   @Test
@@ -714,7 +714,7 @@ public class PortTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.topology.Port#writeTo(org.msgpack.unpacker.Unpacker)}
+   * {@link org.o3project.odenos.core.component.network.topology.Port#writeTo(Packer)}
    * .
    */
   @Test

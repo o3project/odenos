@@ -967,7 +967,7 @@ public class LogicTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.Logic#onNodeAdded(java.lang.String, org.o3project.odenos.component.network.topology.TopologyObject.Node)}
+   * {@link org.o3project.odenos.core.component.Logic#onNodeAdded(java.lang.String, Node)}
    * .
    */
   @Test
@@ -996,7 +996,7 @@ public class LogicTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.Logic#onNodeAddedPre(java.lang.String, org.o3project.odenos.component.network.topology.TopologyObject.Node)}
+   * {@link org.o3project.odenos.core.component.Logic#onNodeAddedPre(java.lang.String, Node)}
    * .
    */
   @Test
@@ -1021,7 +1021,7 @@ public class LogicTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.Logic#onNodeAddedPost(java.lang.String, org.o3project.odenos.component.network.topology.TopologyObject.Node, java.util.HashMap)}
+   * {@link org.o3project.odenos.core.component.Logic#onNodeAddedPost(java.lang.String, Node, java.util.HashMap)}
    * .
    */
   @Test
@@ -1048,7 +1048,7 @@ public class LogicTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.Logic#onPortAdded(java.lang.String, org.o3project.odenos.component.network.topology.TopologyObject.Port)}
+   * {@link org.o3project.odenos.core.component.Logic#onPortAdded(java.lang.String, Port)}
    * .
    */
   @Test
@@ -1077,7 +1077,7 @@ public class LogicTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.Logic#onPortAddedPre(java.lang.String, org.o3project.odenos.component.network.topology.TopologyObject.Port)}
+   * {@link org.o3project.odenos.core.component.Logic#onPortAddedPre(java.lang.String, Port)}
    * .
    */
   @Test
@@ -1102,7 +1102,7 @@ public class LogicTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.Logic#onPortAddedPost(java.lang.String, org.o3project.odenos.component.network.topology.TopologyObject.Port, java.util.HashMap)}
+   * {@link org.o3project.odenos.core.component.Logic#onPortAddedPost(java.lang.String, Port, java.util.HashMap)}
    * .
    */
   @Test
@@ -1129,7 +1129,7 @@ public class LogicTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.Logic#onLinkAdded(java.lang.String, org.o3project.odenos.component.network.topology.TopologyObject.Link)}
+   * {@link org.o3project.odenos.core.component.Logic#onLinkAdded(java.lang.String, Link)}
    * .
    */
   @Test
@@ -1158,7 +1158,7 @@ public class LogicTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.Logic#onLinkAddedPre(java.lang.String, org.o3project.odenos.component.network.topology.TopologyObject.Link)}
+   * {@link org.o3project.odenos.core.component.Logic#onLinkAddedPre(java.lang.String, Link)}
    * .
    */
   @Test
@@ -1183,7 +1183,7 @@ public class LogicTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.Logic#onLinkAddedPost(java.lang.String, org.o3project.odenos.component.network.topology.TopologyObject.Link, java.util.HashMap)}
+   * {@link org.o3project.odenos.core.component.Logic#onLinkAddedPost(java.lang.String, Link, java.util.HashMap)}
    * .
    */
   @Test
@@ -1210,7 +1210,7 @@ public class LogicTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.Logic#onFlowAdded(java.lang.String, org.o3project.odenos.core.component.network.flow.FlowObject.Flow)}
+   * {@link org.o3project.odenos.core.component.Logic#onFlowAdded(java.lang.String, Flow)}
    * .
    */
   @Test
@@ -1239,7 +1239,7 @@ public class LogicTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.Logic#onFlowAddedPre(java.lang.String, org.o3project.odenos.core.component.network.flow.FlowObject.Flow)}
+   * {@link org.o3project.odenos.core.component.Logic#onFlowAddedPre(java.lang.String, Flow)}
    * .
    */
   @Test
@@ -1264,7 +1264,7 @@ public class LogicTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.Logic#onFlowAddedPost(java.lang.String, org.o3project.odenos.core.component.network.flow.FlowObject.Flow, java.util.HashMap)}
+   * {@link org.o3project.odenos.core.component.Logic#onFlowAddedPost(java.lang.String, Flow, java.util.HashMap)}
    * .
    */
   @Test
@@ -1291,7 +1291,7 @@ public class LogicTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.Logic#onNodeUpdate(java.lang.String, org.o3project.odenos.component.network.topology.TopologyObject.Node, org.o3project.odenos.component.network.topology.TopologyObject.Node, java.util.ArrayList)}
+   * {@link org.o3project.odenos.core.component.Logic#onNodeUpdate(java.lang.String, Node, Node, java.util.ArrayList)}
    * .
    *
    * @throws Exception throws Exception in targets
@@ -1333,7 +1333,7 @@ public class LogicTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.Logic#onNodeUpdatePre(java.lang.String, org.o3project.odenos.component.network.topology.TopologyObject.Node, org.o3project.odenos.component.network.topology.TopologyObject.Node, java.util.ArrayList)}
+   * {@link org.o3project.odenos.core.component.Logic#onNodeUpdatePre(java.lang.String, Node, Node, java.util.ArrayList)}
    * .
    */
   @Test
@@ -1360,7 +1360,7 @@ public class LogicTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.Logic#onNodeUpdatePost(java.lang.String, org.o3project.odenos.component.network.topology.TopologyObject.Node, org.o3project.odenos.component.network.topology.TopologyObject.Node, java.util.ArrayList, java.util.HashMap)}
+   * {@link org.o3project.odenos.core.component.Logic#onNodeUpdatePost(java.lang.String, Node, Node, java.util.ArrayList, java.util.HashMap)}
    * .
    */
   @Test
@@ -1390,7 +1390,7 @@ public class LogicTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.Logic#onPortUpdate(java.lang.String, org.o3project.odenos.component.network.topology.TopologyObject.Port, org.o3project.odenos.component.network.topology.TopologyObject.Port, java.util.ArrayList)}
+   * {@link org.o3project.odenos.core.component.Logic#onPortUpdate(java.lang.String, Port, Port, java.util.ArrayList)}
    * .
    *
    * @throws Exception throws Exception in targets
@@ -1432,7 +1432,7 @@ public class LogicTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.Logic#onPortUpdatePre(java.lang.String, org.o3project.odenos.component.network.topology.TopologyObject.Port, org.o3project.odenos.component.network.topology.TopologyObject.Port, java.util.ArrayList)}
+   * {@link org.o3project.odenos.core.component.Logic#onPortUpdatePre(java.lang.String, Port, Port, java.util.ArrayList)}
    * .
    */
   @Test
@@ -1460,7 +1460,7 @@ public class LogicTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.Logic#onPortUpdatePost(java.lang.String, org.o3project.odenos.component.network.topology.TopologyObject.Port, org.o3project.odenos.component.network.topology.TopologyObject.Port, java.util.ArrayList, java.util.HashMap)}
+   * {@link org.o3project.odenos.core.component.Logic#onPortUpdatePost(java.lang.String, Port, Port, java.util.ArrayList, java.util.HashMap)}
    * .
    */
   @Test
@@ -1490,7 +1490,7 @@ public class LogicTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.Logic#onLinkUpdate(java.lang.String, org.o3project.odenos.component.network.topology.TopologyObject.Link, org.o3project.odenos.component.network.topology.TopologyObject.Link, java.util.ArrayList)}
+   * {@link org.o3project.odenos.core.component.Logic#onLinkUpdate(java.lang.String, Link, Link, java.util.ArrayList)}
    * .
    *
    * @throws Exception throws Exception in targets
@@ -1533,7 +1533,7 @@ public class LogicTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.Logic#onLinkUpdatePre(java.lang.String, org.o3project.odenos.component.network.topology.TopologyObject.Link, org.o3project.odenos.component.network.topology.TopologyObject.Link, java.util.ArrayList)}
+   * {@link org.o3project.odenos.core.component.Logic#onLinkUpdatePre(java.lang.String, Link, Link, java.util.ArrayList)}
    * .
    */
   @Test
@@ -1561,7 +1561,7 @@ public class LogicTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.Logic#onLinkUpdatePost(java.lang.String, org.o3project.odenos.component.network.topology.TopologyObject.Link, org.o3project.odenos.component.network.topology.TopologyObject.Link, java.util.ArrayList, java.util.HashMap)}
+   * {@link org.o3project.odenos.core.component.Logic#onLinkUpdatePost(java.lang.String, Link, Link, java.util.ArrayList, java.util.HashMap)}
    * .
    */
   @Test
@@ -1592,7 +1592,7 @@ public class LogicTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.Logic#onFlowUpdate(java.lang.String, org.o3project.odenos.core.component.network.flow.FlowObject.Flow, org.o3project.odenos.core.component.network.flow.FlowObject.Flow, java.util.ArrayList)}
+   * {@link org.o3project.odenos.core.component.Logic#onFlowUpdate(java.lang.String, Flow, Flow, java.util.ArrayList)}
    * .
    *
    * @throws Exception throws Exception in targets
@@ -1632,7 +1632,7 @@ public class LogicTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.Logic#onFlowUpdatePre(java.lang.String, org.o3project.odenos.core.component.network.flow.FlowObject.Flow, org.o3project.odenos.core.component.network.flow.FlowObject.Flow, java.util.ArrayList)}
+   * {@link org.o3project.odenos.core.component.Logic#onFlowUpdatePre(java.lang.String, Flow, Flow, java.util.ArrayList)}
    * .
    */
   @Test
@@ -1660,7 +1660,7 @@ public class LogicTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.Logic#onFlowUpdatePost(java.lang.String, org.o3project.odenos.core.component.network.flow.FlowObject.Flow, org.o3project.odenos.core.component.network.flow.FlowObject.Flow, java.util.ArrayList, java.util.HashMap)}
+   * {@link org.o3project.odenos.core.component.Logic#onFlowUpdatePost(java.lang.String, Flow, Flow, java.util.ArrayList, java.util.HashMap)}
    * .
    */
   @Test
@@ -1690,7 +1690,7 @@ public class LogicTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.Logic#onNodeDelete(java.lang.String, org.o3project.odenos.component.network.topology.TopologyObject.Node)}
+   * {@link org.o3project.odenos.core.component.Logic#onNodeDelete(java.lang.String, Node)}
    * .
    *
    * @throws Exception throws Exception in targets
@@ -1727,7 +1727,7 @@ public class LogicTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.Logic#onNodeDeletePre(java.lang.String, org.o3project.odenos.component.network.topology.TopologyObject.Node)}
+   * {@link org.o3project.odenos.core.component.Logic#onNodeDeletePre(java.lang.String, Node)}
    * .
    */
   @Test
@@ -1752,7 +1752,7 @@ public class LogicTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.Logic#onNodeDeletePost(java.lang.String, org.o3project.odenos.component.network.topology.TopologyObject.Node, java.util.HashMap)}
+   * {@link org.o3project.odenos.core.component.Logic#onNodeDeletePost(java.lang.String, Node, java.util.HashMap)}
    * .
    */
   @Test
@@ -1778,7 +1778,7 @@ public class LogicTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.Logic#onPortDelete(java.lang.String, org.o3project.odenos.component.network.topology.TopologyObject.Port)}
+   * {@link org.o3project.odenos.core.component.Logic#onPortDelete(java.lang.String, Port)}
    * .
    *
    * @throws Exception throws Exception in targets
@@ -1815,7 +1815,7 @@ public class LogicTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.Logic#onPortDeletePre(java.lang.String, org.o3project.odenos.component.network.topology.TopologyObject.Port)}
+   * {@link org.o3project.odenos.core.component.Logic#onPortDeletePre(java.lang.String, Port)}
    * .
    */
   @Test
@@ -1840,7 +1840,7 @@ public class LogicTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.Logic#onPortDeletePost(java.lang.String, org.o3project.odenos.component.network.topology.TopologyObject.Port, java.util.HashMap)}
+   * {@link org.o3project.odenos.core.component.Logic#onPortDeletePost(java.lang.String, Port, java.util.HashMap)}
    * .
    */
   @Test
@@ -1866,7 +1866,7 @@ public class LogicTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.Logic#onLinkDelete(java.lang.String, org.o3project.odenos.component.network.topology.TopologyObject.Link)}
+   * {@link org.o3project.odenos.core.component.Logic#onLinkDelete(java.lang.String, Link)}
    * .
    *
    * @throws Exception throws Exception in targets
@@ -1903,7 +1903,7 @@ public class LogicTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.Logic#onLinkDeletePre(java.lang.String, org.o3project.odenos.component.network.topology.TopologyObject.Link)}
+   * {@link org.o3project.odenos.core.component.Logic#onLinkDeletePre(java.lang.String, Link)}
    * .
    */
   @Test
@@ -1928,7 +1928,7 @@ public class LogicTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.Logic#onLinkDeletePost(java.lang.String, org.o3project.odenos.component.network.topology.TopologyObject.Link, java.util.HashMap)}
+   * {@link org.o3project.odenos.core.component.Logic#onLinkDeletePost(java.lang.String, Link, java.util.HashMap)}
    * .
    */
   @Test
@@ -1955,7 +1955,7 @@ public class LogicTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.Logic#onFlowDelete(java.lang.String, org.o3project.odenos.core.component.network.flow.FlowObject.Flow)}
+   * {@link org.o3project.odenos.core.component.Logic#onFlowDelete(java.lang.String, Flow)}
    * .
    *
    * @throws Exception throws Exception in targets
@@ -1992,7 +1992,7 @@ public class LogicTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.Logic#onFlowDeletePre(java.lang.String, org.o3project.odenos.core.component.network.flow.FlowObject.Flow)}
+   * {@link org.o3project.odenos.core.component.Logic#onFlowDeletePre(java.lang.String, Flow)}
    * .
    */
   @Test
@@ -2017,7 +2017,7 @@ public class LogicTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.Logic#onFlowDeletePost(java.lang.String, org.o3project.odenos.core.component.network.flow.FlowObject.Flow, java.util.HashMap)}
+   * {@link org.o3project.odenos.core.component.Logic#onFlowDeletePost(java.lang.String, Flow, java.util.HashMap)}
    * .
    */
   @Test
@@ -2044,7 +2044,7 @@ public class LogicTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.Logic#conversion(java.lang.String, org.o3project.odenos.component.network.topology.TopologyObject.Node)}
+   * {@link org.o3project.odenos.core.component.Logic#conversion(java.lang.String, Node)}
    * .
    *
    * @throws Exception throws Exception in targets
@@ -2091,7 +2091,7 @@ public class LogicTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.Logic#conversion(java.lang.String, org.o3project.odenos.component.network.topology.TopologyObject.Port)}
+   * {@link org.o3project.odenos.core.component.Logic#conversion(java.lang.String, Port)}
    * .
    *
    * @throws Exception throws Exception in targets
@@ -2137,7 +2137,7 @@ public class LogicTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.Logic#conversion(java.lang.String, org.o3project.odenos.component.network.topology.TopologyObject.Link)}
+   * {@link org.o3project.odenos.core.component.Logic#conversion(java.lang.String, Link)}
    * .
    */
   @Test
@@ -2180,7 +2180,7 @@ public class LogicTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.Logic#conversion(java.lang.String, org.o3project.odenos.core.component.network.flow.FlowObject.Flow)}
+   * {@link org.o3project.odenos.core.component.Logic#conversion(java.lang.String, Flow)}
    * .
    *
    * @throws Exception throws Exception in targets
@@ -2364,7 +2364,7 @@ public class LogicTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.Logic#conversion(java.lang.String, org.o3project.odenos.component.network.topology.TopologyObject.Node, org.o3project.odenos.component.network.topology.TopologyObject.Node, java.util.ArrayList)}
+   * {@link org.o3project.odenos.core.component.Logic#conversion(java.lang.String, Node, Node, java.util.ArrayList)}
    * .
    */
   @Test
@@ -2426,7 +2426,7 @@ public class LogicTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.Logic#conversion(java.lang.String, org.o3project.odenos.component.network.topology.TopologyObject.Port, org.o3project.odenos.component.network.topology.TopologyObject.Port, java.util.ArrayList)}
+   * {@link org.o3project.odenos.core.component.Logic#conversion(java.lang.String, Port, Port, java.util.ArrayList)}
    * .
    */
   @Test
@@ -2490,7 +2490,7 @@ public class LogicTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.Logic#conversion(java.lang.String, org.o3project.odenos.component.network.topology.TopologyObject.Link, org.o3project.odenos.component.network.topology.TopologyObject.Link, java.util.ArrayList)}
+   * {@link org.o3project.odenos.core.component.Logic#conversion(java.lang.String, Link, Link, java.util.ArrayList)}
    * .
    */
   @Test
@@ -2550,7 +2550,7 @@ public class LogicTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.Logic#conversion(java.lang.String, org.o3project.odenos.core.component.network.flow.FlowObject.Flow, org.o3project.odenos.core.component.network.flow.FlowObject.Flow, java.util.ArrayList)}
+   * {@link org.o3project.odenos.core.component.Logic#conversion(java.lang.String, Flow, Flow, java.util.ArrayList)}
    * .
    */
   @Test
@@ -2610,7 +2610,7 @@ public class LogicTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.Logic#deleteConversion(java.lang.String, org.o3project.odenos.component.network.topology.TopologyObject.Node)}
+   * {@link org.o3project.odenos.core.component.Logic#deleteConversion(java.lang.String, Node)}
    * .
    */
   @Test
@@ -2662,7 +2662,7 @@ public class LogicTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.Logic#deleteConversion(java.lang.String, org.o3project.odenos.component.network.topology.TopologyObject.Port)}
+   * {@link org.o3project.odenos.core.component.Logic#deleteConversion(java.lang.String, Port)}
    * .
    */
   @Test
@@ -2717,7 +2717,7 @@ public class LogicTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.Logic#deleteConversion(java.lang.String, org.o3project.odenos.component.network.topology.TopologyObject.Link)}
+   * {@link org.o3project.odenos.core.component.Logic#deleteConversion(java.lang.String, Link)}
    * .
    */
   @Test
@@ -2768,7 +2768,7 @@ public class LogicTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.Logic#deleteConversion(java.lang.String, org.o3project.odenos.core.component.network.flow.FlowObject.Flow)}
+   * {@link org.o3project.odenos.core.component.Logic#deleteConversion(java.lang.String, Flow)}
    * .
    */
   @Test

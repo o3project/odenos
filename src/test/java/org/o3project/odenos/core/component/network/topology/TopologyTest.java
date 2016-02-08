@@ -178,8 +178,7 @@ public class TopologyTest {
 
   /**
    * Test method for {@link
-   * org.o3project.odenos.component.network.topology.Topology#Topology(java.
-   * util.Map<org.o3project.odenos.component.network.topology.Node>,
+   * org.o3project.odenos.component.network.topology.Topology#Topology(java.util.Map,
    * java.util.Map)}.
    */
   @Test
@@ -205,9 +204,7 @@ public class TopologyTest {
 
   /**
    * Test method for {@link
-   * org.o3project.odenos.component.network.topology.Topology#Topology(java.
-   * util.Map<java.lang.String,
-   * org.o3project.odenos.component.network.topology.Node>,
+   * org.o3project.odenos.component.network.topology.Topology#Topology(java.util.Map,
    * java.util.Map)}.
    */
   @Test
@@ -394,7 +391,7 @@ public class TopologyTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.topology.Topology#createNode(org.o3project.odenos.core.component.network.topology.Link)}
+   * {@link org.o3project.odenos.core.component.network.topology.Topology#createLink(org.o3project.odenos.core.component.network.topology.Link)}
    * .
    */
   @Test
@@ -723,7 +720,7 @@ public class TopologyTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.topology.Topology#getNodeMesages(org.o3project.odenos.core.component.network.topology.NodeQuery)}
+   * {@link org.o3project.odenos.core.component.network.topology.Topology#getNodeMessages(org.o3project.odenos.core.component.network.topology.NodeQuery)}
    * .
    */
   @Test
@@ -743,7 +740,7 @@ public class TopologyTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.topology.Topology#getNodeMesages(org.o3project.odenos.core.component.network.topology.NodeQuery)}
+   * {@link org.o3project.odenos.core.component.network.topology.Topology#getNodeMessages(org.o3project.odenos.core.component.network.topology.NodeQuery)}
    * .
    */
   @Test
@@ -760,7 +757,7 @@ public class TopologyTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.topology.Topology#getPortMesages(org.o3project.odenos.core.component.network.topology.PortQuery, java.lang.String)}
+   * {@link org.o3project.odenos.core.component.network.topology.Topology#getPortMessages(org.o3project.odenos.core.component.network.topology.PortQuery, java.lang.String)}
    * .
    */
   @Test
@@ -780,7 +777,7 @@ public class TopologyTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.topology.Topology#getPortMesages(org.o3project.odenos.core.component.network.topology.PortQuery, java.lang.String)}
+   * {@link org.o3project.odenos.core.component.network.topology.Topology#getPortMessages(org.o3project.odenos.core.component.network.topology.PortQuery, java.lang.String)}
    * .
    */
   @Test
@@ -797,7 +794,7 @@ public class TopologyTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.topology.Topology#getPortMesages(org.o3project.odenos.core.component.network.topology.PortQuery, java.lang.String)}
+   * {@link org.o3project.odenos.core.component.network.topology.Topology#getPortMessages(org.o3project.odenos.core.component.network.topology.PortQuery, java.lang.String)}
    * .
    */
   @Test
@@ -814,7 +811,7 @@ public class TopologyTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.topology.Topology#getLinkMesages(org.o3project.odenos.core.component.network.topology.LinkQuery)}
+   * {@link org.o3project.odenos.core.component.network.topology.Topology#getLinkMessages(org.o3project.odenos.core.component.network.topology.LinkQuery)}
    * .
    */
   @Test
@@ -834,7 +831,7 @@ public class TopologyTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.topology.Topology#getLinkMesages(org.o3project.odenos.core.component.network.topology.LinkQuery)}
+   * {@link org.o3project.odenos.core.component.network.topology.Topology#getLinkMessages(org.o3project.odenos.core.component.network.topology.LinkQuery)}
    * .
    */
   @Test
@@ -948,7 +945,7 @@ public class TopologyTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.topology.Topology#readFrom(org.msgpack.packer.Packer)}
+   * {@link org.o3project.odenos.core.component.network.topology.Topology#readFrom(Unpacker)}
    * .
    */
   @Test
@@ -995,7 +992,7 @@ public class TopologyTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.topology.Topology#readFrom(org.msgpack.packer.Packer)}
+   * {@link org.o3project.odenos.core.component.network.topology.Topology#readFrom(Unpacker)}
    * .
    */
   @Test
@@ -1044,7 +1041,7 @@ public class TopologyTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.topology.Topology#readFrom(org.msgpack.packer.Packer)}
+   * {@link org.o3project.odenos.core.component.network.topology.Topology#readFrom(Unpacker)}
    * .
    */
   @Test
@@ -1089,7 +1086,7 @@ public class TopologyTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.topology.Topology#readFrom(org.msgpack.packer.Packer)}
+   * {@link org.o3project.odenos.core.component.network.topology.Topology#readFrom(Unpacker)}
    * .
    */
   @Test
@@ -1134,7 +1131,7 @@ public class TopologyTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.topology.Topology#readFrom(org.msgpack.packer.Packer)}
+   * {@link org.o3project.odenos.core.component.network.topology.Topology#readFrom(Unpacker)}
    * .
    */
   @Test
@@ -1183,7 +1180,7 @@ public class TopologyTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.topology.Topology#readFrom(org.msgpack.packer.Packer)}
+   * {@link org.o3project.odenos.core.component.network.topology.Topology#readFrom(Unpacker)}
    * .
    */
   @Test
@@ -1232,7 +1229,7 @@ public class TopologyTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.topology.Topology#writeTo(org.msgpack.unpacker.Unpacker)}
+   * {@link org.o3project.odenos.core.component.network.topology.Topology#writeTo(Packer)}
    * .
    */
   @Test

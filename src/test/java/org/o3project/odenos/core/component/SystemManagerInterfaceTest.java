@@ -1632,7 +1632,7 @@ public class SystemManagerInterfaceTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.SystemManagerInterface#postComponentMng(org.o3project.odenos.remoteobject.ObjectProperty)}
+   * {@link org.o3project.odenos.core.component.SystemManagerInterface#putComponentMng(org.o3project.odenos.remoteobject.ObjectProperty)}
    * .
    */
   @Test
@@ -2019,7 +2019,8 @@ public class SystemManagerInterfaceTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.SystemManagerInterface#getSequence(java.lang.String, java.util.Map)}.
+   * {@link org.o3project.odenos.core.component.SystemManagerInterface#getSequence(java.lang.String)},
+   * {@link org.o3project.odenos.core.component.SystemManagerInterface#getSequence(java.lang.String, boolean)}.
    *
    * @throws Exception throws Exception in targets
    */

@@ -399,7 +399,7 @@ public class NetworkInterfaceTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.NetworkInterface#putNode(org.o3project.odenos.component.network.topology.TopologyObject.NodeMessage)}
+   * {@link org.o3project.odenos.core.component.NetworkInterface#putNode(Node)}
    * .
    *
    * @throws Exception throws Exception in targets
@@ -431,7 +431,7 @@ public class NetworkInterfaceTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.NetworkInterface#putNodeAttributes(org.o3project.odenos.component.network.topology.TopologyObject.NodeMessage, java.util.Map)}
+   * {@link org.o3project.odenos.core.component.NetworkInterface#putNodeAttributes(Node, java.util.Map)}
    * .
    *
    * @throws Exception throws Exception in targets
@@ -767,7 +767,7 @@ public class NetworkInterfaceTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.NetworkInterface#putPort(org.o3project.odenos.component.network.topology.TopologyObject.PortMessage)}
+   * {@link org.o3project.odenos.core.component.NetworkInterface#putPort(Port)}
    * .
    *
    * @throws Exception throws Exception in targets
@@ -798,7 +798,7 @@ public class NetworkInterfaceTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.NetworkInterface#putPortAttributes(org.o3project.odenos.component.network.topology.TopologyObject.PortMessage, java.util.Map)}
+   * {@link org.o3project.odenos.core.component.NetworkInterface#putPortAttributes(Port, java.util.Map)}
    * .
    *
    * @throws Exception throws Exception in targets
@@ -1133,7 +1133,7 @@ public class NetworkInterfaceTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.NetworkInterface#putLink(org.o3project.odenos.component.network.topology.TopologyObject.LinkMessage)}
+   * {@link org.o3project.odenos.core.component.NetworkInterface#putLink(Link)}
    * .
    *
    * @throws Exception throws Exception in targets
@@ -1165,7 +1165,7 @@ public class NetworkInterfaceTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.NetworkInterface#putLinkAttributes(org.o3project.odenos.component.network.topology.TopologyObject.LinkMessage, java.util.Map)}
+   * {@link org.o3project.odenos.core.component.NetworkInterface#putLinkAttributes(Link, java.util.Map)}
    * .
    *
    * @throws Exception throws Exception in targets
@@ -1405,7 +1405,7 @@ public class NetworkInterfaceTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.NetworkInterface#putFlow(org.o3project.odenos.core.component.network.flow.FlowObject.FlowMessage)}
+   * {@link org.o3project.odenos.core.component.NetworkInterface#putFlow(Flow)}
    * .
    *
    * @throws Exception throws Exception in targets
@@ -1453,7 +1453,7 @@ public class NetworkInterfaceTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.NetworkInterface#putFlowAttributes(org.o3project.odenos.core.component.network.flow.FlowObject.FlowMessage, java.util.Map)}
+   * {@link org.o3project.odenos.core.component.NetworkInterface#putFlowAttributes(Flow, java.util.Map)}
    * .
    *
    * @throws Exception throws Exception in targets
@@ -1608,7 +1608,7 @@ public class NetworkInterfaceTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.NetworkInterface#postInPacket(org.o3project.odenos.core.component.network.packet.PacketObject.InPacketMessage)}
+   * {@link org.o3project.odenos.core.component.NetworkInterface#postInPacket(InPacket)}
    * .
    *
    * @throws Exception throws Exception in targets
@@ -1851,7 +1851,7 @@ public class NetworkInterfaceTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.NetworkInterface#postOutPacket(org.o3project.odenos.core.component.network.packet.PacketObject.OutPacketMessage)}
+   * {@link org.o3project.odenos.core.component.NetworkInterface#postOutPacket(OutPacket)}
    * .
    *
    * @throws Exception throws Exception in targets
@@ -2102,8 +2102,7 @@ public class NetworkInterfaceTest {
 
   /**
    * Test method for {@link
-   * org.o3project.odenos.component.NetworkInterface#putAttributeOfNode(Map<
-   * String, String)}.
+   * org.o3project.odenos.component.NetworkInterface#putAttributeOfNode(Map)}.
    */
   @Test
   public void testPutAttributeOfNode() {
@@ -2158,8 +2157,7 @@ public class NetworkInterfaceTest {
 
   /**
    * Test method for {@link
-   * org.o3project.odenos.component.NetworkInterface#putAttributeOfNode(Map<
-   * String, String)}.
+   * org.o3project.odenos.component.NetworkInterface#putAttributeOfNode(Map)}.
    */
   @Test
   public void testPutAttributeOfNode_NoAttributes() {
@@ -2183,8 +2181,7 @@ public class NetworkInterfaceTest {
 
   /**
    * Test method for {@link
-   * org.o3project.odenos.component.NetworkInterface#putAttributeOfNode(Map<
-   * String, String)}.
+   * org.o3project.odenos.component.NetworkInterface#putAttributeOfNode(Map)}.
    */
   @Test
   public void testPutAttributeOfNode_NullAttributes() {
@@ -2635,7 +2632,7 @@ public class NetworkInterfaceTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.NetworkInterface#sendRequest(String, Request.Method, String, Object)}
+   * {@link org.o3project.odenos.core.component.NetworkInterface#sendRequest(String, Request.Method, String, String, Object)}
    * .
    *
    * @throws Exception throws Exception in targets

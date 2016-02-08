@@ -416,6 +416,7 @@
           <outputDirectory>doc/java</outputDirectory>
           <reportOutputDirectory>doc/java</reportOutputDirectory>
 	  <quiet>true</quiet>
+	  <additionalparam>-Xdoclint:none</additionalparam>
         </configuration>
       </plugin>
       <plugin>

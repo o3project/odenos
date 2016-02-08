@@ -33,12 +33,14 @@ import org.mockito.Mockito;
 import org.msgpack.MessagePack;
 import org.msgpack.packer.Packer;
 import org.msgpack.unpacker.Unpacker;
-import org.o3project.odenos.core.component.network.topology.PortChanged.Action;
 import org.powermock.reflect.Whitebox;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+
+import org.o3project.odenos.core.component.network.topology.PortChanged;
+import org.o3project.odenos.core.component.network.topology.PortChanged.Action;
 
 /**
  * Test class for PortChanged.
@@ -112,7 +114,7 @@ public class PortChangedTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.topology.PortChanged#PortChanged(org.o3project.odenos.core.component.network.topology.Port, org.o3project.odenos.core.component.network.topology.Port, org.o3project.odenos.component.network.topology.Action)}
+   * {@link org.o3project.odenos.core.component.network.topology.PortChanged#PortChanged(org.o3project.odenos.core.component.network.topology.Port, org.o3project.odenos.core.component.network.topology.Port, Action)}
    * .
    */
   @Test
@@ -140,7 +142,7 @@ public class PortChangedTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.topology.PortChanged#PortChanged(org.o3project.odenos.core.component.network.topology.Port, org.o3project.odenos.core.component.network.topology.Port, org.o3project.odenos.component.network.topology.Action)}
+   * {@link org.o3project.odenos.core.component.network.topology.PortChanged#PortChanged(org.o3project.odenos.core.component.network.topology.Port, org.o3project.odenos.core.component.network.topology.Port, Action)}
    * .
    */
   @Test
@@ -168,7 +170,7 @@ public class PortChangedTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.topology.PortChanged#PortChanged(org.o3project.odenos.core.component.network.topology.Port, org.o3project.odenos.core.component.network.topology.Port, org.o3project.odenos.component.network.topology.Action)}
+   * {@link org.o3project.odenos.core.component.network.topology.PortChanged#PortChanged(org.o3project.odenos.core.component.network.topology.Port, org.o3project.odenos.core.component.network.topology.Port, Action)}
    * .
    */
   @Test
@@ -196,7 +198,7 @@ public class PortChangedTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.topology.PortChanged#PortChanged(org.o3project.odenos.core.component.network.topology.Port, org.o3project.odenos.core.component.network.topology.Port, org.o3project.odenos.component.network.topology.Action)}
+   * {@link org.o3project.odenos.core.component.network.topology.PortChanged#PortChanged(org.o3project.odenos.core.component.network.topology.Port, org.o3project.odenos.core.component.network.topology.Port, Action)}
    * .
    */
   @Test
@@ -224,7 +226,7 @@ public class PortChangedTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.topology.PortChanged#readFrom(org.msgpack.packer.Packer)}
+   * {@link org.o3project.odenos.core.component.network.topology.PortChanged#readFrom(Unpacker)}
    * .
    */
   @Test
@@ -277,7 +279,7 @@ public class PortChangedTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.topology.PortChanged#readFrom(org.msgpack.packer.Packer)}
+   * {@link org.o3project.odenos.core.component.network.topology.PortChanged#readFrom(Unpacker)}
    * .
    */
   @Test
@@ -332,7 +334,7 @@ public class PortChangedTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.topology.PortChanged#readFrom(org.msgpack.packer.Packer)}
+   * {@link org.o3project.odenos.core.component.network.topology.PortChanged#readFrom(Unpacker)}
    * .
    */
   @Test
@@ -381,7 +383,7 @@ public class PortChangedTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.topology.PortChanged#readFrom(org.msgpack.packer.Packer)}
+   * {@link org.o3project.odenos.core.component.network.topology.PortChanged#readFrom(Unpacker)}
    * .
    */
   @Test
@@ -430,7 +432,7 @@ public class PortChangedTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.topology.PortChanged#writeTo(org.msgpack.unpacker.Unpacker)}
+   * {@link org.o3project.odenos.core.component.network.topology.PortChanged#writeTo(Packer)}
    * .
    */
   @Test
@@ -471,7 +473,7 @@ public class PortChangedTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.topology.PortChanged#writeTo(org.msgpack.unpacker.Unpacker)}
+   * {@link org.o3project.odenos.core.component.network.topology.PortChanged#writeTo(Packer)}
    * .
    */
   @Test
@@ -514,7 +516,7 @@ public class PortChangedTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.topology.PortChanged#writeTo(org.msgpack.unpacker.Unpacker)}
+   * {@link org.o3project.odenos.core.component.network.topology.PortChanged#writeTo(Packer)}
    * .
    */
   @Test

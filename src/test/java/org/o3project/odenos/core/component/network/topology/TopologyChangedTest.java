@@ -105,7 +105,7 @@ public class TopologyChangedTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.topology.TopologyChanged#TopologyChanged(org.o3project.odenos.core.component.network.topology.Topology, org.o3project.odenos.core.component.network.topology.Topology, org.o3project.odenos.component.network.topology.Action)}
+   * {@link org.o3project.odenos.core.component.network.topology.TopologyChanged#TopologyChanged(org.o3project.odenos.core.component.network.topology.Topology, org.o3project.odenos.core.component.network.topology.Topology, Action)}
    * .
    */
   @Test
@@ -127,7 +127,7 @@ public class TopologyChangedTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.topology.TopologyChanged#TopologyChanged(org.o3project.odenos.core.component.network.topology.Topology, org.o3project.odenos.core.component.network.topology.Topology, org.o3project.odenos.component.network.topology.Action)}
+   * {@link org.o3project.odenos.core.component.network.topology.TopologyChanged#TopologyChanged(org.o3project.odenos.core.component.network.topology.Topology, org.o3project.odenos.core.component.network.topology.Topology, Action)}
    * .
    */
   @Test
@@ -149,7 +149,7 @@ public class TopologyChangedTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.topology.TopologyChanged#TopologyChanged(org.o3project.odenos.core.component.network.topology.Topology, org.o3project.odenos.core.component.network.topology.Topology, org.o3project.odenos.component.network.topology.Action)}
+   * {@link org.o3project.odenos.core.component.network.topology.TopologyChanged#TopologyChanged(org.o3project.odenos.core.component.network.topology.Topology, org.o3project.odenos.core.component.network.topology.Topology, Action)}
    * .
    */
   @Test
@@ -171,7 +171,7 @@ public class TopologyChangedTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.topology.TopologyChanged#TopologyChanged(org.o3project.odenos.core.component.network.topology.Topology, org.o3project.odenos.core.component.network.topology.Topology, org.o3project.odenos.component.network.topology.Action)}
+   * {@link org.o3project.odenos.core.component.network.topology.TopologyChanged#TopologyChanged(org.o3project.odenos.core.component.network.topology.Topology, org.o3project.odenos.core.component.network.topology.Topology, Action)}
    * .
    */
   @Test
@@ -193,7 +193,7 @@ public class TopologyChangedTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.topology.TopologyChanged#readFrom(org.msgpack.packer.Packer)}
+   * {@link org.o3project.odenos.core.component.network.topology.TopologyChanged#readFrom(Unpacker)}
    * .
    */
   @Test
@@ -238,7 +238,7 @@ public class TopologyChangedTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.topology.TopologyChanged#readFrom(org.msgpack.packer.Packer)}
+   * {@link org.o3project.odenos.core.component.network.topology.TopologyChanged#readFrom(Unpacker)}
    * .
    */
   @Test
@@ -285,7 +285,7 @@ public class TopologyChangedTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.topology.TopologyChanged#readFrom(org.msgpack.packer.Packer)}
+   * {@link org.o3project.odenos.core.component.network.topology.TopologyChanged#readFrom(Unpacker)}
    * .
    */
   @Test
@@ -332,7 +332,7 @@ public class TopologyChangedTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.topology.TopologyChanged#readFrom(org.msgpack.packer.Packer)}
+   * {@link org.o3project.odenos.core.component.network.topology.TopologyChanged#readFrom(Unpacker)}
    * .
    */
   @Test
@@ -377,7 +377,7 @@ public class TopologyChangedTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.topology.TopologyChanged#readFrom(org.msgpack.packer.Packer)}
+   * {@link org.o3project.odenos.core.component.network.topology.TopologyChanged#readFrom(Unpacker)}
    * .
    */
   @Test
@@ -422,7 +422,7 @@ public class TopologyChangedTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.topology.TopologyChanged#readFrom(org.msgpack.packer.Packer)}
+   * {@link org.o3project.odenos.core.component.network.topology.TopologyChanged#readFrom(Unpacker)}
    * .
    */
   @Test
@@ -467,7 +467,7 @@ public class TopologyChangedTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.topology.TopologyChanged#writeTo(org.msgpack.unpacker.Unpacker)}
+   * {@link org.o3project.odenos.core.component.network.topology.TopologyChanged#writeTo(Packer)}
    * .
    */
   @Test
@@ -503,7 +503,7 @@ public class TopologyChangedTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.topology.TopologyChanged#writeTo(org.msgpack.unpacker.Unpacker)}
+   * {@link org.o3project.odenos.core.component.network.topology.TopologyChanged#writeTo(Packer)}
    * .
    */
   @Test
@@ -540,7 +540,7 @@ public class TopologyChangedTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.topology.TopologyChanged#writeTo(org.msgpack.unpacker.Unpacker)}
+   * {@link org.o3project.odenos.core.component.network.topology.TopologyChanged#writeTo(Packer)}
    * .
    */
   @Test

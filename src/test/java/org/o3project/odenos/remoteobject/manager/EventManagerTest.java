@@ -100,7 +100,7 @@ public class EventManagerTest {
   }
 
   /**
-   * Test method for {@link org.o3project.odenos.remoteobject.manager.EventManager#OnFinalize()}.
+   * Test method for {@link org.o3project.odenos.remoteobject.manager.EventManager#onFinalize()}.
    */
   @Test
   public final void testOnFinalize() {
@@ -116,7 +116,7 @@ public class EventManagerTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.manager.system.EventManager#createParser()}.
+   * {@link org.o3project.odenos.remoteobject.manager.EventManager#createParser()}.
    */
   @SuppressWarnings("unchecked")
   @Test
@@ -243,7 +243,7 @@ public class EventManagerTest {
   }
 
   /**
-   * Test method for {@link org.o3project.odenos.remoteobject.manager.EventManager#putSubscription(java.lang.String, org.o3project.odenos.remoteobject.manager.EventSubscriptionObject.EventSubscription)}.
+   * Test method for {@link org.o3project.odenos.remoteobject.manager.EventManager#putSubscription(java.lang.String, EventSubscription)}.
    * @throws Exception throws Exception in targets
    */
   @Test

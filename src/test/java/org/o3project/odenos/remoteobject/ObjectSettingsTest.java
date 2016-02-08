@@ -185,7 +185,7 @@ public class ObjectSettingsTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.remoteobject.ObjectSettings#putSetting(org.o3project.odenos.remoteobject.ObjectSettings)}
+   * {@link org.o3project.odenos.remoteobject.ObjectSettings#putSettings(org.o3project.odenos.remoteobject.ObjectSettings)}
    * .
    */
   @Test
@@ -263,7 +263,7 @@ public class ObjectSettingsTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.remoteobject.ObjectSettings#readFrom(org.msgpack.packer.Packer)}
+   * {@link org.o3project.odenos.remoteobject.ObjectSettings#readFrom(Unpacker)}
    * .
    */
   @Test
@@ -295,7 +295,7 @@ public class ObjectSettingsTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.remoteobject.ObjectSettings#writeTo(org.msgpack.unpacker.Unpacker)}
+   * {@link org.o3project.odenos.remoteobject.ObjectSettings#writeTo(Packer)}
    * .
    */
   @Test

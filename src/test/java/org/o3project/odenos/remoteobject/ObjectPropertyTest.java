@@ -554,7 +554,7 @@ public class ObjectPropertyTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.remoteobject.ObjectProperty#readFrom(org.msgpack.packer.Packer)}
+   * {@link org.o3project.odenos.remoteobject.ObjectProperty#readFrom(Unpacker)}
    * .
    */
   @Test
@@ -603,7 +603,7 @@ public class ObjectPropertyTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.remoteobject.ObjectProperty#writeTo(org.msgpack.unpacker.Unpacker)}
+   * {@link org.o3project.odenos.remoteobject.ObjectProperty#writeTo(Packer)}
    * .
    */
   @Test

@@ -167,7 +167,7 @@ public class BaseObjectChangedTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.remoteobject.event.BaseObjectChanged#readFrom(org.msgpack.packer.Packer)}
+   * {@link org.o3project.odenos.remoteobject.event.BaseObjectChanged#readFrom(Unpacker)}
    * .
    */
   @Test
@@ -213,7 +213,7 @@ public class BaseObjectChangedTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.remoteobject.event.BaseObjectChanged#readFrom(org.msgpack.packer.Packer)}
+   * {@link org.o3project.odenos.remoteobject.event.BaseObjectChanged#readFrom(Unpacker)}
    * .
    */
   @Test
@@ -256,7 +256,7 @@ public class BaseObjectChangedTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.remoteobject.event.BaseObjectChanged#readFrom(org.msgpack.packer.Packer)}
+   * {@link org.o3project.odenos.remoteobject.event.BaseObjectChanged#readFrom(Unpacker)}
    * .
    */
   @Test
@@ -302,7 +302,7 @@ public class BaseObjectChangedTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.remoteobject.event.BaseObjectChanged#writeTo(org.msgpack.unpacker.Unpacker)}
+   * {@link org.o3project.odenos.remoteobject.event.BaseObjectChanged#writeTo(Packer)}
    * .
    */
   @Test
@@ -337,7 +337,7 @@ public class BaseObjectChangedTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.remoteobject.event.BaseObjectChanged#writeTo(org.msgpack.unpacker.Unpacker)}
+   * {@link org.o3project.odenos.remoteobject.event.BaseObjectChanged#writeTo(Packer)}
    * .
    */
   @Test

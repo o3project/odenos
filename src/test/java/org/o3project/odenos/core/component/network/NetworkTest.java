@@ -428,7 +428,7 @@ public class NetworkTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.Network#putTopology(org.o3project.odenos.component.network.topology.TopologyObject.TopologyMessage)}
+   * {@link org.o3project.odenos.core.component.network.Network#putTopology(Topology)}
    * .
    *
    * @throws Exception throws Exception in targets
@@ -452,7 +452,7 @@ public class NetworkTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.Network#putTopology(org.o3project.odenos.component.network.topology.TopologyObject.TopologyMessage)}
+   * {@link org.o3project.odenos.core.component.network.Network#putTopology(Topology)}
    * .
    *
    * @throws Exception throws Exception in targets
@@ -481,7 +481,7 @@ public class NetworkTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.Network#putTopology(org.o3project.odenos.component.network.topology.TopologyObject.TopologyMessage)}
+   * {@link org.o3project.odenos.core.component.network.Network#putTopology(Topology)}
    * .
    *
    * @throws Exception throws Exception in targets
@@ -510,7 +510,7 @@ public class NetworkTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.Network#postNode(org.o3project.odenos.component.network.topology.TopologyObject.NodeMessage)}
+   * {@link org.o3project.odenos.core.component.network.Network#postNode(Node)}
    * .
    *
    * @throws Exception throws Exception in targets
@@ -545,7 +545,7 @@ public class NetworkTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.Network#postNode(org.o3project.odenos.component.network.topology.TopologyObject.NodeMessage)}
+   * {@link org.o3project.odenos.core.component.network.Network#postNode(Node)}
    * .
    *
    * @throws Exception throws Exception in targets
@@ -586,7 +586,7 @@ public class NetworkTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.Network#postNode(org.o3project.odenos.component.network.topology.TopologyObject.NodeMessage)}
+   * {@link org.o3project.odenos.core.component.network.Network#postNode(Node)}
    * .
    *
    * @throws Exception throws Exception in targets
@@ -756,7 +756,7 @@ public class NetworkTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.Network#putNode(java.lang.String, org.o3project.odenos.component.network.topology.TopologyObject.NodeMessage)}
+   * {@link org.o3project.odenos.core.component.network.Network#putNode(java.lang.String, Node)}
    * .
    *
    * @throws Exception throws Exception in targets
@@ -790,7 +790,7 @@ public class NetworkTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.Network#putNode(java.lang.String, org.o3project.odenos.component.network.topology.TopologyObject.NodeMessage)}
+   * {@link org.o3project.odenos.core.component.network.Network#putNode(java.lang.String, Node)}
    * .
    *
    * @throws Exception throws Exception in targets
@@ -835,7 +835,7 @@ public class NetworkTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.Network#putNode(java.lang.String, org.o3project.odenos.component.network.topology.TopologyObject.NodeMessage)}
+   * {@link org.o3project.odenos.core.component.network.Network#putNode(java.lang.String, Node)}
    * .
    *
    * @throws Exception throws Exception in targets
@@ -878,7 +878,7 @@ public class NetworkTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.Network#putNode(java.lang.String, org.o3project.odenos.component.network.topology.TopologyObject.NodeMessage)}
+   * {@link org.o3project.odenos.core.component.network.Network#putNode(java.lang.String, Node)}
    * .
    *
    * @throws Exception throws Exception in targets
@@ -909,7 +909,7 @@ public class NetworkTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.Network#putNode(java.lang.String, org.o3project.odenos.component.network.topology.TopologyObject.NodeMessage)}
+   * {@link org.o3project.odenos.core.component.network.Network#putNode(java.lang.String, Node)}
    * .
    *
    * @throws Exception throws Exception in targets
@@ -939,7 +939,7 @@ public class NetworkTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.Network#deleteNode(java.lang.String, org.o3project.odenos.component.network.topology.TopologyObject.NodeMessage)}
+   * {@link org.o3project.odenos.core.component.network.Network#deleteNode(java.lang.String, Node)}
    * .
    *
    * @throws Exception throws Exception in targets
@@ -977,7 +977,7 @@ public class NetworkTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.Network#deleteNode(java.lang.String, org.o3project.odenos.component.network.topology.TopologyObject.NodeMessage)}
+   * {@link org.o3project.odenos.core.component.network.Network#deleteNode(java.lang.String, Node)}
    * .
    *
    * @throws Exception throws Exception in targets
@@ -1013,7 +1013,7 @@ public class NetworkTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.Network#deleteNode(java.lang.String, org.o3project.odenos.component.network.topology.TopologyObject.NodeMessage)}
+   * {@link org.o3project.odenos.core.component.network.Network#deleteNode(java.lang.String, Node)}
    * .
    *
    * @throws Exception throws Exception in targets
@@ -1033,7 +1033,7 @@ public class NetworkTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.Network#postPort(java.lang.String, org.o3project.odenos.component.network.topology.TopologyObject.PortMessage)}
+   * {@link org.o3project.odenos.core.component.network.Network#postPort(java.lang.String, Port)}
    * .
    *
    * @throws Exception throws Exception in targets
@@ -1069,7 +1069,7 @@ public class NetworkTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.Network#getPorts(boolean, java.lang.String, java.lang.String, org.o3project.odenos.component.network.topology.TopologyObject.PortMessage)}
+   * {@link org.o3project.odenos.core.component.network.Network#getPorts(boolean, java.lang.String, java.lang.String, Port)}
    * .
    *
    * @throws Exception throws Exception in targets
@@ -1168,7 +1168,7 @@ public class NetworkTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.Network#putPort(java.lang.String, java.lang.String, org.o3project.odenos.component.network.topology.TopologyObject.PortMessage)}
+   * {@link org.o3project.odenos.core.component.network.Network#putPort(java.lang.String, java.lang.String, Port)}
    * .
    *
    * @throws Exception throws Exception in targets
@@ -1197,7 +1197,7 @@ public class NetworkTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.Network#putPort(java.lang.String, java.lang.String, org.o3project.odenos.component.network.topology.TopologyObject.PortMessage)}
+   * {@link org.o3project.odenos.core.component.network.Network#putPort(java.lang.String, java.lang.String, Port)}
    * .
    *
    * @throws Exception throws Exception in targets
@@ -1240,7 +1240,7 @@ public class NetworkTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.Network#putPort(java.lang.String, java.lang.String, org.o3project.odenos.component.network.topology.TopologyObject.PortMessage)}
+   * {@link org.o3project.odenos.core.component.network.Network#putPort(java.lang.String, java.lang.String, Port)}
    * .
    *
    * @throws Exception throws Exception in targets
@@ -1275,7 +1275,7 @@ public class NetworkTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.Network#deletePort(java.lang.String, java.lang.String, org.o3project.odenos.component.network.topology.TopologyObject.PortMessage)}
+   * {@link org.o3project.odenos.core.component.network.Network#deletePort(java.lang.String, java.lang.String, Port)}
    * .
    *
    * @throws Exception throws Exception in targets
@@ -1310,7 +1310,7 @@ public class NetworkTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.Network#deletePort(java.lang.String, java.lang.String, org.o3project.odenos.component.network.topology.TopologyObject.PortMessage)}
+   * {@link org.o3project.odenos.core.component.network.Network#deletePort(java.lang.String, java.lang.String, Port)}
    * .
    *
    * @throws Exception throws Exception in targets
@@ -1345,7 +1345,7 @@ public class NetworkTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.Network#deletePort(java.lang.String, java.lang.String, org.o3project.odenos.component.network.topology.TopologyObject.PortMessage)}
+   * {@link org.o3project.odenos.core.component.network.Network#deletePort(java.lang.String, java.lang.String, Port)}
    * .
    *
    * @throws Exception throws Exception in targets
@@ -1368,7 +1368,7 @@ public class NetworkTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.Network#deletePort(java.lang.String, java.lang.String, org.o3project.odenos.component.network.topology.TopologyObject.PortMessage)}
+   * {@link org.o3project.odenos.core.component.network.Network#deletePort(java.lang.String, java.lang.String, Port)}
    * .
    *
    * @throws Exception throws Exception in targets
@@ -1399,7 +1399,7 @@ public class NetworkTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.Network#deletePort(java.lang.String, java.lang.String, org.o3project.odenos.component.network.topology.TopologyObject.PortMessage)}
+   * {@link org.o3project.odenos.core.component.network.Network#deletePort(java.lang.String, java.lang.String, Port)}
    * .
    *
    * @throws Exception throws Exception in targets
@@ -1454,7 +1454,7 @@ public class NetworkTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.Network#putNodePhysicalId(java.lang.String, org.o3project.odenos.component.network.topology.TopologyObject.NodeMessage)}
+   * {@link org.o3project.odenos.core.component.network.Network#putNodePhysicalId(java.lang.String, Node)}
    * .
    *
    * @throws Exception throws Exception in targets
@@ -1494,7 +1494,7 @@ public class NetworkTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.Network#putNodePhysicalId(java.lang.String, org.o3project.odenos.component.network.topology.TopologyObject.NodeMessage)}
+   * {@link org.o3project.odenos.core.component.network.Network#putNodePhysicalId(java.lang.String, Node)}
    * .
    *
    * @throws Exception throws Exception in targets
@@ -1519,7 +1519,7 @@ public class NetworkTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.Network#deleteNodePhysicalId(java.lang.String, org.o3project.odenos.component.network.topology.TopologyObject.NodeMessage)}
+   * {@link org.o3project.odenos.core.component.network.Network#deleteNodePhysicalId(java.lang.String, Node)}
    * .
    *
    * @throws Exception throws Exception in targets
@@ -1656,7 +1656,7 @@ public class NetworkTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.Network#putPortPhysicalId(java.lang.String, org.o3project.odenos.component.network.topology.TopologyObject.PortMessage)}
+   * {@link org.o3project.odenos.core.component.network.Network#putPortPhysicalId(java.lang.String, Port)}
    * .
    *
    * @throws Exception throws Exception in targets
@@ -1708,7 +1708,7 @@ public class NetworkTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.Network#putPortPhysicalId(java.lang.String, org.o3project.odenos.component.network.topology.TopologyObject.PortMessage)}
+   * {@link org.o3project.odenos.core.component.network.Network#putPortPhysicalId(java.lang.String, Port)}
    * .
    *
    * @throws Exception throws Exception in targets
@@ -1760,7 +1760,7 @@ public class NetworkTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.Network#deletePortPhysicalId(java.lang.String, org.o3project.odenos.component.network.topology.TopologyObject.PortMessage)}
+   * {@link org.o3project.odenos.core.component.network.Network#deletePortPhysicalId(java.lang.String, Port)}
    * .
    *
    * @throws Exception throws Exception in targets
@@ -1811,7 +1811,7 @@ public class NetworkTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.Network#postLink(org.o3project.odenos.component.network.topology.TopologyObject.LinkMessage)}
+   * {@link org.o3project.odenos.core.component.network.Network#postLink(Link)}
    * .
    *
    * @throws Exception throws Exception in targets
@@ -1956,7 +1956,7 @@ public class NetworkTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.Network#putLink(org.o3project.odenos.component.network.topology.TopologyObject.LinkMessage)}
+   * {@link org.o3project.odenos.core.component.network.Network#putLink(Link)}
    * .
    *
    * @throws Exception throws Exception in targets
@@ -1989,7 +1989,7 @@ public class NetworkTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.Network#putLink(org.o3project.odenos.component.network.topology.TopologyObject.LinkMessage)}
+   * {@link org.o3project.odenos.core.component.network.Network#putLink(Link)}
    * .
    *
    * @throws Exception throws Exception in targets
@@ -2047,7 +2047,7 @@ public class NetworkTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.Network#putLink(org.o3project.odenos.component.network.topology.TopologyObject.LinkMessage)}
+   * {@link org.o3project.odenos.core.component.network.Network#putLink(Link)}
    * .
    *
    * @throws Exception throws Exception in targets
@@ -2082,7 +2082,7 @@ public class NetworkTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.Network#deleteLink(java.lang.String, org.o3project.odenos.component.network.topology.TopologyObject.LinkMessage)}
+   * {@link org.o3project.odenos.core.component.network.Network#deleteLink(java.lang.String, Link)}
    * .
    *
    * @throws Exception throws Exception in targets
@@ -2118,7 +2118,7 @@ public class NetworkTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.Network#deleteLink(java.lang.String, org.o3project.odenos.component.network.topology.TopologyObject.LinkMessage)}
+   * {@link org.o3project.odenos.core.component.network.Network#deleteLink(java.lang.String, Link)}
    * .
    *
    * @throws Exception throws Exception in targets
