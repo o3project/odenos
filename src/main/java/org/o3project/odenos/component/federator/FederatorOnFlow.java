@@ -347,6 +347,11 @@ public class FederatorOnFlow {
         continue;
       }
       edgeNode = fedLink.getDstNode();
+
+      // convert action
+      orgFlow.putEdgeActions(
+        convertAction2(fedNwId, fedLink.getSrcNode(), fedLink.getSrcPort(), fedFlow.getEdgeActions()));
+
       // convert path
       String orgPathId = convertPath(fedNwId, fedPathId);
       if (orgPathId != null) {
@@ -354,9 +359,6 @@ public class FederatorOnFlow {
         continue;
       }
 
-      // convert action
-      orgFlow.putEdgeActions(
-        convertAction2(fedNwId, fedLink.getSrcNode(), fedLink.getSrcPort(), orgFlow.getEdgeActions()));
       doFlowAddedSetFlowRegister(orgNwId, orgFlow);
 
       // next network
