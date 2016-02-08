@@ -40,6 +40,7 @@ if '__main__' == __name__:
 
     h1 = net.addHost('h1')
     h2 = net.addHost('h2')
+    h3 = net.addHost('h3')
 
     s1.linkTo(s2)
     s2.linkTo(s3)
@@ -48,6 +49,7 @@ if '__main__' == __name__:
 
     s1.linkTo(h1)
     s3.linkTo(h2)
+    s3.linkTo(h3)
 
     net.build()
 
