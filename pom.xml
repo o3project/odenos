@@ -24,6 +24,17 @@
       </activation>
       <properties>
         <test.argLine></test.argLine>
+        <javadoc.args>-Xdoclint:none</javadoc.args>
+      </properties>
+    </profile>
+    <profile>
+      <id>jdk-1.8</id>
+      <activation>
+        <jdk>1.8</jdk>
+      </activation>
+      <properties>
+        <test.argLine></test.argLine>
+        <javadoc.args>-Xdoclint:none</javadoc.args>
       </properties>
     </profile>
     <profile>
@@ -33,6 +44,7 @@
       </activation>
       <properties>
         <test.argLine>-XX:-UseSplitVerifier -XX:MaxPermSize=512m</test.argLine>
+        <javadoc.args></javadoc.args>
       </properties>
     </profile>
   </profiles>
@@ -415,8 +427,8 @@
           <docencoding>UTF-8</docencoding>
           <outputDirectory>doc/java</outputDirectory>
           <reportOutputDirectory>doc/java</reportOutputDirectory>
-	  <quiet>true</quiet>
-	  <additionalparam>-Xdoclint:none</additionalparam>
+          <quiet>true</quiet>
+          <additionalparam>${javadoc.args}</additionalparam>
         </configuration>
       </plugin>
       <plugin>
