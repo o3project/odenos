@@ -325,6 +325,7 @@ public class FederatorOnFlow {
 
     BasicFlow orgFlow = fedFlow.clone();
     orgFlow.getPath().clear();
+    orgFlow.getEdgeActions().clear();
     orgFlow.setVersion("0");
 
     // convert match
@@ -349,8 +350,14 @@ public class FederatorOnFlow {
       edgeNode = fedLink.getDstNode();
 
       // convert action
-      orgFlow.putEdgeActions(
-        convertAction2(fedNwId, fedLink.getSrcNode(), fedLink.getSrcPort(), fedFlow.getEdgeActions()));
+      Map<String, List<FlowAction>> newEdgeActions =
+        convertAction2(fedNwId, fedLink.getSrcNode(), fedLink.getSrcPort(), fedFlow.getEdgeActions());
+
+      Map<String, List<FlowAction>> orgEdgeActions = orgFlow.getEdgeActions();
+      for (Map.Entry<String, List<FlowAction>> entry : newEdgeActions.entrySet()) {
+        orgEdgeActions.put(entry.getKey(), entry.getValue());
+      }
+      orgFlow.putEdgeActions(orgEdgeActions);
 
       // convert path
       String orgPathId = convertPath(fedNwId, fedPathId);
@@ -367,6 +374,7 @@ public class FederatorOnFlow {
 
       orgFlow = fedFlow.clone();
       orgFlow.getPath().clear();
+      orgFlow.getEdgeActions().clear();
       orgFlow.setVersion("0");
 
       // set match
@@ -380,8 +388,7 @@ public class FederatorOnFlow {
 
     // convert action
     try {
-      orgFlow.putEdgeActions(
-          convertAction(fedNwId, edgeNode, orgFlow.getEdgeActions()));
+      orgFlow.putEdgeActions(convertAction(fedNwId, edgeNode, fedFlow.getEdgeActions()));
     } catch (Exception e) {
       log.warn("failed convert flow's actions.");
     }
