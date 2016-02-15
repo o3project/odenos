@@ -32,7 +32,7 @@ public class InPacketQuery extends PacketQuery<InPacket> {
 
   /*
    * (non-Javadoc)
-   * @see org.o3project.odenos.component.network.packet.PacketQuery#parse()
+   * @see org.o3project.odenos.core.component.network.packet.PacketQuery#parse()
    */
   @Override
   public boolean parse() {

@@ -2503,7 +2503,7 @@ public class OFPFlowMatch extends BasicFlowMatch {
   }
 
   /* (non-Javadoc)
-   * @see org.o3project.odenos.component.network.flow.basic.BasicFlowMatch#toString()
+   * @see org.o3project.odenos.core.component.network.flow.basic.BasicFlowMatch#toString()
    */
   @Override
   public String toString() {

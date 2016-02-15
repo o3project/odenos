@@ -40,7 +40,7 @@ public class PacketQuery<T> extends BasicQuery<Packet> {
 
   /*
    * (non-Javadoc)
-   * @see org.o3project.odenos.component.network.BasicQuery#parse()
+   * @see org.o3project.odenos.core.component.network.BasicQuery#parse()
    */
   @Override
   public boolean parse() {

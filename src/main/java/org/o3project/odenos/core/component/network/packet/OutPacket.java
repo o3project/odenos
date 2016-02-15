@@ -314,7 +314,7 @@ public class OutPacket extends Packet {
   }
 
   /* (non-Javadoc)
-   * @see org.o3project.odenos.component.network.packet.Packet#toString()
+   * @see org.o3project.odenos.core.component.network.packet.Packet#toString()
    */
   @Override
   public String toString() {

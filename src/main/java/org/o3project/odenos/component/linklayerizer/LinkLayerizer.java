@@ -106,7 +106,7 @@ public class LinkLayerizer extends Logic {
 
   /*
    * (non-Javadoc)
-   * @see org.o3project.odenos.component.Component#getSuperType()
+   * @see org.o3project.odenos.core.component.Component#getSuperType()
    */
   @Override
   protected String getSuperType() {
@@ -115,7 +115,7 @@ public class LinkLayerizer extends Logic {
 
   /*
    * (non-Javadoc)
-   * @see org.o3project.odenos.component.Component#getDescription()
+   * @see org.o3project.odenos.core.component.Component#getDescription()
    */
   @Override
   protected String getDescription() {
@@ -151,7 +151,7 @@ public class LinkLayerizer extends Logic {
   }
 
   /* (non-Javadoc)
-   * @see org.o3project.odenos.component.Logic#onConnectionChangedAddedPre(org.o3project.odenos.manager.system.event.ComponentConnectionChanged)
+   * @see org.o3project.odenos.core.component.Logic#onConnectionChangedAddedPre(org.o3project.odenos.manager.system.event.ComponentConnectionChanged)
    */
   @Override
   protected boolean onConnectionChangedAddedPre(
@@ -201,7 +201,7 @@ public class LinkLayerizer extends Logic {
   }
 
   /* (non-Javadoc)
-   * @see org.o3project.odenos.component.Logic#onConnectionChangedUpdatePre(org.o3project.odenos.manager.system.event.ComponentConnectionChanged)
+   * @see org.o3project.odenos.core.component.Logic#onConnectionChangedUpdatePre(org.o3project.odenos.manager.system.event.ComponentConnectionChanged)
    */
   @Override
   protected boolean onConnectionChangedUpdatePre(
@@ -225,7 +225,7 @@ public class LinkLayerizer extends Logic {
   }
 
   /* (non-Javadoc)
-   * @see org.o3project.odenos.component.Logic#onConnectionChangedDeletePre(org.o3project.odenos.manager.system.event.ComponentConnectionChanged)
+   * @see org.o3project.odenos.core.component.Logic#onConnectionChangedDeletePre(org.o3project.odenos.manager.system.event.ComponentConnectionChanged)
    */
   @Override
   protected boolean onConnectionChangedDeletePre(
@@ -275,7 +275,7 @@ public class LinkLayerizer extends Logic {
   }
 
   /* (non-Javadoc)
-   * @see org.o3project.odenos.component.Logic#onConnectionChangedAdded(org.o3project.odenos.manager.system.event.ComponentConnectionChanged)
+   * @see org.o3project.odenos.core.component.Logic#onConnectionChangedAdded(org.o3project.odenos.manager.system.event.ComponentConnectionChanged)
    */
   @Override
   protected void onConnectionChangedAdded(ComponentConnectionChanged message) {
@@ -332,7 +332,7 @@ public class LinkLayerizer extends Logic {
   }
 
   /* (non-Javadoc)
-   * @see org.o3project.odenos.component.Logic#onConnectionChangedUpdate(org.o3project.odenos.manager.system.event.ComponentConnectionChanged)
+   * @see org.o3project.odenos.core.component.Logic#onConnectionChangedUpdate(org.o3project.odenos.manager.system.event.ComponentConnectionChanged)
    */
   @Override
   protected void onConnectionChangedUpdate(ComponentConnectionChanged message) {
@@ -344,7 +344,7 @@ public class LinkLayerizer extends Logic {
   }
 
   /* (non-Javadoc)
-   * @see org.o3project.odenos.component.Logic#onConnectionChangedDelete(org.o3project.odenos.manager.system.event.ComponentConnectionChanged)
+   * @see org.o3project.odenos.core.component.Logic#onConnectionChangedDelete(org.o3project.odenos.manager.system.event.ComponentConnectionChanged)
    */
   @Override
   protected void onConnectionChangedDelete(ComponentConnectionChanged message) {
@@ -975,7 +975,7 @@ public class LinkLayerizer extends Logic {
    */
 
   /* (non-Javadoc)
-   * @see org.o3project.odenos.component.Logic#onPortAddedPre(java.lang.String, org.o3project.odenos.component.network.topology.Port)
+   * @see org.o3project.odenos.core.component.Logic#onPortAddedPre(java.lang.String, org.o3project.odenos.core.component.network.topology.Port)
    */
   @Override
   protected boolean onPortAddedPre(String networkId, Port port) {
@@ -1001,7 +1001,7 @@ public class LinkLayerizer extends Logic {
   }
 
   /* (non-Javadoc)
-   * @see org.o3project.odenos.component.Logic#onPortAddedPost(java.lang.String, org.o3project.odenos.component.network.topology.Port, java.util.HashMap)
+   * @see org.o3project.odenos.core.component.Logic#onPortAddedPost(java.lang.String, org.o3project.odenos.core.component.network.topology.Port, java.util.HashMap)
    */
   @Override
   protected void onPortAddedPost(
@@ -1031,7 +1031,7 @@ public class LinkLayerizer extends Logic {
   }
   
   /* (non-Javadoc)
-   * @see org.o3project.odenos.component.Logic#onPortDeletePost(java.lang.String, org.o3project.odenos.component.network.topology.Port, java.util.HashMap)
+   * @see org.o3project.odenos.core.component.Logic#onPortDeletePost(java.lang.String, org.o3project.odenos.core.component.network.topology.Port, java.util.HashMap)
    */
   @Override
   protected void onPortDeletePost(String networkId, Port port, HashMap<String, Response> respList) {
@@ -1051,7 +1051,7 @@ public class LinkLayerizer extends Logic {
   }
   
   /* (non-Javadoc)
-   * @see org.o3project.odenos.component.Logic#onLinkAddedPre(java.lang.String, org.o3project.odenos.component.network.topology.Link)
+   * @see org.o3project.odenos.core.component.Logic#onLinkAddedPre(java.lang.String, org.o3project.odenos.core.component.network.topology.Link)
    */
   @Override
   protected boolean onLinkAddedPre(String networkId, Link link) {
@@ -1113,7 +1113,7 @@ public class LinkLayerizer extends Logic {
   }
 
   /* (non-Javadoc)
-   * @see org.o3project.odenos.component.Logic#onLinkUpdatePre(java.lang.String, org.o3project.odenos.component.network.topology.Link, org.o3project.odenos.component.network.topology.Link, java.util.ArrayList)
+   * @see org.o3project.odenos.core.component.Logic#onLinkUpdatePre(java.lang.String, org.o3project.odenos.core.component.network.topology.Link, org.o3project.odenos.core.component.network.topology.Link, java.util.ArrayList)
    */
   @Override
   protected boolean onLinkUpdatePre(String networkId, Link prev, Link curr,
@@ -1134,7 +1134,7 @@ public class LinkLayerizer extends Logic {
   }
 
   /* (non-Javadoc)
-   * @see org.o3project.odenos.component.Logic#onLinkDeletePre(java.lang.String, org.o3project.odenos.component.network.topology.Link)
+   * @see org.o3project.odenos.core.component.Logic#onLinkDeletePre(java.lang.String, org.o3project.odenos.core.component.network.topology.Link)
    */
   @Override
   protected boolean onLinkDeletePre(String networkId, Link link) {
@@ -1153,7 +1153,7 @@ public class LinkLayerizer extends Logic {
   }
 
   /* (non-Javadoc)
-   * @see org.o3project.odenos.component.Logic#onFlowAddedPre(java.lang.String, org.o3project.odenos.component.network.flow.Flow)
+   * @see org.o3project.odenos.core.component.Logic#onFlowAddedPre(java.lang.String, org.o3project.odenos.core.component.network.flow.Flow)
    */
   @Override
   protected boolean onFlowAddedPre(String networkId, Flow flow) {
@@ -1187,7 +1187,7 @@ public class LinkLayerizer extends Logic {
   }
 
   /* (non-Javadoc)
-   * @see org.o3project.odenos.component.Logic#onFlowUpdatePre(java.lang.String, org.o3project.odenos.component.network.flow.Flow, org.o3project.odenos.component.network.flow.Flow, java.util.ArrayList)
+   * @see org.o3project.odenos.core.component.Logic#onFlowUpdatePre(java.lang.String, org.o3project.odenos.core.component.network.flow.Flow, org.o3project.odenos.core.component.network.flow.Flow, java.util.ArrayList)
    */
   @Override
   protected boolean onFlowUpdatePre(String networkId, Flow prev, Flow curr,
@@ -1217,7 +1217,7 @@ public class LinkLayerizer extends Logic {
   }
 
   /* (non-Javadoc)
-   * @see org.o3project.odenos.component.Logic#onFlowDeletePre(java.lang.String, org.o3project.odenos.component.network.flow.Flow)
+   * @see org.o3project.odenos.core.component.Logic#onFlowDeletePre(java.lang.String, org.o3project.odenos.core.component.network.flow.Flow)
    */
   @Override
   protected boolean onFlowDeletePre(String networkId, Flow flow) {
@@ -1663,7 +1663,7 @@ public class LinkLayerizer extends Logic {
 
   /*
    * (non-Javadoc)
-   * @see org.o3project.odenos.component.Logic#getFlow(org.o3project.odenos.component.NetworkInterface, java.lang.String)
+   * @see org.o3project.odenos.core.component.Logic#getFlow(org.o3project.odenos.core.component.NetworkInterface, java.lang.String)
    */
   @Override
   protected BasicFlow getFlow(final NetworkInterface nwIf, final String flowId) {

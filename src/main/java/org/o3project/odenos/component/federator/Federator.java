@@ -140,7 +140,7 @@ public class Federator extends Logic {
   }
 
   /* (non-JavaDoc)
-   * @see org.o3project.odenos.component.Logic#onConnectionChangedAddedPre(org.o3project.odenos.manager.system.event.ComponentConnectionChanged)
+   * @see org.o3project.odenos.core.component.Logic#onConnectionChangedAddedPre(org.o3project.odenos.manager.system.event.ComponentConnectionChanged)
    */
   @Override
   protected boolean onConnectionChangedAddedPre(ComponentConnectionChanged msg) {
@@ -186,7 +186,7 @@ public class Federator extends Logic {
   }
 
   /* (non-JavaDoc)
-   * @see org.o3project.odenos.component.Logic#onConnectionChangedUpdatePre(org.o3project.odenos.manager.system.event.ComponentConnectionChanged)
+   * @see org.o3project.odenos.core.component.Logic#onConnectionChangedUpdatePre(org.o3project.odenos.manager.system.event.ComponentConnectionChanged)
    */
   @Override
   protected boolean onConnectionChangedUpdatePre(
@@ -211,7 +211,7 @@ public class Federator extends Logic {
 
 
   /* (non-JavaDoc)
-   * @see org.o3project.odenos.component.Logic#onConnectionChangedDeletePre(org.o3project.odenos.manager.system.event.ComponentConnectionChanged)
+   * @see org.o3project.odenos.core.component.Logic#onConnectionChangedDeletePre(org.o3project.odenos.manager.system.event.ComponentConnectionChanged)
    */
   @Override
   protected boolean onConnectionChangedDeletePre(
@@ -245,7 +245,7 @@ public class Federator extends Logic {
   }
 
   /* (non-JavaDoc)
-   * @see org.o3project.odenos.component.Logic#onConnectionChangedAdded(org.o3project.odenos.manager.system.event.ComponentConnectionChanged)
+   * @see org.o3project.odenos.core.component.Logic#onConnectionChangedAdded(org.o3project.odenos.manager.system.event.ComponentConnectionChanged)
    */
   @Override
   protected void onConnectionChangedAdded(ComponentConnectionChanged msg) {
@@ -301,7 +301,7 @@ public class Federator extends Logic {
   }
 
   /* (non-JavaDoc)
-   * @see org.o3project.odenos.component.Logic#onConnectionChangedUpdate(org.o3project.odenos.manager.system.event.ComponentConnectionChanged)
+   * @see org.o3project.odenos.core.component.Logic#onConnectionChangedUpdate(org.o3project.odenos.manager.system.event.ComponentConnectionChanged)
    */
   @Override
   protected void onConnectionChangedUpdate(ComponentConnectionChanged msg) {
@@ -310,7 +310,7 @@ public class Federator extends Logic {
   }
 
   /* (non-JavaDoc)
-   * @see org.o3project.odenos.component.Logic#onConnectionChangedDelete(org.o3project.odenos.manager.system.event.ComponentConnectionChanged)
+   * @see org.o3project.odenos.core.component.Logic#onConnectionChangedDelete(org.o3project.odenos.manager.system.event.ComponentConnectionChanged)
    */
   @Override
   protected void onConnectionChangedDelete(ComponentConnectionChanged msg) {
@@ -532,7 +532,7 @@ public class Federator extends Logic {
   }
 
   /* (non-JavaDoc)
-   * @see org.o3project.odenos.component.Logic#onNodeAdded(java.lang.String, org.o3project.odenos.component.network.topology.Node)
+   * @see org.o3project.odenos.core.component.Logic#onNodeAdded(java.lang.String, org.o3project.odenos.core.component.network.topology.Node)
    */
   @Override
   protected void onNodeAdded(String networkId, Node node) {
@@ -561,7 +561,7 @@ public class Federator extends Logic {
   }
 
   /* (non-JavaDoc)
-   * @see org.o3project.odenos.component.Logic#onPortAdded(java.lang.String, org.o3project.odenos.component.network.topology.Port)
+   * @see org.o3project.odenos.core.component.Logic#onPortAdded(java.lang.String, org.o3project.odenos.core.component.network.topology.Port)
    */
   @Override
   protected void onPortAdded(String networkId, Port port) {
@@ -676,7 +676,7 @@ public class Federator extends Logic {
   }
 
   /* (non-JavaDoc)
-   * @see org.o3project.odenos.component.Logic#onLinkAdded(java.lang.String, org.o3project.odenos.component.network.topology.Link)
+   * @see org.o3project.odenos.core.component.Logic#onLinkAdded(java.lang.String, org.o3project.odenos.core.component.network.topology.Link)
    */
   @Override
   protected void onLinkAdded(String networkId, Link link) {
@@ -719,7 +719,7 @@ public class Federator extends Logic {
   }
 
   /* (non-JavaDoc)
-   * @see org.o3project.odenos.component.Logic#onInPacketAddedPre(java.lang.String, org.o3project.odenos.component.network.packet.InPacketAdded)
+   * @see org.o3project.odenos.core.component.Logic#onInPacketAddedPre(java.lang.String, org.o3project.odenos.core.component.network.packet.InPacketAdded)
    */
   @Override
   protected boolean onInPacketAddedPre(String networkId, InPacketAdded msg) {
@@ -747,7 +747,7 @@ public class Federator extends Logic {
   }
 
   /* (non-JavaDoc)
-   * @see org.o3project.odenos.component.Logic#onOutPacketAddedPre(java.lang.String, org.o3project.odenos.component.network.packet.OutPacketAdded)
+   * @see org.o3project.odenos.core.component.Logic#onOutPacketAddedPre(java.lang.String, org.o3project.odenos.core.component.network.packet.OutPacketAdded)
    */
   @Override
   protected void onOutPacketAdded(String networkId, OutPacketAdded msg) {
@@ -800,7 +800,7 @@ public class Federator extends Logic {
   }
 
   /* (non-JavaDoc)
-   * @see org.o3project.odenos.component.Logic#onFlowAdded(java.lang.String, org.o3project.odenos.component.network.flow.Flow)
+   * @see org.o3project.odenos.core.component.Logic#onFlowAdded(java.lang.String, org.o3project.odenos.core.component.network.flow.Flow)
    */
   @Override
   protected void onFlowAdded(String networkId, Flow flow) {
