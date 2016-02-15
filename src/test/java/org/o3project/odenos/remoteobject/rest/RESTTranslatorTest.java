@@ -101,7 +101,7 @@ public class RESTTranslatorTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.remoteobject.rest.RESTTranslator#RESTTranslator(java.lang.String, java.lang.String, org.o3project.odenos.remoteobject.messagingclient.MessageDispatcher)}
+   * {@link org.o3project.odenos.remoteobject.rest.RESTTranslator#RESTTranslator(java.lang.String, org.o3project.odenos.remoteobject.messagingclient.MessageDispatcher)}
    * .
    */
   @Test
@@ -125,7 +125,7 @@ public class RESTTranslatorTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.remoteobject.rest.RESTTranslator#RESTTranslator(java.lang.String, java.lang.String, org.o3project.odenos.remoteobject.messagingclient.MessageDispatcher, java.lang.String)}
+   * {@link org.o3project.odenos.remoteobject.rest.RESTTranslator#RESTTranslator(java.lang.String, org.o3project.odenos.remoteobject.messagingclient.MessageDispatcher, java.lang.String)}
    * .
    */
   @Test
@@ -149,7 +149,7 @@ public class RESTTranslatorTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.remoteobject.rest.RESTTranslator#RESTTranslator(java.lang.String, java.lang.String, org.o3project.odenos.remoteobject.messagingclient.MessageDispatcher, java.lang.String, java.lang.Integer)}
+   * {@link org.o3project.odenos.remoteobject.rest.RESTTranslator#RESTTranslator(java.lang.String, org.o3project.odenos.remoteobject.messagingclient.MessageDispatcher, java.lang.String, java.lang.Integer)}
    * .
    */
   @Test
@@ -581,7 +581,7 @@ public class RESTTranslatorTest {
   }
 
   /**
-   * Test method for {@link org.o3project.odenos.remoteobject.rest.RESTTranslator#startServer(String, Integer)}.
+   * Test method for {@link org.o3project.odenos.remoteobject.rest.RESTTranslator#startServer(String, Integer, String)}.
    *
    * @throws Exception throws Exception in targets
    */

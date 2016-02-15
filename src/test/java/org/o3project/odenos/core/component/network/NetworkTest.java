@@ -238,7 +238,7 @@ public class NetworkTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.Network#Network(java.lang.String, java.lang.String, org.o3project.odenos.remoteobject.messagingclient.MessageDispatcher)}
+   * {@link org.o3project.odenos.core.component.network.Network#Network(java.lang.String, org.o3project.odenos.remoteobject.messagingclient.MessageDispatcher)}
    * .
    */
   @Test
@@ -1956,7 +1956,7 @@ public class NetworkTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.Network#putLink(Link)}
+   * {@link org.o3project.odenos.core.component.network.Network#putLink(String, Link)}
    * .
    *
    * @throws Exception throws Exception in targets
@@ -1989,7 +1989,7 @@ public class NetworkTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.Network#putLink(Link)}
+   * {@link org.o3project.odenos.core.component.network.Network#putLink(String, Link)}
    * .
    *
    * @throws Exception throws Exception in targets
@@ -2047,7 +2047,7 @@ public class NetworkTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.Network#putLink(Link)}
+   * {@link org.o3project.odenos.core.component.network.Network#putLink(String, Link)}
    * .
    *
    * @throws Exception throws Exception in targets
@@ -2141,7 +2141,7 @@ public class NetworkTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.Network#postFlow(org.o3project.odenos.core.component.network.flow.FlowObject.FlowMessage)}
+   * {@link org.o3project.odenos.core.component.network.Network#postFlow(Flow)}
    * .
    *
    * @throws Exception throws Exception in targets
@@ -2169,7 +2169,7 @@ public class NetworkTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.Network#postFlow(org.o3project.odenos.core.component.network.flow.FlowObject.FlowMessage)}
+   * {@link org.o3project.odenos.core.component.network.Network#postFlow(Flow)}
    * .
    *
    * @throws Exception throws Exception in targets
@@ -2299,7 +2299,7 @@ public class NetworkTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.Network#putFlow(java.lang.String, org.o3project.odenos.core.component.network.flow.FlowObject.FlowMessage)}
+   * {@link org.o3project.odenos.core.component.network.Network#putFlow(java.lang.String, Flow)}
    * .
    *
    * @throws Exception throws Exception in targets
@@ -2322,7 +2322,7 @@ public class NetworkTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.Network#deleteFlow(java.lang.String, org.o3project.odenos.core.component.network.flow.FlowObject.FlowMessage)}
+   * {@link org.o3project.odenos.core.component.network.Network#deleteFlow(String, Flow)}
    * .
    *
    * @throws Exception throws Exception in targets
@@ -2405,7 +2405,7 @@ public class NetworkTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.Network#postInPacket(org.o3project.odenos.core.component.network.packet.PacketObject.PacketMessage)}
+   * {@link org.o3project.odenos.core.component.network.Network#postInPacket(Packet)}
    * .
    *
    * @throws Exception throws Exception in targets
@@ -2428,7 +2428,7 @@ public class NetworkTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.Network#postInPacket(org.o3project.odenos.core.component.network.packet.PacketObject.PacketMessage)}
+   * {@link org.o3project.odenos.core.component.network.Network#postInPacket(Packet)}
    * .
    *
    * @throws Exception throws Exception in targets
@@ -2457,7 +2457,7 @@ public class NetworkTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.Network#postInPacket(org.o3project.odenos.core.component.network.packet.PacketObject.PacketMessage)}
+   * {@link org.o3project.odenos.core.component.network.Network#postInPacket(Packet)}
    * .
    *
    * @throws Exception throws Exception in targets
@@ -2803,7 +2803,7 @@ public class NetworkTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.Network#postOutPacket(org.o3project.odenos.core.component.network.packet.PacketObject.PacketMessage)}
+   * {@link org.o3project.odenos.core.component.network.Network#postOutPacket(Packet)}
    * .
    *
    * @throws Exception throws Exception in targets
@@ -3327,7 +3327,7 @@ public class NetworkTest {
   }
 
   /**
-   * Test method for {@link org.o3project.odenos.core.component.network.Network#checkFlowSequence(Flow, Flow)}.
+   * Test method for {@link org.o3project.odenos.core.component.network.Network#checkFlowSequence(Flow)}.
    *
    * @throws Exception throws Exception in targets
    */
@@ -3995,7 +3995,7 @@ public class NetworkTest {
   }
 
   /**
-   * Test method for {@link org.o3project.odenos.core.component.network.Network#notifyTopologyChanged(Topology, Topology, Action)}.
+   * Test method for {@link org.o3project.odenos.core.component.network.Network#notifyTopologyChanged(Topology, Topology, TopologyChanged.Action)}.
    *
    * @throws Exception throws Exception in targets
    */
@@ -4089,7 +4089,7 @@ public class NetworkTest {
   }
 
   /**
-   * Test method for {@link org.o3project.odenos.core.component.network.Network#notifyNodeChanged(Node, Node, Action)}.
+   * Test method for {@link org.o3project.odenos.core.component.network.Network#notifyNodeChanged(Node, Node, NodeChanged.Action)}.
    *
    * @throws Exception throws Exception in targets
    */
@@ -4119,7 +4119,7 @@ public class NetworkTest {
   }
 
   /**
-   * Test method for {@link org.o3project.odenos.core.component.network.Network#notifyPortChanged(Port, Port, Action)}.
+   * Test method for {@link org.o3project.odenos.core.component.network.Network#notifyPortChanged(Port, Port, PortChanged.Action)}.
    *
    * @throws Exception throws Exception in targets
    */
@@ -4149,7 +4149,7 @@ public class NetworkTest {
   }
 
   /**
-   * Test method for {@link org.o3project.odenos.core.component.network.Network#notifyLinkChanged(Link, Link, Action)}.
+   * Test method for {@link org.o3project.odenos.core.component.network.Network#notifyLinkChanged(Link, Link, LinkChanged.Action)}.
    *
    * @throws Exception throws Exception in targets
    */
@@ -4179,7 +4179,7 @@ public class NetworkTest {
   }
 
   /**
-   * Test method for {@link org.o3project.odenos.core.component.network.Network#notifyFlowChanged(Flow, Flow, Action)}.
+   * Test method for {@link org.o3project.odenos.core.component.network.Network#notifyFlowChanged(Flow, Flow, FlowChanged.Action)}.
    *
    * @throws Exception throws Exception in targets
    */

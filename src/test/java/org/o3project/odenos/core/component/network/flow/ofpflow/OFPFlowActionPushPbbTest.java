@@ -82,7 +82,7 @@ public class OFPFlowActionPushPbbTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.flow.ofpflow.OFPFlowActionPushPbb#OFPFlowActionPushPbb(java.lang.String)}
+   * {@link org.o3project.odenos.core.component.network.flow.ofpflow.OFPFlowActionPushPbb#OFPFlowActionPushPbb(Integer)}
    * .
    */
   @Test

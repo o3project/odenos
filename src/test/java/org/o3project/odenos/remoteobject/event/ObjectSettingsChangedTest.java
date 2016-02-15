@@ -94,7 +94,7 @@ public class ObjectSettingsChangedTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.remoteobject.event.ObjectSettingsChanged#ObjectSettingsChanged(java.lang.String, org.o3project.odenos.remoteobject.event.ObjectSetting, org.o3project.odenos.remoteobject.event.ObjectSetting)}
+   * {@link org.o3project.odenos.remoteobject.event.ObjectSettingsChanged#ObjectSettingsChanged(java.lang.String, ObjectSettings, ObjectSettings)}
    * .
    */
   @Test

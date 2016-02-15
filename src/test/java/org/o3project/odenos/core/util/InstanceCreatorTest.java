@@ -68,7 +68,7 @@ public class InstanceCreatorTest {
 
   /**
    * Test method for {@link
-   * org.o3project.odenos.util.InstanceCreator#create(java.lang.String,
+   * org.o3project.odenos.core.util.InstanceCreator#create(java.lang.String,
    * java.lang.Class[], java.lang.Object[])}.
    */
   @Test
@@ -85,7 +85,7 @@ public class InstanceCreatorTest {
 
   /**
    * Test method for {@link
-   * org.o3project.odenos.util.InstanceCreator#create(java.lang.String,
+   * org.o3project.odenos.core.util.InstanceCreator#create(java.lang.String,
    * java.lang.Class[], java.lang.Object[])}.
    */
   @Test
@@ -101,7 +101,7 @@ public class InstanceCreatorTest {
 
   /**
    * Test method for {@link
-   * org.o3project.odenos.util.InstanceCreator#create(java.lang.String,
+   * org.o3project.odenos.core.util.InstanceCreator#create(java.lang.String,
    * java.lang.Class[], java.lang.Object[])}.
    */
   @Test
@@ -117,7 +117,7 @@ public class InstanceCreatorTest {
 
   /**
    * Test method for {@link
-   * org.o3project.odenos.util.InstanceCreator#create(java.lang.String,
+   * org.o3project.odenos.core.util.InstanceCreator#create(java.lang.String,
    * java.lang.Class[], java.lang.Object[])}.
    */
   @Test

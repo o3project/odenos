@@ -130,7 +130,7 @@ public class FederatorOnFlowTest {
   }
 
   /**
-   * Test method for {@link org.o3project.odenos.component.federator.FederatorOnFlow#FederatorOnFlow(org.o3project.odenos.core.component.ConversionTable, java.util.Map, org.o3project.odenos.component.federator.FederatorBoundaryTable)}.
+   * Test method for {@link org.o3project.odenos.component.federator.FederatorOnFlow#FederatorOnFlow(org.o3project.odenos.core.component.ConversionTable, java.util.Map)}.
    */
   @Test
   public void testFederatorOnFlow() {
@@ -148,7 +148,8 @@ public class FederatorOnFlowTest {
   }
 
   /**
-   * Test method for {@link org.o3project.odenos.component.federator.FederatorOnFlow#flowAddedExistPath(java.lang.String, org.o3project.odenos.core.component.network.flow.basic.BasicFlow)}.
+   * Test method for {@link org.o3project.odenos.component.federator.FederatorOnFlow#createOriginalFlow(org.o3project.odenos.core.component.network.flow.basic.BasicFlow)}.
+   * Exist path
    * @throws Exception throws Exception in targets
    */
   @Test
@@ -174,7 +175,8 @@ public class FederatorOnFlowTest {
   }
 
   /**
-   * Test method for {@link org.o3project.odenos.component.federator.FederatorOnFlow#flowAddedNotExistPath(java.lang.String, org.o3project.odenos.core.component.network.flow.basic.BasicFlow)}.
+   * Test method for {@link org.o3project.odenos.component.federator.FederatorOnFlow#createOriginalFlow(org.o3project.odenos.core.component.network.flow.basic.BasicFlow)}.
+   * Not exist path
    */
   @Test
   public void testFlowAddedNotExistPath() {
@@ -241,7 +243,7 @@ public class FederatorOnFlowTest {
   }
 
   /**
-   * Test method for {@link org.o3project.odenos.component.federator.FederatorOnFlow#convertAction(java.lang.String, org.o3project.odenos.core.component.network.flow.basic.BasicFlow)}.
+   * Test method for {@link org.o3project.odenos.component.federator.FederatorOnFlow#convertAction(String, String, Map)}.
    * @throws Exception throws Exception in targets
    */
   @Test

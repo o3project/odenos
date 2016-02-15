@@ -136,7 +136,7 @@ public class NodeTest {
 
   /**
    * Test method for {@link
-   * org.o3project.odenos.component.network.topology.Node#Node(java.lang.String,
+   * org.o3project.odenos.core.component.network.topology.Node#Node(java.lang.String,
    * java.lang.String, java.util.Map, java.util.Map)}.
    */
   @Test
@@ -340,7 +340,7 @@ public class NodeTest {
 
   /**
    * Test method for {@link
-   * org.o3project.odenos.component.network.topology.Node#setPorts(java.util.Map)}.
+   * org.o3project.odenos.core.component.network.topology.Node#setPorts(java.util.Map)}.
    */
   @Test
   public void testSetPorts() {

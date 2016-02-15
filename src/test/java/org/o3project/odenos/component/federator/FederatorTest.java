@@ -130,7 +130,7 @@ public class FederatorTest {
   }
 
   /**
-   * Test method for {@link org.o3project.odenos.component.federator.Federator#Federator(java.lang.String, java.lang.String, org.o3project.odenos.remoteobject.messagingclient.MessageDispatcher)}.
+   * Test method for {@link org.o3project.odenos.component.federator.Federator#Federator(java.lang.String, org.o3project.odenos.remoteobject.messagingclient.MessageDispatcher)}.
    * @throws Exception throws Exception in targets
    */
   @Test
@@ -915,7 +915,7 @@ public class FederatorTest {
   }
 
   /**
-   * Test method for {@link org.o3project.odenos.component.federator.Federator#onFlowUpdatePre(java.lang.String, org.o3project.odenos.core.component.network.flow.Flow, org.o3project.odenos.core.component.network.flow.Flow)}.
+   * Test method for {@link org.o3project.odenos.component.federator.Federator#onFlowUpdatePre(String, Flow, Flow, ArrayList)}.
    * @throws FederatorException throws FederatorException in targets
    */
   @Test
@@ -955,7 +955,7 @@ public class FederatorTest {
   }
 
   /**
-   * Test method for {@link org.o3project.odenos.component.federator.Federator#onFlowUpdatePre(java.lang.String, org.o3project.odenos.core.component.network.flow.Flow, org.o3project.odenos.core.component.network.flow.Flow)}.
+   * Test method for {@link org.o3project.odenos.component.federator.Federator#onFlowUpdatePre(String, Flow, Flow, ArrayList)}.
    * @throws FederatorException throws FederatorException in targets
    */
   @Test
@@ -1617,7 +1617,7 @@ public class FederatorTest {
   }
 
   /**
-   * Test method for {@link org.o3project.odenos.component.federator.Federator#verifyFlow()}.
+   * Test method for {@link org.o3project.odenos.component.federator.Federator#verifyFlow(Flow)}.
    * @throws Exception throws Exception in targets
    */
   @Test
@@ -1636,7 +1636,7 @@ public class FederatorTest {
   }
 
   /**
-   * Test method for {@link org.o3project.odenos.component.federator.Federator#verifyFlow()}.
+   * Test method for {@link org.o3project.odenos.component.federator.Federator#verifyFlow(Flow)}.
    * @throws Exception throws Exception in targets
    */
   @Test(expected = FederatorException.class)
@@ -1715,7 +1715,7 @@ public class FederatorTest {
   }
 
   /**
-   * Test method for {@link org.o3project.odenos.component.federator.Federator#reflectToFederatedFromOriginal()}.
+   * Test method for {@link org.o3project.odenos.component.federator.Federator#reflectToFederatedFromOriginal(NetworkInterface, NetworkInterface)}.
    * @throws Exception throws Exception in targets
    */
   @Test
@@ -1807,7 +1807,7 @@ public class FederatorTest {
   }
 
   /**
-   * Test method for {@link org.o3project.odenos.component.federator.Federator#finalizingOriginalNetwork()}.
+   * Test method for {@link org.o3project.odenos.component.federator.Federator#finalizingOriginalNetwork(String, String)}.
    * @throws Exception throws Exception in targets
    */
   @Test
@@ -1884,7 +1884,7 @@ public class FederatorTest {
   }
 
   /**
-   * Test method for {@link org.o3project.odenos.component.federator.Federator#finalizingFederatedNetwork()}.
+   * Test method for {@link org.o3project.odenos.component.federator.Federator#finalizingFederatedNetwork(List, String)}.
    * @throws Exception throws Exception in targets
    */
   @Test
@@ -2019,7 +2019,7 @@ public class FederatorTest {
   }
 
   /**
-   * Test method for {@link org.o3project.odenos.component.federator.Federator#getConvNetworkId()}.
+   * Test method for {@link org.o3project.odenos.component.federator.Federator#getConvNetworkId(String)}.
    * @throws Exception throws Exception in targets
    */
   @Test
@@ -2050,7 +2050,7 @@ public class FederatorTest {
   }
 
   /**
-   * Test method for {@link org.o3project.odenos.component.federator.Federator#addBoundaryLink()}.
+   * Test method for {@link org.o3project.odenos.component.federator.Federator#addBoundaryLink(FederatorBoundary)}.
    * @throws Exception throws Exception in targets
    */
   @Test
@@ -2122,7 +2122,7 @@ public class FederatorTest {
   }
 
   /**
-   * Test method for {@link org.o3project.odenos.component.federator.Federator#deleteBoundaryLink()}.
+   * Test method for {@link org.o3project.odenos.component.federator.Federator#deleteBoundaryLink(String)}.
    * @throws Exception throws Exception in targets
    */
   @Test
@@ -2188,7 +2188,7 @@ public class FederatorTest {
   }
 
   /**
-   * Test method for {@link org.o3project.odenos.component.federator.Federator#getNodes()}.
+   * Test method for {@link org.o3project.odenos.component.federator.Federator#getNodes(String)}.
    * @throws Exception throws Exception in targets
    */
   @Test
@@ -2243,7 +2243,7 @@ public class FederatorTest {
   }
 
   /**
-   * Test method for {@link org.o3project.odenos.component.federator.Federator#getPorts()}.
+   * Test method for {@link org.o3project.odenos.component.federator.Federator#getPorts(String)}.
    * @throws Exception throws Exception in targets
    */
   @Test
@@ -2340,7 +2340,7 @@ public class FederatorTest {
   }
 
   /**
-   * Test method for {@link org.o3project.odenos.component.federator.Federator#getLinks()}.
+   * Test method for {@link org.o3project.odenos.component.federator.Federator#getLinks(String)}.
    * @throws Exception throws Exception in targets
    */
   @Test
@@ -2398,7 +2398,7 @@ public class FederatorTest {
   }
 
   /**
-   * Test method for {@link org.o3project.odenos.component.federator.Federator#getFlows()}.
+   * Test method for {@link org.o3project.odenos.component.federator.Federator#getFlows(String)}.
    * @throws Exception throws Exception in targets
    */
   @Test
@@ -2457,7 +2457,7 @@ public class FederatorTest {
   }
 
   /**
-   * Test method for {@link org.o3project.odenos.component.federator.Federator#verifyType()}.
+   * Test method for {@link org.o3project.odenos.component.federator.Federator#verifyType(String)}.
    * @throws Exception throws Exception in targets
    */
   @Test
@@ -2475,7 +2475,7 @@ public class FederatorTest {
   }
 
   /**
-   * Test method for {@link org.o3project.odenos.component.federator.Federator#verifyType()}.
+   * Test method for {@link org.o3project.odenos.component.federator.Federator#verifyType(String)}.
    * @throws Exception throws Exception in targets
    */
   @Test(expected = FederatorException.class)
@@ -2489,7 +2489,7 @@ public class FederatorTest {
   }
 
   /**
-   * Test method for {@link org.o3project.odenos.component.federator.Federator#verifyId()}.
+   * Test method for {@link org.o3project.odenos.component.federator.Federator#verifyId(ComponentConnection)}.
    * @throws Exception throws Exception in targets
    */
   @Test
@@ -2514,7 +2514,7 @@ public class FederatorTest {
   }
 
   /**
-   * Test method for {@link org.o3project.odenos.component.federator.Federator#verifyId()}.
+   * Test method for {@link org.o3project.odenos.component.federator.Federator#verifyId(ComponentConnection)}.
    * @throws Exception throws Exception in targets
    */
   @Test(expected = FederatorException.class)

@@ -537,7 +537,7 @@ public class PathCalculatorTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.util.PathCalculator#getOutNode()}.
+   * {@link org.o3project.odenos.core.util.PathCalculator#getOutNode(BasicFlow)}.
    */
   @SuppressWarnings("static-access")
   @Test
@@ -581,7 +581,7 @@ public class PathCalculatorTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.util.PathCalculator#getOutNode()}.
+   * {@link org.o3project.odenos.core.util.PathCalculator#getOutNode(BasicFlow)}.
    */
   @SuppressWarnings("static-access")
   @Test

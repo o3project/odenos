@@ -92,7 +92,7 @@ public class ComponentConnectionChangedTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.manager.system.event.ComponentConnectionChanged#ComponentConnectionChanged(java.lang.String, org.o3project.odenos.core.manager.system.ComponentConnection, org.o3project.odenos.core.manager.system.ComponentConnection)}
+   * {@link org.o3project.odenos.core.manager.system.event.ComponentConnectionChanged#ComponentConnectionChanged(java.lang.String, org.o3project.odenos.core.manager.system.ComponentConnection, org.o3project.odenos.core.manager.system.ComponentConnection)}
    * .
    */
   @Test

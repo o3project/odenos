@@ -84,7 +84,7 @@ public class OFPFlowActionSetQueueTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.flow.ofpflow.OFPFlowActionSetQueue#OFPFlowActionSetQueue(java.lang.String)}
+   * {@link org.o3project.odenos.core.component.network.flow.ofpflow.OFPFlowActionSetQueue#OFPFlowActionSetQueue(Integer)}
    * .
    */
   @Test

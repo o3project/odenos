@@ -2102,7 +2102,7 @@ public class NetworkInterfaceTest {
 
   /**
    * Test method for {@link
-   * org.o3project.odenos.component.NetworkInterface#putAttributeOfNode(Map)}.
+   * org.o3project.odenos.core.component.NetworkInterface#putAttributeOfNode(Map)}.
    */
   @Test
   public void testPutAttributeOfNode() {
@@ -2157,7 +2157,7 @@ public class NetworkInterfaceTest {
 
   /**
    * Test method for {@link
-   * org.o3project.odenos.component.NetworkInterface#putAttributeOfNode(Map)}.
+   * org.o3project.odenos.core.component.NetworkInterface#putAttributeOfNode(Map)}.
    */
   @Test
   public void testPutAttributeOfNode_NoAttributes() {
@@ -2181,7 +2181,7 @@ public class NetworkInterfaceTest {
 
   /**
    * Test method for {@link
-   * org.o3project.odenos.component.NetworkInterface#putAttributeOfNode(Map)}.
+   * org.o3project.odenos.core.component.NetworkInterface#putAttributeOfNode(Map)}.
    */
   @Test
   public void testPutAttributeOfNode_NullAttributes() {

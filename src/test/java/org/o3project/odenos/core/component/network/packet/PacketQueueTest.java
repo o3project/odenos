@@ -570,7 +570,7 @@ public class PacketQueueTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.packet.PacketQueue#getUniquePacketId(org.o3project.odenos.core.component.network.packet.PacketStatusSub)}
+   * {@link org.o3project.odenos.core.component.network.packet.PacketQueue#getUniquePacketId()}
    * .
    */
   @Test

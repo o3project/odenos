@@ -84,7 +84,7 @@ public class OFPFlowActionSetFieldTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.flow.ofpflow.OFPFlowActionSetField#OFPFlowActionSetField(java.lang.String)}
+   * {@link org.o3project.odenos.core.component.network.flow.ofpflow.OFPFlowActionSetField#OFPFlowActionSetField(OFPFlowMatch)}
    * .
    */
   @Test

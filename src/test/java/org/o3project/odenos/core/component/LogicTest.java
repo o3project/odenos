@@ -2929,7 +2929,7 @@ public class LogicTest {
   }
 
   /**
-   * Test method for {@literal org.o3project.odenos.component.Logic#getIgnoreKeys(ArrayList, ArrayList)}.
+   * Test method for {@literal org.o3project.odenos.core.component.Logic#getIgnoreKeys(ArrayList, ArrayList)}.
    * @throws Exception throws Exception in targets
    */
   @Test

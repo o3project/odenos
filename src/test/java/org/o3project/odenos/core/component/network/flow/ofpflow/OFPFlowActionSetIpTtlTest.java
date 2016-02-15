@@ -84,7 +84,7 @@ public class OFPFlowActionSetIpTtlTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.flow.ofpflow.OFPFlowActionSetIpTtl#OFPFlowActionSetIpTtl(java.lang.String)}
+   * {@link org.o3project.odenos.core.component.network.flow.ofpflow.OFPFlowActionSetIpTtl#OFPFlowActionSetIpTtl(Integer)}
    * .
    */
   @Test

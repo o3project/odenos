@@ -178,7 +178,7 @@ public class TopologyTest {
 
   /**
    * Test method for {@link
-   * org.o3project.odenos.component.network.topology.Topology#Topology(java.util.Map,
+   * org.o3project.odenos.core.component.network.topology.Topology#Topology(java.util.Map,
    * java.util.Map)}.
    */
   @Test
@@ -204,7 +204,7 @@ public class TopologyTest {
 
   /**
    * Test method for {@link
-   * org.o3project.odenos.component.network.topology.Topology#Topology(java.util.Map,
+   * org.o3project.odenos.core.component.network.topology.Topology#Topology(java.util.Map,
    * java.util.Map)}.
    */
   @Test

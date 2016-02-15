@@ -93,7 +93,7 @@ public class ComponentManagerChangedTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.manager.system.ComponentManagerChanged#ComponentManagerChanged(java.lang.String, org.o3project.odenos.remoteobject.ObjectProperty, org.o3project.odenos.remoteobject.ObjectProperty)}
+   * {@link org.o3project.odenos.core.manager.system.event.ComponentManagerChanged#ComponentManagerChanged(java.lang.String, org.o3project.odenos.remoteobject.ObjectProperty, org.o3project.odenos.remoteobject.ObjectProperty)}
    * .
    */
   @Test

@@ -83,7 +83,7 @@ public class OFPFlowActionPushVlanTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.flow.ofpflow.OFPFlowActionPushVlan#OFPFlowActionPushVlan(java.lang.String)}
+   * {@link org.o3project.odenos.core.component.network.flow.ofpflow.OFPFlowActionPushVlan#OFPFlowActionPushVlan(Integer)}
    * .
    */
   @Test

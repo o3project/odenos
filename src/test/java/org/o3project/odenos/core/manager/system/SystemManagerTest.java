@@ -664,7 +664,7 @@ public class SystemManagerTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.manager.system.SystemManager#getObjectById()}.
+   * {@link org.o3project.odenos.core.manager.system.SystemManager#getObjectById(String)}.
    *
    * @throws Exception throws Exception in targets
    */
@@ -696,7 +696,7 @@ public class SystemManagerTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.manager.system.SystemManager#getObjectById()}.
+   * {@link org.o3project.odenos.core.manager.system.SystemManager#getObjectById(String)}.
    *
    * @throws Exception throws Exception in targets
    */
@@ -718,7 +718,7 @@ public class SystemManagerTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.manager.system.SystemManager#postComponentManagers(org.o3project.odenos.remoteobject.ObjectProperty)}.
+   * {@link org.o3project.odenos.core.manager.system.SystemManager#putComponentManagers(String, org.o3project.odenos.remoteobject.ObjectProperty)}.
    *
    * @throws Exception throws Exception in targets
    */
@@ -746,7 +746,7 @@ public class SystemManagerTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.manager.system.SystemManager#postComponentManagers(org.o3project.odenos.remoteobject.ObjectProperty)}.
+   * {@link org.o3project.odenos.core.manager.system.SystemManager#putComponentManagers(String, org.o3project.odenos.remoteobject.ObjectProperty)}.
    *
    * @throws Exception throws Exception in targets
    */
@@ -777,7 +777,7 @@ public class SystemManagerTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.manager.system.SystemManager#postComponentManagers(org.o3project.odenos.remoteobject.ObjectProperty)}.
+   * {@link org.o3project.odenos.core.manager.system.SystemManager#putComponentManagers(String, org.o3project.odenos.remoteobject.ObjectProperty)}.
    *
    * @throws Exception throws Exception in targets
    */
@@ -803,7 +803,7 @@ public class SystemManagerTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.manager.system.SystemManager#updateCreatableComponentType(java.lang.String, java.util.List)}.
+   * {@link org.o3project.odenos.core.manager.system.SystemManager#updateCreatableComponentType(java.lang.String, java.util.List)}.
    *
    * @throws Exception throws Exception in targets
    */
@@ -1394,7 +1394,7 @@ public class SystemManagerTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.manager.system.SystemManager#transferComponent(java.lang.String, java.lang.String, org.o3project.odenos.remoteobject.message.Request.Method, org.msgpack.type.Value)}.
+   * {@link org.o3project.odenos.core.manager.system.SystemManager#transferComponent(String, String, org.o3project.odenos.remoteobject.message.Request.Method, String, org.msgpack.type.Value)}.
    *
    * @throws Exception throws Exception in targets
    */
@@ -1424,7 +1424,7 @@ public class SystemManagerTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.manager.system.SystemManager#transferComponent(java.lang.String, java.lang.String, org.o3project.odenos.remoteobject.message.Request.Method, org.msgpack.type.Value)}.
+   * {@link org.o3project.odenos.core.manager.system.SystemManager#transferComponent(String, String, org.o3project.odenos.remoteobject.message.Request.Method, String, org.msgpack.type.Value)}.
    *
    * @throws Exception throws Exception in targets
    */
@@ -1454,7 +1454,7 @@ public class SystemManagerTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.manager.system.SystemManager#transferComponent(java.lang.String, java.lang.String, org.o3project.odenos.remoteobject.message.Request.Method, org.msgpack.type.Value)}.
+   * {@link org.o3project.odenos.core.manager.system.SystemManager#transferComponent(String, String, org.o3project.odenos.remoteobject.message.Request.Method, String, org.msgpack.type.Value)}.
    *
    * @throws Exception throws Exception in targets
    */
@@ -2059,7 +2059,7 @@ public class SystemManagerTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.manager.system.SystemManager#getSequence(java.lang.String, java.util.Map)}.
+   * {@link org.o3project.odenos.core.manager.system.SystemManager#getSequence(String, boolean)}.
    *
    * @throws Exception throws Exception in targets
    */

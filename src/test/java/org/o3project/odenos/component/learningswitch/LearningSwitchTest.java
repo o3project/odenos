@@ -445,7 +445,7 @@ public class LearningSwitchTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.component.learningswitch.LearningSwitch#subscriptionNetwork()}
+   * {@link org.o3project.odenos.component.learningswitch.LearningSwitch#subscribeNetwork()}
    * .
    *
    * @throws Exception throws Exception in targets
@@ -495,7 +495,7 @@ public class LearningSwitchTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.component.learningswitch.LearningSwitch#subscriptionNetwork()}
+   * {@link org.o3project.odenos.component.learningswitch.LearningSwitch#subscribeNetwork()}
    * .
    *
    * @throws Exception throws Exception in targets
@@ -528,7 +528,7 @@ public class LearningSwitchTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.component.learningswitch.LearningSwitch#unsubscriptionNetwork()}
+   * {@link org.o3project.odenos.component.learningswitch.LearningSwitch#unsubscribeNetwork()}
    * .
    *
    * @throws Exception throws Exception in targets
@@ -565,7 +565,7 @@ public class LearningSwitchTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.component.learningswitch.LearningSwitch#subscriptionNetwork()}
+   * {@link org.o3project.odenos.component.learningswitch.LearningSwitch#subscribeNetwork()}
    * .
    *
    * @throws Exception throws Exception in targets
@@ -1728,7 +1728,7 @@ public class LearningSwitchTest {
   }
 
   /**
-   * Test method for {@literal org.o3project.odenos.component.LearningSwitch#createOFPFlow(InPacket, String, String, List)}.
+   * Test method for {@link org.o3project.odenos.component.learningswitch.LearningSwitch#createOFPFlow(InPacket, String, String, List)}.
    *
    * @throws Exception throws Exception in targets
    */

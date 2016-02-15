@@ -215,7 +215,7 @@ public class RemoteTransactionsTest {
   }
 
   /**
-   * Test method for {@link org.o3project.odenos.remoteobject.messagingclient.RemoteTransaction#signalResponse(int, org.o3project.odenos.remoteobject.message.Response)}.
+   * Test method for {@link org.o3project.odenos.remoteobject.messagingclient.RemoteTransactions#signalResponse(int, org.o3project.odenos.remoteobject.message.Response)}.
    */
   @SuppressWarnings("unchecked")
   @Test

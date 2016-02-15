@@ -2043,7 +2043,7 @@ public class AggregatorTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.component.aggregator.Aggregator#onFlowAdded(java.lang.String, org.o3project.odenos.core.component.network.flow.FlowObject.FlowMessage)}
+   * {@link org.o3project.odenos.component.aggregator.Aggregator#onFlowAdded(String, Flow)}
    * .
    *
    * @throws Exception throws Exception in targets
@@ -2094,7 +2094,7 @@ public class AggregatorTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.component.aggregator.Aggregator#onFlowAdded(java.lang.String, org.o3project.odenos.core.component.network.flow.FlowObject.FlowMessage)}
+   * {@link org.o3project.odenos.component.aggregator.Aggregator#onFlowAdded(java.lang.String, Flow)}
    * .
    */
   @Test
@@ -2117,7 +2117,7 @@ public class AggregatorTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.component.aggregator.Aggregator#onFlowAdded(java.lang.String, org.o3project.odenos.core.component.network.flow.FlowObject.FlowMessage)}
+   * {@link org.o3project.odenos.component.aggregator.Aggregator#onFlowAdded(java.lang.String, Flow)}
    * .
    */
   @Test
@@ -2145,7 +2145,7 @@ public class AggregatorTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.component.aggregator.Aggregator#onFlowAdded(java.lang.String, org.o3project.odenos.core.component.network.flow.FlowObject.FlowMessage)}
+   * {@link org.o3project.odenos.component.aggregator.Aggregator#onFlowAdded(java.lang.String, Flow)}
    * .
    */
   @Test
@@ -2173,7 +2173,7 @@ public class AggregatorTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.component.aggregator.Aggregator#onFlowAdded(java.lang.String, org.o3project.odenos.core.component.network.flow.FlowObject.FlowMessage)}
+   * {@link org.o3project.odenos.component.aggregator.Aggregator#onFlowAdded(java.lang.String, Flow)}
    * .
    */
   @Test
@@ -2201,7 +2201,7 @@ public class AggregatorTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.component.aggregator.Aggregator#onFlowAdded(java.lang.String, org.o3project.odenos.core.component.network.flow.FlowObject.FlowMessage)}
+   * {@link org.o3project.odenos.component.aggregator.Aggregator#onFlowAdded(java.lang.String, Flow)}
    * .
    */
   @Test
@@ -2245,7 +2245,7 @@ public class AggregatorTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.component.aggregator.Aggregator#onFlowAdded(java.lang.String, org.o3project.odenos.core.component.network.flow.FlowObject.FlowMessage)}
+   * {@link org.o3project.odenos.component.aggregator.Aggregator#onFlowAdded(java.lang.String, Flow)}
    * .
    * @throws Exception throws Exception in targets
    */
@@ -2296,7 +2296,7 @@ public class AggregatorTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.component.aggregator.Aggregator#onFlowUpdate(java.lang.String, org.o3project.odenos.core.component.network.flow.FlowObject.FlowMessage, org.o3project.odenos.core.component.network.flow.FlowObject.FlowMessage, java.util.ArrayList)}
+   * {@link org.o3project.odenos.component.aggregator.Aggregator#onFlowUpdate(java.lang.String, Flow, Flow, java.util.ArrayList)}
    * .
    * @throws Exception throws Exception in targets
    */
@@ -2358,7 +2358,7 @@ public class AggregatorTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.component.aggregator.Aggregator#onFlowUpdatePre(java.lang.String, org.o3project.odenos.core.component.network.flow.FlowObject.FlowMessage, org.o3project.odenos.core.component.network.flow.FlowObject.FlowMessage, java.util.ArrayList)}
+   * {@link org.o3project.odenos.component.aggregator.Aggregator#onFlowUpdatePre(java.lang.String, Flow, Flow, java.util.ArrayList)}
    * .
    */
   @Test
@@ -2386,7 +2386,7 @@ public class AggregatorTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.component.aggregator.Aggregator#onFlowUpdate(java.lang.String, org.o3project.odenos.core.component.network.flow.FlowObject.FlowMessage, org.o3project.odenos.core.component.network.flow.FlowObject.FlowMessage, java.util.ArrayList)}
+   * {@link org.o3project.odenos.component.aggregator.Aggregator#onFlowUpdate(java.lang.String, Flow, Flow, java.util.ArrayList)}
    * .
    */
   @Test
@@ -2422,7 +2422,7 @@ public class AggregatorTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.component.aggregator.Aggregator#onFlowUpdate(java.lang.String, org.o3project.odenos.core.component.network.flow.FlowObject.FlowMessage, org.o3project.odenos.core.component.network.flow.FlowObject.FlowMessage, java.util.ArrayList)}
+   * {@link org.o3project.odenos.component.aggregator.Aggregator#onFlowUpdate(java.lang.String, Flow, Flow, java.util.ArrayList)}
    * .
    * @throws Exception throws Exception in targets
    */
@@ -2470,7 +2470,7 @@ public class AggregatorTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.component.aggregator.Aggregator#onFlowUpdate(java.lang.String, org.o3project.odenos.core.component.network.flow.FlowObject.FlowMessage, org.o3project.odenos.core.component.network.flow.FlowObject.FlowMessage, java.util.ArrayList)}
+   * {@link org.o3project.odenos.component.aggregator.Aggregator#onFlowUpdate(java.lang.String, Flow, Flow, java.util.ArrayList)}
    * .
    * @throws Exception throws Exception in targets
    */
@@ -2521,7 +2521,7 @@ public class AggregatorTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.component.aggregator.Aggregator#onFlowUpdate(java.lang.String, org.o3project.odenos.core.component.network.flow.FlowObject.FlowMessage, org.o3project.odenos.core.component.network.flow.FlowObject.FlowMessage, java.util.ArrayList)}
+   * {@link org.o3project.odenos.component.aggregator.Aggregator#onFlowUpdate(java.lang.String, Flow, Flow, java.util.ArrayList)}
    * .
    * @throws Exception throws Exception in targets
    */
@@ -2616,7 +2616,7 @@ public class AggregatorTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.component.aggregator.Aggregator#onInPacketAddedPre(java.lang.String, org.o3project.odenos.core.component.network.packet.OutPacketAdded)}
+   * {@link org.o3project.odenos.component.aggregator.Aggregator#onOutPacketAddedPre(java.lang.String, OutPacketAdded)}
    * .
    */
   @Test
@@ -2636,7 +2636,7 @@ public class AggregatorTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.component.aggregator.Aggregator#onInPacketAddedPre(java.lang.String, org.o3project.odenos.core.component.network.packet.OutPacketAdded)}
+   * {@link org.o3project.odenos.component.aggregator.Aggregator#onOutPacketAddedPre(String, OutPacketAdded)}
    * .
    */
   @Test
@@ -2655,7 +2655,7 @@ public class AggregatorTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.component.aggregator.Aggregator#getFlow(org.o3project.odenos.component.networkinterface, java.lang.String)}
+   * {@link org.o3project.odenos.component.aggregator.Aggregator#getFlow(org.o3project.odenos.core.component.NetworkInterface, java.lang.String)}
    * .
    */
   @Test
@@ -2683,7 +2683,7 @@ public class AggregatorTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.component.aggregator.Aggregator#getFlow(org.o3project.odenos.component.networkinterface, java.lang.String)}
+   * {@link org.o3project.odenos.component.aggregator.Aggregator#getFlow(org.o3project.odenos.core.component.NetworkInterface, java.lang.String)}
    * .
    */
   @Test
@@ -2696,7 +2696,7 @@ public class AggregatorTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.component.aggregator.Aggregator#getFlow(org.o3project.odenos.component.networkinterface, java.lang.String)}
+   * {@link org.o3project.odenos.component.aggregator.Aggregator#getFlow(org.o3project.odenos.core.component.NetworkInterface, java.lang.String)}
    * .
    */
   @Test
@@ -2709,7 +2709,7 @@ public class AggregatorTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.component.aggregator.Aggregator#getFlow(org.o3project.odenos.component.networkinterface, java.lang.String)}
+   * {@link org.o3project.odenos.component.aggregator.Aggregator#getFlow(org.o3project.odenos.core.component.NetworkInterface, java.lang.String)}
    * .
    */
   @Test
@@ -2724,7 +2724,7 @@ public class AggregatorTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.component.aggregator.Aggregator#finalizingNetwork(org.o3project.odenos.component.networkinterface, org.o3project.odenos.component.networkinterface)}
+   * {@link org.o3project.odenos.component.aggregator.Aggregator#finalizingNetwork(org.o3project.odenos.core.component.NetworkInterface, org.o3project.odenos.core.component.NetworkInterface)}
    *
    * @throws Exception throws Exception in targets
    */
@@ -2749,7 +2749,7 @@ public class AggregatorTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.component.aggregator.Aggregator#reflecteToAggregatedFromOriginal(org.o3project.odenos.component.networkinterface, org.o3project.odenos.component.networkinterface)}
+   * {@link org.o3project.odenos.component.aggregator.Aggregator#reflecteToAggregatedFromOriginal(org.o3project.odenos.core.component.NetworkInterface, org.o3project.odenos.core.component.NetworkInterface)}
    * .
    * @throws Exception throws Exception in targets
    */
@@ -2768,7 +2768,7 @@ public class AggregatorTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.component.aggregator.Aggregator#updateFlow(org.o3project.odenos.component.networkinterface, org.o3project.odenos.component.networkinterface, org.o3project.odenos.core.component.network.flow.basic.BasicFlow, org.o3project.odenos.core.component.network.flow.basic.BasicFlow)}
+   * {@link org.o3project.odenos.component.aggregator.Aggregator#updateFlow(org.o3project.odenos.core.component.NetworkInterface, org.o3project.odenos.core.component.NetworkInterface, org.o3project.odenos.core.component.network.flow.basic.BasicFlow, org.o3project.odenos.core.component.network.flow.basic.BasicFlow)}
    * .
    * @throws Exception throws Exception in targets
    */
@@ -2786,7 +2786,7 @@ public class AggregatorTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.component.aggregator.Aggregator#updateOperStatus(org.o3project.odenos.component.networkinterface)}
+   * {@link org.o3project.odenos.component.aggregator.Aggregator#updateOperStatus(org.o3project.odenos.core.component.NetworkInterface)}
    * .
    * @throws Exception throws Exception in targets
    */
@@ -2808,7 +2808,7 @@ public class AggregatorTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.component.aggregator.Aggregator#addUnconnectedPortToAggregated(org.o3project.odenos.component.networkinterface, org.o3project.odenos.component.networkinterface, org.o3project.odenos.core.component.network.topology.Link)}
+   * {@link org.o3project.odenos.component.aggregator.Aggregator#addUnconnectedPortToAggregated(org.o3project.odenos.core.component.NetworkInterface, org.o3project.odenos.core.component.NetworkInterface, org.o3project.odenos.core.component.network.topology.Link)}
    * .
    * @throws Exception throws Exception in targets
    */

@@ -142,7 +142,7 @@ public class PortTest {
 
   /**
    * Test method for {@link
-   *  org.o3project.odenos.component.network.topology.Port#Port(java.lang.String,
+   *  org.o3project.odenos.core.component.network.topology.Port#Port(java.lang.String,
    * java.lang.String, java.lang.String, java.lang.String,
    * java.lang.String, java.util.Map)}.
    */

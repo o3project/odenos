@@ -206,7 +206,7 @@ public class LogMessageTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.logging.message.LogMessage#setSavedTxid()}
+   * {@link org.o3project.odenos.core.logging.message.LogMessage#setSavedTxid(String)}
    * .
    *
    * @throws Exception throws Exception in targets
@@ -228,7 +228,7 @@ public class LogMessageTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.logging.message.LogMessage#setSavedTxid()}
+   * {@link org.o3project.odenos.core.logging.message.LogMessage#setSavedTxid(String)}
    * .
    *
    * @throws Exception throws Exception in targets
@@ -259,7 +259,7 @@ public class LogMessageTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.logging.message.LogMessage#setSavedTxid()}
+   * {@link org.o3project.odenos.core.logging.message.LogMessage#setSavedTxid(String)}
    * .
    *
    * @throws Exception throws Exception in targets
@@ -290,7 +290,7 @@ public class LogMessageTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.logging.message.LogMessage#setSavedTxid()}
+   * {@link org.o3project.odenos.core.logging.message.LogMessage#setSavedTxid(String)}
    * .
    *
    * @throws Exception throws Exception in targets

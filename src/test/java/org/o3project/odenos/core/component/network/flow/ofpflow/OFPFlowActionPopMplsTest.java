@@ -83,7 +83,7 @@ public class OFPFlowActionPopMplsTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.flow.ofpflow.OFPFlowActionPopMpls#OFPFlowActionPopMpls(java.lang.String)}
+   * {@link org.o3project.odenos.core.component.network.flow.ofpflow.OFPFlowActionPopMpls#OFPFlowActionPopMpls(Integer)}
    * .
    */
   @Test
