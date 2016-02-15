@@ -429,6 +429,13 @@
           <reportOutputDirectory>doc/java</reportOutputDirectory>
           <quiet>true</quiet>
           <additionalparam>${javadoc.args}</additionalparam>
+          <additionalDependencies>
+            <additionalDependency>
+              <groupId>org.o3project.odenos</groupId>
+              <artifactId>odenos</artifactId>
+              <version>1.0.0</version>
+            </additionalDependency>
+          </additionalDependencies>
         </configuration>
       </plugin>
       <plugin>
