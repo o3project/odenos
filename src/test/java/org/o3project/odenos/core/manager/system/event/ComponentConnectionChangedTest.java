@@ -39,21 +39,21 @@ public class ComponentConnectionChangedTest {
   private String action;
 
   /**
-   * @throws java.lang.Exception
+   * @throws java.lang.Exception throws Exception in targets
    */
   @BeforeClass
   public static void setUpBeforeClass() throws Exception {
   }
 
   /**
-   * @throws java.lang.Exception
+   * @throws java.lang.Exception throws Exception in targets
    */
   @AfterClass
   public static void tearDownAfterClass() throws Exception {
   }
 
   /**
-   * @throws java.lang.Exception
+   * @throws java.lang.Exception throws Exception in targets
    */
   @Before
   public void setUp() throws Exception {
@@ -63,7 +63,7 @@ public class ComponentConnectionChangedTest {
   }
 
   /**
-   * @throws java.lang.Exception
+   * @throws java.lang.Exception throws Exception in targets
    */
   @After
   public void tearDown() throws Exception {
@@ -92,7 +92,7 @@ public class ComponentConnectionChangedTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.manager.system.event.ComponentConnectionChanged#ComponentConnectionChanged(java.lang.String, org.o3project.odenos.core.manager.system.ComponentConnection, org.o3project.odenos.core.manager.system.ComponentConnection)}
+   * {@link org.o3project.odenos.core.manager.system.event.ComponentConnectionChanged#ComponentConnectionChanged(java.lang.String, org.o3project.odenos.core.manager.system.ComponentConnection, org.o3project.odenos.core.manager.system.ComponentConnection)}
    * .
    */
   @Test

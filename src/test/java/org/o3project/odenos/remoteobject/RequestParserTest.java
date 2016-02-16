@@ -47,21 +47,21 @@ public class RequestParserTest {
   private RequestParser<String> target;
 
   /**
-   * @throws java.lang.Exception
+   * @throws java.lang.Exception throws Exception in targets
    */
   @BeforeClass
   public static void setUpBeforeClass() throws Exception {
   }
 
   /**
-   * @throws java.lang.Exception
+   * @throws java.lang.Exception throws Exception in targets
    */
   @AfterClass
   public static void tearDownAfterClass() throws Exception {
   }
 
   /**
-   * @throws java.lang.Exception
+   * @throws java.lang.Exception throws Exception in targets
    */
   @Before
   public void setUp() throws Exception {
@@ -69,7 +69,7 @@ public class RequestParserTest {
   }
 
   /**
-   * @throws java.lang.Exception
+   * @throws java.lang.Exception throws Exception in targets
    */
   @After
   public void tearDown() throws Exception {
@@ -77,10 +77,10 @@ public class RequestParserTest {
   }
 
   /**
-   * Test method for {@link
-   * org.o3project.odenos.util.RequestParser.ParsedRequest#ParsedRequest(org.
-   * o3project.odenos.remoteobject.message.Request, T, java.util.Map<java.lang.String,
-   * java.lang.String>, java.lang.String)}.
+   * Test method for {@literal
+   * org.o3project.odenos.remoteobject.RequestParser.ParsedRequest#ParsedRequest(
+   * org.o3project.odenos.remoteobject.message.Request,
+   * java.lang.Object, java.util.Map, java.lang.String)}.
    */
   @Test
   public void testParsedRequestTest() {
@@ -341,7 +341,7 @@ public class RequestParserTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.remoteobject.RequestParser#addRule(org.o3project.odenos.remoteobject.message.Request.Method, java.lang.String, T)}
+   * {@link org.o3project.odenos.remoteobject.RequestParser#addRule(org.o3project.odenos.remoteobject.message.Request.Method, java.lang.String, java.lang.Object)}
    * .
    */
   @Test
@@ -379,7 +379,7 @@ public class RequestParserTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.remoteobject.RequestParser#setDefaultResult(T)}.
+   * {@link org.o3project.odenos.remoteobject.RequestParser#setDefaultResult(java.lang.Object)}.
    */
   @Test
   public void testSetDefaultResult() {
@@ -497,7 +497,7 @@ public class RequestParserTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.remoteobject.RequestParser.State#addResult(org.o3project.odenos.remoteobject.message.Request.Method, T)}
+   * {@link org.o3project.odenos.remoteobject.RequestParser.State#addResult(org.o3project.odenos.remoteobject.message.Request.Method, java.lang.Object)}
    * .
    */
   @Test
@@ -663,8 +663,8 @@ public class RequestParserTest {
 
   /**
    * Test method for {@link
-   * org.o3project.odenos.util.RequestParser.State#nextState(java.lang.String,
-   * java.util.Map<java.lang.String, java.lang.String>)}.
+   * org.o3project.odenos.remoteobject.RequestParser.State#nextState(java.lang.String,
+   * java.util.Map)}.
    */
   @Test
   public void testNextState() {
@@ -683,8 +683,8 @@ public class RequestParserTest {
 
   /**
    * Test method for {@link
-   * org.o3project.odenos.util.RequestParser.State#nextState(java.lang.String,
-   * java.util.Map<java.lang.String, java.lang.String>)}.
+   * org.o3project.odenos.remoteobject.RequestParser.State#nextState(java.lang.String,
+   * java.util.Map)}.
    */
   @Test
   public void testNextStateWhenParameteredTargetIsNonNull() {
@@ -704,8 +704,8 @@ public class RequestParserTest {
 
   /**
    * Test method for {@link
-   * org.o3project.odenos.util.RequestParser.State#nextState(java.lang.String,
-   * java.util.Map<java.lang.String, java.lang.String>)}.
+   * org.o3project.odenos.remoteobject.RequestParser.State#nextState(java.lang.String,
+   * java.util.Map)}.
    */
   @Test
   public void testNextStateWhenTransitionTargetsIsNonNull() {
@@ -742,8 +742,8 @@ public class RequestParserTest {
 
   /**
    * Test method for {@link
-   * org.o3project.odenos.util.RequestParser.SinkState#nextState(java.lang.
-   * String, java.util.Map<java.lang.String, java.lang.String>)}.
+   * org.o3project.odenos.remoteobject.RequestParser.SinkState#nextState(
+   * java.lang.String, java.util.Map)}.
    */
   @Test
   public void testSinkStateNextState() {

@@ -58,21 +58,21 @@ public class BaseObjectChangedTest {
   private String action;
 
   /**
-   * @throws java.lang.Exception
+   * @throws java.lang.Exception throws Exception in targets
    */
   @BeforeClass
   public static void setUpBeforeClass() throws Exception {
   }
 
   /**
-   * @throws java.lang.Exception
+   * @throws java.lang.Exception throws Exception in targets
    */
   @AfterClass
   public static void tearDownAfterClass() throws Exception {
   }
 
   /**
-   * @throws java.lang.Exception
+   * @throws java.lang.Exception throws Exception in targets
    */
   @Before
   public void setUp() throws Exception {
@@ -82,7 +82,7 @@ public class BaseObjectChangedTest {
   }
 
   /**
-   * @throws java.lang.Exception
+   * @throws java.lang.Exception throws Exception in targets
    */
   @After
   public void tearDown() throws Exception {
@@ -167,7 +167,7 @@ public class BaseObjectChangedTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.remoteobject.event.BaseObjectChanged#readFrom(org.msgpack.packer.Packer)}
+   * {@link org.o3project.odenos.remoteobject.event.BaseObjectChanged#readFrom(Unpacker)}
    * .
    */
   @Test
@@ -213,7 +213,7 @@ public class BaseObjectChangedTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.remoteobject.event.BaseObjectChanged#readFrom(org.msgpack.packer.Packer)}
+   * {@link org.o3project.odenos.remoteobject.event.BaseObjectChanged#readFrom(Unpacker)}
    * .
    */
   @Test
@@ -256,7 +256,7 @@ public class BaseObjectChangedTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.remoteobject.event.BaseObjectChanged#readFrom(org.msgpack.packer.Packer)}
+   * {@link org.o3project.odenos.remoteobject.event.BaseObjectChanged#readFrom(Unpacker)}
    * .
    */
   @Test
@@ -302,7 +302,7 @@ public class BaseObjectChangedTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.remoteobject.event.BaseObjectChanged#writeTo(org.msgpack.unpacker.Unpacker)}
+   * {@link org.o3project.odenos.remoteobject.event.BaseObjectChanged#writeTo(Packer)}
    * .
    */
   @Test
@@ -337,7 +337,7 @@ public class BaseObjectChangedTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.remoteobject.event.BaseObjectChanged#writeTo(org.msgpack.unpacker.Unpacker)}
+   * {@link org.o3project.odenos.remoteobject.event.BaseObjectChanged#writeTo(Packer)}
    * .
    */
   @Test

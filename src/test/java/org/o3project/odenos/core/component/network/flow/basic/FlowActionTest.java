@@ -49,21 +49,21 @@ public class FlowActionTest {
   private FlowAction target = null;
 
   /**
-   * @throws java.lang.Exception
+   * @throws java.lang.Exception throws Exception in targets
    */
   @BeforeClass
   public static void setUpBeforeClass() throws Exception {
   }
 
   /**
-   * @throws java.lang.Exception
+   * @throws java.lang.Exception throws Exception in targets
    */
   @AfterClass
   public static void tearDownAfterClass() throws Exception {
   }
 
   /**
-   * @throws java.lang.Exception
+   * @throws java.lang.Exception throws Exception in targets
    */
   @Before
   public void setUp() throws Exception {
@@ -92,7 +92,7 @@ public class FlowActionTest {
   }
 
   /**
-   * @throws java.lang.Exception
+   * @throws java.lang.Exception throws Exception in targets
    */
   @After
   public void tearDown() throws Exception {
@@ -101,7 +101,7 @@ public class FlowActionTest {
 
   /**
    * Test method for
-   * {@link org.org.o3project.odenos.component.network.flow.basic.FlowAction#FlowAction()}
+   * {@link org.o3project.odenos.core.component.network.flow.basic.FlowAction#FlowAction()}
    * .
    */
   @Test
@@ -132,7 +132,7 @@ public class FlowActionTest {
 
   /**
    * Test method for
-   * {@link org.org.o3project.odenos.component.network.flow.basic.FlowAction#validate()}
+   * {@link org.o3project.odenos.core.component.network.flow.basic.FlowAction#validate()}
    * .
    */
   @Test
@@ -142,7 +142,7 @@ public class FlowActionTest {
 
   /**
    * Test method for
-   * {@link org.org.o3project.odenos.component.network.flow.basic.FlowAction#getType()}
+   * {@link org.o3project.odenos.core.component.network.flow.basic.FlowAction#getType()}
    * .
    */
   @Test
@@ -152,7 +152,7 @@ public class FlowActionTest {
 
   /**
    * Test method for
-   * {@link org.org.o3project.odenos.component.network.flow.basic.FlowAction#writeValueSub(java.util.Map)}
+   * {@link org.o3project.odenos.core.component.network.flow.basic.FlowAction#writeValueSub(java.util.Map)}
    * .
    */
   @Test
@@ -166,7 +166,7 @@ public class FlowActionTest {
 
   /**
    * Test method for
-   * {@link org.org.o3project.odenos.component.network.flow.basic.FlowAction#equals(java.lang.Object)}
+   * {@link org.o3project.odenos.core.component.network.flow.basic.FlowAction#equals(java.lang.Object)}
    * .
    */
   @Test
@@ -224,7 +224,7 @@ public class FlowActionTest {
 
   /**
    * Test method for
-   * {@link org.org.o3project.odenos.component.network.flow.basic.FlowAction#equals(java.lang.Object)}
+   * {@link org.o3project.odenos.core.component.network.flow.basic.FlowAction#equals(java.lang.Object)}
    * .
    */
   @Test
@@ -235,7 +235,7 @@ public class FlowActionTest {
 
   /**
    * Test method for
-   * {@link org.org.o3project.odenos.component.network.flow.basic.FlowAction#equals(java.lang.Object)}
+   * {@link org.o3project.odenos.core.component.network.flow.basic.FlowAction#equals(java.lang.Object)}
    * .
    */
   @Test
@@ -245,7 +245,7 @@ public class FlowActionTest {
 
   /**
    * Test method for
-   * {@link org.org.o3project.odenos.component.network.flow.basic.FlowAction#equals(java.lang.Object)}
+   * {@link org.o3project.odenos.core.component.network.flow.basic.FlowAction#equals(java.lang.Object)}
    * .
    */
   @Test
@@ -256,7 +256,7 @@ public class FlowActionTest {
 
   /**
    * Test method for
-   * {@link org.org.o3project.odenos.component.network.flow.basic.FlowAction#equals(java.lang.Object)}
+   * {@link org.o3project.odenos.core.component.network.flow.basic.FlowAction#equals(java.lang.Object)}
    * .
    */
   @Test

@@ -270,7 +270,7 @@ public class LinkLayerizerBoundary extends Boundary implements Serializable {
 
   /*
    * (non-Javadoc)
-   * @see org.o3project.odenos.component.network.OdenosMessage#readValue(org.msgpack.type.Value)
+   * @see org.o3project.odenos.core.component.network.OdenosMessage#readValue(org.msgpack.type.Value)
    */
   @Override
   public boolean readValue(Value value) {
@@ -330,7 +330,7 @@ public class LinkLayerizerBoundary extends Boundary implements Serializable {
 
   /*
    * (non-Javadoc)
-   * @see org.o3project.odenos.component.network.OdenosMessage#writeValueSub(java.util.Map)
+   * @see org.o3project.odenos.core.component.network.OdenosMessage#writeValueSub(java.util.Map)
    */
   @Override
   public boolean writeValueSub(Map<String, Value> values) {
@@ -411,7 +411,7 @@ public class LinkLayerizerBoundary extends Boundary implements Serializable {
 
   /*
    * (non-Javadoc)
-   * @see org.o3project.odenos.component.Boundary#toString()
+   * @see org.o3project.odenos.core.component.Boundary#toString()
    */
   @Override
   public String toString() {

@@ -87,21 +87,21 @@ public class LearningSwitchTest {
   private MessageDispatcher dispatcher;
 
   /**
-   * @throws java.lang.Exception
+   * @throws java.lang.Exception throws Exception in targets
    */
   @BeforeClass
   public static void setUpBeforeClass() throws Exception {
   }
 
   /**
-   * @throws java.lang.Exception
+   * @throws java.lang.Exception throws Exception in targets
    */
   @AfterClass
   public static void tearDownAfterClass() throws Exception {
   }
 
   /**
-   * @throws java.lang.Exception
+   * @throws java.lang.Exception throws Exception in targets
    */
   @Before
   public void setUp() throws Exception {
@@ -115,7 +115,7 @@ public class LearningSwitchTest {
   }
 
   /**
-   * @throws java.lang.Exception
+   * @throws java.lang.Exception throws Exception in targets
    */
   @After
   public void tearDown() throws Exception {
@@ -352,7 +352,7 @@ public class LearningSwitchTest {
    * {@link org.o3project.odenos.component.learningswitch.LearningSwitch#onConnectionChangedAdded(org.o3project.odenos.core.manager.system.event.ComponentConnectionChanged)}
    * .
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testOnConnectionChangedAdded() throws Exception {
@@ -395,7 +395,7 @@ public class LearningSwitchTest {
    * {@link org.o3project.odenos.component.learningswitch.LearningSwitch#onConnectionChangedDelete(org.o3project.odenos.core.manager.system.event.ComponentConnectionChanged)}
    * .
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testOnConnectionChangedDelete() throws Exception {
@@ -445,10 +445,10 @@ public class LearningSwitchTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.component.learningswitch.LearningSwitch#subscriptionNetwork()}
+   * {@link org.o3project.odenos.component.learningswitch.LearningSwitch#subscribeNetwork()}
    * .
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testSubscribeNetworkSuccess() throws Exception {
@@ -495,10 +495,10 @@ public class LearningSwitchTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.component.learningswitch.LearningSwitch#subscriptionNetwork()}
+   * {@link org.o3project.odenos.component.learningswitch.LearningSwitch#subscribeNetwork()}
    * .
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testSubscribeNetworkThrowException() throws Exception {
@@ -528,10 +528,10 @@ public class LearningSwitchTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.component.learningswitch.LearningSwitch#unsubscriptionNetwork()}
+   * {@link org.o3project.odenos.component.learningswitch.LearningSwitch#unsubscribeNetwork()}
    * .
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testUnsubscribeNetworkSuccess() throws Exception {
@@ -565,10 +565,10 @@ public class LearningSwitchTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.component.learningswitch.LearningSwitch#subscriptionNetwork()}
+   * {@link org.o3project.odenos.component.learningswitch.LearningSwitch#subscribeNetwork()}
    * .
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testUnsubscribeNetworkThrowException() throws Exception {
@@ -601,7 +601,7 @@ public class LearningSwitchTest {
    * {@link org.o3project.odenos.component.learningswitch.LearningSwitch#onRequest(org.o3project.odenos.remoteobject.message.Request)}
    * .
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testOnRequest() throws Exception {
@@ -630,7 +630,7 @@ public class LearningSwitchTest {
    * {@link org.o3project.odenos.component.learningswitch.LearningSwitch#onRequest(org.o3project.odenos.remoteobject.message.Request)}
    * .
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testOnRequest_RequestNull() throws Exception {
@@ -705,7 +705,7 @@ public class LearningSwitchTest {
    * {@link org.o3project.odenos.component.learningswitch.LearningSwitch#onNodeDelete(java.lang.String, org.o3project.odenos.core.component.network.topology.Node)}
    * .
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testOnNodeDelete() throws Exception {
@@ -737,7 +737,7 @@ public class LearningSwitchTest {
    * {@link org.o3project.odenos.component.learningswitch.LearningSwitch#onNodeDelete(java.lang.String, org.o3project.odenos.core.component.network.topology.Node)}
    * .
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testOnNodeDelete_NodeNull() throws Exception {
@@ -826,7 +826,7 @@ public class LearningSwitchTest {
    * {@link org.o3project.odenos.component.learningswitch.LearningSwitch#onPortDelete(java.lang.String, org.o3project.odenos.core.component.network.topology.Port)}
    * .
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testOnPortDelete() throws Exception {
@@ -878,7 +878,7 @@ public class LearningSwitchTest {
    * {@link org.o3project.odenos.component.learningswitch.LearningSwitch#onLinkDelete(java.lang.String, org.o3project.odenos.core.component.network.topology.Link)}
    * .
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testOnLinkDelete() throws Exception {
@@ -903,7 +903,7 @@ public class LearningSwitchTest {
    * {@link org.o3project.odenos.component.learningswitch.LearningSwitch#onLinkDelete(java.lang.String, org.o3project.odenos.core.component.network.topology.Link)}
    * .
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testOnLinkDelete_FailToValifate() throws Exception {
@@ -933,7 +933,7 @@ public class LearningSwitchTest {
    * {@link org.o3project.odenos.component.learningswitch.LearningSwitch#onLinkDelete(java.lang.String, org.o3project.odenos.core.component.network.topology.Link)}
    * .
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testOnLinkDelete_LinkNull() throws Exception {
@@ -988,7 +988,7 @@ public class LearningSwitchTest {
    * {@link org.o3project.odenos.component.learningswitch.LearningSwitch#onFlowUpdate(java.lang.String, org.o3project.odenos.core.component.network.flow.Flow, org.o3project.odenos.core.component.network.flow.Flow, java.util.ArrayList)}
    * .
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testOnFlowUpdate() throws Exception {
@@ -1033,7 +1033,7 @@ public class LearningSwitchTest {
    * {@link org.o3project.odenos.component.learningswitch.LearningSwitch#onFlowUpdate(java.lang.String, org.o3project.odenos.core.component.network.flow.Flow, org.o3project.odenos.core.component.network.flow.Flow, java.util.ArrayList)}
    * .
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testOnFlowUpdate_StatusTeardown() throws Exception {
@@ -1088,7 +1088,7 @@ public class LearningSwitchTest {
    * {@link org.o3project.odenos.component.learningswitch.LearningSwitch#onFlowUpdate(java.lang.String, org.o3project.odenos.core.component.network.flow.Flow, org.o3project.odenos.core.component.network.flow.Flow, java.util.ArrayList)}
    * .
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testOnFlowUpdate_StatusFailed() throws Exception {
@@ -1143,7 +1143,7 @@ public class LearningSwitchTest {
    * {@link org.o3project.odenos.component.learningswitch.LearningSwitch#onFlowUpdate(java.lang.String, org.o3project.odenos.core.component.network.flow.Flow, org.o3project.odenos.core.component.network.flow.Flow, java.util.ArrayList)}
    * .
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testOnFlowUpdate_BasicFlow() throws Exception {
@@ -1185,7 +1185,7 @@ public class LearningSwitchTest {
    * {@link org.o3project.odenos.component.learningswitch.LearningSwitch#onFlowUpdate(java.lang.String, org.o3project.odenos.core.component.network.flow.Flow, org.o3project.odenos.core.component.network.flow.Flow, java.util.ArrayList)}
    * .
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testOnFlowUpdate_NoStatus() throws Exception {
@@ -1228,7 +1228,7 @@ public class LearningSwitchTest {
    * {@link org.o3project.odenos.component.learningswitch.LearningSwitch#onFlowUpdate(java.lang.String, org.o3project.odenos.core.component.network.flow.Flow, org.o3project.odenos.core.component.network.flow.Flow, java.util.ArrayList)}
    * .
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testOnFlowUpdate_NullFlow() throws Exception {
@@ -1294,7 +1294,7 @@ public class LearningSwitchTest {
    * {@link org.o3project.odenos.component.learningswitch.LearningSwitch#onInPacketAdded(java.lang.String, org.o3project.odenos.core.component.network.packet.InPacketAdded)}
    * .
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testOnInPacketAdded() throws Exception {
@@ -1347,7 +1347,7 @@ public class LearningSwitchTest {
    * {@link org.o3project.odenos.component.learningswitch.LearningSwitch#getInPacket(org.o3project.odenos.core.component.NetworkInterface, java.lang.String)}
    * .
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testGetInPacket() throws Exception {
@@ -1389,7 +1389,7 @@ public class LearningSwitchTest {
    * {@link org.o3project.odenos.component.learningswitch.LearningSwitch#getInPacket(org.o3project.odenos.core.component.NetworkInterface, java.lang.String)}
    * .
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testGetInPacket_OfpFlowMatch() throws Exception {
@@ -1459,7 +1459,7 @@ public class LearningSwitchTest {
    * {@link org.o3project.odenos.component.learningswitch.LearningSwitch#getInPacket(org.o3project.odenos.core.component.NetworkInterface, java.lang.String)}
    * .
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testGetInPacket_NullInPacket() throws Exception {
@@ -1489,7 +1489,7 @@ public class LearningSwitchTest {
   /**
    * Test method for {@link org.o3project.odenos.component.learningswitch.LearningSwitch#createParser()}.
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testCreateParser() throws Exception {
@@ -1511,7 +1511,7 @@ public class LearningSwitchTest {
   /**
    * Test method for {@link org.o3project.odenos.component.learningswitch.LearningSwitch#getFdb()}.
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testGetFdb() throws Exception {
@@ -1543,7 +1543,7 @@ public class LearningSwitchTest {
   /**
    * Test method for {@link org.o3project.odenos.component.learningswitch.LearningSwitch#getFdb()}.
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testGetFdb_EmptyFdb() throws Exception {
@@ -1564,7 +1564,7 @@ public class LearningSwitchTest {
   /**
    * Test method for {@link org.o3project.odenos.component.learningswitch.LearningSwitch#getIdleTimer()}.
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testGetIdleTimer() throws Exception {
@@ -1590,7 +1590,7 @@ public class LearningSwitchTest {
   /**
    * Test method for {@link org.o3project.odenos.component.learningswitch.LearningSwitch#getHardTimer()}.
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testGetHardTimer() throws Exception {
@@ -1617,7 +1617,7 @@ public class LearningSwitchTest {
   /**
    * Test method for {@link org.o3project.odenos.component.learningswitch.LearningSwitch#putHardTimer(Integer)}.
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testPutHardTimer() throws Exception {
@@ -1642,7 +1642,7 @@ public class LearningSwitchTest {
   /**
    * Test method for {@link org.o3project.odenos.component.learningswitch.LearningSwitch#putIdleTimer(Integer)}.
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testPutIdleTimer() throws Exception {
@@ -1667,7 +1667,7 @@ public class LearningSwitchTest {
   /**
    * Test method for {@link org.o3project.odenos.component.learningswitch.LearningSwitch#deleteFdb()}.
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testDeleteFdb() throws Exception {
@@ -1698,7 +1698,7 @@ public class LearningSwitchTest {
   /**
    * Test method for {@link org.o3project.odenos.component.learningswitch.LearningSwitch#deleteFdb(String)}.
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testDeleteFdbString() throws Exception {
@@ -1728,9 +1728,9 @@ public class LearningSwitchTest {
   }
 
   /**
-   * Test method for {@literal org.o3project.odenos.component.LearningSwitch#createOFPFlow(InPacket, String, String, List<String>)}.
+   * Test method for {@link org.o3project.odenos.component.learningswitch.LearningSwitch#createOFPFlow(InPacket, String, String, List)}.
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testCreateOFPFlow() throws Exception {
@@ -1774,7 +1774,7 @@ public class LearningSwitchTest {
   /**
    * Test method for {@link org.o3project.odenos.component.learningswitch.LearningSwitch#deleteFlowByLink(String)}.
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testDeleteFlowByLink() throws Exception {
@@ -1820,7 +1820,7 @@ public class LearningSwitchTest {
   /**
    * Test method for {@link org.o3project.odenos.component.learningswitch.LearningSwitch#deleteFlowByNode(String)}.
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testDeleteFlowByNode() throws Exception {
@@ -1879,7 +1879,7 @@ public class LearningSwitchTest {
   /**
    * Test method for {@link org.o3project.odenos.component.learningswitch.LearningSwitch#deleteFlowByPort(String)}.
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testDeleteFlowByPort() throws Exception {
@@ -1938,7 +1938,7 @@ public class LearningSwitchTest {
   /**
    * Test method for {@link org.o3project.odenos.component.learningswitch.LearningSwitch#deleteFlowByEthAddr(String)}.
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testDeleteFlowByEthAddr() throws Exception {
@@ -2021,7 +2021,7 @@ public class LearningSwitchTest {
   /**
    * Test method for {@link org.o3project.odenos.component.learningswitch.LearningSwitch#getInNode(OFPFlow)}.
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testGetInNode() throws Exception {
@@ -2059,7 +2059,7 @@ public class LearningSwitchTest {
   /**
    * Test method for {@link org.o3project.odenos.component.learningswitch.LearningSwitch#getOutNode(OFPFlow)}.
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testGetOutNode() throws Exception {

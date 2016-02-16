@@ -74,21 +74,21 @@ public class ComponentManagerTest {
   private MessageDispatcher dispatcher;
 
   /**
-   * @throws java.lang.Exception
+   * @throws java.lang.Exception throws Exception in targets
    */
   @BeforeClass
   public static void setUpBeforeClass() throws Exception {
   }
 
   /**
-   * @throws java.lang.Exception
+   * @throws java.lang.Exception throws Exception in targets
    */
   @AfterClass
   public static void tearDownAfterClass() throws Exception {
   }
 
   /**
-   * @throws java.lang.Exception
+   * @throws java.lang.Exception throws Exception in targets
    */
   @Before
   public void setUp() throws Exception {
@@ -97,7 +97,7 @@ public class ComponentManagerTest {
   }
 
   /**
-   * @throws java.lang.Exception
+   * @throws java.lang.Exception throws Exception in targets
    */
   @After
   public void tearDown() throws Exception {
@@ -157,7 +157,7 @@ public class ComponentManagerTest {
    * {@link org.o3project.odenos.remoteobject.manager.component.ComponentManager#onEvent(org.o3project.odenos.remoteobject.message.Event)}
    * .
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public final void testOnEventComponentManagerChangedAdd() throws Exception {
@@ -184,7 +184,7 @@ public class ComponentManagerTest {
    * {@link org.o3project.odenos.remoteobject.manager.component.ComponentManager#onEvent(org.o3project.odenos.remoteobject.message.Event)}
    * .
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public final void testOnEventComponentManagerChangedDel() throws Exception {
@@ -211,7 +211,7 @@ public class ComponentManagerTest {
    * {@link org.o3project.odenos.remoteobject.manager.component.ComponentManager#onEvent(org.o3project.odenos.remoteobject.message.Event)}
    * .
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public final void testOnEventUnexpectEvent() throws Exception {
@@ -232,7 +232,7 @@ public class ComponentManagerTest {
    * {@link org.o3project.odenos.remoteobject.manager.component.ComponentManager#onEvent(org.o3project.odenos.remoteobject.message.Event)}
    * .
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public final void testOnEventComponentManagerChangedWithException()
@@ -283,7 +283,7 @@ public class ComponentManagerTest {
    * {@link org.o3project.odenos.remoteobject.manager.component.ComponentManager#registerToSystemManager()}
    * .
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public final void testRegisterToSystemManagerSuccess() throws Exception {
@@ -306,7 +306,7 @@ public class ComponentManagerTest {
    * {@link org.o3project.odenos.remoteobject.manager.component.ComponentManager#registerToSystemManager()}
    * .
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test(expected = Exception.class)
   public final void testRegisterToSystemManagerFailure() throws Exception {
@@ -326,7 +326,7 @@ public class ComponentManagerTest {
    * {@link org.o3project.odenos.remoteobject.manager.component.ComponentManager#registerEventManager()}
    * .
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public final void testRegisterEventManagerSuccess() throws Exception {
@@ -351,7 +351,7 @@ public class ComponentManagerTest {
    * {@link org.o3project.odenos.remoteobject.manager.component.ComponentManager#registerEventManager()}
    * .
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test(expected = Exception.class)
   public final void testRegisterEventManagerFailWithGetEventManager()
@@ -377,7 +377,7 @@ public class ComponentManagerTest {
    * {@link org.o3project.odenos.remoteobject.manager.component.ComponentManager#registerEventManager()}
    * .
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test(expected = Exception.class)
   public final void testRegisterEventManagerFailWithAddRemoteObject()
@@ -404,7 +404,7 @@ public class ComponentManagerTest {
    * {@link org.o3project.odenos.remoteobject.manager.component.ComponentManager#subscribeEvents()}
    * .
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public final void testSubscribeEventsSuccess() throws Exception {
@@ -427,7 +427,7 @@ public class ComponentManagerTest {
    * {@link org.o3project.odenos.remoteobject.manager.component.ComponentManager#subscribeEvents()}
    * .
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test(expected = Exception.class)
   public final void testSubscribeEventsFailure() throws Exception {
@@ -450,7 +450,7 @@ public class ComponentManagerTest {
    * {@link org.o3project.odenos.remoteobject.manager.component.ComponentManager#registerComponentManagers()}
    * .
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public final void testRegisterComponentManagersSuccess() throws Exception {
@@ -480,7 +480,7 @@ public class ComponentManagerTest {
    * {@link org.o3project.odenos.remoteobject.manager.component.ComponentManager#registerComponentManagers()}
    * .
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test(expected = Exception.class)
   public final void testRegisterComponentManagersFailWithGetComponentManagers()
@@ -503,10 +503,10 @@ public class ComponentManagerTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.remoteobject.manager.component.ComponentManager#registerOtherComponentManager()}
+   * {@link org.o3project.odenos.remoteobject.manager.component.ComponentManager#registerOtherComponentManager(ObjectProperty)}
    * .
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public final void testRegisterOtherComponentManagerSuccess()
@@ -524,10 +524,10 @@ public class ComponentManagerTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.remoteobject.manager.component.ComponentManager#registerOtherComponentManager()}
+   * {@link org.o3project.odenos.remoteobject.manager.component.ComponentManager#registerOtherComponentManager(ObjectProperty)}
    * .
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public final void testRegisterOtherComponentManagerSelfProperty()
@@ -545,10 +545,10 @@ public class ComponentManagerTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.remoteobject.manager.component.ComponentManager#registerOtherComponentManager()}
+   * {@link org.o3project.odenos.remoteobject.manager.component.ComponentManager#registerOtherComponentManager(ObjectProperty)}
    * .
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test(expected = Exception.class)
   public final void testRegisterOtherComponentManagerFailWithAddRemoteObject()
@@ -572,10 +572,10 @@ public class ComponentManagerTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.remoteobject.manager.component.ComponentManager#unregisterComponentManager()}
+   * {@link org.o3project.odenos.remoteobject.manager.component.ComponentManager#unregisterComponentManager(String)}
    * .
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public final void testUnregisterComponentManager() throws Exception {
@@ -593,7 +593,7 @@ public class ComponentManagerTest {
    * {@link org.o3project.odenos.remoteobject.manager.component.ComponentManager#createParser()}
    * .
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public final void testCreateParser() throws Exception {
@@ -659,7 +659,7 @@ public class ComponentManagerTest {
    * {@link org.o3project.odenos.remoteobject.manager.component.ComponentManager#getComponentTypes()}
    * .
    *
-   * @throws ParseBodyException
+   * @throws ParseBodyException throws ParseBodyException in targets
    */
   @Test
   public final void testGetComponentTypes() throws ParseBodyException {
@@ -679,7 +679,7 @@ public class ComponentManagerTest {
    * {@link org.o3project.odenos.remoteobject.manager.component.ComponentManager#getComponentTypes()}
    * .
    *
-   * @throws ParseBodyException
+   * @throws ParseBodyException throws ParseBodyException in targets
    */
   @Test
   public final void testGetComponentTypesWithEmpty()
@@ -739,7 +739,7 @@ public class ComponentManagerTest {
    * {@link org.o3project.odenos.remoteobject.manager.component.ComponentManager#getComponentId(java.lang.String)}
    * .
    *
-   * @throws ParseBodyException
+   * @throws ParseBodyException throws ParseBodyException in targets
    */
   @Test
   public final void testGetComponentId() throws ParseBodyException {
@@ -760,7 +760,7 @@ public class ComponentManagerTest {
    * {@link org.o3project.odenos.remoteobject.manager.component.ComponentManager#getComponentId(java.lang.String)}
    * .
    *
-   * @throws ParseBodyException
+   * @throws ParseBodyException throws ParseBodyException in targets
    */
   @Test
   public final void testGetComponentIdWithNotFound()
@@ -773,10 +773,10 @@ public class ComponentManagerTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.remoteobject.manager.component.ComponentManager#putComponentId(org.o3project.odenos.remoteobject.ObjectProperty)}
+   * {@link org.o3project.odenos.remoteobject.manager.component.ComponentManager#putComponentId(String, org.o3project.odenos.remoteobject.ObjectProperty)}
    * .
    *
-   * @throws ParseBodyException
+   * @throws ParseBodyException throws ParseBodyException in targets
    */
   @Test
   public final void testPutComponentIdWithSuccess()
@@ -799,10 +799,10 @@ public class ComponentManagerTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.remoteobject.manager.component.ComponentManager#putComponentId(org.o3project.odenos.remoteobject.ObjectProperty)}
+   * {@link org.o3project.odenos.remoteobject.manager.component.ComponentManager#putComponentId(String, org.o3project.odenos.remoteobject.ObjectProperty)}
    * .
    *
-   * @throws ParseBodyException
+   * @throws ParseBodyException throws ParseBodyException in targets
    */
   @Test
   public final void testPutComponentIdWithBodyIsNull()
@@ -822,10 +822,10 @@ public class ComponentManagerTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.remoteobject.manager.component.ComponentManager#putComponentId(org.o3project.odenos.remoteobject.ObjectProperty)}
+   * {@link org.o3project.odenos.remoteobject.manager.component.ComponentManager#putComponentId(String, org.o3project.odenos.remoteobject.ObjectProperty)}
    * .
    *
-   * @throws ParseBodyException
+   * @throws ParseBodyException throws ParseBodyException in targets
    */
   @Test
   public final void testPutComponentIdWithNotRegisteredComponentType()
@@ -848,10 +848,10 @@ public class ComponentManagerTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.remoteobject.manager.component.ComponentManager#putComponentId(org.o3project.odenos.remoteobject.ObjectProperty)}
+   * {@link org.o3project.odenos.remoteobject.manager.component.ComponentManager#putComponentId(String, org.o3project.odenos.remoteobject.ObjectProperty)}
    * .
    *
-   * @throws ParseBodyException
+   * @throws ParseBodyException throws ParseBodyException in targets
    */
   @Test
   public final void testPutComponentIdWithConflict()

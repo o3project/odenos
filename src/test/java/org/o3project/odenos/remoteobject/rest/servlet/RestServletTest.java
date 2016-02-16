@@ -55,21 +55,21 @@ public class RestServletTest {
   private RestServlet target;
 
   /**
-   * @throws java.lang.Exception
+   * @throws java.lang.Exception throws Exception in targets
    */
   @BeforeClass
   public static void setUpBeforeClass() throws Exception {
   }
 
   /**
-   * @throws java.lang.Exception
+   * @throws java.lang.Exception throws Exception in targets
    */
   @AfterClass
   public static void tearDownAfterClass() throws Exception {
   }
 
   /**
-   * @throws java.lang.Exception
+   * @throws java.lang.Exception throws Exception in targets
    */
   @Before
   public void setUp() throws Exception {
@@ -78,7 +78,7 @@ public class RestServletTest {
   }
 
   /**
-   * @throws java.lang.Exception
+   * @throws java.lang.Exception throws Exception in targets
    */
   @After
   public void tearDown() throws Exception {
@@ -89,7 +89,7 @@ public class RestServletTest {
   /**
    * Test method for static contents.
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testServiceHttpServletRequestHtmlFile()
@@ -130,7 +130,7 @@ public class RestServletTest {
   /**
    * Test method for directory.
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testServiceHttpServletRequestDirectory()
@@ -173,7 +173,7 @@ public class RestServletTest {
    * {@link org.o3project.odenos.remoteobject.rest.servlet.RestServlet#service(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)}
    * .
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testServiceHttpServletRequestHttpServletResponse()
@@ -219,7 +219,7 @@ public class RestServletTest {
    * {@link org.o3project.odenos.remoteobject.rest.servlet.RestServlet#service(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)}
    * .
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testServiceHttpServletRequestHttpServletResponse_PostPutDelete()
@@ -261,7 +261,7 @@ public class RestServletTest {
    * {@link org.o3project.odenos.remoteobject.rest.servlet.RestServlet#doRequestToComponent(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse, org.o3project.odenos.remoteobject.message.Request.Method)}
    * .
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testDoRequestToComponent() throws Exception {

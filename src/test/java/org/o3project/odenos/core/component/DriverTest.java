@@ -39,21 +39,21 @@ public class DriverTest {
   private MessageDispatcher dispatcher;
 
   /**
-   * @throws java.lang.Exception
+   * @throws java.lang.Exception throws Exception in targets
    */
   @BeforeClass
   public static void setUpBeforeClass() throws Exception {
   }
 
   /**
-   * @throws java.lang.Exception
+   * @throws java.lang.Exception throws Exception in targets
    */
   @AfterClass
   public static void tearDownAfterClass() throws Exception {
   }
 
   /**
-   * @throws java.lang.Exception
+   * @throws java.lang.Exception throws Exception in targets
    */
   @Before
   public void setUp() throws Exception {
@@ -71,7 +71,7 @@ public class DriverTest {
   }
 
   /**
-   * @throws java.lang.Exception
+   * @throws java.lang.Exception throws Exception in targets
    */
   @After
   public void tearDown() throws Exception {
@@ -84,7 +84,7 @@ public class DriverTest {
    * {@link org.o3project.odenos.core.component.Driver#Driver(java.lang.String, java.lang.String, org.o3project.odenos.remoteobject.messagingclient.MessageDispatcher)}
    * .
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testDriver() throws Exception {
@@ -116,7 +116,7 @@ public class DriverTest {
    * {@link org.o3project.odenos.core.component.Driver#Driver(java.lang.String, java.lang.String, org.o3project.odenos.remoteobject.messagingclient.MessageDispatcher)}
    * .
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testDriver_allNull() throws Exception {

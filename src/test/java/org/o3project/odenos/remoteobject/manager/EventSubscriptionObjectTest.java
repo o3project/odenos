@@ -54,21 +54,21 @@ public class EventSubscriptionObjectTest {
   private EventSubscription target2 = null;
 
   /**
-   * @throws java.lang.Exception
+   * @throws java.lang.Exception throws Exception in targets
    */
   @BeforeClass
   public static void setUpBeforeClass() throws Exception {
   }
 
   /**
-   * @throws java.lang.Exception
+   * @throws java.lang.Exception throws Exception in targets
    */
   @AfterClass
   public static void tearDownAfterClass() throws Exception {
   }
 
   /**
-   * @throws java.lang.Exception
+   * @throws java.lang.Exception throws Exception in targets
    */
   @Before
   public void setUp() throws Exception {
@@ -77,7 +77,7 @@ public class EventSubscriptionObjectTest {
   }
 
   /**
-   * @throws java.lang.Exception
+   * @throws java.lang.Exception throws Exception in targets
    */
   @After
   public void tearDown() throws Exception {
@@ -209,7 +209,7 @@ public class EventSubscriptionObjectTest {
   }
 
   /**
-   * Test method for {@link org.o3project.odenos.remoteobject.manager.EventSubscriptionObject.EventSubscriptionMap#setSubscription(java.lang.String, org.o3project.odenos.remoteobject.manager.EventSubscriptionObject.EventSubscription)}.
+   * Test method for {@link org.o3project.odenos.remoteobject.manager.EventSubscriptionObject.EventSubscriptionMap#setSubscription(java.lang.String, EventSubscription)}.
    */
   @Test
   public final void testSetSubscription() {
@@ -359,7 +359,7 @@ public class EventSubscriptionObjectTest {
   }
 
   /**
-   * Test method for {@link org.o3project.odenos.remoteobject.manager.EventSubscriptionObject.EventSubscription#readValue(org.msgpack.type.Value)}.
+   * Test method for {@link EventSubscription#readValue(org.msgpack.type.Value)}.
    */
   @Test
   public final void testEventSubscriptionReadValue() {
@@ -386,7 +386,7 @@ public class EventSubscriptionObjectTest {
   }
 
   /**
-   * Test method for {@link org.o3project.odenos.remoteobject.manager.EventSubscriptionObject.EventSubscription#readValue(org.msgpack.type.Value)}.
+   * Test method for {@link EventSubscription#readValue(org.msgpack.type.Value)}.
    */
   @Test
   public final void testReadValueNothingSubscriberId() {
@@ -413,7 +413,7 @@ public class EventSubscriptionObjectTest {
   }
 
   /**
-   * Test method for {@link org.o3project.odenos.remoteobject.manager.EventSubscriptionObject.EventSubscription#readValue(org.msgpack.type.Value)}.
+   * Test method for {@link EventSubscription#readValue(org.msgpack.type.Value)}.
    */
   @Test
   public final void testReadValueIncludeMapKeyNilValue() {
@@ -441,7 +441,7 @@ public class EventSubscriptionObjectTest {
   }
 
   /**
-   * Test method for {@link org.o3project.odenos.remoteobject.manager.EventSubscriptionObject.EventSubscription#readValue(org.msgpack.type.Value)}.
+   * Test method for {@link EventSubscription#readValue(org.msgpack.type.Value)}.
    */
   @Test
   public final void testReadValueIncludeMapValueNilValue() {
@@ -469,7 +469,7 @@ public class EventSubscriptionObjectTest {
   }
 
   /**
-   * Test method for {@link org.o3project.odenos.remoteobject.manager.EventSubscriptionObject.EventSubscription#writeValueSub(java.util.Map)}.
+   * Test method for {@link EventSubscription#writeValueSub(java.util.Map)}.
    */
   @Test
   public final void testEventSubscriptionWriteValueSub() {
@@ -500,7 +500,7 @@ public class EventSubscriptionObjectTest {
   }
 
   /**
-   * Test method for {@link org.o3project.odenos.remoteobject.manager.EventSubscriptionObject.EventSubscription#EventSubscription()}.
+   * Test method for {@link EventSubscription#EventSubscription()}.
    */
   @Test
   public final void testEventSubscription() {
@@ -510,7 +510,7 @@ public class EventSubscriptionObjectTest {
   }
 
   /**
-   * Test method for {@link org.o3project.odenos.remoteobject.manager.EventSubscriptionObject.EventSubscription#EventSubscription(java.lang.String)}.
+   * Test method for {@link EventSubscription#EventSubscription(java.lang.String)}.
    */
   @Test
   public final void testEventSubscriptionString() {
@@ -520,7 +520,7 @@ public class EventSubscriptionObjectTest {
   }
 
   /**
-   * Test method for {@link org.o3project.odenos.remoteobject.manager.EventSubscriptionObject.EventSubscription#getSubscriberId()}.
+   * Test method for {@link EventSubscription#getSubscriberId()}.
    */
   @Test
   public final void testGetSubscriberId() {
@@ -530,7 +530,7 @@ public class EventSubscriptionObjectTest {
   }
 
   /**
-   * Test method for {@link org.o3project.odenos.remoteobject.manager.EventSubscriptionObject.EventSubscription#setSubscriberId(java.lang.String)}.
+   * Test method for {@link EventSubscription#setSubscriberId(java.lang.String)}.
    */
   @Test
   public final void testSetSubscriberId() {
@@ -551,7 +551,7 @@ public class EventSubscriptionObjectTest {
   }
 
   /**
-   * Test method for {@link org.o3project.odenos.remoteobject.manager.EventSubscriptionObject.EventSubscription#getFilters()}.
+   * Test method for {@link EventSubscription#getFilters()}.
    */
   @Test
   public final void testGetFilters() {
@@ -580,7 +580,7 @@ public class EventSubscriptionObjectTest {
   }
 
   /**
-   * Test method for {@link org.o3project.odenos.remoteobject.manager.EventSubscriptionObject.EventSubscription#addFilter(java.lang.String, java.lang.String)}.
+   * Test method for {@link EventSubscription#addFilter(java.lang.String, java.lang.String)}.
    */
   @Test
   public final void testAddFilterNotContainKey() {
@@ -592,7 +592,7 @@ public class EventSubscriptionObjectTest {
   }
 
   /**
-   * Test method for {@link org.o3project.odenos.remoteobject.manager.EventSubscriptionObject.EventSubscription#addFilter(java.lang.String, java.lang.String)}.
+   * Test method for {@link org.o3project.odenos.remoteobject.event.EventSubscription#addFilter(java.lang.String, java.lang.String)}.
    */
   @Test
   public final void testAddFilterContainKey() {
@@ -605,7 +605,7 @@ public class EventSubscriptionObjectTest {
   }
 
   /**
-   * Test method for {@link org.o3project.odenos.remoteobject.manager.EventSubscriptionObject.EventSubscription#removeFilter(java.lang.String, java.lang.String)}.
+   * Test method for {@link EventSubscription#removeFilter(java.lang.String, java.lang.String)}.
    */
   @Test
   public final void testRemoveFilterContainKey() {
@@ -617,7 +617,7 @@ public class EventSubscriptionObjectTest {
   }
 
   /**
-   * Test method for {@link org.o3project.odenos.remoteobject.manager.EventSubscriptionObject.EventSubscription#removeFilter(java.lang.String, java.lang.String)}.
+   * Test method for {@link EventSubscription#removeFilter(java.lang.String, java.lang.String)}.
    */
   @Test
   public final void testRemoveFilterNotContainKey() {
@@ -629,7 +629,7 @@ public class EventSubscriptionObjectTest {
   }
 
   /**
-   * Test method for {@link org.o3project.odenos.remoteobject.manager.EventSubscriptionObject.EventSubscription#clearFilter()}.
+   * Test method for {@link EventSubscription#clearFilter()}.
    */
   @Test
   public final void testClearFilter() {
@@ -641,7 +641,7 @@ public class EventSubscriptionObjectTest {
   }
 
   /**
-   * Test method for {@link org.o3project.odenos.remoteobject.manager.EventSubscriptionObject.EventSubscription#removePublisherId(java.lang.String)}.
+   * Test method for {@link EventSubscription#removePublisherId(java.lang.String)}.
    */
   @Test
   public final void testRemovePublisherId() {
@@ -655,7 +655,7 @@ public class EventSubscriptionObjectTest {
   }
 
   /**
-   * Test method for {@link org.o3project.odenos.remoteobject.manager.EventSubscriptionObject.EventSubscription#equals(java.lang.Object)}.
+   * Test method for {@link EventSubscription#equals(java.lang.Object)}.
    */
   @Test
   public final void testEqualsSameObject() {
@@ -665,7 +665,7 @@ public class EventSubscriptionObjectTest {
   }
 
   /**
-   * Test method for {@link org.o3project.odenos.remoteobject.manager.EventSubscriptionObject.EventSubscription#equals(java.lang.Object)}.
+   * Test method for {@link EventSubscription#equals(java.lang.Object)}.
    */
   @Test
   public final void testEqualsObjectSameSubscriberId() {
@@ -677,7 +677,7 @@ public class EventSubscriptionObjectTest {
   }
 
   /**
-   * Test method for {@link org.o3project.odenos.remoteobject.manager.EventSubscriptionObject.EventSubscription#equals(java.lang.Object)}.
+   * Test method for {@link EventSubscription#equals(java.lang.Object)}.
    */
   @Test
   public final void testEqualsObjectDiffSubscriberId() {
@@ -689,7 +689,7 @@ public class EventSubscriptionObjectTest {
   }
 
   /**
-   * Test method for {@link org.o3project.odenos.remoteobject.manager.EventSubscriptionObject.EventSubscription#equals(java.lang.Object)}.
+   * Test method for {@link EventSubscription#equals(java.lang.Object)}.
    */
   @Test
   public final void testEqualsNotEventSubscriptionObject() {

@@ -41,21 +41,21 @@ public class OFPFlowActionGroupActionTest {
   private OFPFlowActionGroupAction target;
 
   /**
-   * @throws java.lang.Exception
+   * @throws java.lang.Exception throws Exception in targets
    */
   @BeforeClass
   public static void setUpBeforeClass() throws Exception {
   }
 
   /**
-   * @throws java.lang.Exception
+   * @throws java.lang.Exception throws Exception in targets
    */
   @AfterClass
   public static void tearDownAfterClass() throws Exception {
   }
 
   /**
-   * @throws java.lang.Exception
+   * @throws java.lang.Exception throws Exception in targets
    */
   @Before
   public void setUp() throws Exception {
@@ -63,7 +63,7 @@ public class OFPFlowActionGroupActionTest {
   }
 
   /**
-   * @throws java.lang.Exception
+   * @throws java.lang.Exception throws Exception in targets
    */
   @After
   public void tearDown() throws Exception {
@@ -84,7 +84,7 @@ public class OFPFlowActionGroupActionTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.flow.ofpflow.OFPFlowActionGroupAction#OFPFlowActionGroupAction(java.lang.String)}
+   * {@link org.o3project.odenos.core.component.network.flow.ofpflow.OFPFlowActionGroupAction#OFPFlowActionGroupAction(Integer)}
    * .
    */
   @Test

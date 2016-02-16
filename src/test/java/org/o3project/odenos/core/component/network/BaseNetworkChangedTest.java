@@ -44,21 +44,21 @@ public class BaseNetworkChangedTest {
   private BaseNetworkChanged<String> target;
 
   /**
-   * @throws java.lang.Exception
+   * @throws java.lang.Exception throws Exception in targets
    */
   @BeforeClass
   public static void setUpBeforeClass() throws Exception {
   }
 
   /**
-   * @throws java.lang.Exception
+   * @throws java.lang.Exception throws Exception in targets
    */
   @AfterClass
   public static void tearDownAfterClass() throws Exception {
   }
 
   /**
-   * @throws java.lang.Exception
+   * @throws java.lang.Exception throws Exception in targets
    */
   @Before
   public void setUp() throws Exception {
@@ -68,7 +68,7 @@ public class BaseNetworkChangedTest {
   }
 
   /**
-   * @throws java.lang.Exception
+   * @throws java.lang.Exception throws Exception in targets
    */
   @After
   public void tearDown() throws Exception {
@@ -169,7 +169,7 @@ public class BaseNetworkChangedTest {
    * {@link org.o3project.odenos.core.component.network.BaseNetworkChanged#readFrom(org.msgpack.unpacker.Unpacker)}
    * .
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testReadFrom() throws Exception {
@@ -213,7 +213,7 @@ public class BaseNetworkChangedTest {
    * {@link org.o3project.odenos.core.component.network.BaseNetworkChanged#writeTo(org.msgpack.packer.Packer)}
    * .
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testWriteTo() throws Exception {

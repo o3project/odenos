@@ -55,21 +55,21 @@ public class BasicFlowQueryTest {
   private String queriesString = null;
 
   /**
-   * @throws java.lang.Exception
+   * @throws java.lang.Exception throws Exception in targets
    */
   @BeforeClass
   public static void setUpBeforeClass() throws Exception {
   }
 
   /**
-   * @throws java.lang.Exception
+   * @throws java.lang.Exception throws Exception in targets
    */
   @AfterClass
   public static void tearDownAfterClass() throws Exception {
   }
 
   /**
-   * @throws java.lang.Exception
+   * @throws java.lang.Exception throws Exception in targets
    */
   @Before
   public void setUp() throws Exception {
@@ -78,7 +78,7 @@ public class BasicFlowQueryTest {
   }
 
   /**
-   * @throws java.lang.Exception
+   * @throws java.lang.Exception throws Exception in targets
    */
   @After
   public void tearDown() throws Exception {
@@ -88,7 +88,7 @@ public class BasicFlowQueryTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.component.network.flow.basic.BasicFlowQuery#BasicFlowQuery(java.lang.String)}
+   * {@link org.o3project.odenos.core.component.network.flow.basic.BasicFlowQuery#BasicFlowQuery(java.lang.String)}
    * .
    */
   @Test
@@ -102,7 +102,7 @@ public class BasicFlowQueryTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.component.network.flow.basic.BasicFlowQuery#parse()}
+   * {@link org.o3project.odenos.core.component.network.flow.basic.BasicFlowQuery#parse()}
    * .
    */
   @Test
@@ -115,7 +115,7 @@ public class BasicFlowQueryTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.component.network.flow.basic.BasicFlowQuery#parse()}
+   * {@link org.o3project.odenos.core.component.network.flow.basic.BasicFlowQuery#parse()}
    * .
    */
   @Test
@@ -126,7 +126,7 @@ public class BasicFlowQueryTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.component.network.flow.basic.BasicFlowQuery#parse()}
+   * {@link org.o3project.odenos.core.component.network.flow.basic.BasicFlowQuery#parse()}
    * .
    */
   @Test
@@ -138,7 +138,7 @@ public class BasicFlowQueryTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.component.network.flow.basic.BasicFlowQuery#parse()}
+   * {@link org.o3project.odenos.core.component.network.flow.basic.BasicFlowQuery#parse()}
    * .
    */
   @Test
@@ -150,7 +150,7 @@ public class BasicFlowQueryTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.component.network.flow.basic.BasicFlowQuery#parse()}
+   * {@link org.o3project.odenos.core.component.network.flow.basic.BasicFlowQuery#parse()}
    * .
    */
   @Test
@@ -163,7 +163,7 @@ public class BasicFlowQueryTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.component.network.flow.basic.BasicFlowQuery#parse()}
+   * {@link org.o3project.odenos.core.component.network.flow.basic.BasicFlowQuery#parse()}
    * .
    */
   @Test
@@ -175,7 +175,7 @@ public class BasicFlowQueryTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.component.network.flow.basic.BasicFlowQuery#parse()}
+   * {@link org.o3project.odenos.core.component.network.flow.basic.BasicFlowQuery#parse()}
    * .
    */
   @Test
@@ -187,7 +187,7 @@ public class BasicFlowQueryTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.component.network.flow.basic.BasicFlowQuery#parse()}
+   * {@link org.o3project.odenos.core.component.network.flow.basic.BasicFlowQuery#parse()}
    * .
    */
   @Test
@@ -206,7 +206,7 @@ public class BasicFlowQueryTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.component.network.flow.basic.BasicFlowQuery#parse()}
+   * {@link org.o3project.odenos.core.component.network.flow.basic.BasicFlowQuery#parse()}
    * .
    */
   @Test
@@ -225,7 +225,7 @@ public class BasicFlowQueryTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.component.network.flow.basic.BasicFlowQuery#parse()}
+   * {@link org.o3project.odenos.core.component.network.flow.basic.BasicFlowQuery#parse()}
    * .
    */
   @Test
@@ -242,7 +242,7 @@ public class BasicFlowQueryTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.component.network.flow.basic.BasicFlowQuery#parse()}
+   * {@link org.o3project.odenos.core.component.network.flow.basic.BasicFlowQuery#parse()}
    * .
    */
   @Test
@@ -255,7 +255,7 @@ public class BasicFlowQueryTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.component.network.flow.basic.BasicFlowQuery#parse()}
+   * {@link org.o3project.odenos.core.component.network.flow.basic.BasicFlowQuery#parse()}
    * .
    */
   @Test
@@ -267,7 +267,7 @@ public class BasicFlowQueryTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.component.network.flow.basic.BasicFlowQuery#parse()}
+   * {@link org.o3project.odenos.core.component.network.flow.basic.BasicFlowQuery#parse()}
    * .
    */
   @Test
@@ -279,7 +279,7 @@ public class BasicFlowQueryTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.component.network.flow.basic.BasicFlowQuery#matchExactly(org.o3project.odenos.component.network.BaseObject)}
+   * {@link org.o3project.odenos.core.component.network.flow.basic.BasicFlowQuery#matchExactly(org.o3project.odenos.core.component.network.BaseObject)}
    * .
    */
   @Test
@@ -381,7 +381,7 @@ public class BasicFlowQueryTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.component.network.flow.basic.BasicFlowQuery#matchExactly(org.o3project.odenos.component.network.BaseObject)}
+   * {@link org.o3project.odenos.core.component.network.flow.basic.BasicFlowQuery#matchExactly(org.o3project.odenos.core.component.network.BaseObject)}
    * .
    */
   @Test
@@ -400,7 +400,7 @@ public class BasicFlowQueryTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.component.network.flow.basic.BasicFlowQuery#matchExactly(org.o3project.odenos.component.network.BaseObject)}
+   * {@link org.o3project.odenos.core.component.network.flow.basic.BasicFlowQuery#matchExactly(org.o3project.odenos.core.component.network.BaseObject)}
    * .
    */
   @Test
@@ -426,7 +426,7 @@ public class BasicFlowQueryTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.component.network.flow.basic.BasicFlowQuery#matchExactly(org.o3project.odenos.component.network.BaseObject)}
+   * {@link org.o3project.odenos.core.component.network.flow.basic.BasicFlowQuery#matchExactly(org.o3project.odenos.core.component.network.BaseObject)}
    * .
    */
   @Test
@@ -455,7 +455,7 @@ public class BasicFlowQueryTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.component.network.flow.basic.BasicFlowQuery#matchExactly(org.o3project.odenos.component.network.BaseObject)}
+   * {@link org.o3project.odenos.core.component.network.flow.basic.BasicFlowQuery#matchExactly(org.o3project.odenos.core.component.network.BaseObject)}
    * .
    */
   @Test
@@ -495,7 +495,7 @@ public class BasicFlowQueryTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.component.network.flow.basic.BasicFlowQuery#matchExactly(org.o3project.odenos.component.network.BaseObject)}
+   * {@link org.o3project.odenos.core.component.network.flow.basic.BasicFlowQuery#matchExactly(org.o3project.odenos.core.component.network.BaseObject)}
    * .
    */
   @Test
@@ -539,7 +539,7 @@ public class BasicFlowQueryTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.component.network.flow.basic.BasicFlowQuery#matchExactly(org.o3project.odenos.component.network.BaseObject)}
+   * {@link org.o3project.odenos.core.component.network.flow.basic.BasicFlowQuery#matchExactly(org.o3project.odenos.core.component.network.BaseObject)}
    * .
    */
   @Test
@@ -578,7 +578,7 @@ public class BasicFlowQueryTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.component.network.flow.basic.BasicFlowQuery#matchExactly(org.o3project.odenos.component.network.BaseObject)}
+   * {@link org.o3project.odenos.core.component.network.flow.basic.BasicFlowQuery#matchExactly(org.o3project.odenos.core.component.network.BaseObject)}
    * .
    */
   @Test
@@ -618,7 +618,7 @@ public class BasicFlowQueryTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.component.network.flow.basic.BasicFlowQuery#matchExactly(org.o3project.odenos.component.network.BaseObject)}
+   * {@link org.o3project.odenos.core.component.network.flow.basic.BasicFlowQuery#matchExactly(org.o3project.odenos.core.component.network.BaseObject)}
    * .
    */
   @Test
@@ -662,7 +662,7 @@ public class BasicFlowQueryTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.component.network.flow.basic.BasicFlowQuery#matchExactly(org.o3project.odenos.component.network.BaseObject)}
+   * {@link org.o3project.odenos.core.component.network.flow.basic.BasicFlowQuery#matchExactly(org.o3project.odenos.core.component.network.BaseObject)}
    * .
    */
   @Test
@@ -715,7 +715,7 @@ public class BasicFlowQueryTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.component.network.flow.basic.BasicFlowQuery#matchExactly(org.o3project.odenos.component.network.BaseObject)}
+   * {@link org.o3project.odenos.core.component.network.flow.basic.BasicFlowQuery#matchExactly(org.o3project.odenos.core.component.network.BaseObject)}
    * .
    */
   @Test
@@ -767,7 +767,7 @@ public class BasicFlowQueryTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.component.network.flow.basic.BasicFlowQuery#matchExactly(org.o3project.odenos.component.network.BaseObject)}
+   * {@link org.o3project.odenos.core.component.network.flow.basic.BasicFlowQuery#matchExactly(org.o3project.odenos.core.component.network.BaseObject)}
    * .
    */
   @Test

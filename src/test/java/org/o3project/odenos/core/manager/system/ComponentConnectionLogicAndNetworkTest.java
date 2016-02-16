@@ -46,21 +46,21 @@ public class ComponentConnectionLogicAndNetworkTest {
   private ComponentConnectionLogicAndNetwork target;
 
   /**
-   * @throws java.lang.Exception
+   * @throws java.lang.Exception throws Exception in targets
    */
   @BeforeClass
   public static void setUpBeforeClass() throws Exception {
   }
 
   /**
-   * @throws java.lang.Exception
+   * @throws java.lang.Exception throws Exception in targets
    */
   @AfterClass
   public static void tearDownAfterClass() throws Exception {
   }
 
   /**
-   * @throws java.lang.Exception
+   * @throws java.lang.Exception throws Exception in targets
    */
   @Before
   public void setUp() throws Exception {
@@ -72,7 +72,7 @@ public class ComponentConnectionLogicAndNetworkTest {
   }
 
   /**
-   * @throws java.lang.Exception
+   * @throws java.lang.Exception throws Exception in targets
    */
   @After
   public void tearDown() throws Exception {
@@ -130,7 +130,7 @@ public class ComponentConnectionLogicAndNetworkTest {
    * {@link org.o3project.odenos.core.manager.system.ComponentConnectionLogicAndNetwork#writeTo(org.msgpack.packer.Packer)}
    * .
    *
-   * @throws IOException
+   * @throws IOException throws IOException in targets
    */
   @Test
   public final void testWriteTo() throws IOException {
@@ -148,7 +148,7 @@ public class ComponentConnectionLogicAndNetworkTest {
    * {@link org.o3project.odenos.core.manager.system.ComponentConnectionLogicAndNetwork#readFrom(org.msgpack.unpacker.Unpacker)}
    * .
    *
-   * @throws IOException
+   * @throws IOException throws IOException in targets
    */
   @Test
   public final void testReadFrom() throws IOException {
@@ -202,7 +202,7 @@ public class ComponentConnectionLogicAndNetworkTest {
    * {@link org.o3project.odenos.core.manager.system.ComponentConnectionLogicAndNetwork#readFrom(org.msgpack.unpacker.Unpacker)}
    * .
    *
-   * @throws IOException
+   * @throws IOException throws IOException in targets
    */
   @Test
   public final void testReadFromWithNoState() throws IOException {

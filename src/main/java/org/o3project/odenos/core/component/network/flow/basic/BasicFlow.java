@@ -455,7 +455,7 @@ public class BasicFlow extends Flow implements Cloneable {
   }
 
   /* (non-Javadoc)
-   * @see org.o3project.odenos.component.network.flow.Flow#toString()
+   * @see org.o3project.odenos.core.component.network.flow.Flow#toString()
    */
   @Override
   public String toString() {

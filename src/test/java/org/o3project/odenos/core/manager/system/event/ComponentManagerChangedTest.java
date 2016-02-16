@@ -39,21 +39,21 @@ public class ComponentManagerChangedTest {
   private String action;
 
   /**
-   * @throws java.lang.Exception
+   * @throws java.lang.Exception throws Exception in targets
    */
   @BeforeClass
   public static void setUpBeforeClass() throws Exception {
   }
 
   /**
-   * @throws java.lang.Exception
+   * @throws java.lang.Exception throws Exception in targets
    */
   @AfterClass
   public static void tearDownAfterClass() throws Exception {
   }
 
   /**
-   * @throws java.lang.Exception
+   * @throws java.lang.Exception throws Exception in targets
    */
   @Before
   public void setUp() throws Exception {
@@ -63,7 +63,7 @@ public class ComponentManagerChangedTest {
   }
 
   /**
-   * @throws java.lang.Exception
+   * @throws java.lang.Exception throws Exception in targets
    */
   @After
   public void tearDown() throws Exception {
@@ -93,7 +93,7 @@ public class ComponentManagerChangedTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.manager.system.ComponentManagerChanged#ComponentManagerChanged(java.lang.String, org.o3project.odenos.remoteobject.ObjectProperty, org.o3project.odenos.remoteobject.ObjectProperty)}
+   * {@link org.o3project.odenos.core.manager.system.event.ComponentManagerChanged#ComponentManagerChanged(java.lang.String, org.o3project.odenos.remoteobject.ObjectProperty, org.o3project.odenos.remoteobject.ObjectProperty)}
    * .
    */
   @Test

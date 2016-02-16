@@ -66,21 +66,21 @@ public class MessageBodyUnpackerTest {
   private MessagePack mockmsgpack;
 
   /**
-   * @throws java.lang.Exception
+   * @throws java.lang.Exception throws Exception in targets
    */
   @BeforeClass
   public static void setUpBeforeClass() throws Exception {
   }
 
   /**
-   * @throws java.lang.Exception
+   * @throws java.lang.Exception throws Exception in targets
    */
   @AfterClass
   public static void tearDownAfterClass() throws Exception {
   }
 
   /**
-   * @throws java.lang.Exception
+   * @throws java.lang.Exception throws Exception in targets
    */
   @Before
   public void setUp() throws Exception {
@@ -94,7 +94,7 @@ public class MessageBodyUnpackerTest {
   }
 
   /**
-   * @throws java.lang.Exception
+   * @throws java.lang.Exception throws Exception in targets
    */
   @After
   public void tearDown() throws Exception {
@@ -107,7 +107,7 @@ public class MessageBodyUnpackerTest {
   // FIXME this case is not really testing anything.
   /**
    * Test method for {@link MessageBodyUnpacker#getBody(java.lang.Class)}.
-   * @throws ParseBodyException
+   * @throws ParseBodyException throws ParseBodyException in targets
    */
   @Test
   public final void testInitializeWithNull() throws ParseBodyException {
@@ -121,7 +121,7 @@ public class MessageBodyUnpackerTest {
   // FIXME this case is not really testing anything.
   /**
    * Test method for {@link MessageBodyUnpacker#getBody(java.lang.Class)}.
-   * @throws ParseBodyException
+   * @throws ParseBodyException throws ParseBodyException in targets
    */
   @Test
   public final void testInitializeWithBodyValue() throws ParseBodyException {
@@ -137,7 +137,7 @@ public class MessageBodyUnpackerTest {
   // FIXME this case is not really testing anything.
   /**
    * Test method for {@link MessageBodyUnpacker#getBody(java.lang.Class)}.
-   * @throws ParseBodyException
+   * @throws ParseBodyException throws ParseBodyException in targets
    */
   @Test
   public final void testInitializeWithNotNull() throws ParseBodyException {
@@ -174,7 +174,7 @@ public class MessageBodyUnpackerTest {
 
   /**
    * Test method for {@link MessageBodyUnpacker#getBody(java.lang.Class)}.
-   * @throws IOException
+   * @throws IOException throws IOException in targets
    */
   @Test
   public final void testGetBodyWithBodyValueNotNull() throws IOException {
@@ -190,7 +190,7 @@ public class MessageBodyUnpackerTest {
 
   /**
    * Test method for {@link MessageBodyUnpacker#getBody(java.lang.Class)}.
-   * @throws IOException
+   * @throws IOException throws IOException in targets
    */
   @Test
   public final void testGetBodyWithIoException() throws IOException {
@@ -206,7 +206,7 @@ public class MessageBodyUnpackerTest {
 
   /**
    * Test method for {@link MessageBodyUnpacker#getBodyValue()}.
-   * @throws IOException
+   * @throws IOException throws IOException in targets
    */
   @Test
   public final void testGetBodyValueWithBodyValueNotNull() throws IOException {
@@ -224,7 +224,7 @@ public class MessageBodyUnpackerTest {
 
   /**
    * Test method for {@link MessageBodyUnpacker#getBodyValue()}.
-   * @throws IOException
+   * @throws IOException throws IOException in targets
    */
   @Test
   public final void testGetBodyValueReturnNull() throws IOException {
@@ -236,7 +236,7 @@ public class MessageBodyUnpackerTest {
 
   /**
    * Test method for {@link MessageBodyUnpacker#getBodyValue()}.
-   * @throws IOException
+   * @throws IOException throws IOException in targets
    */
   @Test
   public final void testGetBodyValueWithBodyNotNull() throws IOException {
@@ -253,7 +253,7 @@ public class MessageBodyUnpackerTest {
 
   /**
    * Test method for {@link MessageBodyUnpacker#getBodyValue()}.
-   * @throws IOException
+   * @throws IOException throws IOException in targets
    */
   @Test
   public final void testGetBodyValueWithIoException() throws IOException {
@@ -319,7 +319,7 @@ public class MessageBodyUnpackerTest {
 
   /**
    * Test method for {@link MessageBodyUnpacker#getBodyAsMap(java.lang.Class)}.
-   * @throws IOException
+   * @throws IOException throws IOException in targets
    */
   @Test
   public final void testGetBodyAsMapWithIoException() throws IOException {
@@ -392,7 +392,7 @@ public class MessageBodyUnpackerTest {
 
   /**
    * Test method for {@link MessageBodyUnpacker#getBodyAsList(java.lang.Class)}.
-   * @throws IOException
+   * @throws IOException throws IOException in targets
    */
   @Test
   public final void testGetBodyAsListWithIoExceptionTest() throws IOException {
@@ -415,7 +415,7 @@ public class MessageBodyUnpackerTest {
 
   /**
    * Test method for {@link MessageBodyUnpacker#getBodyAsStringList()}.
-   * @throws ParseBodyException
+   * @throws ParseBodyException throws ParseBodyException in targets
    */
   @Test
   public final void testGetBodyAsStringList() throws ParseBodyException {
@@ -429,7 +429,7 @@ public class MessageBodyUnpackerTest {
 
   /**
    * Test method for {@link MessageBodyUnpacker#getBodyAsStringMap()}.
-   * @throws ParseBodyException
+   * @throws ParseBodyException throws ParseBodyException in targets
    */
   @Test
   public final void testGetBodyAsStringMap() throws ParseBodyException {
@@ -486,7 +486,7 @@ public class MessageBodyUnpackerTest {
 
   /**
    * Test method for {@link MessageBodyUnpacker#readFrom(org.msgpack.unpacker.Unpacker)}.
-   * @throws IOException
+   * @throws IOException throws IOException in targets
    */
   @Test
   public final void testReadFrom() throws IOException {
@@ -501,7 +501,8 @@ public class MessageBodyUnpackerTest {
 
   /**
    * Test method for {@link MessageBodyUnpacker#readFrom(org.msgpack.unpacker.Unpacker)}.
-   * @throws IOException      */
+   * @throws IOException throws IOException in targets
+   */
   @Test(expected = IOException.class)
   public final void testReadFromWithIoException() throws IOException {
     Unpacker unpacker = Mockito.mock(Unpacker.class, new ThrowsExceptionClass(IOException.class));
@@ -533,7 +534,7 @@ public class MessageBodyUnpackerTest {
 
   /**
    * Test method for {@link MessageBodyUnpacker#writeTo(org.msgpack.packer.Packer)}.
-   * @throws IOException
+   * @throws IOException throws IOException in targets
    */
   @Test(expected = IOException.class)
   public final void testWriteToWithIoException() throws IOException {
@@ -553,7 +554,7 @@ public class MessageBodyUnpackerTest {
 
   /**
    * Test method for {@link MessageBodyUnpacker.StringMap#writeTo(org.msgpack.packer.Packer)}.
-   * @throws IOException
+   * @throws IOException throws IOException in targets
    */
   @Test
   public final void testStringMapWriteTo() throws IOException {
@@ -569,7 +570,7 @@ public class MessageBodyUnpackerTest {
 
   /**
    * Test method for {@link MessageBodyUnpacker.StringMap#readFrom(org.msgpack.unpacker.Unpacker)}.
-   * @throws IOException
+   * @throws IOException throws IOException in targets
    */
   @SuppressWarnings("unchecked")
   @Test
@@ -589,7 +590,7 @@ public class MessageBodyUnpackerTest {
   }
 
   /**
-   * Test method for {@link MessageBodyUnpacker.TemplateHashMap#TemplateHashMap(java.lang.Class<T>)}.
+   * Test method for {@link MessageBodyUnpacker.TemplateHashMap#TemplateHashMap(java.lang.Class)}.
    */
   @SuppressWarnings({ "unchecked", "rawtypes" })
   @Test
@@ -603,7 +604,7 @@ public class MessageBodyUnpackerTest {
 
   /**
    * Test method for {@link MessageBodyUnpacker.TemplateHashMap#writeTo(org.msgpack.packer.Packer)}.
-   * @throws IOException
+   * @throws IOException throws IOException in targets
    */
   @SuppressWarnings({ "rawtypes", "unchecked" })
   @Test
@@ -625,7 +626,7 @@ public class MessageBodyUnpackerTest {
 
   /**
    * Test method for {@link MessageBodyUnpacker.TemplateHashMap#readFrom(org.msgpack.unpacker.Unpacker)}.
-   * @throws IOException
+   * @throws IOException throws IOException in targets
    */
   @SuppressWarnings({ "unchecked", "rawtypes" })
   @Test

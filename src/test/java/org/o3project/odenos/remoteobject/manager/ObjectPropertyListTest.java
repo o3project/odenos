@@ -44,21 +44,21 @@ public class ObjectPropertyListTest {
   private ObjectPropertyList target;
 
   /**
-   * @throws java.lang.Exception
+   * @throws java.lang.Exception throws Exception in targets
    */
   @BeforeClass
   public static void setUpBeforeClass() throws Exception {
   }
 
   /**
-   * @throws java.lang.Exception
+   * @throws java.lang.Exception throws Exception in targets
    */
   @AfterClass
   public static void tearDownAfterClass() throws Exception {
   }
 
   /**
-   * @throws java.lang.Exception
+   * @throws java.lang.Exception throws Exception in targets
    */
   @Before
   public void setUp() throws Exception {
@@ -66,7 +66,7 @@ public class ObjectPropertyListTest {
   }
 
   /**
-   * @throws java.lang.Exception
+   * @throws java.lang.Exception throws Exception in targets
    */
   @After
   public void tearDown() throws Exception {
@@ -78,7 +78,7 @@ public class ObjectPropertyListTest {
    * {@link org.o3project.odenos.remoteobject.manager.ObjectPropertyList#writeTo(org.msgpack.packer.Packer)}
    * .
    *
-   * @IOException
+   * @throws IOException throws IOException in targets
    */
   @Test
   public final void testWriteTo() throws IOException {
@@ -284,7 +284,7 @@ public class ObjectPropertyListTest {
    * {@link org.o3project.odenos.remoteobject.manager.ObjectPropertyList#readFrom(org.msgpack.unpacker.Unpacker)}
    * .
    *
-   * @IOException
+   * @throws IOException throws IOException in targets
    */
   @Test
   public final void testReadFrom() throws IOException {

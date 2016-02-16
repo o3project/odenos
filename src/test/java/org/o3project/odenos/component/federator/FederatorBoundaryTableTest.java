@@ -50,21 +50,21 @@ public class FederatorBoundaryTableTest {
   private FederatorBoundaryTable target;
 
   /**
-   * @throws java.lang.Exception
+   * @throws java.lang.Exception throws Exception in targets
    */
   @BeforeClass
   public static void setUpBeforeClass() throws Exception {
   }
 
   /**
-   * @throws java.lang.Exception
+   * @throws java.lang.Exception throws Exception in targets
    */
   @AfterClass
   public static void tearDownAfterClass() throws Exception {
   }
 
   /**
-   * @throws java.lang.Exception
+   * @throws java.lang.Exception throws Exception in targets
    */
   @Before
   public void setUp() throws Exception {
@@ -73,7 +73,7 @@ public class FederatorBoundaryTableTest {
   }
 
   /**
-   * @throws java.lang.Exception
+   * @throws java.lang.Exception throws Exception in targets
    */
   @After
   public void tearDown() throws Exception {
@@ -109,7 +109,7 @@ public class FederatorBoundaryTableTest {
 
   /**
    * Test method for {@link org.o3project.odenos.component.federator.FederatorBoundaryTable#addEntry(org.o3project.odenos.component.federator.FederatorBoundary)}.
-   * @throws FederatorException
+   * @throws FederatorException throws FederatorException in targets
    */
   @Test
   public void testAddEntryFederatorBoundary() throws FederatorException {
@@ -155,7 +155,7 @@ public class FederatorBoundaryTableTest {
 
   /**
    * Test method for {@link org.o3project.odenos.component.federator.FederatorBoundaryTable#addEntry(java.lang.String, org.o3project.odenos.component.federator.FederatorBoundary)}.
-   * @throws FederatorException
+   * @throws FederatorException throws FederatorException in targets
    */
   @Test
   public void testAddEntryStringFederatorBoundary() throws FederatorException {
@@ -198,7 +198,7 @@ public class FederatorBoundaryTableTest {
 
   /**
    * Test method for {@link org.o3project.odenos.component.federator.FederatorBoundaryTable#addEntry(java.lang.String, org.o3project.odenos.component.federator.FederatorBoundary)}.
-   * @throws FederatorException
+   * @throws FederatorException throws FederatorException in targets
    */
   @Test
   public void testAddEntry_Branch() throws FederatorException {
@@ -244,7 +244,7 @@ public class FederatorBoundaryTableTest {
 
   /**
    * Test method for {@link org.o3project.odenos.component.federator.FederatorBoundaryTable#getEntry(java.lang.String)}.
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testGetEntry() throws Exception {
@@ -279,7 +279,7 @@ public class FederatorBoundaryTableTest {
 
   /**
    * Test method for {@link org.o3project.odenos.component.federator.FederatorBoundaryTable#deleteEntry(java.lang.String)}.
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testDeleteEntry() throws Exception {
@@ -316,7 +316,7 @@ public class FederatorBoundaryTableTest {
 
   /**
    * Test method for {@link org.o3project.odenos.component.federator.FederatorBoundaryTable#deleteEntry(java.lang.String)}.
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testDeleteEntry_Branch() throws Exception {
@@ -358,7 +358,7 @@ public class FederatorBoundaryTableTest {
 
   /**
    * Test method for {@link org.o3project.odenos.component.federator.FederatorBoundaryTable#isContains(java.lang.String)}.
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testIsContains() throws Exception {
@@ -403,7 +403,7 @@ public class FederatorBoundaryTableTest {
 
   /**
    * Test method for {@link org.o3project.odenos.component.federator.FederatorBoundaryTable#isContainsLink(java.lang.String, java.lang.String, java.lang.String)}.
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testIsContainsLink() throws Exception {
@@ -435,7 +435,7 @@ public class FederatorBoundaryTableTest {
 
   /**
    * Test method for {@link org.o3project.odenos.component.federator.FederatorBoundaryTable#isContainsLink(java.lang.String, java.lang.String, java.lang.String)}.
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testIsContainsLink_Branch() throws Exception {
@@ -477,7 +477,7 @@ public class FederatorBoundaryTableTest {
 
   /**
    * Test method for {@link org.o3project.odenos.component.federator.FederatorBoundaryTable#isContainsLink(java.lang.String, java.lang.String, java.lang.String)}.
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testIsContainsLink2() throws Exception {
@@ -532,7 +532,7 @@ public class FederatorBoundaryTableTest {
 
   /**
    * Test method for {@link org.o3project.odenos.component.federator.FederatorBoundaryTable#getUniqueId()}.
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testGetUniqueId() throws Exception {

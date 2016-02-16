@@ -67,21 +67,21 @@ public class SystemManagerInterfaceTest {
   private MessageDispatcher dispatcher;
 
   /**
-   * @throws java.lang.Exception
+   * @throws java.lang.Exception throws Exception in targets
    */
   @BeforeClass
   public static void setUpBeforeClass() throws Exception {
   }
 
   /**
-   * @throws java.lang.Exception
+   * @throws java.lang.Exception throws Exception in targets
    */
   @AfterClass
   public static void tearDownAfterClass() throws Exception {
   }
 
   /**
-   * @throws java.lang.Exception
+   * @throws java.lang.Exception throws Exception in targets
    */
   @Before
   public void setUp() throws Exception {
@@ -93,7 +93,7 @@ public class SystemManagerInterfaceTest {
   }
 
   /**
-   * @throws java.lang.Exception
+   * @throws java.lang.Exception throws Exception in targets
    */
   @After
   public void tearDown() throws Exception {
@@ -206,7 +206,7 @@ public class SystemManagerInterfaceTest {
    * {@link org.o3project.odenos.core.component.SystemManagerInterface#getProperty()}
    * .
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testGetProperty() throws Exception {
@@ -262,7 +262,7 @@ public class SystemManagerInterfaceTest {
    * {@link org.o3project.odenos.core.component.SystemManagerInterface#getProperty()}
    * .
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testGetProperty_FailToGetBody() throws Exception {
@@ -293,7 +293,7 @@ public class SystemManagerInterfaceTest {
    * {@link org.o3project.odenos.core.component.SystemManagerInterface#getSettings()}
    * .
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testGetSettings() throws Exception {
@@ -349,7 +349,7 @@ public class SystemManagerInterfaceTest {
    * {@link org.o3project.odenos.core.component.SystemManagerInterface#getSettings()}
    * .
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testGetSettings_FailToGetBody() throws Exception {
@@ -380,7 +380,7 @@ public class SystemManagerInterfaceTest {
    * {@link org.o3project.odenos.core.component.SystemManagerInterface#getComponentMngs()}
    * .
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testGetComponentMngs() throws Exception {
@@ -436,7 +436,7 @@ public class SystemManagerInterfaceTest {
    * {@link org.o3project.odenos.core.component.SystemManagerInterface#getComponentMngs()}
    * .
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testGetComponentMngs_FailToGetBody() throws Exception {
@@ -467,7 +467,7 @@ public class SystemManagerInterfaceTest {
    * {@link org.o3project.odenos.core.component.SystemManagerInterface#getEventMngs()}
    * .
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testGetEventMngs() throws Exception {
@@ -523,7 +523,7 @@ public class SystemManagerInterfaceTest {
    * {@link org.o3project.odenos.core.component.SystemManagerInterface#getEventMngs()}
    * .
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testGetEventMngs_FailToGetBody() throws Exception {
@@ -554,7 +554,7 @@ public class SystemManagerInterfaceTest {
    * {@link org.o3project.odenos.core.component.SystemManagerInterface#getComponentTypes()}
    * .
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testGetComponentTypes() throws Exception {
@@ -610,7 +610,7 @@ public class SystemManagerInterfaceTest {
    * {@link org.o3project.odenos.core.component.SystemManagerInterface#getComponentTypes()}
    * .
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testGetComponentTypes_FailToGetBody() throws Exception {
@@ -641,7 +641,7 @@ public class SystemManagerInterfaceTest {
    * {@link org.o3project.odenos.core.component.SystemManagerInterface#getComponents()}
    * .
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testGetComponents() throws Exception {
@@ -672,7 +672,7 @@ public class SystemManagerInterfaceTest {
    * {@link org.o3project.odenos.core.component.SystemManagerInterface#getComponents()}
    * .
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testGetComponents_FailToGet() throws Exception {
@@ -699,7 +699,7 @@ public class SystemManagerInterfaceTest {
    * {@link org.o3project.odenos.core.component.SystemManagerInterface#getComponents()}
    * .
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testGetComponents_FailToGetBody() throws Exception {
@@ -730,7 +730,7 @@ public class SystemManagerInterfaceTest {
    * {@link org.o3project.odenos.core.component.SystemManagerInterface#getConnections()}
    * .
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testGetConnections() throws Exception {
@@ -790,7 +790,7 @@ public class SystemManagerInterfaceTest {
    * {@link org.o3project.odenos.core.component.SystemManagerInterface#getConnections()}
    * .
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testGetConnections_FailToGetAsMap() throws Exception {
@@ -821,7 +821,7 @@ public class SystemManagerInterfaceTest {
    * {@link org.o3project.odenos.core.component.SystemManagerInterface#getComponentManager(java.lang.String)}
    * .
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testGetCompoentManager() throws Exception {
@@ -878,7 +878,7 @@ public class SystemManagerInterfaceTest {
    * {@link org.o3project.odenos.core.component.SystemManagerInterface#getComponentManager(java.lang.String)}
    * .
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testGetCompoentManager_FailToGetBody() throws Exception {
@@ -910,7 +910,7 @@ public class SystemManagerInterfaceTest {
    * {@link org.o3project.odenos.core.component.SystemManagerInterface#getComponentManager(java.lang.String)}
    * .
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testGetCompoentManager_CompoentManagerIdNull() throws Exception {
@@ -941,7 +941,7 @@ public class SystemManagerInterfaceTest {
    * {@link org.o3project.odenos.core.component.SystemManagerInterface#getComponentType(java.lang.String)}
    * .
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testGetComponentType() throws Exception {
@@ -998,7 +998,7 @@ public class SystemManagerInterfaceTest {
    * {@link org.o3project.odenos.core.component.SystemManagerInterface#getComponentType(java.lang.String)}
    * .
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testGetComponentType_FailToGetBody() throws Exception {
@@ -1029,7 +1029,7 @@ public class SystemManagerInterfaceTest {
    * {@link org.o3project.odenos.core.component.SystemManagerInterface#getComponentType(java.lang.String)}
    * .
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testGetComponentType_CompoentManagerIdNull() throws Exception {
@@ -1060,7 +1060,7 @@ public class SystemManagerInterfaceTest {
    * {@link org.o3project.odenos.core.component.SystemManagerInterface#getComponent(java.lang.String)}
    * .
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testGetComponent() throws Exception {
@@ -1091,7 +1091,7 @@ public class SystemManagerInterfaceTest {
    * {@link org.o3project.odenos.core.component.SystemManagerInterface#getComponent(java.lang.String)}
    * .
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testGetComponent_FailToGet() throws Exception {
@@ -1118,7 +1118,7 @@ public class SystemManagerInterfaceTest {
    * {@link org.o3project.odenos.core.component.SystemManagerInterface#getComponent(java.lang.String)}
    * .
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testGetComponent_FailToGetBody() throws Exception {
@@ -1149,7 +1149,7 @@ public class SystemManagerInterfaceTest {
    * {@link org.o3project.odenos.core.component.SystemManagerInterface#getComponent(java.lang.String)}
    * .
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testGetComponent_ComponentIdNull() throws Exception {
@@ -1180,7 +1180,7 @@ public class SystemManagerInterfaceTest {
    * {@link org.o3project.odenos.core.component.SystemManagerInterface#getConnection(java.lang.String)}
    * .
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testGetConnection() throws Exception {
@@ -1236,7 +1236,7 @@ public class SystemManagerInterfaceTest {
    * {@link org.o3project.odenos.core.component.SystemManagerInterface#getConnection(java.lang.String)}
    * .
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testGetConnection_FailToGetBody() throws Exception {
@@ -1267,7 +1267,7 @@ public class SystemManagerInterfaceTest {
    * {@link org.o3project.odenos.core.component.SystemManagerInterface#getConnection(java.lang.String)}
    * .
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testGetConnection_ConnectionIdNull() throws Exception {
@@ -1298,7 +1298,7 @@ public class SystemManagerInterfaceTest {
    * {@link org.o3project.odenos.core.component.SystemManagerInterface#getComponentManager(java.lang.String)}
    * .
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testGetComponentManager() {
@@ -1329,7 +1329,7 @@ public class SystemManagerInterfaceTest {
    * {@link org.o3project.odenos.core.component.SystemManagerInterface#getObject(java.lang.String)}
    * .
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testGetObject() throws Exception {
@@ -1385,7 +1385,7 @@ public class SystemManagerInterfaceTest {
    * {@link org.o3project.odenos.core.component.SystemManagerInterface#getObject(java.lang.String)}
    * .
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testGetObject_FailToGetBody() throws Exception {
@@ -1416,7 +1416,7 @@ public class SystemManagerInterfaceTest {
    * {@link org.o3project.odenos.core.component.SystemManagerInterface#getObject(java.lang.String)}
    * .
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testGetObject_ObjectIdNull() throws Exception {
@@ -1603,7 +1603,7 @@ public class SystemManagerInterfaceTest {
    * {@link org.o3project.odenos.core.component.SystemManagerInterface#putConnection(org.o3project.odenos.core.manager.system.ComponentConnection)}
    * .
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testPutConnection_BodyNull() throws Exception {
@@ -1632,7 +1632,7 @@ public class SystemManagerInterfaceTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.SystemManagerInterface#postComponentMng(org.o3project.odenos.remoteobject.ObjectProperty)}
+   * {@link org.o3project.odenos.core.component.SystemManagerInterface#putComponentMng(org.o3project.odenos.remoteobject.ObjectProperty)}
    * .
    */
   @Test
@@ -2003,9 +2003,9 @@ public class SystemManagerInterfaceTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.SystemManagerInterface#putSequence(java.lang.String, java.util.Map<java.lnag.String. java.lnag.Long>)}.
+   * {@link org.o3project.odenos.core.component.SystemManagerInterface#putSequence(java.lang.String, java.util.Map)}.
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public final void testPutSequence() throws Exception {
@@ -2019,9 +2019,10 @@ public class SystemManagerInterfaceTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.SystemManagerInterface#getSequence(java.lang.String, java.util.Map<java.lnag.String. java.lnag.Long>)}.
+   * {@link org.o3project.odenos.core.component.SystemManagerInterface#getSequence(java.lang.String)},
+   * {@link org.o3project.odenos.core.component.SystemManagerInterface#getSequence(java.lang.String, boolean)}.
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public final void testGetSequence() throws Exception {
@@ -2046,7 +2047,7 @@ public class SystemManagerInterfaceTest {
    * {@link org.o3project.odenos.core.component.SystemManagerInterface#postObjectToSystemMng(java.lang.String, java.lang.Object)}
    * .
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testPostObjectToSystemMng() throws Exception {
@@ -2086,7 +2087,7 @@ public class SystemManagerInterfaceTest {
    * {@link org.o3project.odenos.core.component.SystemManagerInterface#postObjectToSystemMng(java.lang.String, java.lang.Object)}
    * .
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testPostObjectToSystemMng_BadRequest() throws Exception {
@@ -2126,7 +2127,7 @@ public class SystemManagerInterfaceTest {
    * {@link org.o3project.odenos.core.component.SystemManagerInterface#postObjectToSystemMng(java.lang.String, java.lang.Object)}
    * .
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testPostObjectToSystemMng_InternalServerError() throws Exception {
@@ -2164,7 +2165,7 @@ public class SystemManagerInterfaceTest {
    * {@link org.o3project.odenos.core.component.SystemManagerInterface#postObjectToSystemMng(java.lang.String, java.lang.Object)}
    * .
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testPostObjectToSystemMng_PathNull() throws Exception {
@@ -2204,7 +2205,7 @@ public class SystemManagerInterfaceTest {
    * {@link org.o3project.odenos.core.component.SystemManagerInterface#putObjectToSystemMng(java.lang.String, java.lang.Object)}
    * .
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testPutObjectToSystemMng() throws Exception {
@@ -2244,7 +2245,7 @@ public class SystemManagerInterfaceTest {
    * {@link org.o3project.odenos.core.component.SystemManagerInterface#putObjectToSystemMng(java.lang.String, java.lang.Object)}
    * .
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testPutObjectToSystemMng_BadRequest() throws Exception {
@@ -2284,7 +2285,7 @@ public class SystemManagerInterfaceTest {
    * {@link org.o3project.odenos.core.component.SystemManagerInterface#putObjectToSystemMng(java.lang.String, java.lang.Object)}
    * .
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testPutObjectToSystemMng_InternalServerError() throws Exception {
@@ -2322,7 +2323,7 @@ public class SystemManagerInterfaceTest {
    * {@link org.o3project.odenos.core.component.SystemManagerInterface#putObjectToSystemMng(java.lang.String, java.lang.Object)}
    * .
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testPutObjectToSystemMng_PathNull() throws Exception {
@@ -2362,7 +2363,7 @@ public class SystemManagerInterfaceTest {
    * {@link org.o3project.odenos.core.component.SystemManagerInterface#delObjectToSystemMng(java.lang.String)}
    * .
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testDelObjectToSystemMng() throws Exception {
@@ -2401,7 +2402,7 @@ public class SystemManagerInterfaceTest {
    * {@link org.o3project.odenos.core.component.SystemManagerInterface#delObjectToSystemMng(java.lang.String)}
    * .
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testDelObjectToSystemMng_BadRequest() throws Exception {
@@ -2440,7 +2441,7 @@ public class SystemManagerInterfaceTest {
    * {@link org.o3project.odenos.core.component.SystemManagerInterface#delObjectToSystemMng(java.lang.String)}
    * .
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testDelObjectToSystemMng_InternalServerError() throws Exception {
@@ -2477,7 +2478,7 @@ public class SystemManagerInterfaceTest {
    * {@link org.o3project.odenos.core.component.SystemManagerInterface#delObjectToSystemMng(java.lang.String)}
    * .
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testDelObjectToSystemMng_PathNull() throws Exception {
@@ -2516,7 +2517,7 @@ public class SystemManagerInterfaceTest {
    * {@link org.o3project.odenos.core.component.SystemManagerInterface#getObjectToSystemMng(java.lang.String)}
    * .
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testGetObjectToSystemMng() throws Exception {
@@ -2555,7 +2556,7 @@ public class SystemManagerInterfaceTest {
    * {@link org.o3project.odenos.core.component.SystemManagerInterface#getObjectToSystemMng(java.lang.String)}
    * .
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testGetObjectToSystemMng_BadRequest() throws Exception {
@@ -2594,7 +2595,7 @@ public class SystemManagerInterfaceTest {
    * {@link org.o3project.odenos.core.component.SystemManagerInterface#getObjectToSystemMng(java.lang.String)}
    * .
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testGetObjectToSystemMng_InternalServerError() throws Exception {
@@ -2631,7 +2632,7 @@ public class SystemManagerInterfaceTest {
    * {@link org.o3project.odenos.core.component.SystemManagerInterface#sendRequest(Request.Method, String, Object)}
    * .
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testSendRequest() throws Exception {

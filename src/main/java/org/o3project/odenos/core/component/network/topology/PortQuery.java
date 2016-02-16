@@ -34,7 +34,7 @@ public class PortQuery extends BaseObjectQuery<Port> {
 
   /*
    * (non-Javadoc)
-   * @see org.o3project.odenos.component.network.BaseObjectQuery#parse()
+   * @see org.o3project.odenos.core.component.network.BaseObjectQuery#parse()
    */
   @Override
   public boolean parse() {

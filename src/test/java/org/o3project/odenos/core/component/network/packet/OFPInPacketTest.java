@@ -75,21 +75,21 @@ public class OFPInPacketTest {
   private static final String TYPE = "OFPInPacket";
 
   /**
-   * @throws java.lang.Exception
+   * @throws java.lang.Exception throws Exception in targets
    */
   @BeforeClass
   public static void setUpBeforeClass() throws Exception {
   }
 
   /**
-   * @throws java.lang.Exception
+   * @throws java.lang.Exception throws Exception in targets
    */
   @AfterClass
   public static void tearDownAfterClass() throws Exception {
   }
 
   /**
-   * @throws java.lang.Exception
+   * @throws java.lang.Exception throws Exception in targets
    */
   @Before
   public void setUp() throws Exception {
@@ -99,7 +99,7 @@ public class OFPInPacketTest {
   }
 
   /**
-   * @throws java.lang.Exception
+   * @throws java.lang.Exception throws Exception in targets
    */
   @After
   public void tearDown() throws Exception {
@@ -164,7 +164,7 @@ public class OFPInPacketTest {
    * {@link org.o3project.odenos.core.component.network.packet.OFPInPacket#OFPInPacket(org.o3project.odenos.core.component.network.packet.OFPInPacket)}
    * .
    *
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public final void testOFPInPacketOFPInPacket() throws Exception {
@@ -410,7 +410,7 @@ public class OFPInPacketTest {
    * {@link org.o3project.odenos.core.component.network.packet.OFPInPacket#readValue(org.msgpack.type.Value)}
    * .
    *
-   * @throws IOException
+   * @throws IOException throws IOException in targets
    */
 
   @Test
@@ -748,7 +748,7 @@ public class OFPInPacketTest {
    * {@link org.o3project.odenos.core.component.network.packet.OFPInPacket#writeValueSub(java.util.Map)}
    * .
    *
-   * @throws IOException
+   * @throws IOException throws IOException in targets
    */
   @Test
   public final void testWriteValueSubTrue() throws IOException {

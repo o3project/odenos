@@ -104,6 +104,7 @@ public class BasicFlowMatch extends OdenosMessage {
 
   /**
    * is wildcard flag of inPort.
+   * @return true if waildcard flag is set.
    */
   public boolean isWcInPort() {
     return wcInPort;

@@ -40,21 +40,21 @@ public class NodeChangedTest {
   private Node curr;
 
   /**
-   * @throws java.lang.Exception
+   * @throws java.lang.Exception throws Exception in targets
    */
   @BeforeClass
   public static void setUpBeforeClass() throws Exception {
   }
 
   /**
-   * @throws java.lang.Exception
+   * @throws java.lang.Exception throws Exception in targets
    */
   @AfterClass
   public static void tearDownAfterClass() throws Exception {
   }
 
   /**
-   * @throws java.lang.Exception
+   * @throws java.lang.Exception throws Exception in targets
    */
   @Before
   public void setUp() throws Exception {
@@ -63,7 +63,7 @@ public class NodeChangedTest {
   }
 
   /**
-   * @throws java.lang.Exception
+   * @throws java.lang.Exception throws Exception in targets
    */
   @After
   public void tearDown() throws Exception {
@@ -97,7 +97,7 @@ public class NodeChangedTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.topology.NodeChanged#NodeChanged(org.o3project.odenos.core.component.network.topology.Node, org.o3project.odenos.core.component.network.topology.Node, org.o3project.odenos.component.network.topology.Action)}
+   * {@link org.o3project.odenos.core.component.network.topology.NodeChanged#NodeChanged(org.o3project.odenos.core.component.network.topology.Node, org.o3project.odenos.core.component.network.topology.Node, Action)}
    * .
    */
   @Test
@@ -122,7 +122,7 @@ public class NodeChangedTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.topology.NodeChanged#NodeChanged(org.o3project.odenos.core.component.network.topology.Node, org.o3project.odenos.core.component.network.topology.Node, org.o3project.odenos.component.network.topology.Action)}
+   * {@link org.o3project.odenos.core.component.network.topology.NodeChanged#NodeChanged(org.o3project.odenos.core.component.network.topology.Node, org.o3project.odenos.core.component.network.topology.Node, Action)}
    * .
    */
   @Test
@@ -147,7 +147,7 @@ public class NodeChangedTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.topology.NodeChanged#NodeChanged(org.o3project.odenos.core.component.network.topology.Node, org.o3project.odenos.core.component.network.topology.Node, org.o3project.odenos.component.network.topology.Action)}
+   * {@link org.o3project.odenos.core.component.network.topology.NodeChanged#NodeChanged(org.o3project.odenos.core.component.network.topology.Node, org.o3project.odenos.core.component.network.topology.Node, Action)}
    * .
    */
   @Test
@@ -172,7 +172,7 @@ public class NodeChangedTest {
 
   /**
    * Test method for
-   * {@link org.o3project.odenos.core.component.network.topology.NodeChanged#NodeChanged(org.o3project.odenos.core.component.network.topology.Node, org.o3project.odenos.core.component.network.topology.Node, org.o3project.odenos.component.network.topology.Action)}
+   * {@link org.o3project.odenos.core.component.network.topology.NodeChanged#NodeChanged(org.o3project.odenos.core.component.network.topology.Node, org.o3project.odenos.core.component.network.topology.Node, Action)}
    * .
    */
   @Test

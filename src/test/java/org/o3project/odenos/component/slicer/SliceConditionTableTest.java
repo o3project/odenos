@@ -53,21 +53,21 @@ public class SliceConditionTableTest {
   private SliceConditionTable target;
 
   /**
-   * @throws java.lang.Exception
+   * @throws java.lang.Exception throws Exception in targets
    */
   @BeforeClass
   public static void setUpBeforeClass() throws Exception {
   }
 
   /**
-   * @throws java.lang.Exception
+   * @throws java.lang.Exception throws Exception in targets
    */
   @AfterClass
   public static void tearDownAfterClass() throws Exception {
   }
 
   /**
-   * @throws java.lang.Exception
+   * @throws java.lang.Exception throws Exception in targets
    */
   @Before
   public void setUp() throws Exception {
@@ -77,7 +77,7 @@ public class SliceConditionTableTest {
   }
 
   /**
-   * @throws java.lang.Exception
+   * @throws java.lang.Exception throws Exception in targets
    */
   @After
   public void tearDown() throws Exception {
@@ -136,7 +136,7 @@ public class SliceConditionTableTest {
   }
 
   /**
-   * Test method for {@link org.o3project.odenos.component.slicer.SliceConditionTable#getConditionIdList(java.lang.Integer)}.
+   * Test method for {@link org.o3project.odenos.component.slicer.SliceConditionTable#getConditionIdList(String)}.
    */
   @Test
   public void testGetConditionIdList() {
@@ -170,7 +170,7 @@ public class SliceConditionTableTest {
 
   /**
    * Test method for {@link org.o3project.odenos.component.slicer.SliceConditionTable#getSliceConditionObject(java.lang.String)}.
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testGetSliceConditionObject() throws Exception {
@@ -201,7 +201,7 @@ public class SliceConditionTableTest {
 
   /**
    * Test method for {@link org.o3project.odenos.component.slicer.SliceConditionTable#getSliceConditionIds(java.lang.String)}.
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testGetSliceConditionIds() throws Exception {
@@ -232,7 +232,7 @@ public class SliceConditionTableTest {
 
   /**
    * Test method for {@link org.o3project.odenos.component.slicer.SliceConditionTable#getConnectionId(java.lang.String)}.
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testGetConnectionId() throws Exception {
@@ -260,7 +260,7 @@ public class SliceConditionTableTest {
   }
 
   /**
-   * Test method for {@link org.o3project.odenos.component.slicer.SliceConditionTable#addEntryToPriorityTable(java.lang.Integer)}.
+   * Test method for {@link org.o3project.odenos.component.slicer.SliceConditionTable#addEntryToPriorityTable(String)}.
    */
   @Test
   public void testAddEntryToPriorityTable_NonExist() {
@@ -281,7 +281,7 @@ public class SliceConditionTableTest {
   }
 
   /**
-   * Test method for {@link org.o3project.odenos.component.slicer.SliceConditionTable#addEntryToPriorityTable(java.lang.Integer)}.
+   * Test method for {@link org.o3project.odenos.component.slicer.SliceConditionTable#addEntryToPriorityTable(String)}.
    */
   @Test
   public void testAddEntryToPriorityTable_Exist() {
@@ -312,7 +312,7 @@ public class SliceConditionTableTest {
 
   /**
    * Test method for {@link org.o3project.odenos.component.slicer.SliceConditionTable#addEntryToSliceCondition(java.lang.String, org.o3project.odenos.component.slicer.SliceCondition)}.
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testAddEntryToSliceConditionStringSliceCondition() throws Exception {
@@ -352,7 +352,7 @@ public class SliceConditionTableTest {
 
   /**
    * Test method for {@link org.o3project.odenos.component.slicer.SliceConditionTable#addEntryToSliceCondition(java.lang.String, java.lang.String, org.o3project.odenos.component.slicer.SliceCondition)}.
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testAddEntryToSliceConditionStringStringSliceCondition() throws Exception {
@@ -387,8 +387,8 @@ public class SliceConditionTableTest {
   }
 
   /**
-   * Test method for {@link org.o3project.odenos.component.slicer.SliceConditionTable#addEntryToSliceCondition(java.lang.Integer, org.o3project.odenos.component.slicer.SliceCondition)}.
-   * @throws Exception
+   * Test method for {@link org.o3project.odenos.component.slicer.SliceConditionTable#addEntryToSliceCondition(String, org.o3project.odenos.component.slicer.SliceCondition)}.
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testAddEntryToSliceCondition_2ndAdd() throws Exception {
@@ -438,7 +438,7 @@ public class SliceConditionTableTest {
 
   /**
    * Test method for {@link org.o3project.odenos.component.slicer.SliceConditionTable#deleteSliceCondition(java.lang.String)}.
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testDeleteSliceCondition() throws Exception {
@@ -485,8 +485,8 @@ public class SliceConditionTableTest {
   }
 
   /**
-   * Test method for {@link org.o3project.odenos.component.slicer.SliceConditionTable#deleteSliceConditionTable(java.lang.Integer)}.
-   * @throws Exception
+   * Test method for {@link org.o3project.odenos.component.slicer.SliceConditionTable#deleteSliceConditionTable(String)}.
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testDeleteSliceConditionTable() throws Exception {
@@ -525,7 +525,7 @@ public class SliceConditionTableTest {
 
   /**
    * Test method for {@link org.o3project.odenos.component.federator.FederatorBoundaryTable#getUniqueId()}.
-   * @throws Exception
+   * @throws Exception throws Exception in targets
    */
   @Test
   public void testGetUniqueId() throws Exception {
