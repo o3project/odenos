@@ -63,7 +63,7 @@ Python or Ruby environment, please see "Appendix A".
 
    ```
    $ ./odenos stop
-  ```
+   ```
 
 5. run unit tests (if you want)
 
